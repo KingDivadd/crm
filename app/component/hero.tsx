@@ -54,8 +54,8 @@ const Hero = () => {
                     {/* logo goes here */}
                     <span className="w- flex flex-row items-center justify-start gap-[40px]">
                         <Link href={'/'} className='text-slate-200 font-sm hover:underline '>Home</Link>
-                        <Link href={'/'} className='text-slate-200 font-sm hover:underline '>About Us</Link>
-                        <Link href={'/'} className='text-slate-200 font-sm hover:underline '>Contact</Link>
+                        <Link href={'/'} className='text-slate-200 font-sm hover:underline '>Features</Link>
+                        <Link href={'/'} className='text-slate-200 font-sm hover:underline '>Reviews</Link>
                     </span>
                     <button className="w-[150px] h-[45px] bg-white text-slate-700 font-md rounded-[22.5px] hover:bg-slate-100" onClick={getStarted} >Get Started</button>
                 </nav>

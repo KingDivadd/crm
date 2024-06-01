@@ -25,7 +25,7 @@ const Login = () => {
     return (
         <div className="w-full h-[100vh] p-[20px] flex items-center justify-center">
             <div className="w-full flex flex-row items-center justify-between h-full gap-[20px]">
-                <div className="relative w-[45%] h-full rounded-[20px] overflow-hidden">
+                <div className="relative w-[45%] h-full rounded-[20px] overflow-hidden auth-bg">
                     <Image 
                         src="/auth2.png" 
                         alt="Authentication" 
