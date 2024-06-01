@@ -15,7 +15,7 @@ const Hero = () => {
     }
 
     return (
-        <div className="w-full h-[97vh] bg-white flex flex-row items-start jusitify-center gap-[10px] pt-[20px] ">
+        <div className="w-full h-[100vh] bg-white flex flex-row items-start jusitify-center gap-[10px] pt-[20px] pb-[20px] ">
             {/* left side */}
             <div className="w-[45%] h-full flex items-start justify-start pl-[70px] pr-[70px] pt-[20px] ">
                 <div className="w-full h-auto flex flex-col justify-start items-start  pb-[30px] ">
@@ -54,8 +54,8 @@ const Hero = () => {
                     {/* logo goes here */}
                     <span className="w- flex flex-row items-center justify-start gap-[40px]">
                         <Link href={'/'} className='text-slate-200 font-sm hover:underline '>Home</Link>
-                        <Link href={'/'} className='text-slate-200 font-sm hover:underline '>Features</Link>
-                        <Link href={'/'} className='text-slate-200 font-sm hover:underline '>Reviews</Link>
+                        <Link href={'#platformfeatures'} className='text-slate-200 font-sm hover:underline '>Features</Link>
+                        <Link href={'#reviews'} className='text-slate-200 font-sm hover:underline '>Reviews</Link>
                     </span>
                     <button className="w-[150px] h-[45px] bg-white text-slate-700 font-md rounded-[22.5px] hover:bg-slate-100" onClick={getStarted} >Get Started</button>
                 </nav>
