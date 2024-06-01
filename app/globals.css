@@ -1,0 +1,56 @@
+@import url("https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;700&display=swap");
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;300;400;500;600;700;800&family=Montserrat:wght@200;300;400;500;600;700;800&family=Poppins:wght@100;200;300;400;500;600;700;800&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Montserrat";
+    box-sizing: border-box;
+}
+
+::-webkit-scrollbar {
+    width: 0px;
+    height: 0px;
+}
+
+::-moz-scrollbar {
+    width: 0px;
+}
+
+::-moz-scrollbar-thumb {
+    @apply bg-sky-700 rounded-[5px];
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-sky-700 rounded-b-[5px] cursor-pointer;
+}
+
+.signup-input {
+    height: 50px;
+    width: 100%;
+    outline: none;
+    padding: 0 10px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.signup-input:focus {
+    @apply border-2 border-blue-500
+}
+
+.password-input {
+    height: 50px;
+    width: 100%;
+    outline: none;
+    padding: 0 10px;
+    padding-right: 40px;
+    border: 1px solid gray;
+    border-radius: 5px;
+}
+
+.password-input:focus {
+    @apply border-2 border-blue-500
+}
