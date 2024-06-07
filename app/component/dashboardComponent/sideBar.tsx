@@ -8,8 +8,9 @@ import { RiNotificationBadgeFill } from "react-icons/ri";
 import { BiSolidNotepad } from "react-icons/bi";
 import { IoSettingsSharp } from "react-icons/io5";
 import { SideBarNav } from '@/types';
-
+import {useRouter} from 'next/navigation'
 const SideBar = ({active, setActive}:SideBarNav) => {
+    const router = useRouter()
     
 
     useEffect(() => {
@@ -62,7 +63,7 @@ const SideBar = ({active, setActive}:SideBarNav) => {
                         <p className="text-[17px]">System Settings</p>
                     </span>
                 </div>
-                <span className="sidebar-logout-navigation absolute top-0 pl-[10px]">
+                <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation absolute top-0 pl-[10px]">
                     <FiLogOut size={25} />
                     <p className="text-lg">Logout</p>
                 </span>
