@@ -60,7 +60,7 @@ const ReportsAndAnalytics = () => {
                                 </span>
                             </span>
                             <div className="w-full min-h- flex flex-col justify-start items-start">
-                                {[1,2,3,4,5,7,6,6,6,6,].map((data, ind)=>{
+                                {[1,2,3,4,5,7,8].map((data, ind)=>{
                                     return (
                                         <span key={ind} className="recent-activity-table-list">
                                             <p className="text-sm w-[10%] pr-2 pl-2 ">{(ind % 2 ) === 1 ? "Website" : "Referral"}</p>
