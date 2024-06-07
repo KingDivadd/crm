@@ -4,6 +4,7 @@ import DashboardNav from './dashboardNav'
 import SideBar from './sideBar'
 import AdminHome from './adminHome'
 import UserManagement from './userManagement'
+import ReportsAndAnalytics from './reportsAnalytics'
 
 const AdminDashboard = () => {
     const [active, setActive] = useState('')
@@ -26,6 +27,7 @@ const AdminDashboard = () => {
                 <div className="w-full bg-slate-100 overflow-y-auto cont-1 ">
                     {active === "home" && <AdminHome /> }
                     {active === "user-management" && <UserManagement /> }
+                    {active === "analytics" && <ReportsAndAnalytics /> }
                 </div>
             </div>
         </div>
