@@ -12,9 +12,9 @@ export interface CustomFilterProps {
     title: string;
 }
 
-export interface SearchManufacturerProps {
-    manufacturer: string;
-    setManufacturer: (manufacturer: string)=>void
+export interface SideBarNav {
+    active: string;
+    setActive: (active: string)=>void
 }
 
 export interface InputProps {

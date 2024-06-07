@@ -2,9 +2,18 @@ import React from 'react'
 
 const Reviews = () => {
     return (
-        <div id="reviews" className="w-full h-[100vh] flex flex-col items-center justif-start gap-3 pt-[40px] pb-[20px] ">
+        <div id="reviews" className="w-full flex flex-col items-center justif-start gap-10 pt-[40px] pb-[20px] pr-[70px] pl-[70px] ">
             <h3 className="font-bold text-3xl text-black">Reviews</h3>
-            <h3 className=" text-xl text-black mt-20">Still under development</h3>
+            <div className="w-full flex flex-row items-start justify-between gap-3 h-auto">
+                {/* left side */}
+                <div className="w-[30%] flex flex-col items-start justify-start gap-3 h-[500px] bg-blue-200 "></div>
+                <div className="w-[40%] flex flex-col items-start justify-start gap-3 h-[500px] ">
+                    <div className="w-full h-1/2 bg-amber-200 "></div>
+                    <div className="w-full h-1/2 bg-amber-200 "></div>
+                </div>
+                {/* right side */}
+                <div className="w-[30%] flex flex-col items-start justify-start gap-3 h-[500px] bg-red-200 "></div>
+            </div>
 
         </div>
     )

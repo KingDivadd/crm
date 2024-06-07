@@ -55,7 +55,7 @@ const Login = () => {
                                     </span>
                                 </span>
                             </span>
-                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500">Login</button>
+                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500" onClick={(e)=>{e.preventDefault(); router.push('/home/dashboard')}} >Login</button>
                         </form>
 
                         <span className="w-[80%] flex flex-row items-center justify-between h-[40px] mx-auto"> 

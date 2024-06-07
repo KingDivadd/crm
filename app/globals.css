@@ -54,3 +54,73 @@
 .password-input:focus {
     @apply border-2 border-blue-500
 }
+
+.sidebar-logout-navigation:hover::before {
+    height: 45px;
+    width: 5px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: orangered;
+}
+
+.sidebar-logout-navigation {
+    @apply relative h-[45px] flex flex-row items-center justify-start cursor-pointer w-full gap-3 pl-[10px] text-black
+}
+
+.sidebar-logout-navigation:hover {
+    @apply bg-red-100 text-[orangered]
+}
+
+.sidebar-navigation {
+    @apply relative h-[45px] flex flex-row items-center justify-start cursor-pointer w-full gap-3 pl-[10px] text-black
+}
+
+.sidebar-navigation:hover::before {
+    height: 45px;
+    width: 5px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #1858CD;
+}
+
+.sidebar-navigation:hover {
+    @apply bg-blue-100 text-[#1858CD]
+}
+
+.active-sidebar-navigation {
+    @apply relative h-[45px] flex flex-row items-center justify-start cursor-pointer w-full gap-3 pl-[10px] text-black bg-blue-100
+}
+
+.active-sidebar-navigation::before {
+    height: 45px;
+    width: 5px;
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    background-color: #1858CD;
+}
+
+.recent-activity-table-list {
+    @apply w-full h-[40px] flex flex-row items-center justify-start cursor-pointer;
+}
+
+.recent-activity-table-list:hover {
+    @apply bg-gray-100
+}
+
+.cont-1 {
+    height: calc(100vh - 50px);
+}
+
+.user-list-cont {
+    height: calc(100vh - 250px)
+}
+
+.overdue-row {
+    @apply w-full h-[40px] flex flex-row items-center justify-start cursor-pointer bg-red-200 text-red-700;
+}
