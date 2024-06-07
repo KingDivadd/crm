@@ -9,19 +9,19 @@ const DashboardNav = () => {
         setIsCalendarOpen(prev => !prev);
     };
 
-    const handleClickOutside = (event: any) => {
-        if (calendarRef.current && !calendarRef.current.contains(event.target)) {
-            setIsCalendarOpen(false);
-        }
-    };
+    // const handleClickOutside = (event: any) => {
+    //     if (calendarRef.current && !calendarRef.current.contains(event.target)) {
+    //         setIsCalendarOpen(false);
+    //     }
+    // };
     
 
-    useEffect(() => {
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => {
-            document.removeEventListener("mousedown", handleClickOutside);
-        };
-    }, []);
+    // useEffect(() => {
+    //     // document.addEventListener("mousedown", handleClickOutside);
+    //     // return () => {
+    //     //     document.removeEventListener("mousedown", handleClickOutside);
+    //     };
+    // }, []);
 
     return (
         <div className='w-full h-[50px] bg-blue-700 flex flex-row items-center justify-between pr-[10px]'>
