@@ -49,12 +49,12 @@ const ReportsAndAnalytics = () => {
                             <span className="w-full h-[45px] flex flex-col items-start justify-start bg-white rounded-t-[3px] border-b-2 border-gray-200 ">
                                 <span className="w-full h-[5px] rounded-t-[3px] bg-green-600"></span>
                                 <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white  border-b-2 border-gray-200 ">
-                                    <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 ">Lead Source</p>
+                                    <p className="text-sm font-semibold w-[10%] pr-2 pl-2 ">Lead Source</p>
                                     <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 ">Lead ID</p>
-                                    <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 ">Lead Name</p>
-                                    <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 ">Contact Info</p>
+                                    <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Lead Name</p>
+                                    <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Contact Info</p>
                                     <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 ">Assigned To</p>
-                                    <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 ">Status</p>
+                                    <p className="text-sm font-semibold w-[10%] pr-2 pl-2 ">Status</p>
                                     <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 ">Creation Date</p>
                                     <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 ">Last Contact Date</p>
                                 </span>
@@ -63,12 +63,12 @@ const ReportsAndAnalytics = () => {
                                 {[1,2,3,4,5,7,6,6,6,6,].map((data, ind)=>{
                                     return (
                                         <span key={ind} className="recent-activity-table-list">
-                                            <p className="text-sm w-[12.5%] pr-2 pl-2 ">{(ind % 2 ) === 1 ? "Website" : "Referral"}</p>
+                                            <p className="text-sm w-[10%] pr-2 pl-2 ">{(ind % 2 ) === 1 ? "Website" : "Referral"}</p>
                                             <p className="text-sm w-[12.5%] pr-2 pl-2 ">100{ind}</p>
-                                            <p className="text-sm w-[12.5%] pr-2 pl-2 ">Iroegbu David</p>
-                                            <p className="text-sm w-[12.5%] pr-2 pl-2 ">irg.dge@gmail.com</p>
+                                            <p className="text-sm w-[15%] pr-2 pl-2 ">Iroegbu David</p>
+                                            <p className="text-sm w-[15%] pr-2 pl-2 ">irg.dge@gmail.com</p>
                                             <p className="text-sm w-[12.5%] pr-2 pl-2 ">Sales Rep 1</p>
-                                            <p className="text-sm w-[12.5%] pr-2 pl-2 ">{(ind % 2 ) === 1 ? "Contacted" : "Qualified"}</p>
+                                            <p className="text-sm w-[10%] pr-2 pl-2 ">{(ind % 2 ) === 1 ? "Contacted" : "Qualified"}</p>
                                             <p className="text-sm w-[12.5%] pr-2 pl-2 ">June 12, 2024</p>
                                             <p className="text-sm w-[12.5%] pr-2 pl-2 ">June 12, 2024</p>
                                         </span>
