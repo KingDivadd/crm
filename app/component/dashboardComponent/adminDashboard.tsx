@@ -24,7 +24,7 @@ const AdminDashboard = () => {
             </div>
             <div className="flex-1 h-full bg-blue-100">
                 <DashboardNav />
-                <div className="w-full bg-slate-100 overflow-y-auto cont-1 ">
+                <div className="w-full bg-slate-100 overflow-y-auto cont-1">
                     {active === "home" && <AdminHome /> }
                     {active === "user-management" && <UserManagement /> }
                     {active === "analytics" && <ReportsAndAnalytics /> }
