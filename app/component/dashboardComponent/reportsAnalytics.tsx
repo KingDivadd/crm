@@ -1,7 +1,7 @@
 import React from 'react'
 import { IoAddOutline } from 'react-icons/io5'
 import { MdEdit, MdDeleteForever } from 'react-icons/md'
-import VisitCountBarChart from './visitCountBarChart'
+import SalesAnalyticsBarChart from './stackedBarChart'
 
 const ReportsAndAnalytics = () => {
     return (
@@ -37,7 +37,7 @@ const ReportsAndAnalytics = () => {
                 <div className="w-full h-auto flex flex-col items-start justify-start gap-[10px]">
                     <p className="text-xl font-semibold">Sales Analytics</p>
                     <div className="w-full min-h-[250px] flex flex-col bg-white rounded-t-[5px] ">
-                        <VisitCountBarChart />
+                        <SalesAnalyticsBarChart />
                     </div>
                 </div>
             </div>
