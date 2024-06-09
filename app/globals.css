@@ -64,6 +64,10 @@
     @apply h-[50px] w-[100%] outline-none p-[0] pr-[40px] pl-[10px] border-2 border-red-500 rounded-[5px]
 }
 
+.checkbox-40 {
+    @apply h-[17px] w-[17px]
+}
+
 .sidebar-logout-navigation:hover::before {
     height: 45px;
     width: 5px;

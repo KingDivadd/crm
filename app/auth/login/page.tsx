@@ -47,6 +47,7 @@ const Login = () => {
             // Simulate a login request with a timeout
             setTimeout(() => {
                 setLoading(false); // Set loading to false when the request completes
+                router.push('/home/dashboard')
             // Handle successful login here
             }, 3000);
         }

@@ -6,9 +6,11 @@ import { MdDeleteForever } from "react-icons/md";
 import DropDown from '../../dropDown';
 import { AddUsersProps } from '@/types';
 import Alert from '../../alert';
+import { IoMdArrowBack } from "react-icons/io";
 
-const AddUsers = ({addUsers, setAddUsers}:AddUsersProps) => {
-    const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: ''})
+const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUsersProps) => {
+
+    const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
     const [inputError, setInputError] = useState({lastNameError: false, firstNameError: false, emailError: false, phoneError: false, roleError: false, passwordError: false})
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState({type: '', message: ''})
@@ -22,11 +24,22 @@ const AddUsers = ({addUsers, setAddUsers}:AddUsersProps) => {
     })
 
     useEffect(() => {
-        if (auth.firstName){setInputError({...inputError, firstNameError: false})}
-        if (auth.email){setInputError({...inputError, emailError: false})}
-        if (auth.phone){setInputError({...inputError, phoneError: false})}
-        if (auth.password){setInputError({...inputError, passwordError: false})}
-        if (auth.lastName){setInputError({...inputError, lastNameError: false})}
+        if(selectedUser != null){
+            const {lastName, firstName, email, phone, role, status, password} = selectedUser
+            setAuth({...auth, lastName: lastName, firstName: firstName, email: email, role: role, phone:phone, activateUser:status, password: password})
+            setDropElements({...dropElements, userRole: role })
+            console.log('status : ',status)
+        }
+    }, [])
+
+
+
+    useEffect(() => {
+        if (auth.lastName){setInputError({...inputError, lastNameError: auth.lastName === ''})}
+        if (auth.firstName){setInputError({...inputError, firstNameError: auth.firstName === ''})}
+        if (auth.email){setInputError({...inputError, emailError: auth.email === ''})}
+        if (auth.phone){setInputError({...inputError, phoneError: auth.phone === ''})}
+        if (auth.password){setInputError({...inputError, passwordError: auth.password === ''})}
     }, [auth])
 
     const handleDropMenu = (dropdown: any) => {
@@ -69,6 +82,26 @@ const AddUsers = ({addUsers, setAddUsers}:AddUsersProps) => {
                 setLoading(false); // Set loading to false when the request completes
                     setAddUsers(false)
                     triggerAlert('success', 'User Added successfully')
+                    const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
+            }, 3000);
+        }
+    }
+
+    async function updateUser(e:any){
+        if(!auth.lastName || !auth.firstName || !auth.email || !auth.password || !auth.phone){
+            setInputError({...inputError, lastNameError: auth.lastName === "", firstNameError: auth.firstName === "", emailError: auth.email === '', passwordError: auth.password === '', phoneError: auth.phone === ''})
+            triggerAlert('warning', 'Please fill all required fields.')
+
+        }else{
+            setLoading(true); // Set loading to true when the request starts
+            console.log(auth);
+            
+            // Simulate a login request with a timeout
+            setTimeout(() => {
+                setLoading(false); // Set loading to false when the request completes
+                    setAddUsers(false)
+                    triggerAlert('success', 'User Added successfully')
+                    setAuth({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
             }, 3000);
         }
     }
@@ -81,13 +114,25 @@ const AddUsers = ({addUsers, setAddUsers}:AddUsersProps) => {
             <div className="w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
-                        <p className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer " onClick={()=>{setAddUsers(false)}}  >All Users</p>
-                        <p className="text-sm text-black">127</p>
-                    </span>
-                    <span className="flex flex-row items-start justify-start gap-4">
                         
-                        <p className="text-lg font-semibold">New User</p>
+                        <p className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer flex items-center justify-start gap-2 " onClick={()=>{setAddUsers(false)}}>
+                        <IoMdArrowBack size={23} className='text-blue-600' />All Users</p>
+                        <p className="text-md text-black">127</p>
+                        <span className="w-[150px] flex items-center justify-start gap-3">
+                            <p className="text-md text-black">Status:</p>
+                            {auth.activateUser === 'active' ? <p className="text-md text-lime-600">Active</p> : <p className="text-md text-red-600">Inactive</p>}
 
+                        </span>
+                    </span>
+                    <span className="flex flex-row items-center justify-start gap-4">
+                        
+                        {auth.activateUser != 'active' ? 
+                        <p className="text-md text-blue-500" onClick={()=>{setAuth({...auth, activateUser: 'active'})}}>Activate User</p>
+                            :
+                        <p className="text-md text-red-500" onClick={()=>{setAuth({...auth, activateUser: 'inactive'})}}>Inactivate User</p>
+                        }
+
+                        <p className="text-lg font-semibold">{selectedUser? "Modifying user data": "New User"}</p>
                     </span>
                 </span>
 
@@ -116,7 +161,7 @@ const AddUsers = ({addUsers, setAddUsers}:AddUsersProps) => {
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
                                 <h4 className="text-md font-light">Password</h4>
-                                <input type="password" name='password' className={inputError.passwordError ? 'normal-input-error' : 'normal-input'} value={auth.password} onChange={handleChange} />
+                                <input type="text" name='password' className={inputError.passwordError ? 'normal-input-error' : 'normal-input'} value={auth.password} onChange={handleChange} />
                             </span>
                         </form>
                     </div>
@@ -131,8 +176,9 @@ const AddUsers = ({addUsers, setAddUsers}:AddUsersProps) => {
                                 </span>
                                 <h4 className="text-md font-semibold mt-[8px]">Description</h4>
                                 {/* now list the basic features of these roles */}
-                                <span className="w-full max-h- flex flex-col items-start justify-start gap-3 ">
-                                    {['Adding and edit user roles', 'Overseeing day to day activities', 'three'].map((data, ind)=>{
+
+                                {dropElements.userRole.toLowerCase() === 'admin' &&  <span className="w-full max-h- flex flex-col items-start justify-start gap-3 ">
+                                    {userResponsibilities.admin.map((data, ind)=>{
                                         return (
                                             <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
                                                 <p className="text-md">{ind + 1}.</p>
@@ -140,7 +186,67 @@ const AddUsers = ({addUsers, setAddUsers}:AddUsersProps) => {
                                             </span>
                                         )
                                     })}
-                                </span>
+                                </span>}
+                                {dropElements.userRole.toLowerCase() === 'sales' &&  <span className="w-full max-h- flex flex-col items-start justify-start gap-3 ">
+                                    {userResponsibilities.sales.map((data, ind)=>{
+                                        return (
+                                            <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
+                                                <p className="text-md">{ind + 1}.</p>
+                                                <p className="text-md font-light">{data}</p>
+                                            </span>
+                                        )
+                                    })}
+                                </span>}
+                                {dropElements.userRole.toLowerCase() === 'customer' &&  <span className="w-full max-h- flex flex-col items-start justify-start gap-3 ">
+                                    {userResponsibilities.customer.map((data, ind)=>{
+                                        return (
+                                            <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
+                                                <p className="text-md">{ind + 1}.</p>
+                                                <p className="text-md font-light">{data}</p>
+                                            </span>
+                                        )
+                                    })}
+                                </span>}
+                                {dropElements.userRole.toLowerCase() === 'operation' &&  <span className="w-full max-h- flex flex-col items-start justify-start gap-3 ">
+                                    {userResponsibilities.operation.map((data, ind)=>{
+                                        return (
+                                            <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
+                                                <p className="text-md">{ind + 1}.</p>
+                                                <p className="text-md font-light">{data}</p>
+                                            </span>
+                                        )
+                                    })}
+                                </span>}
+                                {dropElements.userRole.toLowerCase() === 'designer' &&  <span className="w-full max-h- flex flex-col items-start justify-start gap-3 ">
+                                    {userResponsibilities.designer.map((data, ind)=>{
+                                        return (
+                                            <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
+                                                <p className="text-md">{ind + 1}.</p>
+                                                <p className="text-md font-light">{data}</p>
+                                            </span>
+                                        )
+                                    })}
+                                </span>}
+                                {dropElements.userRole.toLowerCase() === 'technician' &&  <span className="w-full max-h- flex flex-col items-start justify-start gap-3 ">
+                                    {userResponsibilities.technician.map((data, ind)=>{
+                                        return (
+                                            <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
+                                                <p className="text-md">{ind + 1}.</p>
+                                                <p className="text-md font-light">{data}</p>
+                                            </span>
+                                        )
+                                    })}
+                                </span>}
+                                {dropElements.userRole.toLowerCase() === 'finance' &&  <span className="w-full max-h- flex flex-col items-start justify-start gap-3 ">
+                                    {userResponsibilities.finance.map((data, ind)=>{
+                                        return (
+                                            <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
+                                                <p className="text-md">{ind + 1}.</p>
+                                                <p className="text-md font-light">{data}</p>
+                                            </span>
+                                        )
+                                    })}
+                                </span>}
                             </span>
                             
                         </div>
@@ -148,14 +254,23 @@ const AddUsers = ({addUsers, setAddUsers}:AddUsersProps) => {
                 </div>
 
                 <span className="w-full h-[40px] flex justify-end px-[10px] ">
+                    {selectedUser != null ? <button className="mt-[10px] w-[150px] h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-500 flex items-center justify-center" onClick={updateUser} disabled={loading}>
+                        {loading ? (
+                        <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        ) : 'Save Changes'}
+                    </button>
+                    :
                     <button className="mt-[10px] w-[150px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={handleSubmit} disabled={loading}>
-                            {loading ? (
-                            <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                            </svg>
-                            ) : 'Add User'}
-                        </button>
+                        {loading ? (
+                        <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        ) : 'Add User'}
+                    </button>}
                 </span>
             </div>
         </div>
@@ -163,3 +278,24 @@ const AddUsers = ({addUsers, setAddUsers}:AddUsersProps) => {
 }
 
 export default AddUsers
+
+
+export const userResponsibilities = {
+admin: [
+    'Add, edit, delete users and assign roles and permissions.', 'Configure and manage CRM settings and integrations.', 'Ensure the security of the CRM system, including data protection and user access controls.', 'Generate and view detailed reports on various metrics.', 'Monitor user activities and system usage.', 'Set up and manage system-wide alerts and notifications.', 'Oversee database integrity and perform regular backups.', 'Address and resolve system issues and bugs.'
+],
+
+sales: ['View, manage, and follow up on leads.', 'Track the progress of leads through the sales pipeline.', 'Maintain communication with potential and existing customers.', 'Prepare and manage sales contracts and related documents.', 'Monitor sales targets and achievements.', 'Schedule and manage customer appointments using Google Calendar integration.', 'Generate sales reports and metrics.', 'Train and mentor new sales team members.'],
+
+operation: ['Oversee and track the progress of projects through various stages.', 'Coordinate workflows for HOA, engineering, permitting, and installation.', 'Assign and manage crews for different installation phases.', 'Track materials ordered, received, and delivered.', 'Set up and manage task notifications for project updates.', 'Ensure quality and compliance with project standards.', 'Address and resolve operational issues and bottlenecks.', 'Maintain detailed records of project activities and updates.',],
+
+designer: ['View and manage associated leads and sold jobs.', 'Upload and manage design contracts and related documents.', 'Communicate with customers regarding design updates and changes.', 'Receive and respond to task notifications for design-related tasks.', 'Update design specifications based on customer feedback and project requirements.', 'Collaborate with sales, operations, and engineering teams.', 'Ensure design quality and adherence to standards.', 'Generate design progress reports.'],
+
+customer: ['View the status of HOA, permits, and payments.', 'Submit and track service tickets and upload photos.', 'Access and upload payment receipts.', 'Receive notifications for stage completions and warranty information.', 'Access project-related documents and receipts.', 'Communicate with the support team regarding project updates.', 'Provide feedback and reviews for services received.', 'Manage personal account information and settings.'],
+
+technician: ['Access job details, installation dates, and project instructions.', 'Execute assigned tasks and installation phases.', 'Upload regimented photos of job progress.', 'Upload and manage bill sheets for each job.', 'Manage tools and equipment required for installations.', 'Ensure installation quality and adherence to specifications.', 'Report on job completion and any issues encountered.', 'Interact with customers on-site for service tickets and updates.'],
+
+finance: ['Monitor profit/loss for each project and track financial performance.', 'Manage bills, invoices, and receipts.', 'Handle payroll for employees and contractors.', 'Prepare and manage project budgets.', 'Track and manage project expenses and costs.', 'Generate financial reports: Monthly, quarterly, and fiscal.', 'Ensure financial compliance with relevant laws and regulations.', 'Prepare financial forecasts and projections.']
+
+
+}

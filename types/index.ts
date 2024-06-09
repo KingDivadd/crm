@@ -34,6 +34,8 @@ export interface AlertProps {
 export interface AddUsersProps {
     addUsers: boolean;
     setAddUsers: (addUsers: boolean) => void;
+    selectedUser: any;
+    setSelectedUser: (selectedUser:any) => void;
 }
 
 export interface PatientTabProps {
