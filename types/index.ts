@@ -27,6 +27,11 @@ export interface SchedulingTabProps {
     setTab: (tab: string) => void; 
 }
 
+export interface AlertProps {
+    message: string;
+    type: string;
+}
+
 export interface PatientTabProps {
     patient_tab: string;
     setPatient_tab: (patient_tab: string)=> void;

@@ -29,7 +29,7 @@ const Hero = () => {
                     <div className="w-full flex flex-col justify-start items-start bg-brown-200 mt-[100px] gap-[30px]  ">
                         <h1 className="font-bold text-4xl w-[85%] " >CRM platform to grow your business</h1>
                         <h4 className="font-light text-sm w-[85%] " >A unique and powerful software suite to transform the way you work. Grow your company even more successfully.</h4>
-                        <button className="w-[150px] h-[50px] bg-slate-800 text-slate-200 font-md rounded-[25px] hover:bg-slate-700" onClick={()=>{router.push('/auth/login')}}>Start for Free</button>
+                        <button className="w-[150px] h-[50px] bg-slate-800 text-slate-200 font-md rounded-[25px] hover:bg-slate-700" onClick={()=>{router.push('/auth/signup')}}>Get Started</button>
                     </div>
                     {/* The bottom */}
                     <div className="w-auto h-[140px] flex flex-row items-start justify-start gap-[20px] mt-[90px]">
@@ -57,7 +57,7 @@ const Hero = () => {
                         <Link href={'#platformfeatures'} className='text-slate-200 font-sm hover:underline '>Features</Link>
                         <Link href={'#reviews'} className='text-slate-200 font-sm hover:underline '>Reviews</Link>
                     </span>
-                    <button className="w-[150px] h-[45px] bg-white text-slate-700 font-md rounded-[22.5px] hover:bg-slate-100" onClick={getStarted} >Get Started</button>
+                    <button className="w-[150px] h-[45px] bg-white text-slate-700 font-md rounded-[22.5px] hover:bg-slate-100" onClick={()=>{router.push('/auth/login')}} >Login</button>
                 </nav>
                 <div className="z-1 h-[70%] w-[110%]  absolute top-[15%] right-0 bg-slate-800 rounded-l-[20px] p-[10px] ">
                     <div className="relative w-full h-full rounded-[20px] overflow-hidden">

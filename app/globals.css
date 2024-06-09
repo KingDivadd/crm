@@ -29,30 +29,27 @@
 }
 
 .signup-input {
-    height: 50px;
-    width: 100%;
-    outline: none;
-    padding: 0 10px;
-    border: 1px solid gray;
-    border-radius: 5px;
+    @apply h-[50px] w-[100%] outline-none p-[0] pr-[10px] pl-[10px] border border-gray-400 rounded-[5px]
 }
 
 .signup-input:focus {
     @apply border-2 border-blue-500
 }
 
+.signup-input-error {
+    @apply h-[50px] w-[100%] outline-none p-[0] pr-[10px] pl-[10px] border-2 border-red-500 rounded-[5px]
+}
+
 .password-input {
-    height: 50px;
-    width: 100%;
-    outline: none;
-    padding: 0 10px;
-    padding-right: 40px;
-    border: 1px solid gray;
-    border-radius: 5px;
+    @apply h-[50px] w-[100%] outline-none p-[0] pr-[40px] pl-[10px] border border-gray-400 rounded-[5px]
 }
 
 .password-input:focus {
     @apply border-2 border-blue-500
+}
+
+.password-input-error {
+    @apply h-[50px] w-[100%] outline-none p-[0] pr-[40px] pl-[10px] border-2 border-red-500 rounded-[5px]
 }
 
 .sidebar-logout-navigation:hover::before {
