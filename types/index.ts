@@ -31,6 +31,10 @@ export interface AlertProps {
     message: string;
     type: string;
 }
+export interface AddUsersProps {
+    addUsers: boolean;
+    setAddUsers: (addUsers: boolean) => void;
+}
 
 export interface PatientTabProps {
     patient_tab: string;

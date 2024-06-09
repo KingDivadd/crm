@@ -3,20 +3,56 @@ import React, {useState, useEffect} from 'react'
 import { IoAddOutline } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
+import DropDown from '../dropDown';
+import AddUsers from "../dashboardComponent/subComponent/addUser"
 
 const UserManagement = () => {
+    const [addUsers, setAddUsers] = useState(false)
+    const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
+        userRole: false, status: false
+    });
+    const [dropElements, setDropElements] = useState({
+        userRole: 'User Role', status: 'Status'
+
+    })
+
+    const handleDropMenu = (dropdown: any) => {
+        const updatedDropMenus = Object.keys(dropMenus).reduce((acc, key) => {
+            acc[key] = key === dropdown ? !dropMenus[key] : false;
+            return acc;
+        }, {} as { [key: string]: boolean });
+        setDropMenus(updatedDropMenus);
+        setDropElements({...dropElements, [dropdown]: 'SELECT'});
+    };
+
+    const handleSelectDropdown = (dropdown: any, title:any)=>{
+        setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
+    }
+
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
-            <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">
+            {addUsers ? <AddUsers addUsers={addUsers} setAddUsers={setAddUsers} /> 
+            :
+            <div className="w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         <p className="text-lg font-semibold text-black">All Users</p>
                         <p className="text-sm text-black">127</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
-                        <span className="h-[40px] w-[160px] border border-gray-300 bg-white rounded-[3px] flex items-center justify-center gap-3">Filters</span>
+                        <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
+                            <span className="h-[40px] w-[150px]">
+                                <DropDown handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Active', 'Inactive']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                            </span>
+                            <span className="w-[250px] h-[40px] ">
+                                <input type="text" name="userName" placeholder='Enter name or email' id="" className='normal-input ' />
+                            </span>
+                            <span className="h-[40px] w-[150px]">
+                                <DropDown handleSelectDropdown={handleSelectDropdown} title={'userRole'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                            </span>
+                        </span>
 
-                        <button className="h-[40px] w-[180px] bg-blue-700 hover:bg-blue-800 text-white rounded-[3px] flex items-center justify-center gap-3"> <IoAddOutline size={20} />
+                        <button className="h-[40px] w-[180px] bg-blue-700 hover:bg-blue-800 text-white rounded-[3px] flex items-center justify-center gap-3" onClick={()=>{setAddUsers(true); console.log('yes')}}> <IoAddOutline size={20}/>
                             Add New User</button>
 
                     </span>
@@ -35,14 +71,14 @@ const UserManagement = () => {
                         </span>
                         <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                             <div className='h-auto w-full flex flex-col justify-start '>
-                            {[1,2,3,4,5,2,2,2,2,2,2,2,2,3,3,3,2,2,2,23].map((data, ind)=>{
+                            {[1,2,3,4,5,6,7,8,9,0,1,2,3,4,5].map((data, ind)=>{
                                 return (
                                     <span key={ind} className="recent-activity-table-list ">
                                         <p className="text-sm w-[20%] pr-2 pl-2 ">Iroegbu David </p>
                                         <p className="text-sm w-[20%] pr-2 pl-2 ">irg.gdit@gmail.com</p>
                                         <p className="text-sm w-[15%] pr-2 pl-2 ">Technician</p>
-                                        <p className={true ? "text-sm text-green-500 w-[15%] pr-2 pl-2 ": "text-sm w-[15%] pr-2 pl-2 "}>Active</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600"><MdEdit size={16} /> Edit</p>
+                                        <p className={(ind % 2 === 1) ? "text-sm text-green-500 w-[15%] pr-2 pl-2 ": "text-sm text-red-500 w-[15%] pr-2 pl-2 "}>{(ind % 2 === 1) ? "Active" : "InActive"}</p>
+                                        <p className="text-sm w-[15%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-lime-600"><MdEdit size={16} /> Edit</p>
                                         <p className="text-sm w-[15%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-red-400"><MdDeleteForever size={18} /> Delete</p>
                                     </span>
                                 )
@@ -61,10 +97,12 @@ const UserManagement = () => {
                                 </span>
                                 <p className="text-sm cursor-pointer">Next</p>
                             </span>
-                            <span className="flex flex-row items-start justify-start gap-3 h-full"></span>
+                            <span className="flex flex-row items-center justify-end gap-3 h-full">
+                                <p className="text-sm">Showing 1-15 of 60</p>
+                            </span>
                         </span>
                     </div>
-            </div>
+            </div>}
         </div>
     )
 }

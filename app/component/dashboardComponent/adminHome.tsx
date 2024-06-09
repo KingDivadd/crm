@@ -22,36 +22,32 @@ const AdminHome = () => {
             <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">
                 {/* first section = summary stat */}
                 <div className="w-full flex flex-row items-center justify-between gap-[10px]">
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4  ">
-                        <span className=" w-full bg-blue-600 h-[7px] rounded-t-[5px] "></span>
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px]  pl-[20px] pr-[20px]  ">
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4 border border-blue-500 ">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
                             <p className="text-xl font-semibold">Total Lead</p>
                             <p className="text-sm font-semibold">450</p>
                             <p className="text-sm font-light">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4  ">
-                        <span className=" w-full bg-green-600 h-[7px] rounded-t-[5px] "></span>
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px]  pl-[20px] pr-[20px]  ">
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-green-600 bg-white w-1/4  ">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
                             <p className="text-xl font-semibold">Total Sales</p>
                             <p className="text-sm font-semibold">450</p>
                             <p className="text-sm font-light">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4  ">
-                        <span className=" w-full bg-sky-500 h-[7px] rounded-t-[5px] "></span>
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px]  pl-[20px] pr-[20px]  ">
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-sky-600 rounded-[5px] bg-white w-1/4  ">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
                             <p className="text-xl font-semibold">Total Installations</p>
                             <p className="text-sm font-semibold">450</p>
                             <p className="text-sm font-light">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4  ">
-                        <span className=" w-full bg-lime-600 h-[7px] rounded-t-[5px] "></span>
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px]  pl-[20px] pr-[20px]  ">
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-lime-600 rounded-[5px] bg-white w-1/4  ">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
                             <p className="text-xl font-semibold">Total Projects</p>
                             <p className="text-sm font-semibold">450</p>
                             <p className="text-sm font-light">Last 30 days</p>
@@ -66,14 +62,8 @@ const AdminHome = () => {
                 {/* second section = recent activity */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-xl font-semibold">Recent Activities</p>
-                    {/* filtering fie */}
-                    {/* 1. activity type 2. user filter 3. date range */}
-                    {/* <div className="w-full flex flex-row items-start justify-between gap-[40px] ">
-                        <span className="w-1/3 text-sm h-[40px] rounded-[3px] border border-blue-600 text-black flex items-center justify-center ">Activity type</span>
-                        <span className="w-1/3 text-sm h-[40px] rounded-[3px] border border-blue-600 text-black flex items-center justify-center ">User</span>
-                        <span className="w-1/3 text-sm h-[40px] rounded-[3px] border border-blue-600 text-black flex items-center justify-center ">Date</span>
-                    </div> */}
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-t-[5px] ">
+
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
                             <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Activity Type</p>
                             <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Description</p>
@@ -81,7 +71,7 @@ const AdminHome = () => {
                             <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Date</p>
                             <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Time</p>
                         </span>
-                        <div className="w-full min-h- flex flex-col justify-start items-start">
+                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
                             {[1,2,3,4,5].map((data, ind)=>{
                                 return (
                                     <span key={ind} className="recent-activity-table-list">
@@ -94,6 +84,22 @@ const AdminHome = () => {
                                 )
                             })}
                         </div>
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
+                            <span className="flex flex-row items-center justify-start gap-3 h-full">
+                                <p className="text-sm cursor-pointer">Prev</p>
+                                <span className="w-auto h-full flex flex-row items-center justify-start">
+                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
+                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
+                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
+                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
+
+                                </span>
+                                <p className="text-sm cursor-pointer">Next</p>
+                            </span>
+                            <span className="flex flex-row items-center justify-end gap-3 h-full">
+                                <p className="text-sm">Showing 1-5 of 60</p>
+                            </span>
+                        </span>
                     </div>
                 </div>
 
@@ -101,74 +107,74 @@ const AdminHome = () => {
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-xl font-semibold">Quick Access</p>
                     <div className="w-full flex flex-wrap justify-start gap-[10px]">
-                        <span className="w-[250px] h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] bg-white rounded-[5px] ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  text-black " ><GiChart size={35} /> </span>
+                        <span className="w-[250px] quick-access-bar ">
+                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GiChart size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg font-semibold">New Leads</p>
+                                <p className="text-lg ">New Leads</p>
                                 <p className="text-sm ">15 new leads</p>
-                                <p className="text-sm text-blue-600 hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
                         
-                        <span className="w-[250px] h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] bg-white rounded-[5px] ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  text-black " ><BsBriefcase size={35} /> </span>
+                        <span className="w-[250px] quick-access-bar ">
+                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><BsBriefcase size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg font-semibold">Pending Sales</p>
+                                <p className="text-lg ">Pending Sales</p>
                                 <p className="text-sm ">8 pending sales</p>
-                                <p className="text-sm text-blue-600 hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
-                        <span className="w-[300px] h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] bg-white rounded-[5px] ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  text-black " ><GiLightningSpanner size={35} /> </span>
+                        <span className="w-[300px] quick-access-bar ">
+                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GiLightningSpanner size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg font-semibold">Installations</p>
+                                <p className="text-lg ">Installations</p>
                                 <p className="text-sm ">10 ongoing installations</p>
-                                <p className="text-sm text-blue-600 hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
 
-                        <span className="w-[300px] h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] bg-white rounded-[5px] ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  text-black " ><GrServices size={35} /> </span>
+                        <span className="w-[300px] quick-access-bar ">
+                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GrServices size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg font-semibold">Service Tickets</p>
+                                <p className="text-lg ">Service Tickets</p>
                                 <p className="text-sm ">5 open service ticket</p>
-                                <p className="text-sm text-blue-600 hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
 
-                        <span className="w-[300px] h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] bg-white rounded-[5px] ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  text-black " ><FaMoneyBillAlt size={35} /> </span>
+                        <span className="w-[300px] quick-access-bar ">
+                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><FaMoneyBillAlt size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg font-semibold">Pending Payments</p>
+                                <p className="text-lg ">Pending Payments</p>
                                 <p className="text-sm ">10 pending payments</p>
-                                <p className="text-sm text-blue-600 hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
 
-                        <span className="w-[300px] h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] bg-white rounded-[5px] ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  text-black " ><LuPencilRuler size={35} /> </span>
+                        <span className="w-[300px] quick-access-bar ">
+                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><LuPencilRuler size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg font-semibold">Engineerin Tasks</p>
+                                <p className="text-lg ">Engineerin Tasks</p>
                                 <p className="text-sm ">5 tasks pending</p>
-                                <p className="text-sm text-blue-600 hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
 
-                        <span className="w-[300px] h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] bg-white rounded-[5px] ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  text-black " ><MdOutlineNoteAlt size={35} /> </span>
+                        <span className="w-[300px] quick-access-bar ">
+                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><MdOutlineNoteAlt size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg font-semibold">Permits</p>
+                                <p className="text-lg ">Permits</p>
                                 <p className="text-sm ">5 permits pending</p>
-                                <p className="text-sm text-blue-600 hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
 
-                        <span className="w-[300px] h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] bg-white rounded-[5px] ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  text-black " ><RiBarChartFill size={35} /> </span>
+                        <span className="w-[300px] quick-access-bar ">
+                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><RiBarChartFill size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg font-semibold">Accounting</p>
+                                <p className="text-lg ">Accounting</p>
                                 <p className="text-sm ">profit/loss details</p>
-                                <p className="text-sm text-blue-600 hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
 
@@ -179,14 +185,14 @@ const AdminHome = () => {
                 {/* task notification */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-xl font-semibold">Task Notification</p>
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-t-[5px] ">
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
                             <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Task</p>
                             <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Assigned To</p>
                             <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Due Date</p>
                             <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Status</p>
                         </span>
-                        <div className="w-full min-h- flex flex-col justify-start items-start">
+                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
                             {[1,2,3,4,5].map((data, ind)=>{
                                 return (
                                     <span key={ind} className={ind === 2 ? "overdue-row":" recent-activity-table-list"}>
@@ -198,6 +204,22 @@ const AdminHome = () => {
                                 )
                             })}
                         </div>
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
+                            <span className="flex flex-row items-center justify-start gap-3 h-full">
+                                <p className="text-sm cursor-pointer">Prev</p>
+                                <span className="w-auto h-full flex flex-row items-center justify-start">
+                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
+                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
+                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
+                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
+
+                                </span>
+                                <p className="text-sm cursor-pointer">Next</p>
+                            </span>
+                            <span className="flex flex-row items-center justify-end gap-3 h-full">
+                                <p className="text-sm">Showing 1-5 of 60</p>
+                            </span>
+                        </span>
                     </div>
                 </div>
             </div>
