@@ -91,13 +91,8 @@
 }
 
 .sidebar-navigation:hover::before {
-    height: 45px;
-    width: 5px;
+    @apply h-[45px] w-[5px] absolute top-0 left-0 bg-[#1858CD];
     content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #1858CD;
 }
 
 .sidebar-navigation:hover {
@@ -105,17 +100,12 @@
 }
 
 .active-sidebar-navigation {
-    @apply relative h-[45px] flex flex-row items-center justify-start cursor-pointer w-full gap-3 pl-[10px] text-black bg-blue-100
+    @apply relative h-[45px] flex flex-row items-center justify-start cursor-pointer w-full gap-3 pl-[10px] text-blue-700 bg-blue-100
 }
 
 .active-sidebar-navigation::before {
-    height: 45px;
-    width: 5px;
+    @apply h-[45px] w-[5px] absolute top-0 left-0 bg-[#1858CD];
     content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    background-color: #1858CD;
 }
 
 .recent-activity-table-list {
@@ -128,6 +118,14 @@
 
 .cont-1 {
     height: calc(100vh - 50px);
+}
+
+.notification-list-cont {
+    height: calc(100vh - 225px);
+}
+
+.notification-detail-cont {
+    height: calc(100vh - 175px)
 }
 
 .user-list-cont {
@@ -160,4 +158,36 @@
 
 .regular-drop-element:last-child {
     @apply rounded-b-[5px]
+}
+
+.active-notification-list-select {
+    @apply w-1/4 flex items-center justify-center bg-blue-600 border border-blue-600 rounded-[3px] h-full text-white;
+}
+
+.notification-list-select {
+    @apply w-1/4 flex items-center justify-center bg-white border border-blue-600 rounded-[3px] h-full text-black;
+}
+
+.notification-list-select:hover {
+    @apply cursor-pointer bg-blue-200 text-blue-600
+}
+
+.notification-list-item {
+    @apply relative min-h-[55px] w-full flex flex-col items-start justify-start p-[10px] pl-[15px] border-b border-blue-500 gap-2 border-r bg-white;
+}
+
+.notification-list-item:hover {
+    @apply cursor-pointer bg-slate-100;
+}
+
+.notification-list-item:first-child {
+    @apply border-t border-blue-500 rounded-t-[3px];
+}
+
+.notification-list-item:last-child {
+    @apply border-b border-blue-500 rounded-b-[3px];
+}
+
+.notification-list-status-bar {
+    @apply absolute h-full w-[5px] top-0 left-0;
 }

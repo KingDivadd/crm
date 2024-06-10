@@ -99,3 +99,14 @@ export const footerLinks = [
     ],
   },
 ];
+
+
+export const notificationExample = [
+  {title: 'High Priority Task Overdue', details: 'Task Submit Permit Application is overdue.', dateTime: 'June 13, 2024 12:45', status: 'error'},
+  {title: 'New Appointment Scheduled', details: 'Appointment with John Doe on June 12, 2024.', dateTime: 'June 10, 2024 10:35', status: 'success'},
+  {title: 'Sales Target Achieved', details: 'Sales team has achieved the monthly target.', dateTime: 'June 14, 2024 08:45', status: 'success'},
+  {title: 'New Lead Added', details: 'A new lead has been added by Sales Rep Mike Smith.', dateTime: 'June 15, 2024 11:35', status: 'primary'},
+  {title: 'Engineering Document Uploaded', details: 'New engineering drawings have been uploaded for Project #456.', dateTime: 'June 17, 2024 15:10', status: 'primary'},
+  {title: 'Payment Received', details: 'Payment of $5,000 received from Jane Smith for Project #123.', dateTime: 'June 15, 2024 15:30', status: 'success'},
+  {title: 'Service Ticket Raised', details: 'Service ticket "Network Issue" raised by customer John Doe.', dateTime: 'June 15, 2024 11:25', status: 'success'},
+]

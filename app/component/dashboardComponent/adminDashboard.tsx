@@ -5,6 +5,7 @@ import SideBar from './sideBar'
 import AdminHome from './adminHome'
 import UserManagement from './userManagement'
 import ReportsAndAnalytics from './reportsAnalytics'
+import AdminNotificationPage from './adminNotificationPage'
 
 const AdminDashboard = () => {
     const [active, setActive] = useState('')
@@ -28,6 +29,7 @@ const AdminDashboard = () => {
                     {active === "home" && <AdminHome /> }
                     {active === "user-management" && <UserManagement /> }
                     {active === "analytics" && <ReportsAndAnalytics /> }
+                    {active === "notifications" && <AdminNotificationPage /> }
                 </div>
             </div>
         </div>

@@ -26,7 +26,7 @@ const DashboardNav = () => {
     return (
         <div className='w-full h-[50px] bg-blue-700 flex flex-row items-center justify-between pr-[10px]'>
             <span className="flex flex-row items-center justify-start gap-5">
-                <p className="text-lg font-semibold text-white">Dashboard</p>                
+                <p className="text-lg font-semibold text-white"></p>                
             </span>
 
             <span className="flex flex-row h-full items-center justify-center gap-5">
@@ -45,7 +45,7 @@ const DashboardNav = () => {
                             <BsBell size={23} className='cursor-pointer' onClick={handleCalendarToggle} />
                         </span>
                         {isCalendarOpen && (
-                            <div ref={calendarRef} className="absolute  w-[250px] bg-blue-700 top-[40px] right-0 flex flex-col items-start justify-start p-[10px] rounded-[3px] gap-[10px] ">
+                            <div ref={calendarRef} className="absolute  w-[250px] bg-blue-700 top-[40px] right-0 flex flex-col items-start justify-start p-[10px] rounded-[3px] gap-[10px] z-20 ">
                                 
                                 <p className="text-sm text-white font-semibold  ">Events</p>
                                 <div className="w-full flex flex-col justify-start items-start ">
