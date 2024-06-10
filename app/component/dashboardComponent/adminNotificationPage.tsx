@@ -79,7 +79,7 @@ const AdminNotificationPage = () => {
                         </div>
                     </div>  
                     {/* right side, full notification info */}
-                    <div className="w-[60%] notification-detail-cont flex flex-col items-start justify-start gap-3 p-[10px] bg-white border border-blue-500 rounded-[5px]">
+                    <div className="w-[60%] relative notification-detail-cont flex flex-col items-start justify-start gap-3 p-[10px] bg-white border border-blue-500 rounded-[5px]">
                             <p className="text-md h-[30px] font-semibold">High Priority Task Overdue</p>
                             <p className="text-md h-[30px] ">June 13, 2024 12:45</p>
                             <span className="w-full flex flex-row justify-start items-start gap-3 h-[30px]">
@@ -120,7 +120,7 @@ const AdminNotificationPage = () => {
                                     <p className="text-md ">#attanchmentTwo.com</p>
                                 </span>
                             </span>
-                            <span className="w-full flex flex-row justify-between items-start gap-3">
+                            <span className="absolute bottom-[10px] left-[0px] w-full flex flex-row justify-between items-start gap-3 px-[10px]">
                                 <button className="w-[200px] flex items-center justify-center rounded-[3px] border border-blue-500 h-[40px] hover:bg-blue-500 hover:text-white ">Mark as Resolved</button>
                                 <button className="w-[200px] flex items-center justify-center rounded-[3px] border border-amber-500 h-[40px] hover:bg-amber-600 hover:text-white">Dismiss</button>
                             </span>
