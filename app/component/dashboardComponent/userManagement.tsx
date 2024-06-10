@@ -72,7 +72,7 @@ const UserManagement = () => {
 
                 {/* user table */}
 
-                <div className="w-full min-h-[150px] flex flex-col bg-white rounded-t-[5px] ">
+                <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
                             <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Last Name</p>
                             <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">First Name</p>
