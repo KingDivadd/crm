@@ -183,7 +183,7 @@
 }
 
 .notification-list-select {
-    @apply w-1/4 flex items-center justify-center bg-white border border-blue-600 rounded-[3px] h-full text-black;
+    @apply w-1/4 flex items-center justify-center border border-blue-600 rounded-[3px] h-full text-black;
 }
 
 .notification-list-select:hover {
@@ -191,11 +191,11 @@
 }
 
 .notification-list-item {
-    @apply relative min-h-[55px] w-full flex flex-col items-start justify-start p-[10px] pl-[15px] border border-blue-500 gap-2 border-b-0 bg-white;
+    @apply relative min-h-[55px] w-full flex flex-col items-start justify-start p-[10px] pl-[15px] border border-blue-500 gap-2 border-b-0;
 }
 
 .notification-list-item:hover {
-    @apply cursor-pointer bg-gray-100;
+    @apply cursor-pointer bg-white;
 }
 
 .notification-list-item:first-child {

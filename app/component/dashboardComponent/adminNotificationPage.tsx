@@ -85,7 +85,7 @@ const AdminNotificationPage = () => {
                         </div>
                     </div>  
                     {/* right side, full notification info */}
-                    <div className="w-[60%] relative notification-detail-cont flex flex-col items-start justify-start gap-3 p-[10px] bg-white border border-blue-500 rounded-[5px]">
+                    <div className="w-[60%] relative notification-detail-cont flex flex-col items-start justify-start gap-3 p-[10px]  border border-blue-500 rounded-[5px]">
                             <p className="text-md h-[30px] font-semibold">High Priority Task Overdue</p>
                             <p className="text-md h-[30px] ">June 13, 2024 12:45</p>
                             <span className="w-full flex flex-row justify-start items-start gap-3 h-[30px]">
@@ -148,7 +148,7 @@ const AdminNotificationPage = () => {
                             {emailNotificationToggle.map((data, ind)=>{
                                 const {title, description, toggle} = data
                                 return (
-                                    <div key={ind} className="span w-full flex flex-row gap-4 bg-white rounded-[3px] p-[10px] border hover:border-blue-500" onClick={()=>{console.log(data.toggle)}}>
+                                    <div key={ind} className="span w-full flex flex-row gap-4 border-gray-400 rounded-[3px] p-[10px] border hover:border-blue-500" onClick={()=>{console.log(data.toggle)}}>
                                         <span className="w-full min-h-[40px] gap-2 flex flex-col justify-start items-start">
                                             <p className="text-md font-semibold">{title}</p>
                                             <p className="text-md font-light">{description}</p>
@@ -178,7 +178,7 @@ const AdminNotificationPage = () => {
                             {pushNotificationToggle.map((data, ind)=>{
                                 const {title, description, toggle} = data
                                 return (
-                                    <div key={ind} className="span w-full flex flex-row gap-4 bg-white rounded-[3px] p-[10px] border hover:border-blue-500">
+                                    <div key={ind} className="span w-full flex flex-row gap-4 border-gray-400 rounded-[3px] p-[10px] border hover:border-blue-500">
                                         <span className="w-full min-h-[40px] gap-2 flex flex-col justify-start items-start">
                                             <p className="text-md font-semibold">{title}</p>
                                             <p className="text-md font-light">{description}</p>

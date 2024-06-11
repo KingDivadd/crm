@@ -14,7 +14,7 @@ const AdminSystemSettings = () => {
         timeZone: false, paymentRoute: false, paypalMode: false
     });
     const [dropElements, setDropElements] = useState({
-        timeZone: 'Time Zone', paymentRoute: 'Payment Integration', paypalMode: 'Sandbox'
+        timeZone: 'Time Zone', paymentRoute: 'Stripe', paypalMode: 'Sandbox'
 
     })
 

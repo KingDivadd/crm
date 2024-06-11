@@ -11,7 +11,7 @@ const Hero = () => {
     const router = useRouter()
 
     function getStarted(){
-        router.push('/auth/signup')
+        router.push('/auth/login')
     }
 
     return (
@@ -29,7 +29,7 @@ const Hero = () => {
                     <div className="w-full flex flex-col justify-start items-start bg-brown-200 mt-[100px] gap-[30px]  ">
                         <h1 className="font-bold text-4xl w-[85%] " >CRM platform to grow your business</h1>
                         <h4 className="font-light text-sm w-[85%] " >A unique and powerful software suite to transform the way you work. Grow your company even more successfully.</h4>
-                        <button className="w-[150px] h-[50px] bg-slate-800 text-slate-200 font-md rounded-[25px] hover:bg-slate-700" onClick={()=>{router.push('/auth/signup')}}>Get Started</button>
+                        <button className="w-[150px] h-[50px] bg-slate-800 text-slate-200 font-md rounded-[25px] hover:bg-slate-700" onClick={()=>{router.push('/auth/login')}}>Get Started</button>
                     </div>
                     {/* The bottom */}
                     <div className="w-auto h-[140px] flex flex-row items-start justify-start gap-[20px] mt-[90px]">

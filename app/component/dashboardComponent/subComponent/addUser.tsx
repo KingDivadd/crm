@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { IoAddOutline } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
-import DropDown from '../../dropDown';
+import DropDown, { DropDownBlank } from '../../dropDown';
 import { AddUsersProps } from '@/types';
 import Alert from '../../alert';
 import { IoMdArrowBack } from "react-icons/io";
@@ -172,7 +172,7 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
                             <span className="w-full flex flex-col items-start justify-start gap-2">
                                 <h4 className="text-md font-light">Select Role</h4>
                                 <span className="w-full">
-                                    <DropDown handleSelectDropdown={handleSelectDropdown} title={'userRole'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                    <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'userRole'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                 </span>
                                 <h4 className="text-md font-semibold mt-[8px]">Description</h4>
                                 {/* now list the basic features of these roles */}
