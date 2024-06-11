@@ -129,3 +129,7 @@ export const pushNotificationToggle =[
 export const adminLogTabs = [
   {title: 'User Activity', id: 'userActivity'}, {title: 'System Logs', id: 'systemLogs'}, {title: 'Data Access Logs', id: 'dataAccessLogs'}, {title: 'API Access Logs', id: 'apiAccessLogs'}, {title: 'Audit Logs', id: 'auditLogs'}
 ]
+
+export const timeZone = ['Western European Time (UTC+0)', 'Central European Time (UTC+2)', 'Eastern European Time (UTC+2)', 'Kalingrad Time (UTC+2)','Further-Eastern European Time (UTC+3)', 'Azores Time (UTC-1)', 'Armenia Time (UTC+4)', 'Kazakhstan Time (UTC+5)']
+
+export const paymentRoute = ['PayPal', 'Stripe']

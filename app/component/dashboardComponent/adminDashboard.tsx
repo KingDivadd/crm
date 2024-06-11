@@ -7,6 +7,7 @@ import UserManagement from './userManagement'
 import ReportsAndAnalytics from './reportsAnalytics'
 import AdminNotificationPage from './adminNotificationPage'
 import AdminLogsPage from './adminLogsPage'
+import AdminSystemSettings from'./adminSystemSettings'
 
 const AdminDashboard = () => {
     const [active, setActive] = useState('')
@@ -32,6 +33,7 @@ const AdminDashboard = () => {
                     {active === "analytics" && <ReportsAndAnalytics /> }
                     {active === "notifications" && <AdminNotificationPage /> }
                     {active === "logs" && <AdminLogsPage /> }
+                    {active === "system-settings" && <AdminSystemSettings /> }
                 </div>
             </div>
         </div>

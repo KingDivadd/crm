@@ -145,6 +145,11 @@
     height: calc(100vh - 510px)
 }
 
+.admin-left-setting-cont {
+    @apply w-1/2 flex flex-col gap-3 items-start justify-start;
+    height: calc(100vh - 70px)
+}
+
 .overdue-row {
     @apply w-full h-[40px] flex flex-row items-center justify-start cursor-pointer bg-red-200 text-red-700;
 }
