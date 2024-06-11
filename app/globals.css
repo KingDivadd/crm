@@ -132,6 +132,18 @@
     height: calc(100vh - 250px)
 }
 
+.admin-side-bar-cont {
+    height: calc(100vh - 50px)
+}
+
+.email-notification-cont {
+    height: calc(100vh - 510px)
+}
+
+.push-notification-cont {
+    height: calc(100vh - 510px)
+}
+
 .overdue-row {
     @apply w-full h-[40px] flex flex-row items-center justify-start cursor-pointer bg-red-200 text-red-700;
 }
@@ -173,11 +185,11 @@
 }
 
 .notification-list-item {
-    @apply relative min-h-[55px] w-full flex flex-col items-start justify-start p-[10px] pl-[15px] border-b border-blue-500 gap-2 border-r bg-white;
+    @apply relative min-h-[55px] w-full flex flex-col items-start justify-start p-[10px] pl-[15px] border border-blue-500 gap-2 border-b-0 bg-white;
 }
 
 .notification-list-item:hover {
-    @apply cursor-pointer bg-slate-100;
+    @apply cursor-pointer bg-gray-100;
 }
 
 .notification-list-item:first-child {
@@ -189,5 +201,13 @@
 }
 
 .notification-list-status-bar {
-    @apply absolute h-full w-[5px] top-0 left-0;
+    @apply absolute h-[20px] w-[5px] top-[10px] right-[10px] rounded-[20px];
+}
+
+.active-notifcation-toggle {
+    @apply w-auto h-[20px] flex flex-row items-center justify-center border border-blue-500 rounded-[10px] p-[3px] px-[1px] bg-blue-500;
+}
+
+.notifcation-toggle {
+    @apply w-auto h-[20px] flex flex-row items-center justify-center border border-blue-500 rounded-[10px] p-[3px] px-[1px] bg-gray-300;
 }

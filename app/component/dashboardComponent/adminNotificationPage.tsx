@@ -1,16 +1,17 @@
 'use client'
-import { notificationExample } from '@/constants'
+import { emailNotificationToggle, notificationExample, pushNotificationToggle } from '@/constants'
 import React, {useState, useEffect} from 'react'
 import { FaBullseye } from 'react-icons/fa'
 import { MdEdit, MdDeleteForever } from 'react-icons/md'
+import { WiMoonAltNew } from "react-icons/wi";
 
 
 const AdminNotificationPage = () => {
+
     const [viewNotif, setViewNotif] = useState(true)
     const [selectNotificaion, setSelectNotificaion] = useState('')
     const [viewNotification, setViewNotification] = useState(null)
-
-    const [userArray, setUserArray] = useState([{lastName: "Iroegbu", firstName: "David", email: 'ireugbudavid@gmail.com', phone: '07044907610', role: 'Sales', status: 'active',password: 'user1password' }, {lastName: "Ayeni", firstName: "Peace", email: 'ayenipeace@gmail.com', phone: '09026030392', role: 'Technician', status: 'inactive', password: 'user2password'}])
+    const [notificationToggle, setNotificationToggle] = useState({leadAssignment: true, appointmentReminder: true, taskCompletion: true, dailySummaryReport: true, realTimeLeadAlert: true, taskDeadlines: true, projectUpdate: true, newFeedbackReceived: true})
 
     useEffect(() => {
         const item = sessionStorage.getItem('notificationField')
@@ -31,6 +32,10 @@ const AdminNotificationPage = () => {
         console.log(item)
     }
 
+    function handleNotificationToggle (id:any){
+        setNotificationToggle({...notificationToggle, [id]: ![id]})
+    }
+
 
 
     return (
@@ -42,6 +47,7 @@ const AdminNotificationPage = () => {
                     <p className={viewNotif ? "text-md text-black cursor-pointer hover:underline" : "text-md text-blue-500"} onClick={()=>{setViewNotif(false)}} >Notificaiton Settings</p>
                 </span>
                 {/* notification body when view notification */}
+                {viewNotif ? 
                 <div className="w-full h-full flex flex-row items-start justify-between gap-[10px] ">
                     {/* left side, notification list */}
                     <div className="w-[40%] h-full flex flex-col items-start justify-start gap-3 ">
@@ -128,6 +134,71 @@ const AdminNotificationPage = () => {
                     </div>
                     
                 </div>
+                : 
+                <div className="w-full h-full flex flex-col items-start justify-start notification-detail-cont ">
+                    {/* upper section for email notification */}
+                    <div className="w-full h-[60%] flex flex-row items-start justify-start ">
+                        <div className="h-auto w-[40%] flex flex-col justify-start p-[10px]">
+                            <span className="w-full min-h-[40px] gap-3 flex flex-col justify-start items-start">
+                                <p className="text-md font-semibold">Email Notification</p>
+                                <p className="text-md font-light">While you're not around, check your emails to see what's happening. You can disable this.</p>
+                            </span>
+                        </div>
+                        <div className="h-full w-[60%] flex flex-col justify-start  gap-2 overflow-y-auto pb-[10px] ">
+                            {emailNotificationToggle.map((data, ind)=>{
+                                const {title, description, toggle} = data
+                                return (
+                                    <div key={ind} className="span w-full flex flex-row gap-4 bg-white rounded-[3px] p-[10px] border hover:border-blue-500" onClick={()=>{console.log(data.toggle)}}>
+                                        <span className="w-full min-h-[40px] gap-2 flex flex-col justify-start items-start">
+                                            <p className="text-md font-semibold">{title}</p>
+                                            <p className="text-md font-light">{description}</p>
+                                        </span>
+                                        <div className="w-[80px] h-full flex items-start justify-end ">
+                                            <span  className={toggle ? "@apply w-auto h-[20px] flex flex-row items-center justify-center border border-blue-600 rounded-[10px] py-[1px] px-[.2px] bg-blue-600 cursor-pointer":"@apply w-auto h-[20px] flex flex-row items-center justify-center border border-gray-300 rounded-[10px] py-[1px] px-[.2px] bg-gray-300 cursor-pointer"}>
+                                                <WiMoonAltNew size={20} className={toggle ? 'text-blue-600': 'text-white'} />
+                                                <WiMoonAltNew size={20} className={toggle ? 'text-white': 'text-gray-300'} />
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                            
+                        </div>
+                    </div>
+                    {/* The lower section for push notification */}
+                    <div className="w-full h-[40%] flex flex-row items-start justify-start border-t border-blue-400">
+                        <div className="h-auto w-[40%] flex flex-col justify-start p-[10px]">
+                            <span className="w-full min-h-[40px] gap-3 flex flex-col justify-start items-start">
+                                <p className="text-md font-semibold">Push Notification</p>
+                                <p className="text-md font-light">To find out everything happening while you're online, turn on the various push notifications.</p>
+                            </span>
+                        </div>
+                        <div className="h-full w-[60%] flex flex-col justify-start pt-[10px] gap-2 overflow-y-auto pb-[10px] ">
+                            {pushNotificationToggle.map((data, ind)=>{
+                                const {title, description, toggle} = data
+                                return (
+                                    <div key={ind} className="span w-full flex flex-row gap-4 bg-white rounded-[3px] p-[10px] border hover:border-blue-500">
+                                        <span className="w-full min-h-[40px] gap-2 flex flex-col justify-start items-start">
+                                            <p className="text-md font-semibold">{title}</p>
+                                            <p className="text-md font-light">{description}</p>
+                                        </span>
+                                        <div className="w-[80px] h-full flex items-start justify-end ">
+                                            <span onClick={()=>(console.log(ind, toggle))}  className={toggle ? "@apply w-auto h-[20px] flex flex-row items-center justify-center border border-blue-600 rounded-[10px] p-[3px] px-[.2px] bg-blue-600 cursor-pointer":"@apply w-auto h-[20px] flex flex-row items-center justify-center border border-gray-300 rounded-[10px] p-[3px] px-[.2px]  bg-gray-300 cursor-pointer"}>
+                                                <WiMoonAltNew size={20} className={toggle ? 'text-blue-600': 'text-white'} />
+                                                <WiMoonAltNew size={20} className={toggle ? 'text-white': 'text-gray-300'} />
+
+                                            </span>
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                            
+                        </div>
+                    </div>
+                </div>
+
+                }
             </div>
         </div>
     )

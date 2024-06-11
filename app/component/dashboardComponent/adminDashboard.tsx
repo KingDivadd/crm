@@ -6,6 +6,7 @@ import AdminHome from './adminHome'
 import UserManagement from './userManagement'
 import ReportsAndAnalytics from './reportsAnalytics'
 import AdminNotificationPage from './adminNotificationPage'
+import AdminLogsPage from './adminLogsPage'
 
 const AdminDashboard = () => {
     const [active, setActive] = useState('')
@@ -25,11 +26,12 @@ const AdminDashboard = () => {
             </div>
             <div className="flex-1 h-full bg-blue-100">
                 <DashboardNav />
-                <div className="w-full bg-slate-100 overflow-y-auto cont-1">
+                <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "home" && <AdminHome /> }
                     {active === "user-management" && <UserManagement /> }
                     {active === "analytics" && <ReportsAndAnalytics /> }
                     {active === "notifications" && <AdminNotificationPage /> }
+                    {active === "logs" && <AdminLogsPage /> }
                 </div>
             </div>
         </div>

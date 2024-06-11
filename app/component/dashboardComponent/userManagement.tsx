@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { IoAddOutline } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
-import DropDown from '../dropDown';
+import {DropDownBlank} from '../dropDown';
 import AddUsers from "../dashboardComponent/subComponent/addUser"
 import Alert from '../alert';
 
@@ -54,13 +54,13 @@ const UserManagement = () => {
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
                             <span className="h-[40px] w-[150px]">
-                                <DropDown handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Active', 'Inactive']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Active', 'Inactive']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
                             <span className="w-[250px] h-[40px] ">
                                 <input type="text" name="userName" placeholder='Enter name or email' id="" className='normal-input ' />
                             </span>
                             <span className="h-[40px] w-[150px]">
-                                <DropDown handleSelectDropdown={handleSelectDropdown} title={'userRole'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'userRole'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
                         </span>
 

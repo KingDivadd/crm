@@ -110,3 +110,18 @@ export const notificationExample = [
   {title: 'Payment Received', details: 'Payment of $5,000 received from Jane Smith for Project #123.', dateTime: 'June 15, 2024 15:30', status: 'success'},
   {title: 'Service Ticket Raised', details: 'Service ticket "Network Issue" raised by customer John Doe.', dateTime: 'June 15, 2024 11:25', status: 'success'},
 ]
+
+export const emailNotificationToggle = [
+  {title: 'Lead Assignment Notification', description: 'Notifies sales or operations team members when a new lead is assigned to them.', toggle: true},
+  {title: 'Appointment Reminders', description: 'Sends reminders to customers and team members about upcoming appointments.', toggle: false},
+  {title: 'Task Completion Updates', description: 'Notifies users when tasks or milestones are completed.', toggle: true},
+  {title: 'Daily Summary Reports', description: 'Sends daily summaries of activities, leads, sales, and other relevant metrics.', toggle: true},
+  {title: 'Payment Receipts', description: 'Sends payment receipts to customers upon transaction completion.', toggle: 'true'}
+]
+
+export const pushNotificationToggle =[
+  {title: 'Real-Time Lead Alerts', description: 'Instant notifications for new leads assigned to sales or operations team members.', toggle: true},
+  {title: 'Task Deadlines', description: 'Alerts users about approaching deadlines for tasks or projects.', toggle: false},
+  {title: 'Project Updates', description: 'Alerts for any updates or changes in ongoing projects.', toggle: true},
+  {title: 'New Feedback Received', description: 'Instant notifications when new customer feedback is received.', toggle: true}
+]

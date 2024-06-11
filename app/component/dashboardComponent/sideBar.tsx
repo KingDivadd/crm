@@ -36,14 +36,14 @@ const SideBar = ({active, setActive}:SideBarNav) => {
                 </span>
             </div>
             {/* sidebar items */}
-            <div className="w-full h-[600px]  flex flex-col items-start justify-between relative ">
+            <div className="w-full h-[600px]  flex flex-col items-start justify-between admin-side-bar-cont ">
                 <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px] ">
                     <span className={active === "home"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('home')}}>
                         <RiHome3Fill size={23} />
                         <p className="text-[17px]">Home</p>
                     </span>
                     <span className={active === "user-management"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('user-management')}}>
-                        <FaUserTie size={23} />
+                        <FaUserTie size={23} /> 
                         <p className="text-[17px]">User Management</p>
                     </span>
                     <span className={active === "analytics"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('analytics')}}>
@@ -63,7 +63,7 @@ const SideBar = ({active, setActive}:SideBarNav) => {
                         <p className="text-[17px]">System Settings</p>
                     </span>
                 </div>
-                <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation absolute top-0 pl-[10px]">
+                <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
                     <FiLogOut size={25} />
                     <p className="text-lg">Logout</p>
                 </span>
