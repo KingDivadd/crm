@@ -125,3 +125,7 @@ export const pushNotificationToggle =[
   {title: 'Project Updates', description: 'Alerts for any updates or changes in ongoing projects.', toggle: true},
   {title: 'New Feedback Received', description: 'Instant notifications when new customer feedback is received.', toggle: true}
 ]
+
+export const adminLogTabs = [
+  {title: 'User Activity', id: 'userActivity'}, {title: 'System Logs', id: 'systemLogs'}, {title: 'Data Access Logs', id: 'dataAccessLogs'}, {title: 'API Access Logs', id: 'apiAccessLogs'}, {title: 'Audit Logs', id: 'auditLogs'}
+]

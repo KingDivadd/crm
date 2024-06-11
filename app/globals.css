@@ -79,7 +79,8 @@
 }
 
 .sidebar-logout-navigation {
-    @apply relative h-[45px] flex flex-row items-center justify-start cursor-pointer w-full gap-3 pl-[10px] text-black
+    @apply relative h-[45px] flex flex-row items-center justify-start cursor-pointer ml-[10px] gap-3 pl-[10px] text-black;
+    width: calc(100% - 20px)
 }
 
 .sidebar-logout-navigation:hover {
