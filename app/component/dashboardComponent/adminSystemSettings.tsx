@@ -229,7 +229,7 @@ const AdminSystemSettings = () => {
                                 <p className="text-md">Select the number of admin allowed for the app.</p>
                                 <div className="w-full flex flex-col justify-start items-start gap-3">
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">No of Admins</h4>
+                                        <h4 className="text-md font-light">Current number of Admin</h4>
                                         <input type="number" name='name' className="normal-input bg-transparent" value={adminNumber} onChange={(e:any)=> setAdminNumber(e.target.value)} />
                                     </span>
                                     
