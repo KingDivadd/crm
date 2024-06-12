@@ -35,14 +35,18 @@ const Signup = () => {
         setAuth({...auth, [name]: value})
     }
 
-    async function createAccount(e:any){
-        e.preventDefault()
-        if (!auth.firstName || !auth.lastName || !auth.email || !auth.phone || !auth.password){
-            console.log('Please fill all fields')
-            setAlert({message: 'Please fill all fields', type: 'error'})
+
+    function triggerAlert(message: string, type: string){
+        setAlert({message: message, type: type})
             setTimeout(() => {
                 setAlert({message: '', type: ''})
             }, 3000);
+    }
+    
+    async function createAccount(e:any){
+        e.preventDefault()
+        if (!auth.firstName || !auth.lastName || !auth.email || !auth.phone || !auth.password){
+            triggerAlert("Please fill all fields", "warning")
             setInputError({...inputError, emailError: auth.email === "", firstNameError: auth.firstName === '', lastNameError: auth.lastName === '', passwordError: auth.password === '', phoneError: auth.phone === ''})
         }else {
             setLoading(true); 

@@ -30,14 +30,18 @@ const Login = () => {
         setAuth({ ...auth, [name]: value });
     }
 
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
+    }
+
     async function handleSubmit(e:any) {
         e.preventDefault();
 
         if (!auth.email || !auth.password) {
-            setAlert({message: 'Please enter all fields', type: 'error'})
-            setTimeout(() => {
-                setAlert({message: '', type: ''})
-            }, 3000);
+            showAlert("Please enter all fields", "warning");
             setInputError({ ...inputError, emailError: auth.email === "", passwordError: auth.password === "" });
             return;
         }else {
@@ -47,6 +51,8 @@ const Login = () => {
             // Simulate a login request with a timeout
             setTimeout(() => {
                 setLoading(false); // Set loading to false when the request completes
+                showAlert("Login successful", "success"); 
+                setAuth({email: '', password: ''})
                 router.push('/home/dashboard')
             // Handle successful login here
             }, 3000);

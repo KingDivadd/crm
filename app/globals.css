@@ -217,3 +217,11 @@
 .notifcation-toggle {
     @apply w-auto h-[20px] flex flex-row items-center justify-center border border-blue-500 rounded-[10px] p-[3px] px-[1px] bg-gray-300;
 }
+
+.image-custom-button {
+    @apply h-[40px] rounded-[3px] text-white bg-blue-600 w-full
+}
+
+.image-custom-button:hover {
+    @apply bg-blue-500;
+}

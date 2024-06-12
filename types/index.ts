@@ -99,3 +99,9 @@ export interface SelectDateProps {
     clickedDate: string; 
     setClickedDate: (clickedDate: string)=> void;
 }
+
+export interface ImageUploaderProps {
+    title: string;
+    url: string;
+    id: string;
+}
