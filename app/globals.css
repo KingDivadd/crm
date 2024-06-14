@@ -133,6 +133,11 @@
     height: calc(100vh - 50px);
 }
 
+.view-contract-details-cont {
+    @apply w-full flex flex-row items-center justify-between bg-white p-[10px] rounded-[5px] border border-blue-600 gap-[10px] cursor-pointer;
+    height: calc(100vh - 180px);
+}
+
 .notification-list-cont {
     height: calc(100vh - 225px);
 }

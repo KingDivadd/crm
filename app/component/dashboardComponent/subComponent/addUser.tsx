@@ -6,6 +6,7 @@ import { MdDeleteForever } from "react-icons/md";
 import DropDown, { DropDownBlank } from '../../dropDown';
 import { AddUsersProps } from '@/types';
 import Alert from '../../alert';
+import { userResponsibilities } from '@/constants';
 import { IoMdArrowBack } from "react-icons/io";
 
 const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUsersProps) => {
@@ -278,24 +279,3 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
 }
 
 export default AddUsers
-
-
-export const userResponsibilities = {
-admin: [
-    'Add, edit, delete users and assign roles and permissions.', 'Configure and manage CRM settings and integrations.', 'Ensure the security of the CRM system, including data protection and user access controls.', 'Generate and view detailed reports on various metrics.', 'Monitor user activities and system usage.', 'Set up and manage system-wide alerts and notifications.', 'Oversee database integrity and perform regular backups.', 'Address and resolve system issues and bugs.'
-],
-
-sales: ['View, manage, and follow up on leads.', 'Track the progress of leads through the sales pipeline.', 'Maintain communication with potential and existing customers.', 'Prepare and manage sales contracts and related documents.', 'Monitor sales targets and achievements.', 'Schedule and manage customer appointments using Google Calendar integration.', 'Generate sales reports and metrics.', 'Train and mentor new sales team members.'],
-
-operation: ['Oversee and track the progress of projects through various stages.', 'Coordinate workflows for HOA, engineering, permitting, and installation.', 'Assign and manage crews for different installation phases.', 'Track materials ordered, received, and delivered.', 'Set up and manage task notifications for project updates.', 'Ensure quality and compliance with project standards.', 'Address and resolve operational issues and bottlenecks.', 'Maintain detailed records of project activities and updates.',],
-
-designer: ['View and manage associated leads and sold jobs.', 'Upload and manage design contracts and related documents.', 'Communicate with customers regarding design updates and changes.', 'Receive and respond to task notifications for design-related tasks.', 'Update design specifications based on customer feedback and project requirements.', 'Collaborate with sales, operations, and engineering teams.', 'Ensure design quality and adherence to standards.', 'Generate design progress reports.'],
-
-customer: ['View the status of HOA, permits, and payments.', 'Submit and track service tickets and upload photos.', 'Access and upload payment receipts.', 'Receive notifications for stage completions and warranty information.', 'Access project-related documents and receipts.', 'Communicate with the support team regarding project updates.', 'Provide feedback and reviews for services received.', 'Manage personal account information and settings.'],
-
-technician: ['Access job details, installation dates, and project instructions.', 'Execute assigned tasks and installation phases.', 'Upload regimented photos of job progress.', 'Upload and manage bill sheets for each job.', 'Manage tools and equipment required for installations.', 'Ensure installation quality and adherence to specifications.', 'Report on job completion and any issues encountered.', 'Interact with customers on-site for service tickets and updates.'],
-
-finance: ['Monitor profit/loss for each project and track financial performance.', 'Manage bills, invoices, and receipts.', 'Handle payroll for employees and contractors.', 'Prepare and manage project budgets.', 'Track and manage project expenses and costs.', 'Generate financial reports: Monthly, quarterly, and fiscal.', 'Ensure financial compliance with relevant laws and regulations.', 'Prepare financial forecasts and projections.']
-
-
-}

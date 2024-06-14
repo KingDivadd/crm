@@ -84,6 +84,11 @@ export interface DropDownProps {
     setDropElements: (dropElements: any) => void, 
     setDropMenus: (dropMenus: any) => void 
 }
+export type HandleViewContractDetails = ()=> void;
+
+export interface SalesContractDetailProps {
+    viewContractDetails: HandleViewContractDetails
+}
 
 export interface RouteNavProps {
     userRole: string;
@@ -105,3 +110,4 @@ export interface ImageUploaderProps {
     url: string;
     id: string;
 }
+

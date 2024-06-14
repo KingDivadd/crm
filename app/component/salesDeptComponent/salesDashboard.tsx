@@ -4,6 +4,7 @@ import SalesSideBar from './salesSideBar'
 import SalesDashboardNav from './salesDashboardNav'
 import SalesDashboardPage from './salesDashboardPage'
 import SalesLeadPage from './salesLeadPage'
+import SalesJobsPage from './salesJobsPage'
 
 const SalesDashboard = () => {
     const [active, setActive] = useState('')
@@ -26,6 +27,7 @@ const SalesDashboard = () => {
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "dashboard" && <SalesDashboardPage /> }
                     {active === "leads" && <SalesLeadPage /> }
+                    {active === "jobs" && <SalesJobsPage /> }
                     {/*  {active === "analytics" && <ReportsAndAnalytics /> }
                     {active === "notifications" && <AdminNotificationPage /> }
                     {active === "logs" && <AdminLogsPage /> }
