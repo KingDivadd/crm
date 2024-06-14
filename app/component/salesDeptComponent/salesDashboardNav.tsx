@@ -26,7 +26,7 @@ const SalesDashboardNav = () => {
 
     return (
         <div className='w-full h-[50px] bg-blue-700 flex flex-row items-center justify-between pr-[10px]'>
-            <span className="w-[60%] h-full flex  flex-row items-center justify-start gap-5">
+            <span className="w-[60%] h-full flex  flex-row items-center justify-start gap-5 px-[10px]">
                 <span className="w-full h-full flex items-center  nav-search-input relative ">
                     <input placeholder='Search for leads or jobs' type="text" name="" id="" className='pr-[50px] nav-input pr-[50px]' /> 
                     <span className="w-[40px] h-[35px] flex items-center justify-center text-black absolute right-0 top-[7.5px] border-l border-gray-200 corsor-pointer">
