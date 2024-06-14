@@ -1,9 +1,9 @@
 'use client'
 import React, {useState, useEffect} from 'react'
 import SalesSideBar from './salesSideBar'
-import DashboardNav from '../dashboardComponent/dashboardNav'
 import SalesDashboardNav from './salesDashboardNav'
 import SalesDashboardPage from './salesDashboardPage'
+import SalesLeadPage from './salesLeadPage'
 
 const SalesDashboard = () => {
     const [active, setActive] = useState('')
@@ -25,8 +25,8 @@ const SalesDashboard = () => {
                 <SalesDashboardNav />
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "dashboard" && <SalesDashboardPage /> }
-                    {/*  {active === "user-management" && <UserManagement /> }
-                    {active === "analytics" && <ReportsAndAnalytics /> }
+                    {active === "leads" && <SalesLeadPage /> }
+                    {/*  {active === "analytics" && <ReportsAndAnalytics /> }
                     {active === "notifications" && <AdminNotificationPage /> }
                     {active === "logs" && <AdminLogsPage /> }
                     {active === "system-settings" && <AdminSystemSettings /> } */}

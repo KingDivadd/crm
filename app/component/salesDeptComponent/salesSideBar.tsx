@@ -13,9 +13,10 @@ import { FaUserTag } from "react-icons/fa6";
 import { FaBriefcase } from "react-icons/fa";
 import { PiClipboardTextFill } from "react-icons/pi";
 import { BiSolidReport } from "react-icons/bi";
+import {SideBarNav} from '../../../types/index'
 
 
-const SalesSideBar = ({active, setActive}) => {
+const SalesSideBar = ({active, setActive}: SideBarNav) => {
     const router = useRouter()
     
 
