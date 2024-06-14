@@ -53,7 +53,7 @@ const Login = () => {
                 setLoading(false); // Set loading to false when the request completes
                 showAlert("Login successful", "success"); 
                 setAuth({email: '', password: ''})
-                router.push('/home/dashboard')
+                router.push('/home')
             // Handle successful login here
             }, 3000);
         }

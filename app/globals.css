@@ -64,6 +64,18 @@
     @apply h-[50px] w-[100%] outline-none p-[0] pr-[40px] pl-[10px] border-2 border-red-500 rounded-[5px]
 }
 
+.nav-input {
+    @apply h-[40px] w-[100%] outline-none p-[0] pr-[50px] pl-[10px] border border-gray-400 rounded-[3px]
+}
+
+.nav-input-error {
+    @apply h-[40px] w-[100%] outline-none p-[0] pr-[50px] pl-[10px] border-2 border-red-500 rounded-[5px]
+}
+
+.nav-input:focus {
+    @apply border-2 border-blue-500
+}
+
 .checkbox-40 {
     @apply h-[17px] w-[17px]
 }

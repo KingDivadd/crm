@@ -55,7 +55,7 @@ const Signup = () => {
             setTimeout(() => {
             setLoading(false);
             // Handle successful login here
-            router.push('/home/dashboard')
+            router.push('/auth/login')
             }, 3000);
         }   
     }
