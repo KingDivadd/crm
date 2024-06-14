@@ -253,11 +253,11 @@ const SalesDashboardPage = () => {
                             {[1,2,3,4,5].map((data, ind)=>{
                                 return (
                                     <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[30%] pr-2 pl-2 ">John Doe</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">John Doe</p>
                                         <p className="text-sm w-[20%] pr-2 pl-2 ">Marry Jane</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">June 16, 2024</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">June 16, 2024</p>
                                         <p className="text-sm w-[20%] pr-2 pl-2 ">10:45AM</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">Confirmed</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">Confirmed</p>
                                     </span>
                                 )
                             })}
