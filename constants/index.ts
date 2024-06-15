@@ -151,5 +151,6 @@ export const userResponsibilities = {
   
   finance: ['Monitor profit/loss for each project and track financial performance.', 'Manage bills, invoices, and receipts.', 'Handle payroll for employees and contractors.', 'Prepare and manage project budgets.', 'Track and manage project expenses and costs.', 'Generate financial reports: Monthly, quarterly, and fiscal.', 'Ensure financial compliance with relevant laws and regulations.', 'Prepare financial forecasts and projections.']
   
-  
   }
+
+export const credentials = [{email: 'admin@yopmail.com', password: 'adminPass_01'}, {email: 'sales@yopmail.com', password: 'salesPass_01'}]

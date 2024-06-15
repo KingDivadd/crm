@@ -15,7 +15,7 @@ const SalesViewContractDetails = ({viewContractDetails}:SalesContractDetailProps
         setAlert({type: type, message: message})
         setTimeout(() => {
             setAlert({type: '', message: ''})
-        }, 3000);
+        }, 2000);
     }
 
     async function handleSubmit(){
@@ -26,8 +26,11 @@ const SalesViewContractDetails = ({viewContractDetails}:SalesContractDetailProps
             
             // Simulate a login request with a timeout
             setTimeout(() => {
+                triggerAlert('success', 'Contract Details updated successfully')
+            }, 2000);
+            setTimeout(() => {
                 setLoading(false); // Set loading to false when the request completes
-                    triggerAlert('success', 'Contract Details updated successfully')
+                viewContractDetails()
             }, 3000);
         }
     }

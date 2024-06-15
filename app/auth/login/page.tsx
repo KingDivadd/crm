@@ -6,6 +6,7 @@ import { CiLock } from "react-icons/ci";
 import { IoEye } from "react-icons/io5";
 import { IoMdEyeOff } from "react-icons/io";
 import Alert from "../../component/alert"
+import { credentials } from '@/constants';
 
 const Login = () => {
     const router = useRouter();
@@ -48,7 +49,6 @@ const Login = () => {
             setLoading(true); // Set loading to true when the request starts
             console.log(auth);
             
-            // Simulate a login request with a timeout
             setTimeout(() => {
                 setLoading(false); // Set loading to false when the request completes
                 showAlert("Login successful", "success"); 

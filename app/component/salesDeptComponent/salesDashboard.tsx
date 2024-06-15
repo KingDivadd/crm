@@ -5,6 +5,7 @@ import SalesDashboardNav from './salesDashboardNav'
 import SalesDashboardPage from './salesDashboardPage'
 import SalesLeadPage from './salesLeadPage'
 import SalesJobsPage from './salesJobsPage'
+import SalesPipeline from './salesPipeline'
 
 const SalesDashboard = () => {
     const [active, setActive] = useState('')
@@ -27,6 +28,7 @@ const SalesDashboard = () => {
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "dashboard" && <SalesDashboardPage /> }
                     {active === "leads" && <SalesLeadPage /> }
+                    {active === "sales-pipeline" && <SalesPipeline /> }
                     {active === "jobs" && <SalesJobsPage /> }
                     {/*  {active === "analytics" && <ReportsAndAnalytics /> }
                     {active === "notifications" && <AdminNotificationPage /> }
