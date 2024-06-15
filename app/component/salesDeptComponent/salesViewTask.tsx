@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { IoAddOutline } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
-import DropDown, { DropDownBlank } from '../../component/dropDown';
+import DropDown, { DropDownBlank, DropDownBlankTransparent } from '../../component/dropDown';
 import { AddUsersProps, SalesTaskProps } from '../../../types';
 import Alert from '../alert';
 import { IoMdArrowBack } from "react-icons/io";
@@ -11,25 +11,24 @@ import { userResponsibilities } from '../../../constants';
 
 const ViewTask = ({addTask, selectedTask, setAddTask, setSelectedTask}:SalesTaskProps) => {
 
+    const [task, setTask] = useState({taskTitle: '', taskDescription: '', taskDueDate: '', priority: '', assigendTo: '', status: '' })
+
     const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
     const [inputError, setInputError] = useState({lastNameError: false, firstNameError: false, emailError: false, phoneError: false, roleError: false, passwordError: false})
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState({type: '', message: ''})
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        userRole: false, status: false
+        priority: false, status: false
     });
     const [dropElements, setDropElements] = useState({
-        userRole: 'User Role', status: 'Status'
+        priority: 'Priority', status: 'Status'
 
     })
 
     useEffect(() => {
         if(selectedTask != null){
-            const {lastName, firstName, email, phone, role, status, password} = selectedTask
-            setAuth({...auth, lastName: lastName, firstName: firstName, email: email, role: role, phone:phone, activateUser:status, password: password})
-            setDropElements({...dropElements, userRole: role })
-            console.log('status : ',status)
+            
         }
     }, [])
 
@@ -117,117 +116,61 @@ const ViewTask = ({addTask, selectedTask, setAddTask, setSelectedTask}:SalesTask
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         
                         <p className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer flex items-center justify-start gap-2 " onClick={()=>{setAddTask(false)}}>
-                        <IoMdArrowBack size={23} className='text-blue-600' />All Leads</p>
-                        <p className="text-md text-black">135</p>
+                        <IoMdArrowBack size={23} className='text-blue-600' />All Tasks</p>
+                        <p className="text-md text-black">155</p>
                         
+                    </span>
+                    <span className="h-full flex flex-row items-center justify-end gap-4">
+                        {selectedTask === null ? <p className="text-lg font-semibold">Modifying Selected Task</p> : <p className="text-lg font-semibold">Adding New Task</p> }                        
                     </span>
                 </span>
 
 
                 <div className="w-full flex flex-row items-start justify-between bg-white px-[10px] py-[10px] rounded-[5px] border border-blue-600 gap-[10px] ">
                     {/* left side for inputs */}
-                    <div className="w-[40%] flex flex-col items-start justify-start gap-4">
-                        <p className="text-[17px] font-semibold">Basic Details</p>
-                        <form action="" className="w-full flex flex-col items-start justify-start gap-4">
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Customer Name:</h4>
-                                <h4 className="text-md ">John Doe</h4>
-                                
+                    <div className="w-[50%] flex flex-col items-start justify-start gap-4">
+                        <span className="w-full flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-md font-light">Task Title</h4>
+                            <input type="text" name='taskTitle' className='normal-input' value={task.taskTitle} onChange={handleChange} />
+                        </span>
+                        <span className="w-full flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-md font-light">Task Description</h4>
+                            <input type="text" name='taskDescription' className='normal-input' value={task.taskDescription} onChange={handleChange} />
+                        </span>
+                        <span className="w-full flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-md font-light">Due Date</h4>
+                            <input type="text" name='taskDueDate' className='normal-input' value={task.taskDueDate} onChange={handleChange} />
+                        </span>
+                        <span className="w-full flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-md font-light">Task Priority</h4>
+                            <span className="h-[40px] w-full">
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'priority'} dropArray={['High', 'Low']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Phone Number:</h4>
-                                <h4 className="text-md">09026030392</h4>
+                        </span>
+                        <span className="w-full flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-md font-light">Assigned To</h4>
+                            <input type="text" name='assigendTo' className='normal-input' value={task.assigendTo} onChange={handleChange} />
+                        </span>
+                        <span className="w-full flex flex-col items-start justify-start gap-2">
+                            <h4 className="text-md font-light">Task Status</h4>
+                            <span className="w-full h-[40px] ">
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Pending', 'In Progress', 'Completed']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Address:</h4>
-                                <h4 className="text-md ">Stateline Street, Akure, Ondo State</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Appoiintment Date:</h4>
-                                <h4 className="text-md ">June 14, 2024 10:45 AM</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Designer:</h4>
-                                <h4 className="text-md ">Abraham Davinci</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Disposition:</h4>
-                                <h4 className="text-md ">Sold</h4>
-                            </span>
-                            {/* The job number, contract amount, contract date are all dependant on the disposition */}
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Job Number:</h4>
-                                <h4 className="text-md ">JOB1001</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Contract Amount:</h4>
-                                <h4 className="text-md ">$24,500</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Contract Date:</h4>
-                                <h4 className="text-md ">June 10, 2024 11:05 AM</h4>
-                            </span>
-                            <p className="text-md font-semibold">Approvals</p>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">HOA Approval:</h4>
-                                <h4 className="text-md ">Pending</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Engineering Approval:</h4>
-                                <h4 className="text-md ">Approved on June 11, 2024</h4>
-                            </span>
-                        </form>
+                        </span>
                     </div>
                     {/* user role side */}
-                    <div className="w-[60%] flex flex-col items-start justify-start gap-4">
+                    <div className="w-[50%] flex flex-col items-start justify-start gap-4">
                         <p className="text-[17px] font-semibold">Additional Details</p>
-                        <form action="" className="w-full flex flex-col items-start justify-start gap-4">
                             <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Sales Stage:</h4>
-                                <h4 className="text-md ">Negotiation</h4>
+                                <h4 className="text-md font-light">Comments:</h4>
                                 
                             </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Sales Owner:</h4>
-                                <h4 className="text-md">Sarah Johnson</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Sales Note:</h4>
-                                <h4 className="text-md ">Customer is interested in additional upgrades, negotiations ongoing.</h4>
-                            </span>
-                            <p className="text-md font-semibold">Project Specific details</p>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Project Type:</h4>
-                                <h4 className="text-md ">Patio Cover Installation</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Project Scope:</h4>
-                                <h4 className="text-md ">Install a freestanding lattice patio cover in the backyard.</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Desired Timeline:</h4>
-                                <h4 className="text-md ">Completion by end of July 2024.</h4>
-                            </span>
-                            <p className="text-md font-semibold">Attachments and Documents</p>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Contract Document:</h4>
-                                <h4 className="text-md ">Link to contract document</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Contract Proposal:</h4>
-                                <h4 className="text-md ">Link to contrct proposal</h4>
-                            </span>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Customer Preference:</h4>
-                                <h4 className="text-md ">A specific shade of gray for the patio cover.</h4>
-                            </span>
                             
-                        </form>
                     </div>            
                 </div>
 
-                {/* <span className="w-full h-[40px] flex justify-end px-[10px] ">
-                    {selectedTask != null ? <button className="mt-[10px] w-[150px] h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-500 flex items-center justify-center" onClick={updateUser} disabled={loading}>
+                <span className="w-full h-[40px] flex justify-end px-[10px] ">
+                    {selectedTask != null ? <button className=" w-[150px] h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-500 flex items-center justify-center" onClick={updateUser} disabled={loading}>
                         {loading ? (
                         <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -244,7 +187,7 @@ const ViewTask = ({addTask, selectedTask, setAddTask, setSelectedTask}:SalesTask
                         </svg>
                         ) : 'Add User'}
                     </button>}
-                </span> */}
+                </span>
             </div>
         </div>
     )
