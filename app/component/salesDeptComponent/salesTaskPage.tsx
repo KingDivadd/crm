@@ -10,6 +10,7 @@ import ViewTask from './salesViewTask';
 import { salesTasksArray } from '../../../constants';
 
 const SalesTaskPage = () => {
+    const [show, setShow] = useState(false)
     const [addTask, setAddTask] = useState(false)
     const [selectedTask, setSelectedTask] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
@@ -34,14 +35,10 @@ const SalesTaskPage = () => {
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
-    function viewTask(data:any) {
-        setSelectedTask(data)
-        setAddTask(true)
-    }
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
-            {addTask ? <ViewTask addTask={addTask} setAddTask={setAddTask} selectedTask={selectedTask} setSelectedTask={setSelectedTask} /> 
+            {show ? <ViewTask addTask={addTask} show={show} setShow={setShow} selectedTask={selectedTask} setSelectedTask={setSelectedTask} /> 
             :
             <div className="relative w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
@@ -63,7 +60,7 @@ const SalesTaskPage = () => {
                             <span className="h-[40px] w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'priority'} dropArray={['High', 'Low']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            <button className="h-[40px] w-[150px] border border-gray-400 hover:border-blue-600 hover:text-blue-600 rounded-[3px] " onClick={viewTask}>New Task</button>
+                            <button className="h-[40px] w-[150px] border border-gray-400 hover:border-blue-600 hover:text-blue-600 rounded-[3px] " onClick={()=>{setAddTask(true); setShow(true)}}>New Task</button>
                         </span>
 
                         
@@ -97,7 +94,7 @@ const SalesTaskPage = () => {
                                         <p className="text-sm w-[10%] pr-2 pl-2 "> {priority} </p>
                                         <p className="text-sm w-[15%] pr-2 pl-2 "> {assignedTo} </p>
                                         <p className="text-sm w-[10%] pr-2 pl-2 "> {status} </p>
-                                        <p className="text-sm w-[10%] pr-2 pl-2 text-blue-600 hover:underline " onClick={viewTask} > View Details </p>
+                                        <p className="text-sm w-[10%] pr-2 pl-2 text-blue-600 hover:underline " onClick={(data:any)=>{setSelectedTask(data); setShow(true); setAddTask(false)}} > View Details </p>
                                         
                                     </span>
                                 )

@@ -9,7 +9,7 @@ import Alert from '../alert';
 import { IoMdArrowBack } from "react-icons/io";
 import { userResponsibilities } from '../../../constants';
 
-const ViewTask = ({addTask, selectedTask, setAddTask, setSelectedTask}:SalesTaskProps) => {
+const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesTaskProps) => {
 
     const [task, setTask] = useState({taskTitle: '', taskDescription: '', taskDueDate: '', priority: '', assigendTo: '', status: '' })
 
@@ -80,7 +80,7 @@ const ViewTask = ({addTask, selectedTask, setAddTask, setSelectedTask}:SalesTask
             // Simulate a login request with a timeout
             setTimeout(() => {
                 setLoading(false); // Set loading to false when the request completes
-                    setAddTask(false)
+                    setShow(false)
                     triggerAlert('success', 'User Added successfully')
                     const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
             }, 3000);
@@ -99,7 +99,7 @@ const ViewTask = ({addTask, selectedTask, setAddTask, setSelectedTask}:SalesTask
             // Simulate a login request with a timeout
             setTimeout(() => {
                 setLoading(false); // Set loading to false when the request completes
-                    setAddTask(false)
+                    setShow(false)
                     triggerAlert('success', 'User Added successfully')
                     setAuth({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
             }, 3000);
@@ -115,13 +115,13 @@ const ViewTask = ({addTask, selectedTask, setAddTask, setSelectedTask}:SalesTask
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         
-                        <p className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer flex items-center justify-start gap-2 " onClick={()=>{setAddTask(false)}}>
+                        <p className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer flex items-center justify-start gap-2 " onClick={()=>{setShow(false)}}>
                         <IoMdArrowBack size={23} className='text-blue-600' />All Tasks</p>
                         <p className="text-md text-black">155</p>
                         
                     </span>
                     <span className="h-full flex flex-row items-center justify-end gap-4">
-                        {selectedTask === null ? <p className="text-lg font-semibold">Modifying Selected Task</p> : <p className="text-lg font-semibold">Adding New Task</p> }                        
+                        {!addTask ? <p className="text-lg font-semibold">Modifying Selected Task</p> : <p className="text-lg font-semibold">Adding New Task</p> }                        
                     </span>
                 </span>
 
@@ -170,7 +170,7 @@ const ViewTask = ({addTask, selectedTask, setAddTask, setSelectedTask}:SalesTask
                 </div>
 
                 <span className="w-full h-[40px] flex justify-end px-[10px] ">
-                    {selectedTask != null ? <button className=" w-[150px] h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-500 flex items-center justify-center" onClick={updateUser} disabled={loading}>
+                    {!addTask  ? <button className=" w-[150px] h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-500 flex items-center justify-center" onClick={updateUser} disabled={loading}>
                         {loading ? (
                         <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -179,7 +179,7 @@ const ViewTask = ({addTask, selectedTask, setAddTask, setSelectedTask}:SalesTask
                         ) : 'Save Changes'}
                     </button>
                     :
-                    <button className="mt-[10px] w-[150px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={handleSubmit} disabled={loading}>
+                    <button className=" w-[150px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={handleSubmit} disabled={loading}>
                         {loading ? (
                         <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

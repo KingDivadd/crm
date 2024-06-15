@@ -92,9 +92,11 @@ export interface SalesContractDetailProps {
 
 export interface SalesTaskProps {
     addTask: boolean;
-    setAddTask: (addTask: boolean) => void;
+    show: boolean;
+    setShow: (show: boolean) => void;
     selectedTask: any;
     setSelectedTask: (selectedTask: any) => void;
+
 }
 
 export interface RouteNavProps {
