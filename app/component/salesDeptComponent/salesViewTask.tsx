@@ -16,6 +16,7 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
     const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
     const [inputError, setInputError] = useState({lastNameError: false, firstNameError: false, emailError: false, phoneError: false, roleError: false, passwordError: false})
     const [loading, setLoading] = useState(false)
+    const [delLoading, setDelLoading] = useState(false)
     const [alert, setAlert] = useState({type: '', message: ''})
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
@@ -106,12 +107,12 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
             triggerAlert('warning', 'Please fill all required fields.')
 
         }else{
-            setLoading(true); // Set loading to true when the request starts
+            setDelLoading(true); // Set loading to true when the request starts
             console.log(auth);
             
             // Simulate a login request with a timeout
             setTimeout(() => {
-                setLoading(false); // Set loading to false when the request completes
+                setDelLoading(false); // Set loading to false when the request completes
                     setShow(false)
                     triggerAlert('success', 'Task deleted successfully')
                     setAuth({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
@@ -185,8 +186,8 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                 <div className="w-full flex flex-row justify-between">
                     {addTask ? <p></p> 
                     : 
-                    <button className=" w-[170px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={deleteTask} disabled={loading}>
-                        {loading ? (
+                    <button className=" w-[170px] h-[40px] text-white bg-red-600 rounded-[5px] hover:bg-red-500 flex items-center justify-center" onClick={deleteTask} disabled={delLoading}>
+                        {delLoading ? (
                         <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
