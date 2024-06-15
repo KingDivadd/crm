@@ -53,7 +53,7 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
     function handleChange(e:any){
         const name = e.target.name
         const value = e.target.value
-        setAuth({...auth, [name]:value})
+        setTask({...task, [name]:value})
     }
 
     function triggerAlert(type:string, message: string){
