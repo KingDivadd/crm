@@ -26,12 +26,6 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
 
     })
 
-    useEffect(() => {
-        if(selectedTask != null){
-            
-        }
-    }, [])
-
 
 
     useEffect(() => {
@@ -69,7 +63,7 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
     }
 
     async function handleSubmit(e:any){
-        if(!auth.lastName || !auth.firstName || !auth.email || !auth.password || !auth.phone){
+        if(false){
             setInputError({...inputError, lastNameError: auth.lastName === "", firstNameError: auth.firstName === "", emailError: auth.email === '', passwordError: auth.password === '', phoneError: auth.phone === ''})
             triggerAlert('warning', 'Please fill all required fields.')
 
@@ -81,14 +75,14 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
             setTimeout(() => {
                 setLoading(false); // Set loading to false when the request completes
                     setShow(false)
-                    triggerAlert('success', 'User Added successfully')
+                    triggerAlert('success', 'Task Added successfully')
                     const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
             }, 3000);
         }
     }
 
-    async function updateUser(e:any){
-        if(!auth.lastName || !auth.firstName || !auth.email || !auth.password || !auth.phone){
+    async function updateTask(e:any){
+        if(false){
             setInputError({...inputError, lastNameError: auth.lastName === "", firstNameError: auth.firstName === "", emailError: auth.email === '', passwordError: auth.password === '', phoneError: auth.phone === ''})
             triggerAlert('warning', 'Please fill all required fields.')
 
@@ -100,7 +94,26 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
             setTimeout(() => {
                 setLoading(false); // Set loading to false when the request completes
                     setShow(false)
-                    triggerAlert('success', 'User Added successfully')
+                    triggerAlert('success', 'Task updated successfully')
+                    setAuth({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
+            }, 3000);
+        }
+    }
+
+    async function deleteTask(){
+        if(false){
+            setInputError({...inputError, lastNameError: auth.lastName === "", firstNameError: auth.firstName === "", emailError: auth.email === '', passwordError: auth.password === '', phoneError: auth.phone === ''})
+            triggerAlert('warning', 'Please fill all required fields.')
+
+        }else{
+            setLoading(true); // Set loading to true when the request starts
+            console.log(auth);
+            
+            // Simulate a login request with a timeout
+            setTimeout(() => {
+                setLoading(false); // Set loading to false when the request completes
+                    setShow(false)
+                    triggerAlert('success', 'Task deleted successfully')
                     setAuth({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
             }, 3000);
         }
@@ -111,7 +124,7 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
             <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                 {alert.message && <Alert message={alert.message} type={alert.type} />} 
             </span>
-            <div className="w-full h-full flex flex-col items-start justify-start gap-[25px] pt-[10px]">
+            <div className="w-full h-full flex flex-col items-start justify-start gap-[15px] pt-[10px]">
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         
@@ -169,8 +182,20 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                     </div>            
                 </div>
 
-                <span className="w-full h-[40px] flex justify-end px-[10px] ">
-                    {!addTask  ? <button className=" w-[150px] h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-500 flex items-center justify-center" onClick={updateUser} disabled={loading}>
+                <div className="w-full flex flex-row justify-between">
+                    {addTask ? <p></p> 
+                    : 
+                    <button className=" w-[170px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={deleteTask} disabled={loading}>
+                        {loading ? (
+                        <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                        </svg>
+                        ) : 'Delete Task'}
+                    </button> }
+
+                    <span className="w-full h-[40px] flex justify-end px-[10px] ">
+                    {!addTask  ? <button className=" w-[150px] h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-500 flex items-center justify-center" onClick={updateTask} disabled={loading}>
                         {loading ? (
                         <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -187,7 +212,9 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                         </svg>
                         ) : 'Add User'}
                     </button>}
-                </span>
+                    </span>
+                </div>
+
             </div>
         </div>
     )
