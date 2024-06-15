@@ -154,3 +154,14 @@ export const userResponsibilities = {
   }
 
 export const credentials = [{email: 'admin@yopmail.com', password: 'adminPass_01'}, {email: 'sales@yopmail.com', password: 'salesPass_01'}]
+
+
+export const userArray = [{lastName: "Iroegbu", firstName: "David", email: 'ireugbudavid@gmail.com', phone: '07044907610', role: 'Sales', status: 'active',password: 'user1password' }, {lastName: "Ayeni", firstName: "Peace", email: 'ayenipeace@gmail.com', phone: '09026030392', role: 'Technician', status: 'inactive', password: 'user2password'}, {lastName: "Ayeni", firstName: "Peace", email: 'ayenipeace@gmail.com', phone: '09026030392', role: 'Technician', status: 'inactive', password: 'user2password'}, {lastName: "Ayeni", firstName: "Peace", email: 'ayenipeace@gmail.com', phone: '09026030392', role: 'Technician', status: 'inactive', password: 'user2password'}, {lastName: "Ayeni", firstName: "Peace", email: 'ayenipeace@gmail.com', phone: '09026030392', role: 'Technician', status: 'inactive', password: 'user2password'}, {lastName: "Ayeni", firstName: "Peace", email: 'ayenipeace@gmail.com', phone: '09026030392', role: 'Technician', status: 'inactive', password: 'user2password'}, {lastName: "Ayeni", firstName: "Peace", email: 'ayenipeace@gmail.com', phone: '09026030392', role: 'Technician', status: 'inactive', password: 'user2password'}]
+
+
+export const salesTasksArray = [
+  {taskId: 'TS1001', taskTitle: 'Contract Signing', description: 'Send Contract for signing', dueDate: 'June 12, 2024', priority: 'High', assignedTo: 'John Doe', status: 'pending'},
+  {taskId: 'TS1001', taskTitle: 'Contract Signing', description: 'Send Contract for signing', dueDate: 'June 12, 2024', priority: 'High', assignedTo: 'John Doe', status: 'pending'},
+  {taskId: 'TS1001', taskTitle: 'Contract Signing', description: 'Send Contract for signing', dueDate: 'June 12, 2024', priority: 'High', assignedTo: 'John Doe', status: 'pending'},
+  {taskId: 'TS1001', taskTitle: 'Contract Signing', description: 'Send Contract for signing', dueDate: 'June 12, 2024', priority: 'High', assignedTo: 'John Doe', status: 'pending'},
+]

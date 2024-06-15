@@ -111,7 +111,7 @@ const SalesViewContractDetails = ({viewContractDetails}:SalesContractDetailProps
                             
                         </span>
                     </div>
-                    <div className="w-1/3 h-full  flex flex-col items-start justify-start gap-3 overflow-y-auto">
+                    <div className="w-1/3 h-full  flex flex-col items-start justify-start gap-3 overflow-y-auto cont-1-scrollbar ">
                         <p className="text-md font-semibold">HOA Details</p>
                         <span className="h- w-full flex flex-row items-start justify-start gap-3">
                             <p className="text-md font-light">HOA Required:</p>
@@ -172,11 +172,11 @@ const SalesViewContractDetails = ({viewContractDetails}:SalesContractDetailProps
                             <p className="text-md font-light">Delivery:</p>
                             <p className="text-md"> $3,000 (Due on June 17, 2024)</p>
                         </span>
-                        <span className="h- w-full flex flex-row items-start justify-start gap-3 ">
+                        <span className="h- w-full flex flex-col items-start justify-start gap-3 ">
                             <p className="text-md font-light ">Construction Completion:</p>
                             <p className="text-md  "> $3,000 (Due on June 18, 2024)</p>
                         </span>
-                        <span className="h- w-full flex flex-row items-start justify-start gap-3">
+                        <span className="h- w-full flex flex-col items-start justify-start gap-3">
                             <p className="text-md font-light">Electrical Completion:</p>
                             <p className="text-md"> $3,000 (Due on June 18, 2024)</p>
                         </span>

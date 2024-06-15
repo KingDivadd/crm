@@ -28,6 +28,14 @@
     @apply bg-sky-700 rounded-b-[5px] cursor-pointer;
 }
 
+.cont-1-scrollbar::-webkit-scrollbar {
+    @apply w-[8px] h-[5px]
+}
+
+.cont-1-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-gray-300 rounded-[3px]
+}
+
 .normal-input {
     @apply h-[40px] w-[100%] outline-none p-[0] pr-[10px] pl-[10px] border border-gray-400 rounded-[3px]
 }

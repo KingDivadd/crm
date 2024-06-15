@@ -5,18 +5,19 @@ import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
 import Alert from '../alert';
-import ViewLead from './salesViewLead';
-import { userArray } from '@/constants';
+import ViewTask from './salesViewTask';
 
-const SalesLeadPage = () => {
-    const [addUsers, setAddUsers] = useState(false)
-    const [selectedUser, setSelectedUser] = useState(null)
+import { salesTasksArray } from '../../../constants';
+
+const SalesTaskPage = () => {
+    const [addTask, setAddTask] = useState(false)
+    const [selectedTask, setSelectedTask] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        userRole: false, disposition: false
+        status: false, priority: false
     });
     const [dropElements, setDropElements] = useState({
-        userRole: 'User Role', disposition: 'Disposition'
+        status: 'Status', priority: 'Priority'
 
     })
 
@@ -33,14 +34,14 @@ const SalesLeadPage = () => {
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
-    function viewLead(data:any) {
-        setSelectedUser(data)
-        setAddUsers(true)
+    function viewTask(data:any) {
+        setSelectedTask(data)
+        setAddTask(true)
     }
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
-            {addUsers ? <ViewLead addUsers={addUsers} setAddUsers={setAddUsers} selectedUser={selectedUser} setSelectedUser={setSelectedUser} /> 
+            {addTask ? <ViewTask addTask={addTask} setAddTask={setAddTask} selectedTask={selectedTask} setSelectedTask={setSelectedTask} /> 
             :
             <div className="relative w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
@@ -48,17 +49,21 @@ const SalesLeadPage = () => {
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
-                        <p className="text-lg font-semibold text-black">All Leads</p>
-                        <p className="text-sm text-black">135</p>
+                        <p className="text-lg font-semibold text-black">All Tasks</p>
+                        <p className="text-sm text-black">155</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
                             <span className="w-[300px] h-[40px] ">
-                                <input type="text" name="userName" placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 ' />
+                                <input type="text" name="TaskName" placeholder='Search by assigned to ' id="" className='normal-input bg-gray-100 ' />
                             </span>
                             <span className="h-[40px] w-[150px]">
-                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Pending', 'In Progress', 'Completed']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
+                            <span className="h-[40px] w-[150px]">
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'priority'} dropArray={['High', 'Low']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                            </span>
+                            <button className="h-[40px] w-[150px] border border-gray-400 hover:border-blue-600 hover:text-blue-600 rounded-[3px] " onClick={viewTask}>New Task</button>
                         </span>
 
                         
@@ -66,27 +71,33 @@ const SalesLeadPage = () => {
                     </span>
                 </span>
 
-                {/* user table */}
+                {/* Task table */}
 
                 <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Customer Name</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Phone Number</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Appointment Date</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Disposition</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Details</p>
+                            <p className="text-sm font-semibold w-[10%] pr-2 pl-2 ">Task Id</p>
+                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Task Title</p>
+                            <p className="text-sm font-semibold w-[17.5%] pr-2 pl-2 ">Description</p>
+                            <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 ">Due Date</p>
+                            <p className="text-sm font-semibold w-[10%] pr-2 pl-2 ">Priority</p>
+                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Assiged To</p>
+                            <p className="text-sm font-semibold w-[10%] pr-2 pl-2 ">Status</p>
+                            <p className="text-sm font-semibold w-[10%] pr-2 pl-2 "></p>
                         </span>
                         <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                             <div className='h-auto w-full flex flex-col justify-start '>
-                            {userArray.map((data, ind)=>{
-                                const {lastName, firstName, email, role, status,} = data
+                            {salesTasksArray.map((data, ind)=>{
+                                const {assignedTo, description, dueDate, priority, status, taskId, taskTitle} = data
                                 return (
                                     <span key={ind} className="recent-activity-table-list " >
-                                        <p className="text-sm w-[25%] pr-2 pl-2 "> {lastName} {firstName} </p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 "> 07044907610 </p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 "> June 14, 2024 </p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 "> Sold </p> {/*sold , not sold*/}
-                                        <p className="text-sm w-[15%] pr-2 pl-2 text-blue-600 hover:underline" onClick={viewLead}> view details</p>
+                                        <p className="text-sm w-[10%] pr-2 pl-2 "> {taskId} </p>
+                                        <p className="text-sm w-[15%] pr-2 pl-2 "> {taskTitle} </p>
+                                        <p className="text-sm w-[17.5%] pr-2 pl-2 "> {description} </p>
+                                        <p className="text-sm w-[12.5%] pr-2 pl-2 "> {dueDate} </p>
+                                        <p className="text-sm w-[10%] pr-2 pl-2 "> {priority} </p>
+                                        <p className="text-sm w-[15%] pr-2 pl-2 "> {assignedTo} </p>
+                                        <p className="text-sm w-[10%] pr-2 pl-2 "> {status} </p>
+                                        <p className="text-sm w-[10%] pr-2 pl-2 text-blue-600 hover:underline " onClick={viewTask} > View Details </p>
                                         
                                     </span>
                                 )
@@ -115,4 +126,4 @@ const SalesLeadPage = () => {
     )
 }
 
-export default SalesLeadPage
+export default SalesTaskPage

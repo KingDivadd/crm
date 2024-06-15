@@ -6,6 +6,7 @@ import SalesDashboardPage from './salesDashboardPage'
 import SalesLeadPage from './salesLeadPage'
 import SalesJobsPage from './salesJobsPage'
 import SalesPipeline from './salesPipeline'
+import SalesTaskPage from './salesTaskPage'
 
 const SalesDashboard = () => {
     const [active, setActive] = useState('')
@@ -30,6 +31,7 @@ const SalesDashboard = () => {
                     {active === "leads" && <SalesLeadPage /> }
                     {active === "sales-pipeline" && <SalesPipeline /> }
                     {active === "jobs" && <SalesJobsPage /> }
+                    {active === "tasks" && <SalesTaskPage /> }
                     {/*  {active === "analytics" && <ReportsAndAnalytics /> }
                     {active === "notifications" && <AdminNotificationPage /> }
                     {active === "logs" && <AdminLogsPage /> }

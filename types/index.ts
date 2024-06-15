@@ -90,6 +90,13 @@ export interface SalesContractDetailProps {
     viewContractDetails: HandleViewContractDetails
 }
 
+export interface SalesTaskProps {
+    addTask: boolean;
+    setAddTask: (addTask: boolean) => void;
+    selectedTask: any;
+    setSelectedTask: (selectedTask: any) => void;
+}
+
 export interface RouteNavProps {
     userRole: string;
 }
