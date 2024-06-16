@@ -98,40 +98,7 @@ const SalesSystemSettings = () => {
                     {/* General Settings */}
                     <div className="w-full flex flex-col items-start justify-start gap-5">
                         <p className="text-lg font-semibold">General Settings</p>
-                        {/* company information */}
-                        <div className="w-full flex flex-col justify-start items-start gap-3">
-                            <span className="w-full h-[35px] flex justify-between items-center cursor-pointer hover:text-blue-500"  onClick={()=>{setEditCompanyInfo(!editCompanyInfo)}} >
-                                <p className="text-lg">Company information</p>
-                                <span className="w-[20px] h-[20px] cursor-pointer flex items-center justify-center "> {editCompanyInfo ? <FaCaretUp size={20} /> : <FaCaretDown size={20}  />} </span>
-                            </span>
-                            {editCompanyInfo && 
-                            <div className="w-full flex flex-col justify-start items-start gap-3">
-                                <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <ImageUploader id={'company-logo'} title={"Company Logo"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192409/qbit5t3yzq06kptro4xp.jpg'} />
-                                </span>
-                                <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Company Name</h4>
-                                    <input type="text" name='name' className="normal-input bg-transparent" value={companyInfo.name} onChange={handleCompanyInfo} />
-                                </span>
-                                <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Company Address</h4>
-                                    <input type="text" name='address' className="normal-input bg-transparent" value={companyInfo.address} onChange={handleCompanyInfo} />
-                                </span>
-                                <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Company Email</h4>
-                                    <input type="email" name='email' className="normal-input bg-transparent" value={companyInfo.email} onChange={handleCompanyInfo} />
-                                </span>
-                                <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Company Phone</h4>
-                                    <input type="text" name='phone' className="normal-input bg-transparent" value={companyInfo.phone} onChange={handleCompanyInfo} />
-                                </span>
-                                <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Select Time Zone</h4>
-                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'timeZone'} dropArray={timeZone} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                </span>
-                                
-                            </div>}
-                        </div>
+                    
                         {/* User information if it is the admin */}
                         <div className="w-full flex flex-col justify-start items-start gap-3">
                             <span className="w-full h-[35px] flex justify-between items-center cursor-pointer hover:text-blue-500"  onClick={()=>{setEditUserProfile(!editUserProfile)}} >
@@ -222,19 +189,7 @@ const SalesSystemSettings = () => {
                                 
                             </div>
                             {/* NO of admins */}
-                            <div className="w-full flex flex-col justify-start items-start gap-3">
-                                <span className="w-full h-[35px] flex justify-start items-center " >
-                                    <p className="text-lg">Set Number of Admin</p>
-                                </span>
-                                <p className="text-md">Select the number of admin allowed for the app.</p>
-                                <div className="w-full flex flex-col justify-start items-start gap-3">
-                                    <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Current number of Admin</h4>
-                                        <input type="number" name='name' className="normal-input bg-transparent" value={adminNumber} onChange={(e:any)=> setAdminNumber(e.target.value)} />
-                                    </span>
-                                    
-                                </div>
-                            </div>
+                            
                         </div>
                     </div>
 
