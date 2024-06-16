@@ -125,4 +125,6 @@ export interface DeleteTaskProps {
     setShowModal: (showModal: boolean) => void;
     selectedItem: any;
     setSelectedItem: (selectedItem: any) => void;
+    show: boolean;
+    setShow: (show: boolean) => void;
 }

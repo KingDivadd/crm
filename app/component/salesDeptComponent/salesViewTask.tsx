@@ -87,7 +87,6 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                 setLoading(false); // Set loading to false when the request completes
                     setShow(false)
                     triggerAlert('success', 'Task Added successfully')
-                    const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
             }, 3000);
         }
     }
@@ -227,7 +226,7 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                 </div>
 
             </div>
-            {showModal && <DeleteTaskModal showModal={showModal} setShowModal={setShowModal} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />}
+            {showModal && <DeleteTaskModal showModal={showModal} setShowModal={setShowModal} selectedItem={selectedItem} setSelectedItem={setSelectedItem} setShow={setShow} show={show} />}
         </div>
     )
 }
