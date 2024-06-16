@@ -28,6 +28,20 @@
     @apply bg-sky-700 rounded-b-[5px] cursor-pointer;
 }
 
+.custom-calendar {
+    @apply rounded-[5px]
+}
+
+.custom-calendar .react-calendar__month-view__weekdays {
+    @apply border-b border-gray-300 mb-[5px];
+    font-family: "Montserrat", sans-serif;
+}
+
+.custom-calendar .react-calendar__month-view__weekdays__weekday abbr {
+    @apply text-blue-600 font-semibold text-[13px];
+    text-decoration: none;
+}
+
 .cont-1-scrollbar::-webkit-scrollbar {
     @apply w-[8px] h-[5px]
 }

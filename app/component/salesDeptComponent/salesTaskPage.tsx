@@ -60,7 +60,7 @@ const SalesTaskPage = () => {
                             <span className="h-[40px] w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'priority'} dropArray={['High', 'Low']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            <button className="h-[40px] w-[150px] border border-gray-400 hover:border-blue-600 hover:text-blue-600 rounded-[3px] " onClick={()=>{setAddTask(true); setShow(true)}}>New Task</button>
+                            
                         </span>
 
                         

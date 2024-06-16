@@ -165,3 +165,8 @@ export const salesTasksArray = [
   {taskId: 'TS1001', taskTitle: 'Contract Signing', description: 'Send Contract for signing', dueDate: 'June 12, 2024', priority: 'High', assignedTo: 'John Doe', status: 'pending'},
   {taskId: 'TS1001', taskTitle: 'Contract Signing', description: 'Send Contract for signing', dueDate: 'June 12, 2024', priority: 'High', assignedTo: 'John Doe', status: 'pending'},
 ]
+
+export const taskDetailsArray= [
+  {title: 'Task Creation Date', value: 'June 11, 2024'},
+  {title: ''}
+]

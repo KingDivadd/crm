@@ -8,25 +8,35 @@ import { AddUsersProps, SalesTaskProps } from '../../../types';
 import Alert from '../alert';
 import { IoMdArrowBack } from "react-icons/io";
 import { userResponsibilities } from '../../../constants';
+import MyDatePicker from '../datePicker';
+import { FaCaretUp, FaCaretDown } from 'react-icons/fa';
+import DeleteTaskModal from './deleteTaskModal'
 
 const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesTaskProps) => {
 
-    const [task, setTask] = useState({taskTitle: '', taskDescription: '', taskDueDate: '', priority: '', assigendTo: '', status: '' })
+    const [showModal, setShowModal] = useState(false)
+    const [selectedItem, setSelectedItem] = useState(null)
+    const [task, setTask] = useState({taskTitle: '', taskDescription: '', taskDueDate: '', priority: '', assignedTo: '', status: '', comment: '' })
 
     const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
     const [inputError, setInputError] = useState({lastNameError: false, firstNameError: false, emailError: false, phoneError: false, roleError: false, passwordError: false})
     const [loading, setLoading] = useState(false)
     const [delLoading, setDelLoading] = useState(false)
     const [alert, setAlert] = useState({type: '', message: ''})
+    const [clickedDate, setClickedDate] = useState('')
+    const [showCalender, setShowCalender] = useState(false)
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
         priority: false, status: false
     });
     const [dropElements, setDropElements] = useState({
         priority: 'Priority', status: 'Status'
-
     })
 
+    useEffect(() => {
+        setTask({...task, taskDueDate: clickedDate})
+        setShowCalender(false)
+    }, [clickedDate])
 
 
     useEffect(() => {
@@ -102,22 +112,8 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
     }
 
     async function deleteTask(){
-        if(false){
-            setInputError({...inputError, lastNameError: auth.lastName === "", firstNameError: auth.firstName === "", emailError: auth.email === '', passwordError: auth.password === '', phoneError: auth.phone === ''})
-            triggerAlert('warning', 'Please fill all required fields.')
-
-        }else{
-            setDelLoading(true); // Set loading to true when the request starts
-            console.log(auth);
-            
-            // Simulate a login request with a timeout
-            setTimeout(() => {
-                setDelLoading(false); // Set loading to false when the request completes
-                    setShow(false)
-                    triggerAlert('success', 'Task deleted successfully')
-                    setAuth({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
-            }, 3000);
-        }
+        
+        setShowModal(true)
     }
 
     return (
@@ -135,7 +131,10 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                         
                     </span>
                     <span className="h-full flex flex-row items-center justify-end gap-4">
-                        {!addTask ? <p className="text-lg font-semibold">Modifying Selected Task</p> : <p className="text-lg font-semibold">Adding New Task</p> }                        
+                        {!addTask ? <span className="w-auto h-auto flex flex-row items-center justify-end gap-3">
+                            <p className="text-lg ">Task ID:</p>
+                            <p className="text-lg font-semibold">TS1001</p>
+                        </span> : <p className="text-lg font-semibold">Adding New Task</p> }                        
                     </span>
                 </span>
 
@@ -153,7 +152,18 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                         </span>
                         <span className="w-full flex flex-col items-start justify-start gap-2">
                             <h4 className="text-md font-light">Due Date</h4>
-                            <input type="text" name='taskDueDate' className='normal-input' value={task.taskDueDate} onChange={handleChange} />
+                            <div className="w-full flex flex-col items-end justify-end relative z-10">
+                                <button className="rounded-[3px] h-[40px] w-full text-md bg-transparent border border-gray-400 font-light flex flex-row items-center justify-between px-[10px]" onClick={()=>{setShowCalender(!showCalender)}}>
+                                    {task.taskDueDate ? task.taskDueDate :  "Select Date"}
+                                    <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
+                                        {showCalender ?  <FaCaretUp  /> : <FaCaretDown  />}
+                                    </span>
+                                </button>
+                                {showCalender && <div className="absolute top-[45px] left-0 min-h-[290px] w-full  pt-[1px] flex flex-row items-start justify-center w-full ">
+                                    <MyDatePicker clickedDate={clickedDate} setClickedDate={setClickedDate} />
+                                </div>}
+                            </div>
+                            {/* <input type="date" name='taskDueDate' className='normal-input' value={task.taskDueDate} onChange={handleChange} /> */}
                         </span>
                         <span className="w-full flex flex-col items-start justify-start gap-2">
                             <h4 className="text-md font-light">Task Priority</h4>
@@ -163,7 +173,8 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                         </span>
                         <span className="w-full flex flex-col items-start justify-start gap-2">
                             <h4 className="text-md font-light">Assigned To</h4>
-                            <input type="text" name='assigendTo' className='normal-input' value={task.assigendTo} onChange={handleChange} />
+                        
+                            <input type="text" name='assignedTo' placeholder='This should be a dropdown of user list' className='normal-input' value={task.assignedTo} onChange={handleChange} />
                         </span>
                         <span className="w-full flex flex-col items-start justify-start gap-2">
                             <h4 className="text-md font-light">Task Status</h4>
@@ -173,12 +184,11 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                         </span>
                     </div>
                     {/* user role side */}
-                    <div className="w-[50%] flex flex-col items-start justify-start gap-4">
-                        <p className="text-[17px] font-semibold">Additional Details</p>
-                            <span className="w-full flex flex-row items-start justify-start gap-3">
-                                <h4 className="text-md font-light">Comments:</h4>
-                                
-                            </span>
+                    <div className="w-[50%] flex flex-col items-start justify-start gap-4 h-full">
+                        <span className="w-full flex flex-col items-start justify-start gap-2">
+                            <p className="text-md font-light">Comment</p>
+                            <textarea name="comment" id=""  defaultValue={task.comment} onChange={handleChange}  className=' resize-none rounded-[3px] p-[10px] outline-none focus:border-blue-500 focus:border-2 border border-gray-400 w-full h-[550pxpx]' ></textarea>
+                        </span>
                             
                     </div>            
                 </div>
@@ -217,6 +227,7 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                 </div>
 
             </div>
+            {showModal && <DeleteTaskModal showModal={showModal} setShowModal={setShowModal} selectedItem={selectedItem} setSelectedItem={setSelectedItem} />}
         </div>
     )
 }

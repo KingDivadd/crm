@@ -120,3 +120,9 @@ export interface ImageUploaderProps {
     id: string;
 }
 
+export interface DeleteTaskProps {
+    showModal: boolean;
+    setShowModal: (showModal: boolean) => void;
+    selectedItem: any;
+    setSelectedItem: (selectedItem: any) => void;
+}
