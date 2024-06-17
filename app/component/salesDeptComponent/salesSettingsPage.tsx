@@ -105,6 +105,15 @@ const SalesSystemSettings = () => {
                                 <p className="text-lg">User information</p>
                                 <span className="w-[20px] h-[20px] cursor-pointer flex items-center justify-center "> {editUserProfile ? <FaCaretUp size={20} /> : <FaCaretDown size={20}  />} </span>
                             </span>
+                        </div>
+
+                    </div>
+                </div>
+                {/* the right side */}
+                <div className="w-1/2 h-[100%] flex flex-col gap-3 items-start justify-start ">
+                    <div className="w-full flex flex-col items-start justify-start gap-5">
+                        <p className="text-lg font-semibold"></p>
+                        <div className="w-full flex flex-col justify-start items-start gap-3">
                             {editUserProfile && 
                             <div className="w-full flex flex-col justify-start items-start gap-3">
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
@@ -133,15 +142,6 @@ const SalesSystemSettings = () => {
                                 
                                 
                             </div>}
-                        </div>
-
-                    </div>
-                </div>
-                {/* the right side */}
-                <div className="w-1/2 h-[100%] flex flex-col gap-3 items-start justify-start ">
-                    <div className="w-full flex flex-col items-start justify-start gap-5">
-                        <p className="text-lg font-semibold"></p>
-                        <div className="w-full flex flex-col justify-start items-start gap-3">
                             
                             
                             
