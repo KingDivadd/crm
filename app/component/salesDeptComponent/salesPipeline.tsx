@@ -44,7 +44,7 @@ const SalesPipeline = () => {
                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                         </span>
 
-                        <button className="rounded-[3px] w-[150px] h-[40px] border border-gray-400 hover:border-blue-600 hover:text-blue-600 ">Add Lead</button>
+                        {/* <button className="rounded-[3px] w-[150px] h-[40px] border border-gray-400 hover:border-blue-600 hover:text-blue-600 ">Add Lead</button> */}
                     </span>
                 </div>
                 {/* first section = summary stat */}
