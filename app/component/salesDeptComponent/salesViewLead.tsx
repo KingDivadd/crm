@@ -211,11 +211,11 @@ const ViewLead = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
                             <p className="text-md font-semibold">Attachments and Documents</p>
                             <span className="w-full flex flex-row items-start justify-start gap-3">
                                 <h4 className="text-md font-light">Contract Document:</h4>
-                                <h4 className="text-md ">Link to contract document</h4>
+                                <h4 className="text-md text-blue-600 hover:underline cursor-pointer ">Link to contract document</h4>
                             </span>
                             <span className="w-full flex flex-row items-start justify-start gap-3">
                                 <h4 className="text-md font-light">Contract Proposal:</h4>
-                                <h4 className="text-md ">Link to contrct proposal</h4>
+                                <h4 className="text-md text-blue-600 hover:underline cursor-pointer ">Link to contrct proposal</h4>
                             </span>
                             <span className="w-full flex flex-row items-start justify-start gap-3">
                                 <h4 className="text-md font-light">Customer Preference:</h4>

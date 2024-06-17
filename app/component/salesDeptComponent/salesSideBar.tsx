@@ -69,6 +69,10 @@ const SalesSideBar = ({active, setActive}: SideBarNav) => {
                         <BiSolidReport size={23} />
                         <p className="text-[17px]">Reports</p>
                     </span>
+                    <span className={active === "notification"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notification')}}>
+                        <RiNotificationBadgeFill size={23} />
+                        <p className="text-[17px]">Notification</p>
+                    </span>
                     <span className={active === "settings"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('settings')}}>
                         <IoSettingsSharp size={23} />
                         <p className="text-[17px]">Settings</p>

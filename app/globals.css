@@ -189,6 +189,10 @@
     height: calc(100vh - 70px)
 }
 
+.pipeline-cont {
+    height: calc(100vh - 370px);
+}
+
 .overdue-row {
     @apply w-full h-[40px] flex flex-row items-center justify-start cursor-pointer bg-red-200 text-red-700;
 }

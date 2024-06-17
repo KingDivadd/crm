@@ -142,53 +142,8 @@ const SalesSystemSettings = () => {
                     <div className="w-full flex flex-col items-start justify-start gap-5">
                         <p className="text-lg font-semibold"></p>
                         <div className="w-full flex flex-col justify-start items-start gap-3">
-                            <span className="w-full h-[35px] flex justify-between items-center cursor-pointer hover:text-blue-500"  >
-                                <p className="text-lg">Payment Integration Setting</p>
-                            </span>
-                            <div className="w-full flex flex-col justify-start items-start gap-3">
-                                <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Select Payment Route</h4>
-                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'paymentRoute'} dropArray={['PayPal', 'Stripe']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  />
-                                </span>
-                                {dropElements.paymentRoute === "PayPal" && <div className="w-full flex flex-col justify-start items-start gap-3">
-                                    <p className="text-md font-semibold pt-[15px] pb-[5px] ">PayPal Integration</p>
-                                    <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">PayPal Client ID</h4>
-                                        <input type="text" name='clientId' className="normal-input bg-transparent" value={paypalInfo.clientId} onChange={handlePayPalIntegration} />
-                                    </span>
-                                    <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">PayPal Secret Key</h4>
-                                        <input type="text" name='secretKey' className="normal-input bg-transparent" value={paypalInfo.secretKey} onChange={handlePayPalIntegration} />
-                                    </span>
-                                    <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">PayPal Mode</h4>
-                                        <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'paypalMode'} dropArray={['Live', 'Sandbox']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                    </span>
-                                    
-                                </div>}
-
-                                {dropElements.paymentRoute === "Stripe" && <div className="w-full flex flex-col justify-start items-start gap-3">
-                                    <p className="text-md font-semibold pt-[15px] pb-[5px] ">Stripe Integration</p>
-
-                                    <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Stripe Publishable Key</h4>
-                                        <input type="text" name='publishableKey' className="normal-input bg-transparent" value={stripeInfo.publishableKey} onChange={handlePayPalIntegration} />
-                                    </span>
-                                    <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Stripe Secret Key</h4>
-                                        <input type="text" name='secretKey' className="normal-input bg-transparent" value={stripeInfo.secretKey} onChange={handlePayPalIntegration} />
-                                    </span>
-                                    <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Webhook Secret</h4>
-                                        <input type="text" name='webhookSecret' className="normal-input bg-transparent" value={stripeInfo.webhookSecret} onChange={handlePayPalIntegration} />
-                                    </span>
-                                    
-                                    
-                                </div>}
-                                
-                                
-                            </div>
-                            {/* NO of admins */}
+                            
+                            
                             
                         </div>
                     </div>
