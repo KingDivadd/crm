@@ -2,9 +2,12 @@
 import React, {useState, useEffect} from 'react'
 import { useRouter } from 'next/navigation'
 import { DropDownBlankTransparent } from '../dropDown'
+import KanbanBoard from './salesKanbanBoard'
+import SalesViewPipelineDetails from './salesViewPipelineDetails'
 
 const SalesPipeline = () => {
     const router = useRouter()
+    const [showDetails, setShowDetails] = useState(false)
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
         userRole: false, disposition: false
     });
@@ -27,9 +30,23 @@ const SalesPipeline = () => {
     }
     
     return (
-        <div className="w-full h-full p-[10px] pb-[10px] ">
-            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[20px] pt-[10px]">
+        <div className="w-full h-full p-[10px] ">
+            {showDetails? <SalesViewPipelineDetails showDetails={showDetails} setShowDetails={setShowDetails} /> :  <div className="relative w-full h-full flex flex-col items-start justify-start gap-[20px] ">
 
+                <div className="w-full flex flex-row items-center justify-between">
+                    <p className="text-xl font-semibold">Sales Pipeline</p>
+                    
+                    <span className="w-auto flex flex-row items-center justif-between gap-5 h-[40px] ">
+                        <span className="w-[300px] h-[40px] ">
+                            <input type="text" name="userName" placeholder='Search by name or lead Id' id="" className='normal-input bg-gray-100 ' />
+                        </span>
+                        <span className="h-[40px] w-[150px]">
+                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                        </span>
+
+                        <button className="rounded-[3px] w-[150px] h-[40px] border border-gray-400 hover:border-blue-600 hover:text-blue-600 ">Add Lead</button>
+                    </span>
+                </div>
                 {/* first section = summary stat */}
                 <div className="w-full flex flex-row items-center justify-between gap-[10px]">
                     <span className=" flex flex-col gap-3 items-start justify-start h-[85px] rounded-[5px] bg-white w-1/4 border border-blue-500 ">
@@ -48,7 +65,7 @@ const SalesPipeline = () => {
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[85px] border border-sky-600 rounded-[5px] bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl font-semibold">Averate Deal Size</p>
+                            <p className="text-xl font-semibold">Average Deal Size</p>
                             <p className="text-md font-semibold">$5,250</p>
                         </div>
                     </span>
@@ -62,21 +79,12 @@ const SalesPipeline = () => {
                     
                 </div>
 
-                <div className="w-full flex flex-row items-center justify-between">
-                    <span className="w-auto flex flex-row items-center justif-between gap-5 h-[40px] ">
-                        <span className="w-[300px] h-[40px] ">
-                            <input type="text" name="userName" placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 ' />
-                        </span>
-                        <span className="h-[40px] w-[150px]">
-                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                        </span>
 
-                    </span>
-                    <button className="rounded-[3px] w-[150px] h-[40px] border border-gray-400 hover:border-blue-600 hover:text-blue-600 ">Add Lead</button>
-                </div>
+                {/* Kanban Board*/}
+                <KanbanBoard showDetails={showDetails} setShowDetails={setShowDetails} />
 
                 {/* Pipeline Board*/}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
+                <div className="w-full flex flex-col items-start justify-start gap-[10px] pb-[10px] ">
                     <p className="text-xl font-semibold">Pipeline Board</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
@@ -101,7 +109,7 @@ const SalesPipeline = () => {
                                         <p className="text-sm w-[15%] pr-2 pl-2 ">$24,500</p>
                                         <p className="text-sm w-[12.5%] pr-2 pl-2 ">Freestanding</p>
                                         <p className="text-sm w-[10%] pr-2 pl-2 ">In progress</p>
-                                        <p className="text-sm w-[10%] pr-2 pl-2 text-blue-600 hover:underline ">View Details</p>
+                                        <p className="text-sm w-[10%] pr-2 pl-2 text-blue-600 hover:underline" onClick={()=>{setShowDetails(!showDetails)}} >View Details</p>
                                         
                                     </span>
                                 )
@@ -126,7 +134,7 @@ const SalesPipeline = () => {
                     </div>
                 </div>
 
-            </div>
+            </div>}
         </div>
     )
 }

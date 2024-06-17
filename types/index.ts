@@ -128,3 +128,8 @@ export interface DeleteTaskProps {
     show: boolean;
     setShow: (show: boolean) => void;
 }
+
+export interface PipelineProps {
+    showDetails: boolean;
+    setShowDetails: (showDetails: boolean) => void;
+}

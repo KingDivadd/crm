@@ -116,7 +116,7 @@ const ViewLead = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         
-                        <p className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer flex items-center justify-start gap-2 " onClick={()=>{setAddUsers(false)}}>
+                        <p className="text-lg text-blue-600 hover:underline cursor-pointer flex items-center justify-start gap-2 " onClick={()=>{setAddUsers(false)}}>
                         <IoMdArrowBack size={23} className='text-blue-600' />All Leads</p>
                         <p className="text-md text-black">135</p>
                         

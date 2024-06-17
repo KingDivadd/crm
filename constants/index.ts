@@ -170,3 +170,30 @@ export const taskDetailsArray= [
   {title: 'Task Creation Date', value: 'June 11, 2024'},
   {title: ''}
 ]
+
+export const pipelineBasicInfo = [
+  {title: "Lead ID:", value: "LD100023"}, {title: "Customer Name:", value: "John Doe"}, {title: "Customer Address:", value: "123 Main Street"},
+  {title: "Email:", value: "john.doe@email.com"}, {title: "Appointment Date:", value: "June 12, 2024"}, {title: "Disposition:", value: "sold"}, 
+  {title: "Contract Amount:", value: "$25,000"}, {title: "Project Type:", value: "Lattice"}, {title: "Project Status:", value: "New"},
+  {title: "Sales Person Assigned:", value: "Monica Sales"}
+]
+
+export const pipelineProjectInfo = [
+  {title: "Job Number:", value: "JOB871223"}, {title: "Contract Date:", value: "June 12, 2024"}, {title: "HOA:", value: "No HOA"},
+  {title: "Engineering:", value: "Submitted, Received, $500 " }, {title: "Permit Sent Date", value: "June 12, 2024"},  {title: "Permit Number", value: "102345"},  {title: "Permit Received Date", value: "June 13, 2024"},  {title: "Permit", value: "$300"}
+]
+
+export const pipelineApprovalInfo = [
+  {title: "HOA Send Date:", value: "June 13, 2024"}, {title: "HOA Approved Date:", value: "June 14, 2024"},
+  {title: "Engineering Submitted Date:", value: "June 13, 2024 "}, {title: "Engineering Received Date", value: "June 13, 2024"},
+  {title: "Permit Number:", value: "12345"}, {title: "Permit Sent Date:", value: "June 14, 2024"}, {title: "Approved Date:", value: "June 15,2024"}
+]
+
+export const pipelineLeadComment = [
+  {title: "June 11, 2023", value: "Followed up with the client on June 11, 2023"},
+  {title: "June 13, 2023", value: "Submitted lead for HOA approval"},
+  {title: "June 14, 2023", value: "HOA approved lead on June 14, 2024"},
+  {title: "June 15, 2023", value: "Submitted lead for Engineering Approval"},
+  {title: "June 16, 2023", value: "Received Approval from Engineering"},
+  
+]
