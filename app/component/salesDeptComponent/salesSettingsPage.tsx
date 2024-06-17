@@ -105,6 +105,14 @@ const SalesSystemSettings = () => {
                                 <p className="text-lg">User information</p>
                                 <span className="w-[20px] h-[20px] cursor-pointer flex items-center justify-center "> {editUserProfile ? <FaCaretUp size={20} /> : <FaCaretDown size={20}  />} </span>
                             </span>
+                            {editUserProfile && 
+                            <div className="w-full flex flex-col justify-start items-start gap-3">
+                                <span className="w-full flex flex-col items-start justify-start gap-2">
+                                    <ImageUploader id={'user-image'} title={"User Image"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192427/ugxr954jsbyd1utozwzy.jpg'} />
+                                </span>
+                                
+                                
+                            </div>}
                         </div>
 
                     </div>
@@ -114,11 +122,7 @@ const SalesSystemSettings = () => {
                     <div className="w-full flex flex-col items-start justify-start gap-5">
                         <p className="text-lg font-semibold"></p>
                         <div className="w-full flex flex-col justify-start items-start gap-3">
-                            {editUserProfile && 
                             <div className="w-full flex flex-col justify-start items-start gap-3">
-                                <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <ImageUploader id={'user-image'} title={"User Image"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192427/ugxr954jsbyd1utozwzy.jpg'} />
-                                </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
                                     <h4 className="text-md font-light">First Name</h4>
                                     <input type="text" name='firstName' className="normal-input bg-transparent" value={userProfile.firstName} onChange={handleUserProfile} />
@@ -139,12 +143,7 @@ const SalesSystemSettings = () => {
                                     <h4 className="text-md font-light">Password</h4>
                                     <input type="text" name='password' className="normal-input bg-transparent" value={userProfile.password} onChange={handleUserProfile} />
                                 </span>
-                                
-                                
-                            </div>}
-                            
-                            
-                            
+                            </div>                            
                         </div>
                     </div>
 
