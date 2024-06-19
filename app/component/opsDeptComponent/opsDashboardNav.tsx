@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { BsBell } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
 
-const SalesDashboardNav = () => {
+const OpsDashboardNav = () => {
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const calendarRef = useRef(null);
 
@@ -39,10 +39,10 @@ const SalesDashboardNav = () => {
                 {/* user avatar */}
                 <span className="flex flex-col justify-between items-start h-[35px] my-auto">
                     <p className='text-sm font-semibold text-white'>Iroegbu David</p>
-                    <p className='text-sm text-white'>Sales</p>
+                    <p className='text-sm text-white'>Operations</p>
                 </span>
                 <img className="inline-block h-[30px] w-[30px] rounded-full ring-2 ring-white cursor-pointer"
-                    src="https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718748903/u6wmwqvxzfinumomdfro.jpg" alt="">
+                    src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80" alt="">
                 </img>
                 {/* bell icon */}
                 <span className='h-full flex items-center justify-center text-white'>
@@ -71,4 +71,4 @@ const SalesDashboardNav = () => {
     );
 }
 
-export default SalesDashboardNav;
+export default OpsDashboardNav;

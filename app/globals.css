@@ -151,6 +151,18 @@
     @apply bg-gray-100
 }
 
+.approval-flow-table-list {
+    @apply w-full gap-1 flex flex-row items-center justify-center border-b border-gray-300 pt-[10px];
+}
+
+.approval-flow-table-list:hover {
+    @apply bg-gray-100
+}
+
+.approval-flow-table-list:last-child {
+    @apply border-b-0
+}
+
 .cont-1 {
     height: calc(100vh - 50px);
 }
@@ -191,6 +203,19 @@
 
 .pipeline-cont {
     height: calc(100vh - 370px);
+}
+
+.ops-lead-cont {
+    height: calc(100vh - 335px)
+}
+
+.funnel-cont {
+    @apply overflow-y-auto pb-[10px];
+    height: calc(100vh - 330px)
+}
+
+.invoice-img-cont {
+    height: calc(100vh - 220px)
 }
 
 .overdue-row {
@@ -267,4 +292,16 @@
 
 .image-custom-button:hover {
     @apply bg-blue-500;
+}
+
+.report-tab {
+    @apply cursor-pointer
+}
+
+.report-tab:hover {
+    @apply underline text-blue-600
+}
+
+.active-report-tab {
+    @apply text-blue-600;
 }

@@ -26,12 +26,12 @@ const MyDatePicker = ({clickedDate, setClickedDate}: SelectDateProps) => {
     }
         
     return (
-        <div className=" h-full">
+        <div className=" h-full ">
             <Calendar
                 value={date}
                 onChange={onChange}
                 // calendarType="US" 
-                className={'custom-calendar h-full'}
+                className={'custom-calendar h-full '}
             />
         </div>
     );

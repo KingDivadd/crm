@@ -14,10 +14,13 @@ import { FaBriefcase } from "react-icons/fa";
 import { PiClipboardTextFill } from "react-icons/pi";
 import { BiSolidReport } from "react-icons/bi";
 import {SideBarNav} from '../../../types/index'
-import { GiSuitcase } from "react-icons/gi";
+import { RiUserLocationFill } from "react-icons/ri";
+import { MdNotifications } from "react-icons/md";
+import { RiLuggageCartFill } from "react-icons/ri";
 
 
-const SalesSideBar = ({active, setActive}: SideBarNav) => {
+
+const OpsSideBar = ({active, setActive}: SideBarNav) => {
     const router = useRouter()
     
 
@@ -48,44 +51,45 @@ const SalesSideBar = ({active, setActive}: SideBarNav) => {
                 <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px] ">
                     <span className={active === "dashboard"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('dashboard')}}>
                         <BiSolidDashboard size={23} />
-                        <p className="text-[17px]">Dashboard</p>
+                        {active !== "sales" && <p className="text-[17px]">Dashboard</p>}
                     </span>
                     <span className={active === "leads"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('leads')}}>
                         <FaUserTag size={23} /> 
-                        <p className="text-[17px]">Leads</p>
+                        {active !== "sales" && <p className="text-[17px]">Leads</p> }
                     </span>
-                    <span className={active === "sales-pipeline"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('sales-pipeline')}}>
-                        <IoStatsChartSharp size={23} />
-                        <p className="text-[17px]">Sales Pipeline</p>
+                    
+                    <span className={active === "sales"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('sales')}}>
+                        <RiLuggageCartFill size={23} />
+                        {active !== "sales" && <p className="text-[17px]">Sales</p> }
                     </span>
-                    <span className={active === "jobs"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('jobs')}}>
-                        <GiSuitcase size={23} />
-                        <p className="text-[17px]">Jobs</p>
-                    </span>
-                    <span className={active === "tasks"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('tasks')}}>
+                    <span className={active === "installs"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('installs')}}>
                         <BiSolidNotepad size={23} />
-                        <p className="text-[17px]">Tasks</p>
+                        {active !== "sales" && <p className="text-[17px]">Installs</p> }
                     </span>
                     <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
                         <BiSolidReport size={23} />
-                        <p className="text-[17px]">Reports</p>
+                        {active !== "sales" && <p className="text-[17px]">Reports</p>  }
+                    </span>
+                    <span className={active === "user-tracking"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('user-tracking')}}>
+                        <RiUserLocationFill size={23} />
+                        {active !== "sales" && <p className="text-[17px]">User Tracking</p> }
                     </span>
                     <span className={active === "notification"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notification')}}>
-                        <RiNotificationBadgeFill size={23} />
-                        <p className="text-[17px]">Notification</p>
+                        <MdNotifications size={23} />
+                        {active !== "sales" && <p className="text-[17px]">Notification</p>}
                     </span>
                     <span className={active === "settings"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('settings')}}>
                         <IoSettingsSharp size={23} />
-                        <p className="text-[17px]">Settings</p>
+                        {active !== "sales" && <p className="text-[17px]">Settings</p>}
                     </span>
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
                     <FiLogOut size={25} />
-                    <p className="text-lg">Logout</p>
+                    {active !== "sales" && <p className="text-lg">Logout</p>}
                 </span>
             </div>
         </div>
     )
 }
 
-export default SalesSideBar
+export default OpsSideBar
