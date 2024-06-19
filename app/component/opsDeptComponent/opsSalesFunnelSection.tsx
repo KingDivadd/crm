@@ -24,7 +24,6 @@ const OpsSalesFunnelSection = ({ }) => {
                                     <p className="text-md">{project.status}</p>
 
                                 </span>
-                                <p className="text-sm text-blue-600 hover:underline cursor-pointer w-1/2  " >View Details</p>
                             </div>
                         ))}
                     </div>
@@ -43,18 +42,17 @@ export const SalesfunnelLeadGen = ({})=>{
         <div className="w-full flex flex-col px-[10px] ">
             <span className="w-full flex item-center justify-start h-[30px]"><p className="text-sm">Project Info</p></span>
             <span className="w-full flex flex-row item-center justify-start h-[30px] gap-3">
-                <p className="text-sm">ID:</p>
+                <p className="text-sm font-light">ID:</p>
                 <p className="text-sm">10023</p>
             </span>
             <span className="w-full flex flex-row item-center justify-start h-[30px] gap-3">
-                <p className="text-sm">Name:</p>
+                <p className="text-sm font-light">Name:</p>
                 <p className="text-sm">Project Alpha</p>
             </span>
             <span className="w-full flex flex-row item-center justify-start h-[30px] gap-3">
-                <p className="text-sm">Status:</p>
+                <p className="text-sm font-light">Status:</p>
                 <p className="text-sm">New</p>
             </span>
-            <span className="w-full flex item-center justify-start h-[30px]"><p className="text-sm text-blue-600 hover:underline">view details</p></span>
         </div>
     )
 }
@@ -65,18 +63,17 @@ export const SalesfunnelQualification = ({})=>{
         <div className="w-full flex flex-col px-[10px] ">
             <span className="w-full flex item-center justify-start h-[30px]"><p className="text-sm">Project Info</p></span>
             <span className="w-full flex flex-row item-center justify-start h-[30px] gap-3">
-                <p className="text-sm">ID:</p>
+                <p className="text-sm font-light">ID:</p>
                 <p className="text-sm">10023</p>
             </span>
             <span className="w-full flex flex-row item-center justify-start h-[30px] gap-3">
-                <p className="text-sm">Name:</p>
+                <p className="text-sm font-light">Name:</p>
                 <p className="text-sm">Project Gamma</p>
             </span>
             <span className="w-full flex flex-row item-center justify-start h-[30px] gap-3">
-                <p className="text-sm">Status:</p>
+                <p className="text-sm font-light">Status:</p>
                 <p className="text-sm">In Progress</p>
             </span>
-            <span className="w-full flex item-center justify-start h-[30px]"><p className="text-sm text-blue-600 hover:underline">view details</p></span>
         </div>
     )
 }
@@ -87,18 +84,17 @@ export const SalesfunnelProposal = ({status}:SalesFunnelProps)=>{
         <div className="w-full flex flex-col px-[10px] ">
             <span className="w-full flex item-center justify-start h-[30px]"><p className="text-sm">Project Info</p></span>
             <span className="w-full flex flex-row item-center justify-start h-[30px] gap-3">
-                <p className="text-sm">ID:</p>
+                <p className="text-sm font-light">ID:</p>
                 <p className="text-sm">10023</p>
             </span>
             <span className="w-full flex flex-row item-center justify-start h-[30px] gap-3">
-                <p className="text-sm">Name:</p>
+                <p className="text-sm font-light">Name:</p>
                 <p className="text-sm">Project Gamma</p>
             </span>
             <span className="w-full flex flex-row item-center justify-start h-[30px] gap-3">
-                <p className="text-sm">Status:</p>
+                <p className="text-sm font-light">Status:</p>
                 <p className="text-sm">{status || "Proposal Sent"}</p>
             </span>
-            <span className="w-full flex item-center justify-start h-[30px]"><p className="text-sm text-blue-600 hover:underline">view details</p></span>
         </div>
     )
 }

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Task, Columns, tasks } from '@/types';
+import { Task, Columns, tasks, SchedulingAndLogisticDataProps } from '@/types';
 
 const SchedulingAndLogistics: React.FC = () => {
     const columns: Columns = {
@@ -39,3 +39,24 @@ const SchedulingAndLogistics: React.FC = () => {
 };
 
 export default SchedulingAndLogistics;
+
+
+export const SchedulingAndLogisticData = ({task, date, team}:SchedulingAndLogisticDataProps) =>{
+
+    return (
+        <div className="w-full flex flex-col px-[10px]  ">
+            <span className="w-full flex flex-row items-center gap-3 justitfy-start h-[30px] ">
+                <p className="text-sm font-light">Task:</p>
+                <p className="text-sm"> {task}</p>
+            </span>
+            <span className="w-full flex flex-row items-center gap-3 justitfy-start h-[30px]  ">
+                <p className="text-sm font-light">Date: </p>
+                <p className="text-sm">{date}</p>
+            </span>
+            <span className="w-full flex flex-row items-center gap-3 justitfy-start h-[30px] ">
+                <p className="text-sm font-light">Assigned Team:</p>
+                <p className="text-sm"> {team}</p>
+            </span>
+        </div>
+    )
+}

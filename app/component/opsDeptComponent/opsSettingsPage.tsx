@@ -110,8 +110,6 @@ const OpsSettingsPage = () => {
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
                                     <ImageUploader id={'user-image'} title={"User Image"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192427/ugxr954jsbyd1utozwzy.jpg'} />
                                 </span>
-                                
-                                
                             </div>}
                         </div>
 

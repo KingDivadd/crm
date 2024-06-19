@@ -7,7 +7,7 @@ import { IoCaretBackOutline } from "react-icons/io5";
 import { HiFilter } from "react-icons/hi";
 
 const OpsLeadsPage = () => {
-    const [showFilters, setShowFilters] = useState(false)
+    const [showFilters, setShowFilters] = useState(true)
     const [show, setShow] = useState(false)
     const [addLead, setAddLead] = useState(false)
     const [selectedLead, setSelectedLead] = useState(null)

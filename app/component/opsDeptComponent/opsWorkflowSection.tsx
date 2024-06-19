@@ -40,22 +40,19 @@ export default OpsWorkflowSection;
 export const ProjectWorkFlowApproval = ()=>{
 
     return (
-        <div className="w-full flex flex-col items-start ">
+        <div className="w-full flex flex-col items-start justif-start  ">
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Project ID:</p>
+                <p className="text-sm font-light">Project ID:</p>
                 <p className="text-sm">1001</p>
             </span>
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Project Name:</p>
+                <p className="text-sm font-light">Project Name:</p>
                 <p className="text-sm">Project Alpha</p>
             </span>
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Status:</p>
+                <p className="text-sm font-light">Status:</p>
                 <p className="text-sm">Pending</p>
 
-            </span>
-            <span className="w-full flex flex-row items-center justify-start px-[10px] gap-[10px] h-[30px] ">
-                <p className="text-sm text-blue-600 hover:underline cursor-pointer " >View Details</p>
             </span>
         </div>
     )
@@ -66,20 +63,17 @@ export const ProjectWorkFlowEngineering = ()=>{
     return (
         <div className="w-full flex flex-col items-start ">
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Project ID:</p>
+                <p className="text-sm font-light">Project ID:</p>
                 <p className="text-sm">1005</p>
             </span>
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Project Name:</p>
+                <p className="text-sm font-light">Project Name:</p>
                 <p className="text-sm">Project Gamma</p>
             </span>
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Status:</p>
+                <p className="text-sm font-light">Status:</p>
                 <p className="text-sm">In Progress</p>
 
-            </span>
-            <span className="w-full flex flex-row items-center justify-start px-[10px] gap-[10px] h-[30px] ">
-                <p className="text-sm text-blue-600 hover:underline cursor-pointer " >View Details</p>
             </span>
         </div>
     )
@@ -90,20 +84,17 @@ export const ProjectWorkFlowPermitApproval = ()=>{
     return (
         <div className="w-full flex flex-col items-start ">
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Project ID:</p>
+                <p className="text-sm font-light">Project ID:</p>
                 <p className="text-sm">1007</p>
             </span>
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Project Name:</p>
+                <p className="text-sm font-light">Project Name:</p>
                 <p className="text-sm">Project Delta</p>
             </span>
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Status:</p>
+                <p className="text-sm font-light">Status:</p>
                 <p className="text-sm">Submitted</p>
 
-            </span>
-            <span className="w-full flex flex-row items-center justify-start px-[10px] gap-[10px] h-[30px] ">
-                <p className="text-sm text-blue-600 hover:underline cursor-pointer " >View Details</p>
             </span>
         </div>
     )
@@ -114,21 +105,19 @@ export const ProjectWorkFlowInstallation = ()=>{
     return (
         <div className="w-full flex flex-col items-start ">
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Project ID:</p>
+                <p className="text-sm font-light">Project ID:</p>
                 <p className="text-sm">1009</p>
             </span>
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Project Name:</p>
+                <p className="text-sm font-light">Project Name:</p>
                 <p className="text-sm">Project Epilson</p>
             </span>
             <span className="w-full flex flex-row items-center gap-3 justitfy-start px-[10px]  h-[30px] ">
-                <p className="text-sm">Status:</p>
+                <p className="text-sm font-light">Status:</p>
                 <p className="text-sm">Scheduled</p>
 
             </span>
-            <span className="w-full flex flex-row items-center justify-start px-[10px] gap-[10px] h-[30px] ">
-                <p className="text-sm text-blue-600 hover:underline cursor-pointer " >View Details</p>
-            </span>
+
         </div>
     )
 }

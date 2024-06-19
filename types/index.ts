@@ -234,8 +234,15 @@ export const salesFunnelStages = [
 ];
 
 export interface SalesFunnelProps {
-    status: String;
+    status: string;
 }
+
+export interface SchedulingAndLogisticDataProps {
+    task: string;
+    date: string;
+    team: string;
+}
+
 
 export interface Task {
     task: string;
