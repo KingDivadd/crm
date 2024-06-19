@@ -8,7 +8,6 @@ import { RiNotificationBadgeFill } from "react-icons/ri";
 import { BiSolidNotepad } from "react-icons/bi";
 import { IoSettingsSharp } from "react-icons/io5";
 import {useRouter} from 'next/navigation'
-import { BiSolidDashboard } from "react-icons/bi";
 import { FaUserTag } from "react-icons/fa6";
 import { FaBriefcase } from "react-icons/fa";
 import { PiClipboardTextFill } from "react-icons/pi";
@@ -49,9 +48,9 @@ const OpsSideBar = ({active, setActive}: SideBarNav) => {
             {/* sidebar items */}
             <div className="w-full h-[600px]  flex flex-col items-start justify-between admin-side-bar-cont ">
                 <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px] ">
-                    <span className={active === "dashboard"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('dashboard')}}>
-                        <BiSolidDashboard size={23} />
-                        {active !== "sales" && <p className="text-[17px]">Dashboard</p>}
+                    <span className={active === "home"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('home')}}>
+                        <RiHome3Fill size={23} />
+                        {active !== "sales" && <p className="text-[17px]">Home</p>}
                     </span>
                     <span className={active === "leads"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('leads')}}>
                         <FaUserTag size={23} /> 
