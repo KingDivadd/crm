@@ -101,7 +101,7 @@ const OpsSettingsPage = () => {
                     
                         {/* User information if it is the admin */}
                         <div className="w-full flex flex-col justify-start items-start gap-3">
-                            <span className="w-full h-[35px] flex justify-start items-center cursor-pointer hover:text-blue-500"  onClick={()=>{setEditUserProfile(!editUserProfile)}} >
+                            <span className="w-full h-[35px] flex justify-start items-center cursor-pointer hover:text-blue-500"  >
                                 <p className="text-lg">User information</p>
                                 {/* <span className="w-[20px] h-[20px] cursor-pointer flex items-center justify-center "> {editUserProfile ? <FaCaretUp size={20} /> : <FaCaretDown size={20}  />} </span> */}
                             </span>
