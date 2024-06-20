@@ -58,7 +58,7 @@ const DeleteLeadModal = ({showModal, setShowModal, selectedItem, setSelectedItem
                                 <p className="text-lg font-semibold">Are you sure you want to delete LEAD <strong className='text-red-500'>LD10023</strong></p>
 
                                 <span className="w-full flex items-center justify-center gap-[20px]">
-                                    <button className=" w-[150px] h-[45px] text-white bg-red-600 rounded-[5px] hover:bg-red-500 flex items-center justify-center" onClick={handleFullDelete} disabled={loading}>
+                                    <button className=" w-[150px] h-[40px] text-white bg-red-600 rounded-[5px] hover:bg-red-500 flex items-center justify-center" onClick={handleFullDelete} disabled={loading}>
                                         {loading ? (
                                             <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

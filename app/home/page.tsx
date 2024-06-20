@@ -4,6 +4,7 @@ import React, {useState, useEffect} from 'react'
 import AdminDashboard from '../component/dashboardComponent/adminDashboard'
 import SalesDashboard from '../component/salesDeptComponent/salesDashboard'
 import OpsDashboard from "../component/opsDeptComponent/opsDashboard"
+import CustomerDashboard from "../component/customerComponent/customerDashboard"
 
 const Dashboard = () => {
     const [userRole, setUserRole] = useState('admin')
@@ -11,7 +12,8 @@ const Dashboard = () => {
         <div className="">
             {/* {userRole === 'admin' && <AdminDashboard />  } */}
             {/* {userRole === 'admin' && <SalesDashboard />  } */}
-            {userRole === 'admin' && <OpsDashboard />  }
+            {/* {userRole === 'admin' && <OpsDashboard />  } */}
+            {userRole === 'admin' && <CustomerDashboard />  }
 
         </div>
     )

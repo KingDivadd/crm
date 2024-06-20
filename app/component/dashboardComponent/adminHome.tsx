@@ -18,39 +18,39 @@ import { RiBarChartFill } from "react-icons/ri";
 const AdminHome = () => {
     const router = useRouter()
     return (
-        <div className="w-full p-[10px] pb-[10px]">
+        <div className="w-full p-[10px] pb-[10px] ">
             <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">
                 {/* first section = summary stat */}
                 <div className="w-full flex flex-row items-center justify-between gap-[10px]">
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4 border border-blue-500 ">
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4 border border-blue-600 ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl font-semibold">Total Lead</p>
-                            <p className="text-sm font-semibold">450</p>
-                            <p className="text-sm font-light">Last 30 days</p>
+                            <p className="text-xl text-blue-600">Total Lead</p>
+                            <p className="text-sm text-blue-600">450</p>
+                            <p className="text-sm font-light text-blue-600">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-green-600 bg-white w-1/4  ">
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-lime-600 bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl font-semibold">Total Sales</p>
-                            <p className="text-sm font-semibold">450</p>
-                            <p className="text-sm font-light">Last 30 days</p>
+                            <p className="text-xl text-lime-600">Total Sales</p>
+                            <p className="text-sm text-lime-600">450</p>
+                            <p className="text-sm font-light text-lime-600">Last 30 days</p>
                         </div>
                     </span>
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-sky-600 rounded-[5px] bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl font-semibold">Total Installations</p>
-                            <p className="text-sm font-semibold">450</p>
-                            <p className="text-sm font-light">Last 30 days</p>
+                            <p className="text-xl text-sky-600">Total Installations</p>
+                            <p className="text-sm text-sky-600">450</p>
+                            <p className="text-sm font-light text-sky-600">Last 30 days</p>
                         </div>
                     </span>
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-lime-600 rounded-[5px] bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl font-semibold">Total Projects</p>
-                            <p className="text-sm font-semibold">450</p>
-                            <p className="text-sm font-light">Last 30 days</p>
+                            <p className="text-xl text-lime-600">Total Projects</p>
+                            <p className="text-sm text-lime-600">450</p>
+                            <p className="text-sm font-light text-lime-600">Last 30 days</p>
                         </div>
                     </span>
                     
