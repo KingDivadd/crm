@@ -197,3 +197,23 @@ export const pipelineLeadComment = [
   {title: "June 16, 2023", value: "Received Approval from Engineering"},
   
 ]
+
+export const jobListBasicInfo = [
+  {title: "Job Number", value: "JB1000123"}, {title: "Customer Name", value: "Mark Tyson"}, {title: "Address", value: "123, Main St, Springfield"}, {title: "Phone", value: "(123)-456-789"}, {title: "Designer", value: "Marry Jane"}, {title: "Gate Code", value: "234567"}, {title: "Appointment Date", value: "June 21, 2024"}
+]
+
+export const jobListProjectInfo = [
+  {title: "Attached/Freestanding", value: 'Attached'}, {title: "IRP/Lattice/Combo/Flat Pan/Louver/Hybrid", value: 'IRP'}, {title: 'Cover Size', value: "10x20 feet"}, {title: "End Cap Style", value: "Standard"}, {title: "Cover Color", value:"blue"}, {title: "Trim Color", value: 'white'}
+]
+
+export const jobListScheduleInfo = [
+  {title:"Footings Date", value: "June 21, 2024" }, {title: 'Set Post Date', value: "June 23, 2024"}, {title: "Demo Date", value: "June 25, 2024"}, {title: "Install Date", value: "June 26, 2024"}, {title: "Electrical Date", value: "June 28, 2024"}, {title: "Electrical Date", value: "June 29, 2024"}, {title: "Inspection Date", value: "June 29, 2024"}, {title: "Inspection Result", value: "Pass"}
+]
+
+export const jobListMaterialsInfo = [
+  {title: "Materials Ordered", value: "Yes"}, {title: "Materials", value: "$1,500"}, {title: "Material Received Date", value: "June 18, 2024"}, {title: "Material Delivered to Customer Date", value: "June 20, 2024"}
+]
+
+export const jobListPayementInfo = [
+  {title: "Deposit", value: "$500"}, {title: 'Scheduling', value: "$450"}, {title: 'Delivery', value: '$500'}, {title: 'Construction Completion', value: "$500"}, {title: "Electrical Completion", value: '$250'}
+]

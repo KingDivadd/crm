@@ -7,16 +7,16 @@ import { IoIosWarning } from "react-icons/io";
 import { DropDownBlankTransparent } from '../dropDown'
 import ImageUploader from '../imageUploader'
 
-const CreateTicketModal = ({showModal, setShowModal, selectedItem, setSelectedItem, show, setShow  }:DeleteTaskProps) => {
-    const [project, setProject] = useState({issue: ''})
+const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedItem, show, setShow  }:DeleteTaskProps) => {
+    const [project, setProject] = useState({comment: ''})
     const [updateBtn, setUpdateBtn] = useState(false)
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState({message: '', type: ''})
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        project:false,
+        status:false,
     });
     const [dropElements, setDropElements] = useState({
-        project:'Select Project',
+        status:'Select Project',
     })
 
     const handleDropMenu = (dropdown: any) => {
@@ -82,23 +82,53 @@ const CreateTicketModal = ({showModal, setShowModal, selectedItem, setSelectedIt
                         <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
                             <div className="w-full min-h-[300px] flex flex-col justify-start items-center p-[20px] ">
                                 <div className="w-full flex flex-col items-start justify-start gap-[15px] ">
-                                    <p className="text-lg font-semibold">Create New Service Ticket</p>
+                                    <p className="text-lg font-semibold h-[40px] border-b border-gray-300 w-full ">Ticket Information</p>
+
+                                    <span className="w-full flex flex-row items-center justify-start gap-3">
+                                        <p className="text-md font-light">Job Number:</p>
+                                        <p className="text-md ">JB1000123</p>
+                                    </span>
+
+                                    <span className="w-full flex flex-row items-center justify-start gap-3">
+                                        <p className="text-md font-light">Description:</p>
+                                        <p className="text-md ">Electrical Completion Pending</p>
+                                    </span>
+
+                                    <span className="w-full flex flex-row items-center justify-start gap-3">
+                                        <p className="text-md font-light">Status:</p>
+                                        <p className="text-md text-amber-600 ">In Progress</p>
+                                    </span>
+
+                                    <span className="w-full flex flex-row items-center justify-start gap-3">
+                                        <p className="text-md font-light">Date Created:</p>
+                                        <p className="text-md  ">June 15, 2024</p>
+                                    </span>
+
+                                    <span className="w-full flex flex-row items-center justify-start gap-3">
+                                        <p className="text-md font-light">Due Created:</p>
+                                        <p className="text-md ">June 27, 2024</p>
+                                    </span>
+
+                                    <span className="w-full flex flex-col items-start justify-start gap-3">
+                                        <p className="text-md font-light">Comments:</p>
+                                        {['Follow up with electrician', 'Confirm completion date'].map((data, ind)=>{
+                                            return (
+                                                <p key={ind} className="text-md ">{ind + 1}. {data}</p>
+                                            )
+                                        })}
+                                    </span>
+
+
                                     <span className="w-full flex flex-col items-start justify-start gap-2 z-10">
-                                        <h4 className="text-md font-light">Select Project</h4>
+                                        <h4 className="text-md font-light">Update Project Status</h4>
                                         <span className="h-[40px] w-full z-10">
-                                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'project'} dropArray={['Project 1', 'Project 2', 'Project 3', 'Project 4', 'Project 5', 'Project 6']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Open', 'In Progress', 'Pending', 'Completed', 'Closed']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                         </span>
                                     </span>
 
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Issue Description</h4>
-                                        <input type="text" name='issue' className='normal-input' value={project.issue} onChange={handleChange} />
-                                    </span>
-
-                                    <span className="w-full flex flex-col justify-start items-start gap-3">
-                                        <span className="w-full flex flex-col items-start justify-start gap-2">
-                                            <ImageUploader id={'user-image'} title={"User Image"} url={''} />
-                                        </span>
+                                        <h4 className="text-md font-light">Add comment</h4>
+                                        <input type="text" name='comment' className='normal-input' value={project.comment} onChange={handleChange} />
                                     </span>
 
                                     <span className="w-full flex items-center justify-end">
@@ -108,7 +138,7 @@ const CreateTicketModal = ({showModal, setShowModal, selectedItem, setSelectedIt
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
                                                 <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                                             </svg>
-                                            ) : 'Submit'}
+                                            ) : 'Save Changes'}
                                             
                                         </button>
                                     </span>
@@ -125,5 +155,5 @@ const CreateTicketModal = ({showModal, setShowModal, selectedItem, setSelectedIt
     )
 }
 
-export default CreateTicketModal
+export default ServiceTicketModal
 

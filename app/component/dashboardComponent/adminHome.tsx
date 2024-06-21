@@ -30,11 +30,11 @@ const AdminHome = () => {
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-lime-600 bg-white w-1/4  ">
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-lime-700 bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-lime-600">Total Sales</p>
-                            <p className="text-sm text-lime-600">450</p>
-                            <p className="text-sm font-light text-lime-600">Last 30 days</p>
+                            <p className="text-xl text-lime-700">Total Sales</p>
+                            <p className="text-sm text-lime-700">450</p>
+                            <p className="text-sm font-light text-lime-700">Last 30 days</p>
                         </div>
                     </span>
                     
@@ -48,9 +48,9 @@ const AdminHome = () => {
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-lime-600 rounded-[5px] bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-lime-600">Total Projects</p>
-                            <p className="text-sm text-lime-600">450</p>
-                            <p className="text-sm font-light text-lime-600">Last 30 days</p>
+                            <p className="text-xl text-lime-700">Total Projects</p>
+                            <p className="text-sm text-lime-700">450</p>
+                            <p className="text-sm font-light text-lime-700">Last 30 days</p>
                         </div>
                     </span>
                     

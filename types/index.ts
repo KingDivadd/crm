@@ -138,6 +138,11 @@ export interface ImageUploaderProps {
     id: string;
 }
 
+export interface JobListProps {
+    title: string;
+    value: string;
+}
+
 export interface DeleteTaskProps {
     showModal: boolean;
     setShowModal: (showModal: boolean) => void;

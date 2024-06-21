@@ -13,7 +13,7 @@ const AdminDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
         const item = sessionStorage.getItem('sideNav')
-        if (item == null || item == "") {
+        if (item == null || item == "" || !['home', 'user-management', 'analytics', 'notifications', 'logs', 'system-settings'].includes(active)) {
             setActive('home')
         }else{
             setActive(item)

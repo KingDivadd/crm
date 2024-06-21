@@ -155,6 +155,18 @@
     @apply w-full gap-1 flex flex-row items-center justify-center border-b border-gray-300 pt-[10px];
 }
 
+.job-list-table-list {
+    @apply w-full gap-1 flex flex-row items-center justify-center border-b border-gray-300;
+}
+
+.customer-notification-cont::-webkit-scrollbar {
+    @apply w-[7px] h-[7px]
+}
+
+.customer-notification-cont::-webkit-scrollbar-thumb {
+    @apply w-[7px] h-[7px] bg-gray-300
+}
+
 .approval-flow-table-list:hover {
     @apply bg-gray-100
 }

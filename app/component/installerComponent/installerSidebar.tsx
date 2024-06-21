@@ -4,15 +4,20 @@ import { RiHome3Fill } from "react-icons/ri";
 import { FiLogOut } from "react-icons/fi";
 import { FaUserTie } from "react-icons/fa";
 import { IoStatsChartSharp } from "react-icons/io5";
-import { RiNotificationBadgeFill } from "react-icons/ri";
+import { MdVerifiedUser } from "react-icons/md";
 import { BiSolidNotepad } from "react-icons/bi";
 import { IoSettingsSharp } from "react-icons/io5";
-import { SideBarNav } from '@/types';
+import { SideBarNav } from '../../../types/index';
 import {useRouter} from 'next/navigation'
+import { FaTasks, FaTicketAlt  } from "react-icons/fa";
 import { MdNotifications } from "react-icons/md";
+import { FaCamera } from "react-icons/fa";
+import { FaFileInvoice } from "react-icons/fa6";
+import { BiSolidReport } from "react-icons/bi";
+import { HiChartSquareBar } from "react-icons/hi";
 
 
-const SideBar = ({active, setActive}:SideBarNav) => {
+const InstallerSideBar = ({active, setActive}:SideBarNav) => {
     const router = useRouter()
     
 
@@ -33,9 +38,9 @@ const SideBar = ({active, setActive}:SideBarNav) => {
     return (
         <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-white ">
             {/* sidebar nav */}
-            <div className="w-full flex flex-row items-center justify-start h-[50px] bg-blue-700 pl-[20px] ">
+            <div className="w-full flex flex-row items-center justify-start h-[50px] bg-white pl-[20px] border-b border-blue-700 ">
                 <span className="flex flex-row items-center justify-start">
-                    <p className="text-xl font-semibold text-white">SBD</p>
+                    <p className="text-xl font-semibold text-blue-600">SBD</p>
                 </span>
             </div>
             {/* sidebar items */}
@@ -45,25 +50,25 @@ const SideBar = ({active, setActive}:SideBarNav) => {
                         <RiHome3Fill size={23} />
                         <p className="text-[17px]">Home</p>
                     </span>
-                    <span className={active === "user-management"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('user-management')}}>
-                        <FaUserTie size={23} /> 
-                        <p className="text-[17px]">User Management</p>
+                    <span className={active === "job-list"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('job-list')}}>
+                        <FaTasks size={22} /> 
+                        <p className="text-[17px]">Job List</p>
                     </span>
-                    <span className={active === "analytics"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('analytics')}}>
-                        <IoStatsChartSharp size={23} />
-                        <p className="text-[17px]">Reports and Analytics</p>
+                    <span className={active === "service-ticket"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('service-ticket')}}>
+                        <FaTicketAlt  size={23} />
+                        <p className="text-[17px]">Service Ticket</p>
                     </span>
-                    <span className={active === "notifications"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notifications')}}>
-                        <MdNotifications size={23} />
-                        <p className="text-[17px]">Notifications</p>
+                    <span className={active === "photo-upload"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('photo-upload')}}>
+                        <FaCamera size={23} />
+                        <p className="text-[17px]">Photo Upload</p>
                     </span>
-                    <span className={active === "logs"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('logs')}}>
-                        <BiSolidNotepad size={23} />
-                        <p className="text-[17px]">Logs</p>
+                    <span className={active === "bill-sheet"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('bill-sheet')}}>
+                        <FaFileInvoice size={23} />
+                        <p className="text-[17px]">Bill Sheet</p>
                     </span>
-                    <span className={active === "system-settings"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('system-settings')}}>
-                        <IoSettingsSharp size={23} />
-                        <p className="text-[17px]">System Settings</p>
+                    <span className={active === "report"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('report')}}>
+                        <HiChartSquareBar size={26} />
+                        <p className="text-[17px]">Reports</p>
                     </span>
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
@@ -75,4 +80,4 @@ const SideBar = ({active, setActive}:SideBarNav) => {
     )
 }
 
-export default SideBar
+export default InstallerSideBar
