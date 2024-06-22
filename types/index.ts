@@ -138,6 +138,14 @@ export interface ImageUploaderProps {
     id: string;
 }
 
+export interface ProjectImageUploaderProps {
+    title: string;
+    url: string;
+    id: string;
+    disabled: boolean;
+    handleUploadClick: () => void;
+}
+
 export interface JobListProps {
     title: string;
     value: string;

@@ -238,6 +238,27 @@
     height: calc(100vh - 270px)
 }
 
+.uploaded-photos-cont {
+    height: calc(100vh - 300px)
+}
+
+.uploaded-photos-cont::-webkit-scrollbar {
+    width: 7px;
+    height: 7px
+}
+
+.uploaded-photos-cont::-webkit-scrollbar-thumb {
+    @apply w-[7px] h-[7px] bg-blue-600
+}
+
+.uploaded-photos-cont-2 {
+    height: calc(100vh - 160px)
+}
+
+.bill-sheet-cont {
+    height: calc(100vh - 230px)
+}
+
 .overdue-row {
     @apply w-full h-[40px] flex flex-row items-center justify-start cursor-pointer bg-red-200 text-red-700;
 }

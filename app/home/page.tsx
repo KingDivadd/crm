@@ -14,8 +14,8 @@ const Dashboard = () => {
             {/* {userRole === 'admin' && <AdminDashboard />  } */}
             {/* {userRole === 'admin' && <SalesDashboard />  } */}
             {/* {userRole === 'admin' && <OpsDashboard />  } */}
-            {userRole === 'admin' && <CustomerDashboard />  }
-            {/* {userRole === 'admin' && <InstallerDashboard />  } */}
+            {/* {userRole === 'admin' && <CustomerDashboard />  } */}
+            {userRole === 'admin' && <InstallerDashboard />  }
 
         </div>
     )

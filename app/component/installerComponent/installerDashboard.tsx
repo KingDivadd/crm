@@ -5,6 +5,9 @@ import InstallerNavbar from './installerNavbar'
 import InstallerHomePage from './installerHomePage'
 import JobListPage from './jobListPage'
 import ServiceTicketPage from './serviceTickets'
+import PhotoUpload from './photoUpload'
+import BillSheetPage from './billSheetPage'
+import ReportsPage from './reportsPage'
 
 
 
@@ -30,6 +33,9 @@ const InstallerDashboard = () => {
                     {active === "home" && <InstallerHomePage /> }
                     {active === "job-list" && <JobListPage /> }
                     {active === "service-ticket" && <ServiceTicketPage /> }
+                    {active === "photo-upload" && <PhotoUpload /> }
+                    {active === "bill-sheet" && <BillSheetPage /> }
+                    {active === "report" && <ReportsPage /> }
                     
                 </div>
             </div>
