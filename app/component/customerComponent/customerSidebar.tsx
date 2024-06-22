@@ -33,9 +33,9 @@ const CustomerSideBar = ({active, setActive}:SideBarNav) => {
     return (
         <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-white ">
             {/* sidebar nav */}
-            <div className="w-full flex flex-row items-center justify-start h-[50px] bg-blue-700 pl-[20px] ">
+            <div className="w-full flex flex-row items-center justify-start h-[50px] bg-white border-b border-gray-100 pl-[20px] ">
                 <span className="flex flex-row items-center justify-start">
-                    <p className="text-xl font-semibold text-white">SBD</p>
+                    <p className="text-xl font-semibold text-black">SBD</p>
                 </span>
             </div>
             {/* sidebar items */}

@@ -89,7 +89,7 @@ const SettingsPage = () => {
 
     return (
         <div className="w-full p-[10px] ">
-            <div className="w-full relative flex flex-row items-start justify-start gap-3  ">
+            <div className="w-full relative flex flex-row items-start justify-start gap-3 pt-[20px] ">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} {/* Display alert */}
                 </span>

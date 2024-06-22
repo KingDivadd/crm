@@ -22,7 +22,7 @@ const ServiceTicketPage = () => {
 
     return (
         <div className="w-full flex p-[10px] ">
-            <div className="w-full h-full flex flex-col gap-[25px] ">
+            <div className="w-full h-full flex flex-col gap-[25px] pt-[20px] ">
                 <div className="w-full flex flex-row items-center justify-between gap-[10px]">
                     <span className=" flex flex-col gap-3 items-start justify-start h-[85px] rounded-[5px] bg-white w-1/4 border border-blue-600 ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">

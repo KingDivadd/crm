@@ -26,18 +26,18 @@ const CustomerDashboardNav = () => {
     // }, []);
 
     return (
-        <div className='w-full h-[50px] bg-blue-700 flex flex-row items-center justify-between pr-[10px]'>
+        <div className='w-full h-[50px] bg-white border-b border-gray-100 flex flex-row items-center justify-between pr-[10px]'>
             <span className="flex flex-row items-center justify-start gap-5">
-                <p className="text-lg font-semibold text-white"></p>                
+                <p className="text-lg font-semibold text-black">Welcome Poppins</p>                
             </span>
 
             <span className="flex flex-row h-full items-center justify-center gap-5">
                 {/* user avatar */}
                 <span className="flex flex-col justify-between items-start h-[35px] my-auto">
-                    <p className='text-sm font-semibold text-white'>Iroegbu David</p>
-                    <p className='text-sm text-white'>Customer</p>
+                    <p className='text-sm font-semibold text-black'>Marry Poppins</p>
+                    <p className='text-sm text-black'>Customer</p>
                 </span>
-                <span className="flex items-center justify-center p-[2px] bg-blue-400 rounded-[100%] ">
+                <span className="flex items-center justify-center p-[2px] bg-blue-600 rounded-[100%] ">
                     <span className="relative  h-[30px] w-[30px] rounded-[100%] overflow-hidden ">
                         <Image 
                             src={"https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718748903/u6wmwqvxzfinumomdfro.jpg"} 
@@ -50,7 +50,7 @@ const CustomerDashboardNav = () => {
                 {/* bell icon */}
                 <span className='h-full flex items-center justify-center text-white'>
                     <div className="w-auto relative flex items-start justify-start">
-                        <span className="h-full flex items-center justify-center text-white">
+                        <span className="h-full flex items-center justify-center text-blue-600">
                             <BsBell size={23} className='cursor-pointer' onClick={handleCalendarToggle} />
                         </span>
                         {isCalendarOpen && (

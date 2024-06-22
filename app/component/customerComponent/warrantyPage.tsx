@@ -16,7 +16,7 @@ const WarrantyPage = () => {
 
     return (
         <div className="w-full flex p-[10px] ">
-            <div className="w-full flex flex-col items-start justify-start gap-[25px] ">
+            <div className="w-full flex flex-col items-start justify-start gap-[25px] pt-[20px] ">
                 <p className="text-xl font-semibold">Warranty Info Page</p>
 
                 {/* Notification table*/}

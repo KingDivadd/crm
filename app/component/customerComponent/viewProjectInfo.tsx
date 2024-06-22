@@ -53,12 +53,16 @@ const ViewProjectInfo = ({showModal, setShowModal, selectedItem, setSelectedItem
                     <div className="h-auto w-[80%] mx-auto shadow-xl flex bg-red-200 items-start ">
                         {/* the container for the input fields */}
                         <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
-                            <div className="w-full h-[270px] flex flex-col justify-center items-center gap-[40px] px-[20px] ">
+                            <div className="w-full min-h-[200px] flex flex-col justify-center items-center gap-[40px] px-[20px] py-[5px] ">
                                 {/* Detailed Project Status */}
                                     <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                                        <p className="text-xl font-semibold">Detailed Project Status</p>
+                                        <span className="w-full flex items-center justify-between h-[50px] border-b-2 border-gray-200">
+                                            <p className="text-lg font-semibold">Detailed Project Status</p>
+                                            <p className="text-lg font-semibold text-blue-600">Project 1</p>
 
-                                        <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px] border border-blue-500 ">
+                                        </span>
+
+                                        <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px]  ">
                                             <span className="w-full h-[40px]  flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
                                                 <p className="text-sm font-semibold w-[20%] px-[10px] ">Project Name</p>
                                                 <p className="text-sm font-semibold w-[20%] px-[10px] ">Stage </p>
