@@ -146,7 +146,7 @@ const SettingsPage = () => {
                     </div>
 
                 </div>
-                <span className="w-full flex justify-end absoute absolute bottom-[10px] right-0">
+                <span className="w-full flex justify-end absoute absolute bottom-[30px] right-0">
                     <button className="mt-[10px] w-[170px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={updateSettings} disabled={loading}>
                             {loading ? (
                             <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
