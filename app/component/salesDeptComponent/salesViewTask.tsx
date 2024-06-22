@@ -162,7 +162,7 @@ const ViewTask = ({addTask, selectedTask, show, setShow, setSelectedTask}:SalesT
                                     <MyDatePicker clickedDate={clickedDate} setClickedDate={setClickedDate} />
                                 </div>}
                             </div>
-                            {/* <input type="date" name='taskDueDate' className='normal-input' value={task.taskDueDate} onChange={handleChange} /> */}
+                            
                         </span>
                         <span className="w-full flex flex-col items-start justify-start gap-2">
                             <h4 className="text-md font-light">Task Priority</h4>
