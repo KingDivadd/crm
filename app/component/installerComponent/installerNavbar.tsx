@@ -26,7 +26,7 @@ const InstallerNavbar = () => {
     // }, []);
 
     return (
-        <div className='w-full h-[50px] bg-white border-b border-blue-700 flex flex-row items-center justify-between pr-[10px]'>
+        <div className='w-full h-[50px] bg-white border-b border-gray-100 flex flex-row items-center justify-between pr-[10px]'>
             <span className="flex flex-row items-center justify-start gap-5">
                 <p className="text-lg font-semibold text-white"></p>                
             </span>
@@ -34,8 +34,8 @@ const InstallerNavbar = () => {
             <span className="flex flex-row h-full items-center justify-center gap-5">
                 {/* user avatar */}
                 <span className="flex flex-col justify-between items-start h-[35px] my-auto">
-                    <p className='text-sm font-semibold text-blue-600'>John Doe</p>
-                    <p className='text-sm text-blue-600'>Installer</p>
+                    <p className='text-sm font-semibold '>John Doe</p>
+                    <p className='text-sm '>Installer</p>
                 </span>
                 <span className="flex items-center justify-center p-[2px] bg-blue-600 rounded-[100%] ">
                     <span className="relative  h-[30px] w-[30px] rounded-[100%] overflow-hidden ">

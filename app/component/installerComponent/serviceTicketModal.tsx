@@ -82,7 +82,10 @@ const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedI
                         <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
                             <div className="w-full min-h-[300px] flex flex-col justify-start items-center p-[20px] ">
                                 <div className="w-full flex flex-col items-start justify-start gap-[15px] ">
-                                    <p className="text-lg font-semibold h-[40px] border-b border-gray-300 w-full ">Ticket Information</p>
+                                    <span className="w-full flex flex-row items-start justify-between border-b border-gray-300 h-[40px]">
+                                        <p className="text-lg font-semibold  ">Ticket Information</p>
+                                        <p className="text-lg font-semibold  text-blue-600 ">10021</p>
+                                    </span>
 
                                     <span className="w-full flex flex-row items-center justify-start gap-3">
                                         <p className="text-md font-light">Job Number:</p>

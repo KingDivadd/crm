@@ -231,11 +231,11 @@
 }
 
 .all-project-cont {
-    height: calc(100vh - 300px)
+    height: calc(100vh - 330px)
 }
 
 .customer-notification-cont {
-    height: calc(100vh - 250px)
+    height: calc(100vh - 270px)
 }
 
 .overdue-row {

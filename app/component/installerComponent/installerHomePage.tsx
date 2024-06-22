@@ -17,7 +17,7 @@ const InstallerHomePage = () => {
 
     return (
         <div className="w-full p-[10px] flex ">
-            <div className="w-full h-full flex flex-col gap-[25px] ">
+            <div className="w-full h-full flex flex-col gap-[25px] pt-[20px] ">
                 {/* summary tabs */}
                 <div className="w-full flex flex-row items-center justify-centereen gap-[10px]">
                     <span className=" flex flex-col gap-3 items-start justify-start h-[85px] rounded-[5px] bg-white w-1/3 border border-blue-600 ">

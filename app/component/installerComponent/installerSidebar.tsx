@@ -15,7 +15,7 @@ import { FaCamera } from "react-icons/fa";
 import { FaFileInvoice } from "react-icons/fa6";
 import { BiSolidReport } from "react-icons/bi";
 import { HiChartSquareBar } from "react-icons/hi";
-
+import { BsCameraFill } from "react-icons/bs";
 
 const InstallerSideBar = ({active, setActive}:SideBarNav) => {
     const router = useRouter()
@@ -38,9 +38,9 @@ const InstallerSideBar = ({active, setActive}:SideBarNav) => {
     return (
         <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-white ">
             {/* sidebar nav */}
-            <div className="w-full flex flex-row items-center justify-start h-[50px] bg-white pl-[20px] border-b border-blue-700 ">
+            <div className="w-full flex flex-row items-center justify-start h-[50px] bg-white pl-[20px] border-b border-gray-100 ">
                 <span className="flex flex-row items-center justify-start">
-                    <p className="text-xl font-semibold text-blue-600">SBD</p>
+                    <p className="text-xl font-semibold ">SBD</p>
                 </span>
             </div>
             {/* sidebar items */}
@@ -59,7 +59,7 @@ const InstallerSideBar = ({active, setActive}:SideBarNav) => {
                         <p className="text-[17px]">Service Ticket</p>
                     </span>
                     <span className={active === "photo-upload"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('photo-upload')}}>
-                        <FaCamera size={23} />
+                        <BsCameraFill size={23} />
                         <p className="text-[17px]">Photo Upload</p>
                     </span>
                     <span className={active === "bill-sheet"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('bill-sheet')}}>

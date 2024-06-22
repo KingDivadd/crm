@@ -22,7 +22,7 @@ const JobListPage = () => {
 
     return (
         <div className="w-full p-[10px] flex ">
-            <div className="w-full h-full flex flex-col gap-[20px] ">
+            <div className="w-full h-full flex flex-col gap-[20px] pt-[20px] ">
 
                 <p className="text-xl font-semibold">All Job List</p>
                 {/* Job List*/}
