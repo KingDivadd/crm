@@ -26,12 +26,13 @@ const InstallerNavbar = () => {
     // }, []);
 
     return (
-        <div className='w-full h-[50px] bg-white border-b border-gray-100 flex flex-row items-center justify-between pr-[10px]'>
+        <div className='relative w-full h-[50px] bg-white border-b border-gray-100 flex flex-row items-center justify-between pr-[10px]'>
+                
             <span className="flex flex-row items-center justify-start gap-5">
                 <p className="text-lg font-semibold text-white"></p>                
             </span>
 
-            <span className="flex flex-row h-full items-center justify-center gap-5">
+            <span className="flex flex-row h-full items-center justify-center gap-5 z-10 ">
                 {/* user avatar */}
                 <span className="flex flex-col justify-between items-start h-[35px] my-auto">
                     <p className='text-sm font-semibold '>John Doe</p>

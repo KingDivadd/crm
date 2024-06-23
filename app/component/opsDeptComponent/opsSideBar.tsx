@@ -38,7 +38,7 @@ const OpsSideBar = ({active, setActive}: SideBarNav) => {
     }
 
     return (
-        <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-white ">
+        <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-gray-100 ">
             {/* sidebar nav */}
             <div className="w-full flex flex-row items-center justify-start h-[50px] bg-blue-700 pl-[20px] ">
                 <span className="flex flex-row items-center justify-start">

@@ -197,7 +197,8 @@
 }
 
 .admin-side-bar-cont {
-    height: calc(100vh - 50px)
+    @apply my-auto bg-white;
+    height: calc(100vh - 50px - 20px);
 }
 
 .email-notification-cont {

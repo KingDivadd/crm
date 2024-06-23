@@ -8,6 +8,7 @@ import ServiceTicketPage from './serviceTickets'
 import PhotoUpload from './photoUpload'
 import BillSheetPage from './billSheetPage'
 import ReportsPage from './reportsPage'
+import Image from 'next/image'
 
 
 
@@ -24,10 +25,11 @@ const InstallerDashboard = () => {
     }, [])
     return (
         <div className="w-full h-[100vh] flex flex-row  items-start justify-between">
-            <div className="w-[280px] h-full bg-red-100 ">
+            <div className="w-[280px] h-full  ">
                 <InstallerSideBar active={active} setActive={setActive} />
             </div>
             <div className="flex-1 h-full bg-blue-100">
+            
                 <InstallerNavbar />
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "home" && <InstallerHomePage /> }

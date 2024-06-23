@@ -36,7 +36,7 @@ const InstallerSideBar = ({active, setActive}:SideBarNav) => {
     }
 
     return (
-        <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-white ">
+        <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-gray-100 ">
             {/* sidebar nav */}
             <div className="w-full flex flex-row items-center justify-start h-[50px] bg-white pl-[20px] border-b border-gray-100 ">
                 <span className="flex flex-row items-center justify-start">
@@ -44,8 +44,8 @@ const InstallerSideBar = ({active, setActive}:SideBarNav) => {
                 </span>
             </div>
             {/* sidebar items */}
-            <div className="w-full h-[600px]  flex flex-col items-start justify-between admin-side-bar-cont ">
-                <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px] ">
+            <div className="w-full h-[600px]  flex flex-col items-start justify-between admin-side-bar-cont  ">
+                <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px]">
                     <span className={active === "home"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('home')}}>
                         <RiHome3Fill size={23} />
                         <p className="text-[17px]">Home</p>
