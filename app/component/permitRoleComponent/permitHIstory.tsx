@@ -2,11 +2,42 @@
 import React, {useState, useEffect} from 'react'
 import InspectionModal from './inspectionPageModal'
 import PermitHistoryModal from './permitHistoryModal'
+import { DropDownBlankTransparent } from '../dropDown'
+import MyDatePicker from '../datePicker'
+import { FaCaretUp, FaCaretDown } from 'react-icons/fa'
 const PermitHistory = () => {
+    const [filter, setFilter] = useState({date: ''})
     const [show, setShow] = useState(false)
     const [showModal, setShowModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
+    const [clickedDate, setClickedDate] = useState('')
+    const [showCalender, setShowCalender] = useState(false)
+
     const [showRedlineModal, setShowRedlineModal] = useState(false)
+    const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
+        status:false,
+    });
+    const [dropElements, setDropElements] = useState({
+        status:'Select',
+    })
+
+    useEffect(() => {
+        setFilter({...filter, date: clickedDate})
+        setShowCalender(false)
+    }, [clickedDate])
+
+    const handleDropMenu = (dropdown: any) => {
+        const updatedDropMenus = Object.keys(dropMenus).reduce((acc, key) => {
+            acc[key] = key === dropdown ? !dropMenus[key] : false;
+            return acc;
+        }, {} as { [key: string]: boolean });
+        setDropMenus(updatedDropMenus);
+        setDropElements({...dropElements, [dropdown]: 'SELECT'});
+    };
+
+    const handleSelectDropdown = (dropdown: any, title:any)=>{
+        setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
+    }
 
 
     function viewInspection(data:any) {
@@ -23,13 +54,30 @@ const PermitHistory = () => {
 
     return (
         <div className="w-full p-[10px] flex ">
-            <div className="w-full h-full flex flex-col gap-[25px]  ">
+            <div className="w-full h-full flex flex-col gap-[15px]  ">
                 <p className="text-xl font-semibold">Permit Historys</p>
                 {/* Current Project*/}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <span className="w-full flex items-center justify-between">
                         <p className="text-lg font-semibold">All Permit</p>
-                        <p className="text-lg font-semibold text-blue-600">Filter</p>
+                        
+                        <span className="w- flex flex-end justify-end gap-3">
+                            <div className="w-full flex flex-col items-end justify-end relative z-10 ">
+                                <button className="rounded-[3px] h-[40px] w-full text-md bg-transparent border border-gray-400 font-light flex flex-row items-center justify-between px-[10px]" onClick={()=>{setShowCalender(!showCalender)}}>
+                                    {filter.date ? filter.date :  "Select Date"}
+                                    <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
+                                        {showCalender ?  <FaCaretUp  /> : <FaCaretDown  />}
+                                    </span>
+                                </button>
+                                {showCalender && <div className="absolute top-[45px] left-0 min-h-[290px] w-full  pt-[1px] flex flex-row items-start justify-center w-full ">
+                                    <MyDatePicker clickedDate={clickedDate} setClickedDate={setClickedDate} />
+                                </div>}
+                            </div>
+                            <input type="text" placeholder='Enter Permit Id' className='normal-input w-[250px] bg-transparent' />
+                            <span className="h-[40px] w-[200px]">
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Pending', 'Approved',]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                        </span>
+                        </span>
                     </span>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
