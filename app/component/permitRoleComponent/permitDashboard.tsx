@@ -6,7 +6,7 @@ import PermitHomePage from './permitHomePage'
 import AllPermitPage from './allPermitPage'
 import InspectionPage from './inspectionPage'
 import PermitApprovalPage from './permitApprovalPage'
-import PermitHistory from './permitHistory'
+import PermitHistory from './permitHistoryPage'
 
 
 

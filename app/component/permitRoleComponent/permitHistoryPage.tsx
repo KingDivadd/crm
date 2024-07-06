@@ -5,6 +5,9 @@ import PermitHistoryModal from './permitHistoryModal'
 import { DropDownBlankTransparent } from '../dropDown'
 import MyDatePicker from '../datePicker'
 import { FaCaretUp, FaCaretDown } from 'react-icons/fa'
+
+
+
 const PermitHistory = () => {
     const [filter, setFilter] = useState({date: ''})
     const [show, setShow] = useState(false)
