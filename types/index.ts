@@ -160,6 +160,13 @@ export interface DeleteTaskProps {
     setShow: (show: boolean) => void;
 }
 
+export interface RedlineProps {
+    showRedlineModal: boolean;
+    setShowRedlineModal: (showRedlineModal: boolean)=> void;
+    show: boolean;
+    setShow: (show: boolean) => void;
+}
+
 export interface PipelineProps {
     showDetails: boolean;
     setShowDetails: (showDetails: boolean) => void;

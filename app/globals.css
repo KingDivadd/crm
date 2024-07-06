@@ -347,3 +347,20 @@
 .active-report-tab {
     @apply text-blue-600;
 }
+
+.permit-cont-1 {
+    height: calc(100vh - 50px - 330px);
+}
+
+.permit-cont-3 {
+    height: calc(100vh - 330px);
+}
+
+.permit-cont-4 {
+    height: calc(100vh - 250px);
+}
+
+.permit-cont-2 {
+    max-height: calc(100vh - 50px - 330px);
+    min-height: 200px;
+}
