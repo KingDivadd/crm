@@ -64,8 +64,8 @@ const PermitHistory = () => {
                     <span className="w-full flex items-center justify-between">
                         <p className="text-lg font-semibold">All Permit</p>
                         
-                        <span className="w- flex flex-end justify-end gap-3">
-                            <div className="w-full flex flex-col items-end justify-end relative z-10 ">
+                        <span className=" flex flex-end justify-end gap-3">
+                            <div className="w-[175px] flex flex-col items-end justify-end relative z-10 ">
                                 <button className="rounded-[3px] h-[40px] w-full text-md bg-transparent border border-gray-400 font-light flex flex-row items-center justify-between px-[10px]" onClick={()=>{setShowCalender(!showCalender)}}>
                                     {filter.date ? filter.date :  "Select Date"}
                                     <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
@@ -76,8 +76,10 @@ const PermitHistory = () => {
                                     <MyDatePicker clickedDate={clickedDate} setClickedDate={setClickedDate} />
                                 </div>}
                             </div>
-                            <input type="text" placeholder='Enter Permit Id' className='normal-input w-[250px] bg-transparent' />
-                            <span className="h-[40px] w-[200px]">
+                            <span className="w-[275px] ">
+                                <input type="text" placeholder='Enter Permit Id' className='normal-input bg-transparent' />
+                            </span>
+                            <span className="h-[40px] w-[175px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Pending', 'Approved',]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                         </span>
                         </span>
