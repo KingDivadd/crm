@@ -27,7 +27,10 @@ const PermitHistory = () => {
                 <p className="text-xl font-semibold">Permit Historys</p>
                 {/* Current Project*/}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-lg font-semibold">All Permit</p>
+                    <span className="w-full flex items-center justify-between">
+                        <p className="text-lg font-semibold">All Permit</p>
+                        <p className="text-lg font-semibold text-blue-600">Filter</p>
+                    </span>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
