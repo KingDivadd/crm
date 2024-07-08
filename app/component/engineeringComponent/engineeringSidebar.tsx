@@ -3,13 +3,14 @@ import React, {useState, useEffect} from 'react'
 import { FiLogOut } from "react-icons/fi";
 import { SideBarNav } from '../../../types/index';
 import {useRouter} from 'next/navigation'
-import { FaTasks, FaTicketAlt  } from "react-icons/fa";
+import { FaTasks  } from "react-icons/fa";
 import { RiDashboardFill } from "react-icons/ri";
 import { FaFileAlt } from "react-icons/fa";
 import { MdAssignmentTurnedIn } from "react-icons/md";
-import { MdCheckCircleOutline } from "react-icons/md";
 import { RiHistoryFill } from "react-icons/ri";
 import { MdLiveHelp } from "react-icons/md";
+import { FaGear } from "react-icons/fa6";
+import { BiSolidReport } from "react-icons/bi";
 
 
 const EngineeringSidebar = ({active, setActive}:SideBarNav) => {
@@ -57,16 +58,16 @@ const EngineeringSidebar = ({active, setActive}:SideBarNav) => {
                         <MdLiveHelp size={22} /> 
                         <p className="text-[17px]">RFI</p>
                     </span>
-                    <span className={active === "permit-history"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('permit-history')}}>
-                        <RiHistoryFill size={22} /> 
+                    <span className={active === "projectManagement"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('projectManagement')}}>
+                        <FaTasks size={21} /> 
                         <p className="text-[17px]">Project Management</p>
                     </span>
-                    <span className={active === "permit-history"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('permit-history')}}>
-                        <RiHistoryFill size={22} /> 
+                    <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
+                        <BiSolidReport size={23} /> 
                         <p className="text-[17px]">Reports</p>
                     </span>
-                    <span className={active === "permit-history"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('permit-history')}}>
-                        <RiHistoryFill size={22} /> 
+                    <span className={active === "settings"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('settings')}}>
+                        <FaGear size={21} /> 
                         <p className="text-[17px]">Settings</p>
                     </span>
                     

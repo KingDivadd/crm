@@ -372,3 +372,23 @@
 .drawing-upload-cont {
     height: calc(100vh - 210px);
 }
+
+.engineering-cont-1 {
+    height: calc(100vh - 315px);
+}
+
+.engineering-cont-2 {
+    height: calc(100vh - 270px);
+}
+
+.report-btn-style {
+    @apply h-[40px] px-[20px] rounded-[3px] flex items-center bg-white text-slate-800  border border-slate-600 
+}
+
+.report-btn-style:hover {
+    @apply bg-blue-600 text-white border border-blue-600
+}
+
+.active-report-btn-style {
+    @apply h-[40px] px-[20px] rounded-[3px] flex items-center bg-blue-600 text-white  border border-blue-600 
+}

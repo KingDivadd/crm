@@ -6,6 +6,9 @@ import EngineeringDashboardPage from './engineeringDashboardPage'
 import TaskManagement from './taskManagement'
 import UploadDrawingPage from './uploadDrawing'
 import EngineeringRFI from './engineeringRfi'
+import ProjectManagementPage from './projectManagement'
+import ReportPage from './report'
+import SettingsPage from './settingsPage'
 
 
 const EngineeringDashboard = () => {
@@ -33,6 +36,9 @@ const EngineeringDashboard = () => {
                     {active === "taskManagement" && <TaskManagement /> }
                     {active === "uploadDrawing" && <UploadDrawingPage /> }
                     {active === "rfi" && <EngineeringRFI /> }
+                    {active === "projectManagement" && <ProjectManagementPage /> }
+                    {active === "reports" && <ReportPage /> }
+                    {active === "settings" && <SettingsPage /> }
 
                 </div>
             </div>
