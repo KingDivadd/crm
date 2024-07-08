@@ -360,7 +360,15 @@
     height: calc(100vh - 250px);
 }
 
+.permit-cont-5 {
+    height: calc(100vh - 300px);
+}
+
 .permit-cont-2 {
     max-height: calc(100vh - 50px - 330px);
     min-height: 200px;
+}
+
+.drawing-upload-cont {
+    height: calc(100vh - 210px);
 }

@@ -288,3 +288,103 @@ export const ViewImage = ({ id, title, url }: ImageUploaderProps) => {
         </div>
     );
 };
+
+export const FilesUpload =  ({ id, title, url }: ImageUploaderProps) => {
+    const [filePreview, setFilePreview] = useState('');
+    const [file, setFile] = useState<File | null>(null);
+
+    useEffect(() => {
+        if (url) {
+            setFilePreview(url);
+        }
+    }, [url]);
+
+    const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+        const selectedFile = e.target.files?.[0];
+        if (selectedFile) {
+            setFile(selectedFile);
+            const fileType = selectedFile.type;
+            const previewUrl = URL.createObjectURL(selectedFile);
+            setFilePreview(previewUrl);
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            formData.append('upload_preset', 'crm_images'); // Replace with your Cloudinary upload preset
+
+            try {
+                const response = await axios.post('https://api.cloudinary.com/v1_1/iroegbu-cloud-1/upload', formData); // Replace with your Cloudinary URL
+                const uploadedFileUrl = response.data.secure_url;
+                console.log('Uploaded File URL:', uploadedFileUrl);
+                // Save the uploaded file URL to your server here
+            } catch (error) {
+                console.error('Error uploading file:', error);
+            }
+        } else {
+            setFilePreview('');
+            setFile(null);
+            alert('Please select a valid file.');
+        }
+    };
+
+    const renderPreview = () => {
+        if (!filePreview) return null;
+        const fileType = file?.type;
+
+        if (fileType?.startsWith('image/')) {
+            return (
+                <span className="relative w-full h-[87.5%] rounded-[5px] overflow-hidden">
+                    <Image
+                        src={filePreview}
+                        alt="File Preview"
+                        layout="fill"
+                        objectFit="cover"
+                    />
+                </span>
+            );
+        } else if (fileType === 'application/pdf') {
+            return (
+                <iframe
+                    src={filePreview}
+                    title="PDF Preview"
+                    className="w-full h-full"
+                />
+            );
+        } else if (fileType === 'application/acad' || fileType === 'application/dwg') {
+            return (
+                <div className="w-full h-full flex justify-center items-center">
+                    <p className="text-gray-500">DWG File Uploaded</p>
+                </div>
+            );
+        } else {
+            return (
+                <div className="w-full h-full flex justify-center items-center">
+                    <p className="text-gray-500">File Uploaded</p>
+                </div>
+            );
+        }
+    };
+
+    return (
+        <div className="w-full flex flex-col justify-start items-start gap-2 h-full">
+            <span className="w-full flex flex-col items-start justify-start gap-2">
+                <h4 className="text-md font-light">{title}</h4>
+                <input 
+                    type="file" 
+                    name={`file-${id}`} 
+                    accept="image/*,application/pdf,application/acad,application/dwg" 
+                    onChange={handleFileChange}
+                    id={`fileInput-${id}`}
+                    style={{ display: 'none' }} // Hide the default file input
+                />
+                <button 
+                    type="button" 
+                    className="image-custom-button" 
+                    onClick={() => document.getElementById(`fileInput-${id}`)?.click()}
+                >
+                    Select File
+                </button>
+            </span>
+            {filePreview && renderPreview()}
+        </div>
+    );
+};

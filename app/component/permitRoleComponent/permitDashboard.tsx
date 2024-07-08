@@ -14,7 +14,7 @@ const PermitPortalDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
         const item = sessionStorage.getItem('sideNav')
-        if (item == null || item == "") {
+        if (item == null || item == "" || !['dashboard', 'all-permit', 'inspection', 'permit-approval', 'permit-history'].includes(item) ) {
             setActive('dashboard')
         }else{
             setActive(item)

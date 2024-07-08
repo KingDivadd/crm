@@ -6,7 +6,8 @@ import { CiLock } from "react-icons/ci";
 import { IoEye } from "react-icons/io5";
 import { IoMdEyeOff } from "react-icons/io";
 import Alert from "../../component/alert"
-import { credentials } from '@/constants';
+import { authentication } from '@/constants';
+
 
 const Login = () => {
     const router = useRouter();
@@ -38,26 +39,73 @@ const Login = () => {
             }, 3000);
     }
 
-    async function handleSubmit(e:any) {
-        e.preventDefault();
-
-        if (!auth.email || !auth.password) {
-            showAlert("Please enter all fields", "warning");
-            setInputError({ ...inputError, emailError: auth.email === "", passwordError: auth.password === "" });
-            return;
-        }else {
-            setLoading(true); // Set loading to true when the request starts
-            console.log(auth);
-            
-            setTimeout(() => {
-                setLoading(false); // Set loading to false when the request completes
-                showAlert("Login successful", "success"); 
-                setAuth({email: '', password: ''})
-                router.push('/home')
-            // Handle successful login here
-            }, 3000);
+    function saveUser(role:string) {
+        if (role){
+            sessionStorage.setItem('user-role', role)
         }
     }
+
+    async function handleSubmit(e: any) {
+        e.preventDefault();
+      
+        if (!auth.email || !auth.password) {
+          showAlert("Please enter all fields", "warning");
+          setInputError({
+            ...inputError,
+            emailError: auth.email === "",
+            passwordError: auth.password === "",
+          });
+          return;
+        } else {
+          setLoading(true); // Set loading to true when the request starts
+      
+          // Check if the email exists in the authentication array
+          const user = authentication.find(user => user.email === auth.email);
+      
+          if (!user) {
+            setLoading(false);
+            showAlert("Email does not exist", "error");
+            return;
+          }
+      
+          // Check if the password matches
+          if (user.password !== auth.password) {
+            setLoading(false);
+            showAlert("Incorrect password", "error");
+            return;
+          }
+      
+          setTimeout(() => {
+            setLoading(false); // Set loading to false when the request completes
+            if (auth.email == 'admin@yopmail.com'){
+                saveUser('admin')
+            }
+            if (auth.email == 'sales@yopmail.com') {
+                saveUser('sales')
+            }
+            if (auth.email == 'installer@yopmail.com') {
+                saveUser('installer')
+            }
+            if (auth.email == 'ops@yopmail.com') {
+                saveUser('ops')
+            }
+            if (auth.email == 'customer@yopmail.com') {
+                saveUser('customer')
+            }
+            if (auth.email == 'permit@yopmail.com') {
+                saveUser('permit')
+            }
+            if (auth.email == 'engineering@yopmail.com') {
+                saveUser('engineering')
+            }
+        
+            showAlert("Login successful", "success");
+            setAuth({ email: "", password: "" });
+            router.push("/home");
+            // Handle successful login here
+          }, 3000);
+        }
+      }
 
     return (
         <div className=" relative w-full h-[100vh] p-[20px] flex items-center justify-center">

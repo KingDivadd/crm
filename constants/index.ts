@@ -217,3 +217,13 @@ export const jobListMaterialsInfo = [
 export const jobListPayementInfo = [
   {title: "Deposit", value: "$500"}, {title: 'Scheduling', value: "$450"}, {title: 'Delivery', value: '$500'}, {title: 'Construction Completion', value: "$500"}, {title: "Electrical Completion", value: '$250'}
 ]
+
+export const authentication = [
+  {email: "admin@yopmail.com", password: "adminPassword"},
+  {email: "sales@yopmail.com", password: "salesPassword"},
+  {email: "ops@yopmail.com", password: "opsPassword"},
+  {email: "customer@yopmail.com", password: "customerPassword"},
+  {email: "installer@yopmail.com", password: "installerPassword"},
+  {email: "permit@yopmail.com", password: "permitPassword"},
+  {email: "engineering@yopmail.com", password: "engineeringPassword"},
+]
