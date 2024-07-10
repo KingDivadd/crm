@@ -98,6 +98,9 @@ const Login = () => {
             if (auth.email == 'engineering@yopmail.com') {
                 saveUser('engineering')
             }
+            if (auth.email == 'electrical@yopmail.com') {
+                saveUser('electrical')
+            }
         
             showAlert("Login successful", "success");
             setAuth({ email: "", password: "" });

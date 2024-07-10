@@ -9,6 +9,7 @@ import InstallerDashboard from "../component/installerComponent/installerDashboa
 import PermitPortalDashboard from "../component/permitRoleComponent/permitDashboard"
 import { useRouter } from 'next/navigation'
 import EngineeringDashboard from '../component/engineeringComponent/engineeringDashboard'
+import ElecricalDashbaord from '../component/electricalComponent/electricalDashboard'
 
 const Dashboard = () => {
     const router = useRouter()
@@ -16,7 +17,7 @@ const Dashboard = () => {
 
     useEffect(()=>{
         const role = sessionStorage.getItem('user-role')
-        if (!role || role == '' || !['admin', 'sales', 'ops','customer', 'installer', 'permit', 'engineering'].includes(role)){
+        if (!role || role == '' || !['admin', 'sales', 'ops','customer', 'installer', 'permit', 'engineering', 'electrical'].includes(role)){
             router.push('/auth/login')
         }else{
             setUserRole(role)
@@ -32,7 +33,7 @@ const Dashboard = () => {
             {userRole === 'installer' && <InstallerDashboard />  }
             {userRole === 'permit' && <PermitPortalDashboard />  }
             {userRole === 'engineering' && <EngineeringDashboard />  }
-
+            {userRole === 'electrical' && <ElecricalDashbaord />  }
 
         </div>
     )

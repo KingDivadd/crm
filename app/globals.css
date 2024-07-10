@@ -249,7 +249,7 @@
 }
 
 .uploaded-photos-cont::-webkit-scrollbar-thumb {
-    @apply w-[7px] h-[7px] bg-blue-600
+    @apply w-[7px] h-[7px] bg-gray-400
 }
 
 .uploaded-photos-cont-2 {
@@ -382,7 +382,7 @@
 }
 
 .report-btn-style {
-    @apply h-[40px] px-[20px] rounded-[3px] flex items-center bg-white text-slate-800  border border-slate-600 
+    @apply h-[40px] px-[75px] rounded-[3px] flex items-center bg-white text-slate-800  border border-slate-600 
 }
 
 .report-btn-style:hover {
@@ -390,5 +390,5 @@
 }
 
 .active-report-btn-style {
-    @apply h-[40px] px-[20px] rounded-[3px] flex items-center bg-blue-600 text-white  border border-blue-600 
+    @apply h-[40px] px-[75px] rounded-[3px] flex items-center bg-blue-600 text-white  border border-blue-600 
 }
