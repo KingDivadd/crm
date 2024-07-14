@@ -180,7 +180,7 @@ const InvoiceModal = ({setShowInvoice, showInvoice, selectedItem, setSelectedIte
                                 
                                 <div className="w-full flex flex-col items-start justify-start gap-[20px] h-full ">
                                 <span className="w-full flex flex-row items-start justify-start border-b border-gray-300 h-[40px]">
-                                    <p className="text-lg font-semibold  text-blue-600 ">Bill Details:BI10001234</p>
+                                    <p className="text-lg font-semibold  text-blue-600 ">Invoice Details: IV10001234</p>
                                 </span>
 
                                 <div className="w-full flex flex-row items-start justify-start gap-[20px] ">

@@ -8,6 +8,8 @@ import AverageCostPerPage from './averageCostPerPage'
 import ProfitMarginPage from './profitMargin'
 import LossPage from './lossPage'
 import BillsOrInvoicePage from './billsOrInvoice'
+import PayrollPage from './payroll'
+import Settings from './settingPage'
 
 
 const AccountingDashboard = () => {
@@ -37,6 +39,8 @@ const AccountingDashboard = () => {
                     {active === "profitMargin" && <ProfitMarginPage /> }
                     {active === "loss" && <LossPage /> }
                     {active === "bills&report" && <BillsOrInvoicePage /> }
+                    {active === "payroll" && <PayrollPage /> }
+                    {active === "settings" && <Settings /> }
                   
 
                 </div>

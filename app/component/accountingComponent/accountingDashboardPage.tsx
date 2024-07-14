@@ -41,7 +41,7 @@ const AccountingDashboardPage = () => {
                     <span className=" flex flex-col gap-3 items-start justify-start h-[85px] rounded-[5px] border border-amber-600 bg-white w-1/3  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
                             <p className="text-xl text-amber-600">Total Expenses</p>
-                            <p className="text-sm text-amber-600">%450,500</p>
+                            <p className="text-sm text-amber-600">$450,500</p>
                         </div>
                     </span>
                     

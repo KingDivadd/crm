@@ -68,14 +68,14 @@ const AccountingSideBar = ({active, setActive}:SideBarNav) => {
                         <BiSolidReport size={23} /> 
                         <p className="text-[17px]">Bills/Invoices</p>
                     </span>
-                    <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
-                        <BiSolidReport size={23} /> 
+                    <span className={active === "payroll"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('payroll')}}>
+                        <RiMoneyDollarBoxFill size={23} /> 
                         <p className="text-[17px]">Payroll</p>
                     </span>
-                    <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
+                    {/* <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
                         <BiSolidReport size={23} /> 
                         <p className="text-[17px]">Calendar Integration</p>
-                    </span>
+                    </span> */}
                     <span className={active === "settings"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('settings')}}>
                         <FaGear size={21} /> 
                         <p className="text-[17px]">Settings</p>
