@@ -392,3 +392,7 @@
 .active-report-btn-style {
     @apply h-[40px] px-[75px] rounded-[3px] flex items-center bg-blue-600 text-white  border border-blue-600 
 }
+
+.cont-3 {
+    height: calc(100vh - 300px);
+}

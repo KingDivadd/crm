@@ -227,4 +227,5 @@ export const authentication = [
   {email: "permit@yopmail.com", password: "permitPassword"},
   {email: "engineering@yopmail.com", password: "engineeringPassword"},
   {email: "electrical@yopmail.com", password: "electricalPassword"},
+  {email: "accounting@yopmail.com", password: "accountingPassword"},
 ]

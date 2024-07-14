@@ -171,6 +171,15 @@ export interface UpdateTaskProps {
     setShow: (show: boolean) => void;
 }
 
+export interface InvoiceModalProps {
+    showInvoice: boolean;
+    setShowInvoice: (showInvoice: boolean)=> void;
+    show: boolean;
+    setShow: (show: boolean) => void;
+    selectedItem: any;
+    setSelectedItem: (selectedItem:any)=> void;
+}
+
 export interface RedlineProps {
     showRedlineModal: boolean;
     setShowRedlineModal: (showRedlineModal: boolean)=> void;
