@@ -207,6 +207,7 @@ export interface Admin_dashboard_props {
     engineering_task?: any;
     permit?: any;
     accounting?: any;
+    
   }
   
 
