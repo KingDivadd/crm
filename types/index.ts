@@ -199,6 +199,8 @@ export interface Admin_dashboard_props {
     total_number_of_projects: number;
     msg?: string;
     activities?:any;
+    total_number_of_recent_activities?:number
+    total_number_of_recent_activities_pages?:number
     new_lead?: any;
     ongoing_installations?: any;
     pending_sales?: any;
@@ -207,7 +209,10 @@ export interface Admin_dashboard_props {
     engineering_task?: any;
     permit?: any;
     accounting?: any;
-    
+    task_notification?: any;
+    total_number_of_task_notification?:number;
+    total_number_of_task_notifications_pages?:number
+
   }
   
 

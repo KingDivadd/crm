@@ -26,7 +26,6 @@ const AdminHome = () => {
     useEffect(() => {
 
       load_dashboard()
-    
    
     }, [])
     
@@ -235,19 +234,24 @@ const AdminHome = () => {
                     <p className="text-xl font-semibold">Task Notification</p>
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Task</p>
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Assigned To</p>
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Due Date</p>
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Status</p>
+                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Task Type</p>
+                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Task</p>
+
+                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Assigned To</p>
+                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Due Date</p>
+                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Status</p>
                         </span>
                         <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
+                            {dash_box?.task_notification.map((data:any, ind: any)=>{
+
+                                const {message, read, task_type, due_date, task_notification_status, user }  = data
                                 return (
                                     <span key={ind} className={ind === 2 ? "overdue-row":" recent-activity-table-list"}>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">Follow up with client GHI</p>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">Sales Rep B</p>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">June 12, 2024</p>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">{ind === 2 ? "Overdue" : "Pending"}</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{task_type}</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{message}</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{user.first_name}</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{due_date}</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{task_notification_status}</p>
                                     </span>
                                 )
                             })}
