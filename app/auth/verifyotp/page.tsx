@@ -74,6 +74,21 @@ const ForgetPassword = () => {
         }
 
         }   
+
+        async function resend_otp() {
+        
+            const response = await post_api_request('auth/generate-otp', {email: sessionStorage.getItem('email')})
+    
+            if (response.status == 201){
+                showAlert(response.data.msg, "success")
+    
+                return;
+            }else{
+                showAlert(response.response.data.err, "error")
+                return;
+            }
+    
+        }
     
     return (
         <div className="relative w-full h-[100vh] p-[20px] flex items-center justify-center">
@@ -120,7 +135,7 @@ const ForgetPassword = () => {
 
                             <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/login') }}>Back to Login</p>
                         
-                            <p className="text-sm text-blue-400 hover:text-amber-600 cursor-pointer mt-[10px]" onClick={resendOtp}>Resend Otp</p>
+                            <p className="text-sm text-blue-400 hover:text-amber-600 cursor-pointer mt-[10px]" onClick={resend_otp}>Resend Otp</p>
                         </span>
                     </div>
                 </div>

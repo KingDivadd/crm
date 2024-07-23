@@ -85,13 +85,18 @@ const Login = () => {
           if (response.status == 200 || response.status == 201){
 
             localStorage.setItem('x-id-key' ,response.headers.get('x-id-key'));
+            console.log('respnse ', response.data.user)
             localStorage.setItem('user-role', response.data.user.user_role)
             
             showAlert(response.data.msg, "success")
             setAuth({email: '', password: ''})
             setLoading(false)
             router.push('/home')
-          }else{
+          }else if (response.response.status == 402){
+            sessionStorage.setItem('email', auth.email)
+            router.push('/auth/verifyotp')
+          }
+          else{
             showAlert(response.response.data.err, "error")
             setLoading(false)
           }
@@ -99,6 +104,7 @@ const Login = () => {
             setLoading(false)
 
         }
+        setLoading(false)
       }
 
     return (
