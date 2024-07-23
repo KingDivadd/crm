@@ -192,6 +192,25 @@ export interface PipelineProps {
     setShowDetails: (showDetails: boolean) => void;
 }
 
+export interface Admin_dashboard_props {
+    total_number_of_leads: number;
+    total_number_of_sales: number;
+    total_number_of_installations: number;
+    total_number_of_projects: number;
+    msg?: string;
+    activities?:any;
+    new_lead?: any;
+    ongoing_installations?: any;
+    pending_sales?: any;
+    open_service_tickets?: any;
+    pending_payments?: any;
+    engineering_task?: any;
+    permit?: any;
+    accounting?: any;
+  }
+  
+
+
 export const opsStages = [
     {
         title: "HOA Approval",

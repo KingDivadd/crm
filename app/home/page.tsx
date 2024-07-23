@@ -17,16 +17,15 @@ const Dashboard = () => {
 
     useEffect(() => {
         const role = localStorage.getItem('user-role')
-        console.log('Retrieved role:', role, 'Type:', typeof role)
 
         // Trim the role to remove any leading/trailing whitespace
         const trimmedRole = role ? role.trim() : ''
 
         if (!trimmedRole || !['admin', 'sales', 'ops', 'customer', 'installer', 'permit', 'engineering', 'electrical', 'accounting'].includes(trimmedRole)) {
-            console.log('Redirecting due to invalid role:', trimmedRole)
+            // console.log('Redirecting due to invalid role:', trimmedRole)
             router.push('/auth/login')
         } else {
-            console.log('Valid role:', trimmedRole)
+            // console.log('Valid role:', trimmedRole)
             setUserRole(trimmedRole)
         }
     }, [router])

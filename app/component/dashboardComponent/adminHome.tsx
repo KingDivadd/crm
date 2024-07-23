@@ -15,10 +15,13 @@ import { LuPencilRuler } from 'react-icons/lu';
 import { MdOutlineNoteAlt } from "react-icons/md";
 import { RiBarChartFill } from "react-icons/ri";
 import { admin_dashboard_request } from '@/app/api/admin_api';
+import { Admin_dashboard_props } from '@/types';
 
 const AdminHome = () => {
     const router = useRouter()
     const [alert, setAlert] = useState({message: '', type: ''})
+    const [dash_box, setDash_box] = useState<Admin_dashboard_props | null>(null);
+
 
     useEffect(() => {
 
@@ -40,6 +43,8 @@ const AdminHome = () => {
           const response = await admin_dashboard_request('auth/logged-in-admin', 1, 1)
 
           if (response.status == 200 || response.status == 201){
+            
+            setDash_box(response.data)
 
             console.log(response.data);
             
@@ -66,7 +71,7 @@ const AdminHome = () => {
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4 border border-blue-600 ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
                             <p className="text-xl text-blue-600">Total Lead</p>
-                            <p className="text-sm text-blue-600">450</p>
+                            <p className="text-sm text-blue-600">{dash_box?.total_number_of_leads || 0}</p>
                             <p className="text-sm font-light text-blue-600">Last 30 days</p>
                         </div>
                     </span>
@@ -74,7 +79,7 @@ const AdminHome = () => {
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-lime-700 bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
                             <p className="text-xl text-lime-700">Total Sales</p>
-                            <p className="text-sm text-lime-700">450</p>
+                            <p className="text-sm text-lime-700">{dash_box?.total_number_of_sales || 0}</p>
                             <p className="text-sm font-light text-lime-700">Last 30 days</p>
                         </div>
                     </span>
@@ -82,7 +87,7 @@ const AdminHome = () => {
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-sky-600 rounded-[5px] bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
                             <p className="text-xl text-sky-600">Total Installations</p>
-                            <p className="text-sm text-sky-600">450</p>
+                            <p className="text-sm text-sky-600">{dash_box?.total_number_of_installations || 0}</p>
                             <p className="text-sm font-light text-sky-600">Last 30 days</p>
                         </div>
                     </span>
@@ -90,7 +95,7 @@ const AdminHome = () => {
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-lime-600 rounded-[5px] bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
                             <p className="text-xl text-lime-700">Total Projects</p>
-                            <p className="text-sm text-lime-700">450</p>
+                            <p className="text-sm text-lime-700">{dash_box?.total_number_of_projects || 0}</p>
                             <p className="text-sm font-light text-lime-700">Last 30 days</p>
                         </div>
                     </span>
@@ -113,14 +118,16 @@ const AdminHome = () => {
                             <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Time</p>
                         </span>
                         <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
+                            {dash_box?.activities.map((data:any, ind:number)=>{
+
+                                const {details, user, created_at, action} = data
                                 return (
                                     <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">Activity Type</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">Description</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">User</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">Date</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">Time</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{action}</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{details}</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{user?.last_name}</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{created_at}</p>
+                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{created_at}</p>
                                     </span>
                                 )
                             })}
@@ -152,7 +159,7 @@ const AdminHome = () => {
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GiChart size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">New Leads</p>
-                                <p className="text-sm ">15 new leads</p>
+                                <p className="text-sm ">{dash_box?.new_lead.length} new leads</p>
                                 <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
@@ -161,7 +168,7 @@ const AdminHome = () => {
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><BsBriefcase size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Pending Sales</p>
-                                <p className="text-sm ">8 pending sales</p>
+                                <p className="text-sm ">{dash_box?.pending_sales.length} pending sales</p>
                                 <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
@@ -169,7 +176,7 @@ const AdminHome = () => {
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GiLightningSpanner size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Installations</p>
-                                <p className="text-sm ">10 ongoing installations</p>
+                                <p className="text-sm ">{dash_box?.ongoing_installations.length} ongoing installations</p>
                                 <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
@@ -178,7 +185,7 @@ const AdminHome = () => {
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GrServices size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Service Tickets</p>
-                                <p className="text-sm ">5 open service ticket</p>
+                                <p className="text-sm ">{dash_box?.open_service_tickets.length} open service ticket</p>
                                 <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
@@ -187,7 +194,7 @@ const AdminHome = () => {
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><FaMoneyBillAlt size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Pending Payments</p>
-                                <p className="text-sm ">10 pending payments</p>
+                                <p className="text-sm ">{dash_box?.pending_payments.length} pending payments</p>
                                 <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
@@ -196,7 +203,7 @@ const AdminHome = () => {
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><LuPencilRuler size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Engineerin Tasks</p>
-                                <p className="text-sm ">5 tasks pending</p>
+                                <p className="text-sm ">{dash_box?.engineering_task.length} tasks pending</p>
                                 <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
@@ -205,7 +212,7 @@ const AdminHome = () => {
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><MdOutlineNoteAlt size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Permits</p>
-                                <p className="text-sm ">5 permits pending</p>
+                                <p className="text-sm ">{dash_box?.permit.length} permits pending</p>
                                 <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
                             </span>
                         </span>
