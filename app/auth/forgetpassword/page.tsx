@@ -4,6 +4,7 @@ import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { CiLock } from "react-icons/ci";
 import Alert from '../../component/alert'
+import { post_api_request } from '@/app/api/admin_api';
 
 const ForgetPassword = () => {
     const router = useRouter();
@@ -21,27 +22,70 @@ const ForgetPassword = () => {
         setAuth({...auth, email: e.target.value})
     }
 
-    function getOtp(e:any){
-        e.preventDefault()
-        if (!auth.email){
-            setAlert({message: 'Please provide your registered email address', type: 'warning'})
-            setInputError({...inputError, emailError: auth.email === ''})
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
             setTimeout(() => {
                 setAlert({message: '', type: ''})
             }, 3000);
-        }else{
-            setLoading(true); // Set loading to true when the request starts
-            console.log(auth);
+    }
+
+    async function genOtp(e:any){
+        
+        e.preventDefault()
+        if (!auth.email){
+            showAlert("Please fill all fields", "warning")
+            setInputError({...inputError, emailError: auth.email === ""})
+        }else {
+            setLoading(true);
+
+            const response = await post_api_request('auth/generate-otp', {email: auth.email})
+
+            console.log(response);
             
-            // Simulate a login request with a timeout
-            setTimeout(() => {
-                setLoading(false); // Set loading to false when the request completes
-            // Handle successful login here
+
+            if (response.status == 201){
+                showAlert(response.data.msg, "success")
+
+                sessionStorage.setItem('email', auth.email)
+
+                setAuth({ email: '' })
+
+                setLoading(false)
+
                 router.push('/auth/verifyotp')
-            }, 3000);
+                
+                return;
+            }else{
+                showAlert(response.response.data.err, "error")
+                setLoading(false)
+                return;
+            }
+          
         }
 
-    }
+        }   
+
+    // function getOtp(e:any){
+    //     e.preventDefault()
+    //     if (!auth.email){
+    //         setAlert({message: 'Please provide your registered email address', type: 'warning'})
+    //         setInputError({...inputError, emailError: auth.email === ''})
+    //         setTimeout(() => {
+    //             setAlert({message: '', type: ''})
+    //         }, 3000);
+    //     }else{
+    //         setLoading(true); // Set loading to true when the request starts
+    //         console.log(auth);
+            
+    //         // Simulate a login request with a timeout
+    //         setTimeout(() => {
+    //             setLoading(false); // Set loading to false when the request completes
+    //         // Handle successful login here
+    //             router.push('/auth/verifyotp')
+    //         }, 3000);
+    //     }
+
+    // }
 
     return (
         <div className="w-full relative h-[100vh] p-[20px] flex items-center justify-center">
@@ -71,7 +115,7 @@ const ForgetPassword = () => {
                                 <input value={auth.email} onChange={handleChange} type="email" className={inputError.emailError? 'signup-input-error':'signup-input'} />
                             </span>
                             
-                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={getOtp} disabled={loading}>
+                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={genOtp} disabled={loading}>
                                 {loading ? (
                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

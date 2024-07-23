@@ -6,6 +6,7 @@ import { CiUnlock } from "react-icons/ci";
 import { IoMdEyeOff } from 'react-icons/io';
 import { IoEye } from 'react-icons/io5';
 import Alert from '@/app/component/alert';
+import { patch_api_auth_request, post_api_request } from '@/app/api/admin_api';
 
 const RecoverPassword = () => {
     const router = useRouter();
@@ -31,6 +32,14 @@ const RecoverPassword = () => {
         setAuth({...auth, [name]:value})
     }
 
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
+    }
+
+
     async function handleSubmit (e:any) {
         e.preventDefault()
         if (!auth.password || !auth.newPassword){
@@ -40,21 +49,32 @@ const RecoverPassword = () => {
                 setAlert({message: '', type: ''})
             }, 3000);
         }else {
-            if (auth.password !== auth.newPassword){
+            if (auth.password !== auth.newPassword){ 
                 setAlert({message: 'Password do not match', type: 'error'})
-                setTimeout(() => {
-                    setAlert({message: '', type: ''})
-                }, 3000);
             }else {
-                setLoading(true); // Set loading to true when the request starts
-                console.log(auth);
-                
-                // Simulate a login request with a timeout
-                setTimeout(() => {
-                    setLoading(false); // Set loading to false when the request completes
-                // Handle successful login here
+                setLoading(true); 
+               
+                const response = await patch_api_auth_request('auth/forget-password', {email: sessionStorage.getItem('email'), new_password: auth.newPassword})
+
+                if (response.status == 201 || response.status == 200){
+                    showAlert(response.data.msg, "success")
+
+                    setAuth({ password: '', newPassword: '' })
+
                     router.push('/auth/login')
-                }, 3000);
+
+                    localStorage.setItem('x-id-key', response.headers.get('x-id-key'))
+
+                    setLoading(false)
+                    
+                    return;
+                }else{
+                    showAlert(response.response.data.err, "error")
+                    setLoading(false)
+                    return;
+                }
+
+
             }
         }
     }

@@ -14,9 +14,50 @@ import { GrServices } from "react-icons/gr";
 import { LuPencilRuler } from 'react-icons/lu';
 import { MdOutlineNoteAlt } from "react-icons/md";
 import { RiBarChartFill } from "react-icons/ri";
+import { admin_dashboard_request } from '@/app/api/admin_api';
 
 const AdminHome = () => {
     const router = useRouter()
+    const [alert, setAlert] = useState({message: '', type: ''})
+
+    useEffect(() => {
+
+      load_dashboard()
+    
+   
+    }, [])
+    
+
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
+    }
+
+    async function load_dashboard() {      
+
+          const response = await admin_dashboard_request('auth/logged-in-admin', 1, 1)
+
+          if (response.status == 200 || response.status == 201){
+
+            console.log(response.data);
+            
+            
+            showAlert(response.data.msg, "success")
+          }else{
+            console.log(response);
+            
+            showAlert(response.response.data.err, "error")
+          }
+          
+
+        
+      }
+
+
+
+
     return (
         <div className="w-full p-[10px] pb-[10px] ">
             <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">

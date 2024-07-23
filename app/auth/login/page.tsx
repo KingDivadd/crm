@@ -7,6 +7,7 @@ import { IoEye } from "react-icons/io5";
 import { IoMdEyeOff } from "react-icons/io";
 import Alert from "../../component/alert"
 import { authentication } from '@/constants';
+import {  count_users_request, post_api_request } from '@/app/api/admin_api';
 
 
 const Login = () => {
@@ -16,6 +17,26 @@ const Login = () => {
     const [showPassword, setShowPassword] = useState(false);
     const [loading, setLoading] = useState(false); 
     const [alert, setAlert] = useState({message: '', type: ''})
+    const [users, setUsers] = useState(0)
+
+    useEffect(()=>{
+        count_users()
+    }, [])
+    
+    async function count_users() {
+        
+        const response = await count_users_request('user/test-db-connection')
+
+        if (response.status == 200 || response.status == 201){
+           
+            setUsers(response.data.number_of_users)
+          }else{
+            showAlert(response.response.data.err, "error")
+            setLoading(false)
+          }
+
+
+    }
 
     useEffect(() => {
         if (auth.email) {setInputError({ ...inputError, emailError: auth.email === "" })}
@@ -58,58 +79,25 @@ const Login = () => {
           return;
         } else {
           setLoading(true); // Set loading to true when the request starts
-      
-          // Check if the email exists in the authentication array
-          const user = authentication.find(user => user.email === auth.email);
-      
-          if (!user) {
-            setLoading(false);
-            showAlert("Email does not exist", "error");
-            return;
+
+          const response = await post_api_request('auth/login', auth)
+
+          if (response.status == 200 || response.status == 201){
+
+            localStorage.setItem('x-id-key' ,response.headers.get('x-id-key'));
+            localStorage.setItem('user-role', response.data.user.user_role)
+            
+            showAlert(response.data.msg, "success")
+            setAuth({email: '', password: ''})
+            setLoading(false)
+            router.push('/home')
+          }else{
+            showAlert(response.response.data.err, "error")
+            setLoading(false)
           }
-      
-          // Check if the password matches
-          if (user.password !== auth.password) {
-            setLoading(false);
-            showAlert("Incorrect password", "error");
-            return;
-          }
-      
-          setTimeout(() => {
-            setLoading(false); // Set loading to false when the request completes
-            if (auth.email == 'admin@yopmail.com'){
-                saveUser('admin')
-            }
-            if (auth.email == 'sales@yopmail.com') {
-                saveUser('sales')
-            }
-            if (auth.email == 'installer@yopmail.com') {
-                saveUser('installer')
-            }
-            if (auth.email == 'ops@yopmail.com') {
-                saveUser('ops')
-            }
-            if (auth.email == 'customer@yopmail.com') {
-                saveUser('customer')
-            }
-            if (auth.email == 'permit@yopmail.com') {
-                saveUser('permit')
-            }
-            if (auth.email == 'engineering@yopmail.com') {
-                saveUser('engineering')
-            }
-            if (auth.email == 'electrical@yopmail.com') {
-                saveUser('electrical')
-            }
-            if (auth.email == 'accounting@yopmail.com') {
-                saveUser('accounting')
-            }
-        
-            showAlert("Login successful", "success");
-            setAuth({ email: "", password: "" });
-            router.push("/home");
-            // Handle successful login here
-          }, 3000);
+          
+            setLoading(false)
+
         }
       }
 
@@ -127,8 +115,8 @@ const Login = () => {
                         objectFit="cover"
                     />
                 </div>
-                <div className="w-[55%] rounded-[20px] h-full flex items-start justify-start">
-                    <div className="w-full h-full flex flex-col items-start justify-start gap-10 mt-[60px]">
+                <div className="w-[55%] rounded-[20px] h-full flex items-center justify-center  ">
+                    <div className="w-full  flex flex-col items-start justify-center gap-10   ">
                         <span className="mx-auto w-auto flex flex-col items-center justify-start gap-5">
                             <h2 className="text-3xl font-semibold text-black">Welcome Back.</h2>
                             <span className='text-white bg-amber-600 p-[10px] rounded-[100%] '><CiLock size={25} /></span>
@@ -162,9 +150,12 @@ const Login = () => {
                         </form>
 
                         <span className="w-[80%] flex flex-row items-center justify-between h-[40px] mx-auto">
-                        <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/signup') }}>Don't have an account, Signup</p>
+                            { users == 0 && <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/signup') }}>Don't have an account, Signup</p>}
+                            {
+                                users > 0 && <p></p>
+                            }
 
-                        <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/forgetpassword') }}>Forget Password</p>
+                            <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/forgetpassword') }}>Forget Password</p>
                         </span>
                     </div>
                 </div>

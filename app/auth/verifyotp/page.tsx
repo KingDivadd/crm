@@ -5,41 +5,76 @@ import { useRouter } from 'next/navigation';
 import { CiUnlock } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
 import Alert from '@/app/component/alert';
+import { post_api_request } from '@/app/api/admin_api';
 
 const ForgetPassword = () => {
     const router = useRouter();
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState({message: '', type: ''})
-    const [auth, setAuth] = useState({otp: ''})
+    const [auth, setAuth] = useState({otp: '', email: ''})
 
+
+    useEffect(()=>{
+        const res = sessionStorage.getItem('email')
+        if (res) {
+            setAuth({...auth, email: res})
+        }
+    }, [])
 
     function resendOtp() {
         console.log('resending otp')
     }
 
     function handleChange(e:any) {
-        setAuth({...auth, otp: e.target.value})
+        const name = e.target.name
+        const value = e.target.value
+        setAuth({...auth, [name]: value})
     }
 
-    async function verifyOtp(e:any) {
-        e.preventDefault()
-        if (!auth.otp){
-            setAlert({message: 'Please enter otp', type: 'error'})
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
             setTimeout(() => {
                 setAlert({message: '', type: ''})
             }, 3000);
-        }else {
-            setLoading(true); // Set loading to true when the request starts
-            console.log(auth);
-            
-            // Simulate a login request with a timeout
-            setTimeout(() => {
-                setLoading(false); // Set loading to false when the request completes
-            // Handle successful login here
-            router.push('/auth/recoverpassword')
-            }, 3000);
-        }
     }
+
+    async function verify_otp(e:any){
+        
+        
+        e.preventDefault()
+        if (!auth.otp){
+            showAlert("Please enter the OTP from your email", "warning")
+            
+        }else {
+            setLoading(true);
+
+            const response = await post_api_request('auth/verify-otp', auth)
+
+            if (response.status == 201 || response.status == 200){
+                showAlert(response.data.msg, "success")
+
+                setAuth({ email: '', otp: '' })
+
+                router.push('/auth/recoverpassword')
+
+                console.log(response.headers.get('x-id-key'));
+                
+
+                localStorage.setItem('x-id-key', response.headers.get('x-id-key'))
+
+                setLoading(false)
+                
+                return;
+            }else{
+                showAlert(response.response.data.err, "error")
+                setLoading(false)
+                return;
+            }
+          
+        }
+
+        }   
+    
     return (
         <div className="relative w-full h-[100vh] p-[20px] flex items-center justify-center">
             <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
@@ -71,7 +106,7 @@ const ForgetPassword = () => {
                                 </span>
                             </span>
                             
-                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={verifyOtp} disabled={loading}>
+                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={verify_otp} disabled={loading}>
                                 {loading ? (
                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

@@ -11,6 +11,7 @@ import AdminSystemSettings from'./adminSystemSettings'
 
 const AdminDashboard = () => {
     const [active, setActive] = useState('')
+
     useEffect(() => {
         const item = sessionStorage.getItem('sideNav')
         if (item == null || item == "" || !['home', 'user-management', 'analytics', 'notifications', 'logs', 'system-settings'].includes(active)) {
@@ -18,8 +19,11 @@ const AdminDashboard = () => {
         }else{
             setActive(item)
         }
-        console.log(active)
     }, [])
+
+
+
+
     return (
         <div className="w-full h-[100vh] flex flex-row  items-start justify-between">
             <div className="w-[280px] h-full bg-red-100 ">
