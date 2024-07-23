@@ -1,6 +1,6 @@
 import axios from "axios"
 
-const base_url = process.env.NEXT_PUBLIC_LIVE_URL
+const base_url = 'https://crm-server-q226.onrender.com/api/v1'
 
 
 
