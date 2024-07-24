@@ -107,7 +107,7 @@ const ForgetPassword = () => {
                 <div className="w-[55%] rounded-[20px] h-full flex items-start justify-start">
                     <div className="w-full h-full flex flex-col items-start justify-start gap-10 mt-[60px]">
                         <span className="mx-auto w-auto flex flex-col items-center justify-start gap-5">
-                            <h2 className="text-3xl font-semibold text-black">Recover Password</h2>
+                            <h2 className="text-3xl font-semibold text-black">Verify Otp</h2>
                             <span className='text-white bg-amber-600 p-[10px] rounded-[100%] '> {true ? <CiLock size={25} />: <CiUnlock size={25} />} </span>
                             <h4 className="text-lg">A six digit code has been sent to your email</h4>
                         </span>
