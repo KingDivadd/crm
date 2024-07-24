@@ -162,15 +162,19 @@ export interface DeleteTaskProps {
 }
 
 export interface UpdateTaskProps {
-    edit:boolean;
-    setEdit: (edit: boolean) => void;
+    selectedUser?:any;
+    setSelectedUser?:(selectedUser:any) => void;
+    edit?:boolean;
+    setEdit?: (edit: boolean) => void;
     showModal: boolean;
     setShowModal: (showModal: boolean) => void;
-    selectedItem: any;
-    setSelectedItem: (selectedItem: any) => void;
-    show: boolean;
-    setShow: (show: boolean) => void;
+    selectedItem?: any;
+    setSelectedItem?: (selectedItem: any) => void;
+    show?: boolean;
+    setShow?: (show: boolean) => void;
 }
+
+
 
 export interface InvoiceModalProps {
     showInvoice: boolean;

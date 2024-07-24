@@ -156,19 +156,14 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                         <p className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer flex items-center justify-start gap-2 " onClick={()=>{setAddUsers(false)}}>
                         <IoMdArrowBack size={23} className='text-blue-600' />All Users</p>
                         <p className="text-md text-black">{number_of_users}</p>
-                        <span className="w-[150px] flex items-center justify-start gap-3">
+                        {/* <span className="w-[150px] flex items-center justify-start gap-3">
                             <p className="text-md text-black">Status:</p>
-                            {auth.active_status === true ? <p className="text-md text-lime-600">Active</p> : <p className="text-md text-red-600">Inactive</p>}
+                            {auth.active_status == true ? <p className="text-md text-lime-600">Active</p> : <p className="text-md text-red-600">Inactive</p>}
 
-                        </span>
+                        </span> */}
                     </span>
                     <span className="flex flex-row items-center justify-start gap-4">
                         
-                        {auth.active_status != false ? 
-                        <p className="text-md text-blue-500" onClick={()=>{setAuth({...auth, active_status: true})}}>Activate User</p>
-                            :
-                        <p className="text-md text-red-500" onClick={()=>{setAuth({...auth, active_status: false})}}>Inactivate User</p>
-                        }
 
                         <p className="text-lg font-semibold">{selectedUser? "Modifying user data": "New User"}</p>
                     </span>

@@ -8,13 +8,15 @@ import AddUsers from "../dashboardComponent/subComponent/addUser"
 import Alert from '../alert';
 import { get_api_auth_request } from '@/app/api/admin_api';
 import { User_Management_Props } from '@/types';
+import DeleteModal from './deleteModal';
 
 const UserManagement = () => {
-    const [userArray, setUserArray] = useState([{last_name: "Iroegbu", first_name: "David", email: 'ireugbudavid@gmail.com', phone: '07044907610', user_role: 'Sales', status: 'active',password: 'user1password' }, {last_name: "Ayeni", first_name: "Peace", email: 'ayenipeace@gmail.com', phone: '09026030392', user_role: 'Technician', status: 'inactive', password: 'user2password'}])
+
     const [addUsers, setAddUsers] = useState(false)
     const [selectedUser, setSelectedUser] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [page_number, setPage_number] = useState(1)
+    const [showModal, setShowModal] = useState(false)
     const [app_users, setApp_users] = useState<User_Management_Props | null>(null);
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
         userRole: false, status: false
@@ -41,7 +43,7 @@ const UserManagement = () => {
         
         get_all_users()
 
-    }, [addUsers])
+    }, [addUsers, showModal])
 
     function showAlert(message: string, type: string){
         setAlert({message: message, type: type})
@@ -139,9 +141,15 @@ const UserManagement = () => {
     };
     
 
-    function editUser(data:any) {
+    function edit_user(data:any) {
         setSelectedUser(data)
         setAddUsers(true)
+    }
+
+    function delete_user(data:any) {
+        console.log('deleting user ', data)
+        setShowModal(!showModal) 
+        setSelectedUser(data)
     }
 
     return (
@@ -201,8 +209,9 @@ const UserManagement = () => {
                                             <p className="text-sm w-[20%] pr-2 pl-2 "> {email} </p>
                                             <p className="text-sm w-[15%] pr-2 pl-2 "> {user_role} </p>
                                             <p className={active_status ? "text-sm text-green-500 w-[15%] pr-2 pl-2 ": "text-sm text-red-500 w-[15%] pr-2 pl-2 "}>{active_status ? "Active" : "InActive"}</p>
-                                            <p className="text-sm w-[10%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-lime-600" onClick={()=>{editUser(data)}} ><MdEdit size={16} /> Edit</p>
-                                            <p className="text-sm w-[10%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-red-400"  onClick={()=>{console.log('deleting data of index : ',ind)}} ><MdDeleteForever size={18} /> Delete</p>
+                                            <p className="text-sm w-[10%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-lime-600" onClick={()=>{edit_user(data)}} ><MdEdit size={16} /> Edit</p>
+                                            
+                                            <p className="text-sm w-[10%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-red-400"  onClick={()=>delete_user(data)} ><MdDeleteForever size={18} /> Delete</p>
                                         </span>
                                     )
                                 })}
@@ -230,6 +239,8 @@ const UserManagement = () => {
                         </span>
                     </div>
             </div>}
+
+            {showModal && <DeleteModal showModal={showModal} setShowModal={setShowModal} selectedUser={selectedUser} setSelectedUser={setSelectedUser}  />}
         </div>
     )
 }

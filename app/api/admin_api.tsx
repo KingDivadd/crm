@@ -73,6 +73,23 @@ export const get_api_auth_request = async (endpoint: string) => {
     }
 };
 
+export const delete_api_auth_request = async (endpoint: string) => {
+    try {
+        const auth_id = localStorage.getItem('x-id-key')
+        const response = await axios.delete(`${base_url}/${endpoint}`, {
+            headers: {
+                "Content-Type": "application/json",
+                "x-id-key": auth_id
+            }
+        });
+
+        const data = response;
+        return data;
+    } catch (err: any) {
+        return err;
+    }
+};
+
 
 export const count_users_request = async (endpoint: string) => {
     try {
