@@ -199,7 +199,7 @@ export interface Admin_dashboard_props {
     total_number_of_projects: number;
     msg?: string;
     activities?:any;
-    total_number_of_recent_activities?:number
+    total_number_of_recent_activities?:number ;
     total_number_of_recent_activities_pages?:number
     new_lead?: any;
     ongoing_installations?: any;

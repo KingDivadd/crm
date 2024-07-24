@@ -1,10 +1,5 @@
 'use cleient'
 import React, {useState, useEffect} from 'react'
-import { IoList } from "react-icons/io5";
-import { GrProjects } from "react-icons/gr";
-import { RiInstallFill } from "react-icons/ri";
-import { FaChartSimple } from "react-icons/fa6";
-import { HiMiniQueueList } from "react-icons/hi2";
 import { useRouter } from 'next/navigation';
 import { GiChart } from "react-icons/gi";
 import { BsBriefcase } from "react-icons/bs";
@@ -21,11 +16,15 @@ const AdminHome = () => {
     const router = useRouter()
     const [alert, setAlert] = useState({message: '', type: ''})
     const [dash_box, setDash_box] = useState<Admin_dashboard_props | null>(null);
+    const [activity_page, setActivity_page] = useState(1)
+    const [task_notification_page, setTask_notification_page] = useState(1)
 
 
     useEffect(() => {
 
       load_dashboard()
+
+        // simulateDashboardData()
    
     }, [])
     
@@ -58,6 +57,172 @@ const AdminHome = () => {
 
         
       }
+
+    function simulateDashboardData() {
+        const simulatedData: Admin_dashboard_props = {
+        total_number_of_leads: 50,
+        total_number_of_sales: 20,
+        total_number_of_installations: 15,
+        total_number_of_projects: 30,
+        total_number_of_recent_activities: 5,
+        total_number_of_recent_activities_pages: 2, // Simulating 3 pages of activities
+        activities: [],
+        total_number_of_task_notifications_pages: 5,
+        total_number_of_task_notification: 5,
+        task_notification: [
+            { details: 'Activity 1', user: { last_name: 'Doe' }, created_at: '2024-07-23', action: 'Action 1' },
+            { details: 'Activity 2', user: { last_name: 'Smith' }, created_at: '2024-07-23', action: 'Action 2' },
+            { details: 'Activity 3', user: { last_name: 'Johnson' }, created_at: '2024-07-23', action: 'Action 3' },
+            { details: 'Activity 4', user: { last_name: 'Brown' }, created_at: '2024-07-23', action: 'Action 4' },
+            { details: 'Activity 5', user: { last_name: 'Williams' }, created_at: '2024-07-23', action: 'Action 5' },
+        ],
+        msg: 'Dashboard data loaded successfully',
+        // Include other properties as needed
+        };
+    
+        setDash_box(simulatedData);
+    }
+
+    async function recent_activity_action(item: any) {
+        let new_page_number = activity_page;
+        let max_page_number = dash_box?.total_number_of_recent_activities_pages;
+
+        if (item === 'prev') {
+        if (activity_page > 1) {
+            new_page_number = activity_page - 1;
+        }
+        } else if (item === 'next') {
+        if (max_page_number && activity_page < max_page_number) {
+            new_page_number = activity_page + 1;
+        }
+        } else {
+        new_page_number = item;
+        }
+
+        console.log('new page number ', new_page_number);
+
+        setActivity_page(new_page_number);
+    }
+
+    const render_page_numbers = () => {
+        const pages = [];
+        const max_page_number = dash_box?.total_number_of_recent_activities_pages || 1;
+        const max_displayed_pages = 3;
+
+        if (max_page_number <= max_displayed_pages) {
+        for (let i = 1; i <= max_page_number; i++) {
+            pages.push(
+            <p
+                key={i}
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                activity_page === i ? 'bg-blue-500 text-white' : ''
+                }`}
+                onClick={() => recent_activity_action(i)}
+            >
+                {i}
+            </p>
+            );
+        }
+        } else {
+        let startPage = Math.max(1, activity_page - 1);
+        let endPage = Math.min(activity_page + 1, max_page_number);
+
+        if (activity_page === 1) {
+            startPage = 1;
+            endPage = max_displayed_pages;
+        } else if (activity_page === max_page_number) {
+            startPage = max_page_number - 2;
+            endPage = max_page_number;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(
+            <p
+                key={i}
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                activity_page === i ? 'bg-blue-500 text-white' : ''
+                }`}
+                onClick={() => recent_activity_action(i)}
+            >
+                {i}
+            </p>
+            );
+        }
+        }
+
+        return pages;
+    };
+
+    async function task_notification_action(item: any) {
+        let new_page_number = task_notification_page;
+        let max_page_number = dash_box?.total_number_of_task_notifications_pages;
+
+        if (item === 'prev') {
+        if (task_notification_page > 1) {
+            new_page_number = task_notification_page - 1;
+        }
+        } else if (item === 'next') {
+        if (max_page_number && task_notification_page < max_page_number) {
+            new_page_number = task_notification_page + 1;
+        }
+        } else {
+        new_page_number = item;
+        }
+
+        console.log('new page number ', new_page_number);
+
+        setTask_notification_page(new_page_number);
+    }
+
+    const render_task_notification_page_numbers = () => {
+        const pages = [];
+        const max_page_number = dash_box?.total_number_of_task_notifications_pages || 1;
+        const max_displayed_pages = 3;
+
+        if (max_page_number <= max_displayed_pages) {
+        for (let i = 1; i <= max_page_number; i++) {
+            pages.push(
+            <p
+                key={i}
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                task_notification_page === i ? 'bg-blue-500 text-white' : ''
+                }`}
+                onClick={() => task_notification_action(i)}
+            >
+                {i}
+            </p>
+            );
+        }
+        } else {
+        let startPage = Math.max(1, task_notification_page - 1);
+        let endPage = Math.min(task_notification_page + 1, max_page_number);
+
+        if (task_notification_page === 1) {
+            startPage = 1;
+            endPage = max_displayed_pages;
+        } else if (task_notification_page === max_page_number) {
+            startPage = max_page_number - 2;
+            endPage = max_page_number;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(
+            <p
+                key={i}
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                task_notification_page === i ? 'bg-blue-500 text-white' : ''
+                }`}
+                onClick={() => task_notification_action(i)}
+            >
+                {i}
+            </p>
+            );
+        }
+        }
+
+        return pages;
+    };
+
 
 
 
@@ -105,46 +270,53 @@ const AdminHome = () => {
                 </div>
 
                 {/* second section = recent activity */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
+                <div className="w-full flex flex-col items-start justify-start gap-[10px]">
                     <p className="text-xl font-semibold">Recent Activities</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Activity Type</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Description</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">User</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Date</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Time</p>
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b border-gray-300">
+                            <p className="text-sm font-normal w-[20%] pr-2 pl-2">Activity Type</p>
+                            <p className="text-sm font-normal w-[20%] pr-2 pl-2">Description</p>
+                            <p className="text-sm font-normal w-[20%] pr-2 pl-2">User</p>
+                            <p className="text-sm font-normal w-[20%] pr-2 pl-2">Date</p>
+                            <p className="text-sm font-normal w-[20%] pr-2 pl-2">Time</p>
                         </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {dash_box?.activities.map((data:any, ind:number)=>{
 
-                                const {details, user, created_at, action} = data
+                        { dash_box?.activities.length ?
+                        
+                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
+                            {dash_box?.activities.map((data: any, ind: number) => {
+                                const { details, user, created_at, action } = data;
                                 return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{action}</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{details}</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{user?.last_name}</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{created_at}</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{created_at}</p>
-                                    </span>
-                                )
+                                <span key={ind} className="recent-activity-table-list">
+                                    <p className="text-sm w-[20%] pr-2 pl-2">{action}</p>
+                                    <p className="text-sm w-[20%] pr-2 pl-2">{details}</p>
+                                    <p className="text-sm w-[20%] pr-2 pl-2">{user?.last_name}</p>
+                                    <p className="text-sm w-[20%] pr-2 pl-2">{created_at}</p>
+                                    <p className="text-sm w-[20%] pr-2 pl-2">{created_at}</p>
+                                </span>
+                                );
                             })}
                         </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
 
+                        :
+
+                        <div className="w-full h-[200px] flex items-center justify-center ">
+                            <p className="text-md font-normal">No Activity yet</p>
+                        </div>
+                        
+                        }
+
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] rounded-b-[5px]">
+                            <span className="flex flex-row items-center justify-start gap-3 h-full">
+                                <p className="text-sm cursor-pointer" onClick={() => recent_activity_action('prev')}>Prev</p>
+                                <span className="w-auto h-full flex flex-row items-center justify-start">
+                                {render_page_numbers()}
                                 </span>
-                                <p className="text-sm cursor-pointer">Next</p>
+                                <p className="text-sm cursor-pointer" onClick={() => recent_activity_action('next')}>Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
+                                <p className="text-sm">Showing 1-5 of {dash_box?.total_number_of_recent_activities || 0}</p>
                             </span>
                         </span>
                     </div>
@@ -233,43 +405,52 @@ const AdminHome = () => {
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-xl font-semibold">Task Notification</p>
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Task Type</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Task</p>
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b border-gray-300 ">
+                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Task Type</p>
+                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Task</p>
 
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Assigned To</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Due Date</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Status</p>
+                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Assigned To</p>
+                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Due Date</p>
+                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Status</p>
                         </span>
+
+
+                        {dash_box?.task_notification.length ? 
+                        
                         <div className="w-full h-[200px] flex flex-col justify-start items-start">
                             {dash_box?.task_notification.map((data:any, ind: any)=>{
 
-                                const {message, read, task_type, due_date, task_notification_status, user }  = data
-                                return (
-                                    <span key={ind} className={ind === 2 ? "overdue-row":" recent-activity-table-list"}>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{task_type}</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{message}</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{user.first_name}</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{due_date}</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">{task_notification_status}</p>
-                                    </span>
+                                const { message, read, task_type, due_date, task_notification_status, user , total_number_of_recent_activities}  = data
+                                return (                                        
+                                        <span key={ind} className={task_notification_status === 'OVERDUE' ? "overdue-row":" recent-activity-table-list"}>
+                                            <p className="text-sm w-[20%] pr-2 pl-2 ">{task_type}</p>
+                                            <p className="text-sm w-[20%] pr-2 pl-2 ">{message}</p>
+                                            <p className="text-sm w-[20%] pr-2 pl-2 ">{user.first_name}</p>
+                                            <p className="text-sm w-[20%] pr-2 pl-2 ">{due_date}</p>
+                                            <p className="text-sm w-[20%] pr-2 pl-2 ">{task_notification_status}</p>
+                                        </span>
                                 )
                             })}
                         </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
+                        
+                        :
 
+                        <div className="w-full h-[200px] flex items-center justify-center">
+                            <p className="text-md font-normal"> No Task Notification yet. </p>
+                        </div>
+                        
+                    }
+
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] rounded-b-[5px] ">
+                            <span className="flex flex-row items-center justify-start gap-3 h-full">
+                                <p className="text-sm cursor-pointer" onClick={() => task_notification_action('prev')}>Prev</p>
+                                <span className="w-auto h-full flex flex-row items-center justify-start">
+                                {render_task_notification_page_numbers()}
                                 </span>
-                                <p className="text-sm cursor-pointer">Next</p>
+                                <p className="text-sm cursor-pointer" onClick={() => task_notification_action('next')}>Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
+                                <p className="text-sm">Showing 1-5 of {dash_box?.total_number_of_recent_activities || 0}</p>
                             </span>
                         </span>
                     </div>
