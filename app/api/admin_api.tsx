@@ -37,6 +37,7 @@ export const post_api_auth_request = async (endpoint: string, payload: any) => {
         return err;
     }
 };
+
 export const patch_api_auth_request = async (endpoint: string, payload: any) => {
     try {
         const auth_id = localStorage.getItem('x-id-key')

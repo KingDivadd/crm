@@ -41,7 +41,7 @@ const UserManagement = () => {
         
         get_all_users()
 
-    }, [])
+    }, [addUsers])
 
     function showAlert(message: string, type: string){
         setAlert({message: message, type: type})
@@ -146,7 +146,7 @@ const UserManagement = () => {
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
-            {addUsers ? <AddUsers addUsers={addUsers} setAddUsers={setAddUsers} selectedUser={selectedUser} setSelectedUser={setSelectedUser} /> 
+            {addUsers ? <AddUsers addUsers={addUsers} setAddUsers={setAddUsers} selectedUser={selectedUser} setSelectedUser={setSelectedUser} number_of_users={app_users?.total_number_of_users} /> 
             :
             <div className="relative w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
@@ -155,7 +155,7 @@ const UserManagement = () => {
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         <p className="text-lg font-semibold text-black">All Users</p>
-                        <p className="text-sm text-black">127</p>
+                        <p className="text-sm text-black">{app_users?.total_number_of_users}</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">

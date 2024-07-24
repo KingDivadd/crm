@@ -33,6 +33,7 @@ export interface AlertProps {
 }
 export interface AddUsersProps {
     addUsers: boolean;
+    number_of_users?: number;
     setAddUsers: (addUsers: boolean) => void;
     selectedUser: any;
     setSelectedUser: (selectedUser:any) => void;
