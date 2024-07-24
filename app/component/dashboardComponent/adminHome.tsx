@@ -50,8 +50,10 @@ const AdminHome = () => {
             showAlert(response.data.msg, "success")
           }else{
             console.log(response);
-            
-            showAlert(response.response.data.err, "error")
+            if (response){
+
+                showAlert(response.response.data.err, "error")
+            }
           }
           
 

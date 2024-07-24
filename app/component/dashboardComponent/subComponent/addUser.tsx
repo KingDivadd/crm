@@ -8,11 +8,12 @@ import { AddUsersProps } from '@/types';
 import Alert from '../../alert';
 import { userResponsibilities } from '@/constants';
 import { IoMdArrowBack } from "react-icons/io";
+import { post_api_auth_request } from '@/app/api/admin_api';
 
 const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUsersProps) => {
 
-    const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
-    const [inputError, setInputError] = useState({lastNameError: false, firstNameError: false, emailError: false, phoneError: false, roleError: false, passwordError: false})
+    const [auth, setAuth] = useState({last_name: '', first_name: '', email: '', phone_number: '', user_role: '', password: '', active_status: true })
+    const [inputError, setInputError] = useState({last_nameError: false, first_nameError: false, emailError: false, phone_numberError: false, user_roleError: false, passwordError: false})
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState({type: '', message: ''})
 
@@ -26,9 +27,9 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
 
     useEffect(() => {
         if(selectedUser != null){
-            const {lastName, firstName, email, phone, role, status, password} = selectedUser
-            setAuth({...auth, lastName: lastName, firstName: firstName, email: email, role: role, phone:phone, activateUser:status, password: password})
-            setDropElements({...dropElements, userRole: role })
+            const {last_name, first_name, email, phone_number, user_role, status, password} = selectedUser
+            setAuth({...auth, last_name: last_name, first_name: first_name, email: email, user_role: user_role, phone_number:phone_number, active_status:status, password: password})
+            setDropElements({...dropElements, userRole: user_role })
             console.log('status : ',status)
         }
     }, [])
@@ -36,10 +37,10 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
 
 
     useEffect(() => {
-        if (auth.lastName){setInputError({...inputError, lastNameError: auth.lastName === ''})}
-        if (auth.firstName){setInputError({...inputError, firstNameError: auth.firstName === ''})}
+        if (auth.last_name){setInputError({...inputError, last_nameError: auth.last_name === ''})}
+        if (auth.first_name){setInputError({...inputError, first_nameError: auth.first_name === ''})}
         if (auth.email){setInputError({...inputError, emailError: auth.email === ''})}
-        if (auth.phone){setInputError({...inputError, phoneError: auth.phone === ''})}
+        if (auth.phone_number){setInputError({...inputError, phone_numberError: auth.phone_number === ''})}
         if (auth.password){setInputError({...inputError, passwordError: auth.password === ''})}
     }, [auth])
 
@@ -62,36 +63,45 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
         setAuth({...auth, [name]:value})
     }
 
-    function triggerAlert(type:string, message: string){
-        setAlert({type: type, message: message})
-        setTimeout(() => {
-            setAlert({type: '', message: ''})
-        }, 3000);
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
     }
 
-    async function handleSubmit(e:any){
-        if(!auth.lastName || !auth.firstName || !auth.email || !auth.password || !auth.phone){
-            setInputError({...inputError, lastNameError: auth.lastName === "", firstNameError: auth.firstName === "", emailError: auth.email === '', passwordError: auth.password === '', phoneError: auth.phone === ''})
-            triggerAlert('warning', 'Please fill all required fields.')
+
+    async function add_new_user(e:any){
+        if(!auth.last_name || !auth.first_name || !auth.email || !auth.password || !auth.phone_number){
+            setInputError({...inputError, last_nameError: auth.last_name === "", first_nameError: auth.first_name === "", emailError: auth.email === '', passwordError: auth.password === '', phone_numberError: auth.phone_number === ''})
+            showAlert('warning', 'Please fill all required fields.')
 
         }else{
             setLoading(true); // Set loading to true when the request starts
             console.log(auth);
+
+            const response = await post_api_auth_request(`user/create-user`, {})            
+
+            if (response.status == 200 || response.status == 201){
+                
+                console.log(response.data);
+                
+                showAlert(response.data.msg, "success")
+                setAddUsers(false)
+            }else{
+                console.log(response);
+                
+                showAlert(response.response.data.err, "error")
+            }
             
             // Simulate a login request with a timeout
-            setTimeout(() => {
-                setLoading(false); // Set loading to false when the request completes
-                    setAddUsers(false)
-                    triggerAlert('success', 'User Added successfully')
-                    const [auth, setAuth] = useState({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
-            }, 3000);
         }
     }
 
     async function updateUser(e:any){
-        if(!auth.lastName || !auth.firstName || !auth.email || !auth.password || !auth.phone){
-            setInputError({...inputError, lastNameError: auth.lastName === "", firstNameError: auth.firstName === "", emailError: auth.email === '', passwordError: auth.password === '', phoneError: auth.phone === ''})
-            triggerAlert('warning', 'Please fill all required fields.')
+        if(!auth.last_name || !auth.first_name || !auth.email || !auth.password || !auth.phone_number){
+            setInputError({...inputError, last_nameError: auth.last_name === "", first_nameError: auth.first_name === "", emailError: auth.email === '', passwordError: auth.password === '', phone_numberError: auth.phone_number === ''})
+            showAlert('warning', 'Please fill all required fields.')
 
         }else{
             setLoading(true); // Set loading to true when the request starts
@@ -101,8 +111,8 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
             setTimeout(() => {
                 setLoading(false); // Set loading to false when the request completes
                     setAddUsers(false)
-                    triggerAlert('success', 'User Added successfully')
-                    setAuth({lastName: '', firstName: '', email: '', phone: '', role: '', password: '', activateUser: 'inactive' })
+                    showAlert('success', 'User Added successfully')
+                    setAuth({last_name: '', first_name: '', email: '', phone_number: '', user_role: '', password: '', active_status: false })
             }, 3000);
         }
     }
@@ -112,7 +122,7 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
             <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                 {alert.message && <Alert message={alert.message} type={alert.type} />} 
             </span>
-            <div className="w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
+            <div className="w-full h-full flex flex-col items-start justify-start gap-[20px] ">
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         
@@ -121,16 +131,16 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
                         <p className="text-md text-black">127</p>
                         <span className="w-[150px] flex items-center justify-start gap-3">
                             <p className="text-md text-black">Status:</p>
-                            {auth.activateUser === 'active' ? <p className="text-md text-lime-600">Active</p> : <p className="text-md text-red-600">Inactive</p>}
+                            {auth.active_status === true ? <p className="text-md text-lime-600">Active</p> : <p className="text-md text-red-600">Inactive</p>}
 
                         </span>
                     </span>
                     <span className="flex flex-row items-center justify-start gap-4">
                         
-                        {auth.activateUser != 'active' ? 
-                        <p className="text-md text-blue-500" onClick={()=>{setAuth({...auth, activateUser: 'active'})}}>Activate User</p>
+                        {auth.active_status != false ? 
+                        <p className="text-md text-blue-500" onClick={()=>{setAuth({...auth, active_status: true})}}>Activate User</p>
                             :
-                        <p className="text-md text-red-500" onClick={()=>{setAuth({...auth, activateUser: 'inactive'})}}>Inactivate User</p>
+                        <p className="text-md text-red-500" onClick={()=>{setAuth({...auth, active_status: false})}}>Inactivate User</p>
                         }
 
                         <p className="text-lg font-semibold">{selectedUser? "Modifying user data": "New User"}</p>
@@ -146,11 +156,11 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
                         <form action="" className="w-full flex flex-col items-start justify-start gap-4">
                             <span className="w-full flex flex-col items-start justify-start gap-2">
                                 <h4 className="text-md font-light">Last Name</h4>
-                                <input type="text" name='lastName' className={inputError.lastNameError ? 'normal-input-error' : 'normal-input'} value={auth.lastName} onChange={handleChange} />
+                                <input type="text" name='last_name' className={inputError.last_nameError ? 'normal-input-error' : 'normal-input'} value={auth.last_name} onChange={handleChange} />
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
                                 <h4 className="text-md font-light">First Name</h4>
-                                <input type="text" name='firstName' className={inputError.firstNameError ? 'normal-input-error' : 'normal-input'} value={auth.firstName} onChange={handleChange} />
+                                <input type="text" name='first_name' className={inputError.first_nameError ? 'normal-input-error' : 'normal-input'} value={auth.first_name} onChange={handleChange} />
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
                                 <h4 className="text-md font-light">Email</h4>
@@ -158,7 +168,7 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
                                 <h4 className="text-md font-light">Phone</h4>
-                                <input type="phone" name='phone' className={inputError.phoneError ? 'normal-input-error' : 'normal-input'} value={auth.phone} onChange={handleChange} />
+                                <input type="phone_number" name='phone_number' className={inputError.phone_numberError ? 'normal-input-error' : 'normal-input'} value={auth.phone_number} onChange={handleChange} />
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
                                 <h4 className="text-md font-light">Password</h4>
@@ -166,7 +176,7 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
                             </span>
                         </form>
                     </div>
-                    {/* user role side */}
+                    {/* user user_role side */}
                     <div className="w-1/2 flex flex-col items-start justify-start gap-4">
                         <p className="text-[17px] font-semibold">User Role</p>
                         <div className="w-full flex flex-col items-start justify-start gap-4">
@@ -176,7 +186,7 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
                                     <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'userRole'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                 </span>
                                 <h4 className="text-md font-semibold mt-[8px]">Description</h4>
-                                {/* now list the basic features of these roles */}
+                                {/* now list the basic features of these user_roles */}
 
                                 {dropElements.userRole.toLowerCase() === 'admin' &&  <span className="w-full max-h- flex flex-col items-start justify-start gap-3 ">
                                     {userResponsibilities.admin.map((data, ind)=>{
@@ -264,7 +274,7 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser}:AddUser
                         ) : 'Save Changes'}
                     </button>
                     :
-                    <button className="mt-[10px] w-[150px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={handleSubmit} disabled={loading}>
+                    <button className=" w-[150px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={add_new_user} disabled={loading}>
                         {loading ? (
                         <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

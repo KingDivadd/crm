@@ -192,6 +192,12 @@ export interface PipelineProps {
     setShowDetails: (showDetails: boolean) => void;
 }
 
+export interface User_Management_Props {
+    total_number_of_pages:number;
+    total_number_of_users:number;
+    users:any;
+}
+
 export interface Admin_dashboard_props {
     total_number_of_leads: number;
     total_number_of_sales: number;
