@@ -34,12 +34,12 @@ const Dashboard = () => {
         <div className="">
             {userRole === 'admin' && <AdminDashboard />}
             {userRole === 'sales' && <SalesDashboard />}
-            {/* {userRole === 'operation' && <OpsDashboard />} */}
+            {userRole === 'operation' && <OpsDashboard />}
             {userRole === 'customer' && <CustomerDashboard />}
             {userRole === 'installer' && <InstallerDashboard />}
             {userRole === 'permit' && <PermitPortalDashboard />}
             {userRole === 'engineering' && <EngineeringDashboard />}
-            {userRole === 'operation' && <ElecricalDashbaord />}
+            {userRole === 'electrical' && <ElecricalDashbaord />}
             {userRole === 'accounting' && <AccountingDashboard />}
         </div>
     )
