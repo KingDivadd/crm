@@ -1,7 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import { FaCaretUp, FaCaretDown } from 'react-icons/fa6'
-import { DeleteTaskProps,  } from "../../../types/index"
+import { UserDeleteProps,  } from "../../../types/index"
 import Alert from '../alert'
 import { IoIosWarning } from "react-icons/io";
 import { DropDownBlankTransparent } from '../dropDown'
@@ -10,7 +10,7 @@ import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_api_auth_request } from '@/app/api/admin_api'
 
-const DeleteModal = ({ showModal, setShowModal, selectedUser, setSelectedUser}: DeleteTaskProps) => {
+const DeleteModal = ({ showModal, setShowModal, selectedUser, setSelectedUser}: UserDeleteProps) => {
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
 

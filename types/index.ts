@@ -155,11 +155,21 @@ export interface JobListProps {
 export interface DeleteTaskProps {
     showModal: boolean;
     setShowModal: (showModal: boolean) => void;
-    selectedUser: any;
-    setSelectedUser: (selectedItem: any) => void;
+    selectedItem: any;
+    setSelectedItem: (selectedItem: any) => void;
+    show: boolean;
+    setShow: (show: boolean) => void;
+}
+
+export interface UserDeleteProps {
+    selectedUser:any;
+    setSelectedUser:(selectedUser:any) => void;
+    showModal: boolean;
+    setShowModal: (showModal: boolean) => void;
 }
 
 export interface UpdateTaskProps {
+    
     edit:boolean;
     setEdit: (edit: boolean) => void;
     showModal: boolean;
