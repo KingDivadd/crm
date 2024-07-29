@@ -193,7 +193,7 @@ const SalesLeadPage = () => {
                             
                             {filtered_lead_box !== null ?
                             
-                                <div className='h-auto w-full flex flex-col justify-start '>
+                                <div className='h-full w-full flex flex-col justify-start '>
 
                                     {lead_box?.leads.length ?
                                      <>
@@ -210,7 +210,7 @@ const SalesLeadPage = () => {
                                     })}
                                     </>
                                     :
-                                    <div className="w-full h-full flex items-center justify-center">
+                                    <div className="w-full h-[100%] flex items-center justify-center">
                                         <p className="text-normal"> No Leads yet </p>
                                     </div>}
 
