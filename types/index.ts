@@ -204,6 +204,15 @@ export interface PipelineProps {
     setShowDetails: (showDetails: boolean) => void;
 }
 
+export interface Leads_Props {
+    forEach(arg0: (data: any, ind: number) => void): unknown;
+    filter(arg0: (user: any) => any): unknown;
+    map(arg0: (data: any) => void): unknown;
+    total_number_of_leads_pages:number;
+    total_number_of_leads:number;
+    leads:any;
+}
+
 export interface User_Management_Props {
     forEach(arg0: (data: any, ind: number) => void): unknown;
     filter(arg0: (user: any) => any): unknown;
@@ -236,6 +245,15 @@ export interface Admin_dashboard_props {
 
   }
   
+  export interface Sales_Dashboard_Props {
+    total_lead: number;
+    total_sales: number;
+    conversion_rate: any;
+    pending_task: number;
+    recent_activities: any;
+    recent_notifications: any;
+    recent_tasks: any;
+  }
 
 
 export const opsStages = [

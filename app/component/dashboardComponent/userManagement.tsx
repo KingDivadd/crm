@@ -309,7 +309,7 @@ const UserManagement = () => {
                                 <p className="text-sm">Showing 1-15 of {app_users?.total_number_of_users || 0}</p>
                             </span>
                         </span>
-                    </div>
+                </div>
             </div>}
 
             {showModal && <DeleteModal showModal={showModal} setShowModal={setShowModal} selectedUser={selectedUser} setSelectedUser={setSelectedUser}  />}
