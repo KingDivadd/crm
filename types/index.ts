@@ -137,6 +137,7 @@ export interface ImageUploaderProps {
     title: string;
     url: string;
     id: string;
+    image: string;
 }
 
 export interface ProjectImageUploaderProps {
@@ -204,6 +205,9 @@ export interface PipelineProps {
 }
 
 export interface User_Management_Props {
+    forEach(arg0: (data: any, ind: number) => void): unknown;
+    filter(arg0: (user: any) => any): unknown;
+    map(arg0: (data: any) => void): unknown;
     total_number_of_pages:number;
     total_number_of_users:number;
     users:any;

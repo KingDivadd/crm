@@ -4,7 +4,7 @@ import axios from 'axios';
 import Image from 'next/image';
 import { ImageUploaderProps, ProjectImageUploaderProps } from '@/types';
 
-const ImageUploader = ({ id, title, url }: ImageUploaderProps) => {
+const ImageUploader = ({ id, title, url, image }: ImageUploaderProps) => {
     const [imagePreview, setImagePreview] = useState('');
     const [imageFile, setImageFile] = useState(null);
 
@@ -27,9 +27,12 @@ const ImageUploader = ({ id, title, url }: ImageUploaderProps) => {
             formData.append('upload_preset', 'crm_images'); // Replace with your Cloudinary upload preset
 
             try {
-                const response = await axios.post('https://api.cloudinary.com/v1_1/iroegbu-cloud-1/image/upload', formData); // Replace with your Cloudinary URL
+                console.log('Prev image ',image);
+                
+                const response = await axios.post('https://api.cloudinary.com/v1_1/iroegbu-cloud-1/image/upload', formData);
                 const imageUrl = response.data.secure_url;
-                console.log('Image URL:', imageUrl);
+                image = response.data.secure_url
+                console.log('Image URL:', imageUrl, 'image ', image);
                 // Saving the url in my server here
             } catch (error) {
                 console.error('Error uploading image:', error);

@@ -10,6 +10,7 @@ import { get_api_auth_request } from '@/app/api/admin_api';
 import { User_Management_Props } from '@/types';
 import DeleteModal from './deleteModal';
 
+
 const UserManagement = () => {
 
     const [addUsers, setAddUsers] = useState(false)
@@ -18,11 +19,15 @@ const UserManagement = () => {
     const [page_number, setPage_number] = useState(1)
     const [showModal, setShowModal] = useState(false)
     const [app_users, setApp_users] = useState<User_Management_Props | null>(null);
+    const [filtered_users, setFiltered_users] = useState<User_Management_Props | null>(null); 
+
+    const [filters, setFilters] = useState({filter_input: '', active_status: '', user_role: ''})
+
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        userRole: false, status: false
+        user_role: false, status: false
     });
     const [dropElements, setDropElements] = useState({
-        userRole: 'User Role', status: 'Status'
+        user_role: 'User Role', status: 'Status'
 
     })
 
@@ -36,8 +41,71 @@ const UserManagement = () => {
     };
 
     const handleSelectDropdown = (dropdown: any, title:any)=>{
+        handle_new_filter(dropdown)
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
+
+    async function handleFilter(e: any) {
+        const value = e.target.value.toLowerCase();
+        setFilters({ ...filters, filter_input: value });
+    
+        if (app_users && app_users.users) {
+          if (value.trim() !== '') {
+            const new_app_users = app_users.users.filter((data: any) => {
+              const firstName = data.first_name?.toLowerCase() || '';
+              const lastName = data.last_name?.toLowerCase() || '';
+              const otherNames = data.other_names?.toLowerCase() || '';
+              const email = data.email?.toLowerCase() || '';
+    
+              return (
+                firstName.includes(value) ||
+                lastName.includes(value) ||
+                otherNames.includes(value) ||
+                email.includes(value)
+              );
+            });
+    
+            setFiltered_users({ ...app_users, users: new_app_users });
+          } else {
+            setFiltered_users(app_users); // Reset to the original list
+          }
+        }
+    }
+
+    async function handle_new_filter(item: string) {
+        if (app_users && item.toLocaleLowerCase() == 'all') {
+            console.log(app_users);
+            
+            // If no filter is provided, reset to the original list
+            setFiltered_users(app_users);
+        
+        } 
+        else if (item && app_users) {
+            console.log(item);
+            
+            const new_app_users = app_users.users.filter((data: any) => {
+                const user_role = data.user_role?.toLowerCase() || '';
+                const active_status = data.active_status ? 'active' : 'inactive';
+    
+                // Check if the filter item matches either the user_role or active_status
+                return (
+                    user_role === item.toLowerCase() ||
+                    active_status === item.toLowerCase()
+                );
+            });
+    
+            setFiltered_users({ ...app_users, users: new_app_users });
+        } else {
+            // If no filter is provided, reset to the original list
+            setFiltered_users(app_users);
+        }
+    }
+    
+    
+    
+    
+    
+    
 
     useEffect(() => {
         
@@ -54,11 +122,15 @@ const UserManagement = () => {
 
     async function get_all_users() {
 
+        console.log('started fetching');
+        
         const response = await get_api_auth_request(`user/all-users/${page_number}`)
 
         if (response.status == 200 || response.status == 201){
             
-            setApp_users(response.data.data)            
+            setApp_users(response.data.data)      
+            
+            setFiltered_users(response.data.data)
 
             console.log(response.data.data.users);
             
@@ -168,13 +240,13 @@ const UserManagement = () => {
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
                             <span className="h-[40px] w-[150px]">
-                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Active', 'Inactive']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Active', 'Inactive', 'All']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
                             <span className="w-[250px] h-[40px] ">
-                                <input type="text" name="userName" placeholder='Enter name or email' id="" className='normal-input bg-gray-100 ' />
+                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Enter name or email' id="" className='normal-input bg-gray-100 ' />
                             </span>
                             <span className="h-[40px] w-[150px]">
-                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'userRole'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance', 'All']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
                         </span>
 
@@ -187,28 +259,28 @@ const UserManagement = () => {
 
                 <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b border-gray-300 ">
-                            <p className="text-sm font-normal w-[15%] pr-2 pl-2 ">Last Name</p>
-                            <p className="text-sm font-normal w-[15%] pr-2 pl-2 ">First Name</p>
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Email</p>
-                            <p className="text-sm font-normal w-[15%] pr-2 pl-2 ">Role</p>
-                            <p className="text-sm font-normal w-[15%] pr-2 pl-2 ">Status</p>
+                            <p className="text-sm font-normal w-[13%] pr-2 pl-2 ">Last Name</p>
+                            <p className="text-sm font-normal w-[13%] pr-2 pl-2 ">First Name</p>
+                            <p className="text-sm font-normal w-[29%] pr-2 pl-2 ">Email</p>
+                            <p className="text-sm font-normal w-[12.5%] pr-2 pl-2 ">Role</p>
+                            <p className="text-sm font-normal w-[12.5%] pr-2 pl-2 ">Status</p>
                             <p className="text-sm font-normal w-[10%] pr-2 pl-2 ">Action</p>
                             <p className="text-sm font-normal w-[10%] pr-2 pl-2 "></p>
                         </span>
                         <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                             
-                            {app_users !== null ?
+                            {filtered_users !== null ?
                             
                                 <div className='h-auto w-full flex flex-col justify-start '>
-                                {app_users?.users.map((data:any, ind:number)=>{
+                                { filtered_users?.users.map((data:any, ind:number)=>{
                                     const {last_name, first_name, email, user_role, active_status} = data
                                     return (
                                         <span key={ind} className="recent-activity-table-list " >
-                                            <p className="text-sm w-[15%] pr-2 pl-2 "> {last_name} </p>
-                                            <p className="text-sm w-[15%] pr-2 pl-2 "> {first_name} </p>
-                                            <p className="text-sm w-[20%] pr-2 pl-2 "> {email} </p>
-                                            <p className="text-sm w-[15%] pr-2 pl-2 "> {user_role} </p>
-                                            <p className={active_status ? "text-sm text-green-500 w-[15%] pr-2 pl-2 ": "text-sm text-red-500 w-[15%] pr-2 pl-2 "}>{active_status ? "Active" : "InActive"}</p>
+                                            <p className="text-sm w-[13%] pr-2 pl-2 "> {last_name} </p>
+                                            <p className="text-sm w-[13%] pr-2 pl-2 "> {first_name} </p>
+                                            <p className="text-sm w-[29%] pr-2 pl-2 "> {email} </p>
+                                            <p className="text-sm w-[12.50%] pr-2 pl-2 "> {user_role} </p>
+                                            <p className={active_status ? "text-sm text-green-500 w-[12.5%] pr-2 pl-2 ": "text-sm text-red-500 w-[15%] pr-2 pl-2 "}>{active_status ? "Active" : "InActive"}</p>
                                             <p className="text-sm w-[10%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-lime-600" onClick={()=>{edit_user(data)}} ><MdEdit size={16} /> Edit</p>
                                             
                                             <p className="text-sm w-[10%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-red-400"  onClick={()=>delete_user(data)} ><MdDeleteForever size={18} /> Delete</p>

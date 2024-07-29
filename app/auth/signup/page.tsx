@@ -188,12 +188,13 @@ const Signup = () => {
             if (response.status == 201){
                 showAlert(response.data.msg, "success")
 
-                setAuth({firstName: '', lastName: '', email: '', phone: '', password: '' })
-
+                
                 localStorage.setItem('x-id-key' ,response.headers.get('x-id-key'));
-
+                sessionStorage.setItem('email', auth.email )
+                
                 setLoading(false)
                 setPage('add-company')
+                setAuth({firstName: '', lastName: '', email: '', phone: '', password: '' })
                 return;
             }else{
                 showAlert(response.response.data.err, "error")
@@ -292,6 +293,13 @@ const Signup = () => {
 
     }
     
+    const handleImageUpload = (newUrl: string, type: 'logo') => {
+        // if (type === 'avatar') {
+        //   setUserProfile((prev) => ({ ...prev, avatar: newUrl }));
+        // } else if (type === 'logo') {
+        //   setCompanyInfo((prev) => ({ ...prev, logo: newUrl }));
+        // }
+      };
 
     return (
         <div className="relative w-full h-[100vh] p-[20px] flex items-center jusitify-center  ">
@@ -412,9 +420,10 @@ const Signup = () => {
 
                         </form>
                     </div>
+
                     <div className="w-[55%] rounded-[20px] h-full flex items-start justify-start  " >
                         <span className="w-full flex flex-col items-start justify-start gap-2 h-[95%]  ">
-                            <SignupImageUploader id={'company-logo'} title={"Company Logo"} url={auth_setup.company_logo} />
+                            {/* <SignupImageUploader id={'company-logo'} title={"Company Logo"} url={auth_setup.company_logo} onUpload={handleImageUpload} /> */}
                         </span>
                         
                     </div>

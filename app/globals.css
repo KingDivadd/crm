@@ -396,3 +396,8 @@
 .cont-3 {
     height: calc(100vh - 300px);
 }
+
+.settings-cont {
+    @apply overflow-y-auto;
+    height:  calc(100vh - 70px);
+}

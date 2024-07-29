@@ -14,11 +14,18 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         const item = sessionStorage.getItem('sideNav')
-        if (item == null || item == "" || !['home', 'user-management', 'analytics', 'notifications', 'logs', 'system-settings'].includes(active)) {
+        if (item == null){
             setActive('home')
-        }else{
-            setActive(item)
+            return;
         }
+        setActive(item)
+        // if (item == null || item == "" || !['home', 'user-management', 'analytics', 'notifications', 'logs', 'system-settings'].includes(active)) {
+        //     setActive('home')
+        // }else{
+        //     setActive(item)
+        // }
+        console.log(item);
+        
     }, [])
 
 

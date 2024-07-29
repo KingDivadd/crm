@@ -73,77 +73,95 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
     }
 
 
-    async function add_new_user(e:any){
-        if(!auth.last_name || !auth.first_name || !auth.email || !auth.password || !auth.phone_number){
-            setInputError({...inputError, last_nameError: auth.last_name === "", first_nameError: auth.first_name === "", emailError: auth.email === '', passwordError: auth.password === '', phone_numberError: auth.phone_number === ''})
-            showAlert('Please fill all required fields.', 'warning')
-
-        }else if (dropElements.user_role == 'User Role'){
-            showAlert('Please select User\'s Role', 'warning')
-        } 
-        else{
+    async function add_new_user(e:any) {
+        e.preventDefault(); // Prevent the default form submission if this is part of a form
+    
+        if (!auth.last_name || !auth.first_name || !auth.email || !auth.password || !auth.phone_number) {
+            setInputError({
+                ...inputError,
+                last_nameError: auth.last_name === "",
+                first_nameError: auth.first_name === "",
+                emailError: auth.email === '',
+                passwordError: auth.password === '',
+                phone_numberError: auth.phone_number === ''
+            });
+            showAlert('Please fill all required fields.', 'warning');
+        } else if (dropElements.user_role === 'User Role') {
+            showAlert('Please select User\'s Role', 'warning');
+        } else {
             setLoading(true); // Set loading to true when the request starts
-            const {active_status, ...new_auth} = auth
+            const { active_status, ...new_auth } = auth;
             console.log(new_auth);
-
-            const response = await post_api_auth_request(`user/create-user`, new_auth)            
-
-            if (response.status == 200 || response.status == 201){
-                
-                console.log(response.data);
-                
-                showAlert(response.data.msg, "success")
-                setAddUsers(false)
-            }else{
-                console.log(response);
-                
-                showAlert(response.response.data.err, "error")
-
-                setLoading(false)
+    
+            try {
+                const response = await post_api_auth_request(`user/create-user`, new_auth);
+    
+                if (response.status === 200 || response.status === 201) {
+                    console.log(response.data);
+                    showAlert(response.data.msg, "success");
+                    setAddUsers(false);
+                } else {
+                    console.log(response);
+                    showAlert(response.response.data.err, "error");
+                }
+            } catch (error:any) {
+                console.error('Network or unexpected error:', error);
+                showAlert('An unexpected error occurred. Please try again later.', 'error');
+            } finally {
+                setLoading(false); // Set loading to false in both success and error cases
             }
-            
-            // Simulate a login request with a timeout
         }
     }
+    
 
-    async function update_user(e:any){
-        if(!auth.last_name || !auth.first_name || !auth.phone_number){
-            setInputError({...inputError, last_nameError: auth.last_name === "", first_nameError: auth.first_name === "", emailError: auth.email === '', passwordError: auth.password === '', phone_numberError: auth.phone_number === ''})
-            showAlert('Please fill all required fields.', 'warning')
-
-        }else if (dropElements.user_role == 'User Role'){
-            showAlert('Please select User\'s Role', 'warning')
-        } 
-        else{
+    async function update_user(e: any) {
+        e.preventDefault(); // Prevent the default form submission if this is part of a form
+    
+        if (!auth.last_name || !auth.first_name || !auth.phone_number) {
+            setInputError({
+                ...inputError,
+                last_nameError: auth.last_name === "",
+                first_nameError: auth.first_name === "",
+                emailError: auth.email === '',
+                passwordError: auth.password === '',
+                phone_numberError: auth.phone_number === ''
+            });
+            showAlert('Please fill all required fields.', 'warning');
+        } else if (dropElements.user_role == 'User Role') {
+            showAlert('Please select User\'s Role', 'warning');
+        } else {
             setLoading(true); // Set loading to true when the request starts
-            if (new_password){
-                setAuth({...auth, password: new_password})
+    
+            // If new_password exists, update the auth state with it
+            if (new_password) {
+                setAuth({ ...auth, password: new_password });
             }
-            const {active_status, email, ...new_auth} = auth
+    
+            const { active_status, email, ...new_auth } = auth;
             console.log(new_auth);
-
-            const response = await patch_api_auth_request(`user/admin-update-user-data/${selectedUser.user_id}`, new_auth)            
-
-            if (response.status == 200 || response.status == 201){
-                
-                console.log(response.data);
-                
-                showAlert(response.data.msg, "success")
-                setTimeout(() => {
-                    setAddUsers(false)
-                }, 2000);
-            }else{
-                console.log(response);
-                
-                showAlert(response.response.data.err, "error")
-
-                setLoading(false)
+    
+            try {
+                const response = await patch_api_auth_request(`user/admin-update-user-data/${selectedUser.user_id}`, new_auth);
+    
+                if (response.status === 200 || response.status === 201) {
+                    console.log(response.data);
+                    showAlert(response.data.msg, "success");
+                    setTimeout(() => {
+                        setAddUsers(false);
+                    }, 2000);
+                } else {
+                    console.log(response);
+                    showAlert(response.response.data.err, "error");
+                }
+            } catch (error) {
+                console.error('Network or unexpected error:', error);
+                showAlert('An unexpected error occurred. Please try again later.', 'error');
+            } finally {
+                setLoading(false); // Set loading to false in both success and error cases
             }
-            
-            // Simulate a login request with a timeout
         }
     }
-
+    
     return (
         <div className="w-full relative h-full p-[10px] pb-[10px] ">
             <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
@@ -194,7 +212,7 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
                                 <h4 className="text-md font-light">Password</h4>
-                                <input type="text" name='new_password' className={inputError.passwordError ? 'normal-input-error' : 'normal-input'} value={new_password} onChange={(e)=>{setNew_password(e.target.value)}} />
+                                <input type="text" name='new_password' className={inputError.passwordError ? 'normal-input-error' : 'normal-input'} value={new_password} onChange={(e)=>{setNew_password(e.target.value); setAuth({...auth, password: e.target.value}) }} />
                             </span>
                         </form>
                     </div>

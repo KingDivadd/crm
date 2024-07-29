@@ -77,7 +77,7 @@ const ForgetPassword = () => {
 
         async function resend_otp() {
         
-            const response = await post_api_request('auth/generate-otp', {email: sessionStorage.getItem('email')})
+            const response = await post_api_request('auth/generate-otp', {email: String(sessionStorage.getItem('email'))})
     
             if (response.status == 201){
                 showAlert(response.data.msg, "success")

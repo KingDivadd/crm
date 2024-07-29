@@ -30,7 +30,11 @@ const Login = () => {
         if (response.status == 200 || response.status == 201){
            
             setUsers(response.data.number_of_users)
-          }else{
+          }else if (response.code == "ERR_NETWORK"){
+
+              showAlert(response.message, "error")
+          }
+          else{            
             showAlert(response.response.data.err, "error")
             setLoading(false)
           }
@@ -80,26 +84,35 @@ const Login = () => {
         } else {
           setLoading(true); // Set loading to true when the request starts
 
-          const response = await post_api_request('auth/login', auth)
-
-          if (response.status == 200 || response.status == 201){
-
-            localStorage.setItem('x-id-key' ,response.headers.get('x-id-key'));
-            console.log('respnse ', response.data.user)
-            localStorage.setItem('user-role', response.data.user.user_role)
+          try {
             
-            showAlert(response.data.msg, "success")
-            setAuth({email: '', password: ''})
-            setLoading(false)
-            router.push('/home')
-          }else if (response.response.status == 402){
-            sessionStorage.setItem('email', auth.email)
-            router.push('/auth/verifyotp')
-          }
-          else{
-            showAlert(response.response.data.err, "error")
-            setLoading(false)
-          }
+              const response = await post_api_request('auth/login', auth)
+    
+              if (response.status == 200 || response.status == 201){
+    
+                localStorage.setItem('x-id-key' ,response.headers.get('x-id-key'));
+                console.log('respnse ', response.data.user)
+                localStorage.setItem('user-role', response.data.user.user_role)
+                
+                showAlert(response.data.msg, "success")
+                setAuth({email: '', password: ''})
+                setLoading(false)
+                router.push('/home')
+              }else if (response.response && response.response.status == 402){
+                sessionStorage.setItem('email', auth.email)
+                router.push('/auth/verifyotp')
+              }
+              else{
+                showAlert(response.response.data.err, "error")
+                setLoading(false)
+              }
+          } catch (err:any) {
+            console.error('Network or unexpected error:', err);
+                showAlert('An unexpected error occurred. Please try again later.', 'error');
+            } finally {
+                setLoading(false); // Set loading to false in both success and error cases
+            }
+
           
             setLoading(false)
 
