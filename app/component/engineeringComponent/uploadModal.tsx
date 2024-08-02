@@ -132,7 +132,7 @@ const UploadDrawingModal = ({ showModal, setShowModal, selectedItem, setSelected
                                             </span>
 
                                             <span className="w-full h-[340px] flex flex-col items-start justify-start gap-2">
-                                                <FilesUpload id={'user-image'} title={"Choose a file"} url={''} />
+                                                <FilesUpload id={'user-image'} title={"Choose a file"} url={''} image={''} />
                                             </span>
 
 
