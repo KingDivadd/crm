@@ -163,7 +163,7 @@ const VeiwRedLinesModal = ({ setShowRedlineModal, showRedlineModal, show, setSho
                                     </span>
 
                                     <span className="flex items-center justify-center w-full h-[95%] rounded-[5px] ">
-                                        <ViewImage id={'user-image'} title={"User Image"} url={'https://amzirlodp-prd-s3.s3.amazonaws.com/documents/images/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg'} />
+                                        <ViewImage id={'user-image'} title={"User Image"} url={'https://amzirlodp-prd-s3.s3.amazonaws.com/documents/images/big_4cda85d892a5c0b5dd63b510a9c83e9c9d06e739.jpg'} image={''} />
                                     </span>
                                 </div>}
 
