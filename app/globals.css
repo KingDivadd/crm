@@ -401,3 +401,10 @@
     @apply overflow-y-auto;
     height:  calc(100vh - 70px);
 }
+.admin-shortcut-cont {
+    height: calc(100vh - 80px);
+}
+
+.admin-shortcut-table-cont {
+    height: calc(100vh - 260px);
+}

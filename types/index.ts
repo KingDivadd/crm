@@ -162,6 +162,13 @@ export interface DeleteTaskProps {
     setShow: (show: boolean) => void;
 }
 
+export interface AdminShortcutProps {
+    selectedItem:any;
+    setSelectedItem:(selectedItem:any) => void;
+    showModal: boolean;
+    setShowModal: (showModal: boolean) => void;
+}
+
 export interface UserDeleteProps {
     selectedUser:any;
     setSelectedUser:(selectedUser:any) => void;

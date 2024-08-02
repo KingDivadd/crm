@@ -2,10 +2,15 @@
 import React, {useState, useEffect} from 'react'
 import { useRouter } from 'next/navigation'
 import SalesViewContractDetails from './salesViewContractDetails'
+import { get_api_auth_request } from '@/app/api/admin_api'
+import Alert from '../alert'
 
 const SalesJobsPage = () => {
     const router = useRouter()
+    const [alert, setAlert] = useState({type: '', message: ''})
     const [viewDetails, setViewDetails] = useState({contractDetails: false, documentAndInvoices: false })
+    const [sales_page, setSales_page] = useState({job_contract_details: null, project_information: null, project_tracking: null})
+    const [pages_numbers, setPages_numbers] = useState({job_contract_page_number: 1, project_info_page_number: 1, project_tracking_page_number: 1 })
 
     function viewContractDetails(){
         setViewDetails({...viewDetails, contractDetails: !viewDetails.contractDetails})
@@ -14,55 +19,94 @@ const SalesJobsPage = () => {
     function viewDocumentAndInvoice(){
         setViewDetails({...viewDetails, documentAndInvoices: !viewDetails.documentAndInvoices})
     }
+
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
+    }
+
+    useEffect(() => {
+      
+        get_job_contract_details()
+
+        get_project_information()
+
+        get_project_progress_tracking_information()
+        
+    }, [])
+
+    async function get_job_contract_details() {
+
+        console.log('started fetching');
+        
+        const response = await get_api_auth_request(`auth/job-contract-details/${pages_numbers.job_contract_page_number}`)        
+
+        if (response.status == 200 || response.status == 201){
+            
+            console.log('job contract details ', response.data);
+
+            setSales_page({...sales_page, job_contract_details: response.data })
+
+          }else{
+            console.log(response);
+            
+            showAlert(response.response.data.err, "error")
+          }
+    }
+
+    async function get_project_information() {
+
+        console.log('started fetching');
+        
+        const response = await get_api_auth_request(`auth/project-information/${pages_numbers.project_info_page_number}`)
+
+        if (response.status == 200 || response.status == 201){
+            
+            console.log('Project Information ', response.data);
+
+            setSales_page({...sales_page, project_information: response.data })
+
+          }else{
+            console.log(response);
+            
+            showAlert(response.response.data.err, "error")
+          }
+    }
+
+    async function get_project_progress_tracking_information() {
+
+        console.log('started fetching');
+        
+        const response = await get_api_auth_request(`auth/project-progress-tracking/${pages_numbers.project_tracking_page_number}`)
+
+        if (response.status == 200 || response.status == 201){
+            
+            
+            console.log('Project tracking ', response.data);
+
+            setSales_page({...sales_page, project_tracking: response.data })
+
+          }else{
+            console.log(response);
+            
+            showAlert(response.response.data.err, "error")
+          }
+    }
+    
+
     return (
-        <div className="w-full p-[10px] pb-[10px]">
+        <div className="w-full p-[10px] pb-[10px] relative ">
+            <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
+                {alert.message && <Alert message={alert.message} type={alert.type} />} 
+            </span>
+
             {viewDetails.contractDetails && <SalesViewContractDetails viewContractDetails={viewContractDetails}  /> }
             {(viewDetails.contractDetails == false && viewDetails.documentAndInvoices == false) &&  <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">
-                {/* Job overview */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Job Overview</p>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Job Number</p>
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Customer Name</p>
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Contact Information</p>
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Contract Date</p>
-                        </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
-                                return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">JOB1001</p>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">John Doe</p>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">joh.doe@emailexample.com</p>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">June 15, 2024</p>
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
-
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-
                 {/* Contract details*/}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Contract Details</p>
+                    <p className="text-xl font-semibold">Job Contract Details</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">

@@ -11,6 +11,7 @@ import { MdOutlineNoteAlt } from "react-icons/md";
 import { RiBarChartFill } from "react-icons/ri";
 import { admin_dashboard_request } from '@/app/api/admin_api';
 import { Admin_dashboard_props } from '@/types';
+import ShortCutModal from './shortCutModal';
 
 const AdminHome = () => {
     const router = useRouter()
@@ -18,6 +19,8 @@ const AdminHome = () => {
     const [dash_box, setDash_box] = useState<Admin_dashboard_props | null>(null);
     const [activity_page, setActivity_page] = useState(1)
     const [task_notification_page, setTask_notification_page] = useState(1)
+    const [showModal, setShowModal] = useState(false)
+    const [selectedItem, setSelectedItem] = useState({title: '', item: []})
 
 
     useEffect(() => {
@@ -225,7 +228,20 @@ const AdminHome = () => {
         return pages;
     };
 
+    const view_details = (item:any) =>{
+        console.log('selected ', item);
+        if (item == 'leads'){ setSelectedItem({title: 'Leads', item: dash_box?.new_lead}) }
+        else if (item == 'pending_sales'){ setSelectedItem({title: 'Pending Sales', item: dash_box?.pending_sales}) }
+        else if (item == 'ongoing_installations'){ setSelectedItem({title: 'Ongoing Installations', item: dash_box?.ongoing_installations}) }
+        else if (item == 'service_tickets'){ setSelectedItem({title: 'Service Tickets', item: dash_box?.open_service_tickets}) }
+        else if (item == 'pending_payment'){ setSelectedItem({title: 'Pending Payment', item: dash_box?.pending_payments}) }
+        else if (item == 'engineering_task'){ setSelectedItem({title: 'Engineering Task', item: dash_box?.engineering_task}) }
+        else if (item == 'pending_permit'){ setSelectedItem({title: 'Pending Permit', item: dash_box?.permit}) }
+        else if (item == 'accounting'){ setSelectedItem({title: 'Accounting', item: dash_box?.accounting}) }
 
+        setShowModal(!showModal)
+        
+    }
 
 
 
@@ -333,7 +349,7 @@ const AdminHome = () => {
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">New Leads</p>
                                 <p className="text-sm ">{dash_box?.new_lead.length} new leads</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('leads')}}>View Detials</p>
                             </span>
                         </span>
                         
@@ -342,7 +358,7 @@ const AdminHome = () => {
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Pending Sales</p>
                                 <p className="text-sm ">{dash_box?.pending_sales.length} pending sales</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('pending_sales')}}>View Detials</p>
                             </span>
                         </span>
                         <span className="w-[300px] quick-access-bar ">
@@ -350,7 +366,7 @@ const AdminHome = () => {
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Installations</p>
                                 <p className="text-sm ">{dash_box?.ongoing_installations.length} ongoing installations</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('ongoing_installations')}}>View Detials</p>
                             </span>
                         </span>
 
@@ -359,7 +375,7 @@ const AdminHome = () => {
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Service Tickets</p>
                                 <p className="text-sm ">{dash_box?.open_service_tickets.length} open service ticket</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('service_tickets')}}>View Detials</p>
                             </span>
                         </span>
 
@@ -368,7 +384,7 @@ const AdminHome = () => {
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Pending Payments</p>
                                 <p className="text-sm ">{dash_box?.pending_payments.length} pending payments</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('pending_payment')}}>View Detials</p>
                             </span>
                         </span>
 
@@ -377,7 +393,7 @@ const AdminHome = () => {
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Engineerin Tasks</p>
                                 <p className="text-sm ">{dash_box?.engineering_task.length} tasks pending</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('engineering_task')}}>View Detials</p>
                             </span>
                         </span>
 
@@ -386,7 +402,7 @@ const AdminHome = () => {
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Permits</p>
                                 <p className="text-sm ">{dash_box?.permit.length} permits pending</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('pending_permit')}}>View Detials</p>
                             </span>
                         </span>
 
@@ -395,7 +411,7 @@ const AdminHome = () => {
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
                                 <p className="text-lg ">Accounting</p>
                                 <p className="text-sm ">profit/loss details</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{router.push('#')}}>View Detials</p>
+                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('accounting')}}>View Detials</p>
                             </span>
                         </span>
 
@@ -458,6 +474,8 @@ const AdminHome = () => {
                     </div>
                 </div>
             </div>
+
+            {showModal && <ShortCutModal selectedItem={selectedItem} setSelectedItem={setSelectedItem} showModal={showModal} setShowModal={setShowModal} /> }
         </div>
     )
 }

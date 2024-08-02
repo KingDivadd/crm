@@ -100,12 +100,6 @@ const UserManagement = () => {
             setFiltered_users(app_users);
         }
     }
-    
-    
-    
-    
-    
-    
 
     useEffect(() => {
         

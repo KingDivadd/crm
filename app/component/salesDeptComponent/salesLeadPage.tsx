@@ -17,12 +17,13 @@ const SalesLeadPage = () => {
     const [page_number, setPage_number] = useState(1)
     const [lead_box, setLead_box] = useState<Leads_Props | null>(null);
     const [filtered_lead_box, setFiltered_lead_box] = useState<Leads_Props | null>(null);
+    const [filters, setFilters] = useState({filter_input: '', disposition: ''})
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        userRole: false, disposition: false
+        disposition: false
     });
     const [dropElements, setDropElements] = useState({
-        userRole: 'User Role', disposition: 'Disposition'
+        disposition: 'Disposition'
 
     })
 
@@ -36,6 +37,7 @@ const SalesLeadPage = () => {
     };
 
     const handleSelectDropdown = (dropdown: any, title:any)=>{
+        handle_new_filter(dropdown)
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
@@ -60,6 +62,29 @@ const SalesLeadPage = () => {
         console.log('started fetching');
         
         const response = await get_api_auth_request(`auth/all-leads/${page_number}`)
+
+        if (response.status == 200 || response.status == 201){
+            
+            setLead_box(response.data)      
+            
+            setFiltered_lead_box(response.data)
+
+            console.log(response.data);
+            
+            showAlert(response.data.msg, "success")
+
+          }else{
+            console.log(response);
+            
+            showAlert(response.response.data.err, "error")
+          }
+    }
+
+    async function filter_leads(item:any) {
+
+        console.log('started fetching');
+        
+        const response = await get_api_auth_request(`/filter-leads/${item}/${page_number}`)
 
         if (response.status == 200 || response.status == 201){
             
@@ -147,8 +172,65 @@ const SalesLeadPage = () => {
 
         return pages;
     };
-    
 
+    async function handleFilter(e: any) {
+        const value = e.target.value.toLowerCase();
+        setFilters({ ...filters, filter_input: value });
+    
+        if (lead_box && lead_box.leads) {
+            if (value.trim() !== '') {
+                const filtered_leads = lead_box.leads.filter((data: any) => {
+                    const customer_name = data.customer_name?.toLowerCase() || '';
+                    const first_name = data.user?.first_name?.toLowerCase() || '';
+                    const last_name = data.user?.last_name?.toLowerCase() || '';
+                    const other_names = data.user?.other_names?.toLowerCase() || '';
+                    
+                    return (
+                        first_name.includes(value) ||
+                        last_name.includes(value) ||
+                        other_names.includes(value) ||
+                        customer_name.includes(value)
+                    );
+                });
+
+                console.log('new leads ', filtered_leads);
+                
+    
+                // setFiltered_lead_box({ ...filtered_lead_box, total_number_of_leads});
+            } else {
+                setFiltered_lead_box(lead_box); // Reset to the original list
+            }
+        }
+    }
+
+    async function handle_new_filter(item: string) {
+        if (lead_box && item.toLocaleLowerCase() == 'all') {
+            console.log('Disposition : all ',lead_box);
+            
+            // If no filter is provided, reset to the original list
+            setFiltered_lead_box(lead_box);
+        
+        } 
+        else if (item && lead_box) {
+            console.log(item);
+            
+            const new_leads = lead_box.leads.filter((data: any) => {
+                const disposition = data.disposition?.toLowerCase() || '';
+                const active_status = data.active_status ? 'active' : 'inactive';
+    
+                // Check if the filter item matches either the user_role or active_status
+                return (
+                    disposition === item.toLowerCase()
+                );
+            });
+    
+            setFiltered_lead_box({ ...lead_box, leads: new_leads });
+        } else {
+            // If no filter is provided, reset to the original list
+            setFiltered_lead_box(lead_box);
+        }
+    }
+    
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
@@ -166,10 +248,10 @@ const SalesLeadPage = () => {
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
                             <span className="w-[300px] h-[40px] ">
-                                <input type="text" name="userName" placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 ' />
+                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 ' />
                             </span>
                             <span className="h-[40px] w-[150px]">
-                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
                         </span>
 
