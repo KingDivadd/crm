@@ -252,7 +252,7 @@ const AdminHome = () => {
                 <div className="w-full flex flex-row items-center justify-between gap-[10px]">
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4 border border-blue-600 ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-blue-600">Total Lead</p>
+                            <p className="text-xl text-blue-600">Total Lead.</p>
                             <p className="text-sm text-blue-600">{dash_box?.total_number_of_leads || 0}</p>
                             <p className="text-sm font-light text-blue-600">Last 30 days</p>
                         </div>
