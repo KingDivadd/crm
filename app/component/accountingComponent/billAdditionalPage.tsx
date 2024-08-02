@@ -151,7 +151,7 @@ const BillModal = ({ showModal, setShowModal, selectedItem, setSelectedItem, sho
 
                                         <div className="w-1/2 flex flex-col items-start justify-start">
                                             <span className="w-full h-[400px] flex flex-col items-start justify-start gap-2">
-                                                <FilesUpload id={'user-image'} title={"Choose a file"} url={''} />
+                                                <FilesUpload id={'user-image'} title={"Choose a file"} url={''} image={''} />
                                             </span>    
                                         </div>
 
@@ -210,7 +210,7 @@ const BillModal = ({ showModal, setShowModal, selectedItem, setSelectedItem, sho
 
                                     <div className="w-1/2 flex flex-col items-start justify-start">
                                         <span className="w-full h-[400px] flex flex-col items-start justify-start gap-2">
-                                            <ViewImage id={'user-image'} title={"Choose a file"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718748903/u6wmwqvxzfinumomdfro.jpg'} />
+                                            <ViewImage id={'user-image'} title={"Choose a file"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718748903/u6wmwqvxzfinumomdfro.jpg'} image={''} />
                                         </span>    
                                     </div>
 
