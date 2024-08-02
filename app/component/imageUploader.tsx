@@ -152,7 +152,7 @@ export const FlexibleImageUploader = ({ id, title, url }: ImageUploaderProps) =>
 };
 
 
-export const SignupImageUploader = ({ id, title, url }: ImageUploaderProps) => {
+export const SignupImageUploader = ({ id, title, url, image }: ImageUploaderProps) => {
     const [imagePreview, setImagePreview] = useState('');
     const [imageFile, setImageFile] = useState(null);
 
@@ -301,7 +301,7 @@ export const InstallerImageUploader = ({ id, title, url, disabled, handleUploadC
 };
 
 
-export const ViewImage = ({ id, title, url }: ImageUploaderProps) => {
+export const ViewImage = ({ id, title, url, image }: ImageUploaderProps) => {
     const [imagePreview, setImagePreview] = useState('');
     const [imageFile, setImageFile] = useState(null);
 
@@ -365,7 +365,7 @@ export const ViewImage = ({ id, title, url }: ImageUploaderProps) => {
     );
 };
 
-export const FilesUpload =  ({ id, title, url }: ImageUploaderProps) => {
+export const FilesUpload =  ({ id, title, url, image }: ImageUploaderProps) => {
     const [filePreview, setFilePreview] = useState('');
     const [file, setFile] = useState<File | null>(null);
 
