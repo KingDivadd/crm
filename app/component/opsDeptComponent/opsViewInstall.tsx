@@ -177,7 +177,7 @@ const OpsViewInstall = ({addInvoice, selectedInvoice, setAddInvoice, setSelected
                     {/* -------------------------BEGINNING OF THE RIGHT COLUMB------------------- */}
                     <div className="w-[50%] flex flex-col items-start justify-start gap-4">
                         <span className="w-full invoice-img-cont flex flex-col items-start justify-start gap-2">
-                            <FlexibleImageUploader id={'user-image'} title={"Upload Invoice"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718748903/u6wmwqvxzfinumomdfro.jpg'} />
+                            <FlexibleImageUploader id={'user-image'} title={"Upload Invoice"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718748903/u6wmwqvxzfinumomdfro.jpg'} image={''} />
                         </span>
                     </div>
                             

@@ -179,7 +179,7 @@ const PermitUploadModal = ({ showModal, setShowModal, selectedItem, setSelectedI
 
 
                                             <span className="w-full flex flex-col items-start justify-start gap-2">
-                                                <ImageUploader id={'user-image'} title={"Permit Document to be uploaded"} url={''} />
+                                                <ImageUploader id={'user-image'} title={"Permit Document to be uploaded"} url={''} image={''} />
                                             </span>
 
 

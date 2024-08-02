@@ -97,7 +97,7 @@ const CreateTicketModal = ({showModal, setShowModal, selectedItem, setSelectedIt
 
                                     <span className="w-full flex flex-col justify-start items-start gap-3">
                                         <span className="w-full flex flex-col items-start justify-start gap-2">
-                                            <ImageUploader id={'user-image'} title={"User Image"} url={''} />
+                                            <ImageUploader id={'user-image'} title={"User Image"} url={''} image={''} />
                                         </span>
                                     </span>
 
