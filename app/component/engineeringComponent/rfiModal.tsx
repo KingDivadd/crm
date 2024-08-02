@@ -193,7 +193,7 @@ const RfiModal = ({ showModal, setShowModal, selectedItem, setSelectedItem, show
                                             </span>
 
                                             <span className="w-full h-[320px] ">
-                                                <FilesUpload id='files' title='Attachemnt' url='' key={12} />
+                                                <FilesUpload id='files' title='Attachemnt' url='' key={12} image={''} />
                                             </span>
 
 
@@ -300,7 +300,7 @@ const RfiModal = ({ showModal, setShowModal, selectedItem, setSelectedItem, show
                                                         </div>
 
                                                         <span className="w-full h-[340px] flex flex-col items-start justify-start gap-2">
-                                                            <FilesUpload id={'user-image'} title={"Choose a file"} url={''} />
+                                                            <FilesUpload id={'user-image'} title={"Choose a file"} url={''} image={''} />
                                                         </span>
 
                                                     </div>
