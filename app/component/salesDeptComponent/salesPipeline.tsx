@@ -4,7 +4,7 @@ import { useRouter } from 'next/navigation'
 import { DropDownBlankTransparent } from '../dropDown'
 import KanbanBoard from './salesKanbanBoard'
 import SalesViewPipelineDetails from './salesViewPipelineDetails'
-import { get_api_auth_request } from '@/app/api/admin_api'
+import { get_auth_request } from '@/app/api/admin_api'
 import Alert from '../alert'
 
 interface Pipeline_Props {
@@ -59,7 +59,7 @@ const SalesPipeline = () => {
 
         console.log('started fetching');
         
-        const response = await get_api_auth_request(`auth/sales-pipeline`)
+        const response = await get_auth_request(`auth/sales-pipeline`)
 
         if (response.status == 200 || response.status == 201){
             

@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useRouter } from 'next/navigation';
 import { CiLock } from "react-icons/ci";
 import Alert from '../../component/alert'
-import { post_api_request } from '@/app/api/admin_api';
+import { post_request } from '@/app/api/admin_api';
 
 const ForgetPassword = () => {
     const router = useRouter();
@@ -38,7 +38,7 @@ const ForgetPassword = () => {
         }else {
             setLoading(true);
 
-            const response = await post_api_request('auth/generate-otp', {email: auth.email})
+            const response = await post_request('auth/generate-otp', {email: auth.email})
 
             console.log(response);
             

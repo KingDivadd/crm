@@ -7,7 +7,7 @@ import { paymentRoute, timeZone } from '@/constants'
 import Alert from '../alert'
 import Image from "next/image";
 import ImageUploader from '../imageUploader'
-import { get_api_auth_request, patch_api_auth_request } from '@/app/api/admin_api'
+import { get_auth_request, patch_api_auth_request } from '@/app/api/admin_api'
 import { IoIosClose } from 'react-icons/io'
 
 
@@ -60,32 +60,29 @@ const AdminSystemSettings = () => {
 
     async function get_settings_info() {      
 
-        const response = await get_api_auth_request('settings/settings-info')
+        const response = await get_auth_request('settings/settings-info')
 
         if (response.status == 200 || response.status == 201){
-          
-          console.log(response.data);
 
-          const {company_address, company_email, company_logo, company_name, company_phone, number_of_admin, organization_size} = response.data.company
+            console.log(response.data);
 
-          const {avatar, first_name, last_name, phone_number, other_names } = response.data.user
+            const {company_address, company_email, company_logo, company_name, company_phone, number_of_admin, organization_size} = response.data.company
 
-          setCompanyInfo({...companyInfo, address: company_address, company_phone: company_phone, name: company_name, logo: company_logo, number_of_admin: number_of_admin, email: company_email  })
+            const {avatar, first_name, last_name, phone_number, other_names } = response.data.user
 
-          setUserProfile({...userProfile, avatar: avatar, first_name: first_name, last_name: last_name, phone_number: phone_number, user_name: other_names})
-                    
-          showAlert(response.data.msg, "success")
+            setCompanyInfo({...companyInfo, address: company_address, company_phone: company_phone, name: company_name, logo: company_logo, number_of_admin: number_of_admin, email: company_email  })
+
+            setUserProfile({...userProfile, avatar: avatar, first_name: first_name, last_name: last_name, phone_number: phone_number, user_name: other_names})
+                        
+            showAlert(response.data.msg, "success")
         }else{
-          if (response){
-              showAlert(response.response.data.err, "error")
-          }
+            if (response){
+                showAlert(response.response.data.err, "error")
+            }
         }
         
-      
     }
     
-
-
 
     function handleCompanyInfo(e:any){
         const name = e.target.name;
@@ -196,11 +193,11 @@ const AdminSystemSettings = () => {
                 <div className="w-1/2 h-[100%] flex flex-col gap-3 items-start justify-start ">
                     {/* General Settings */}
                     <div className="w-full flex flex-col items-start justify-start gap-5  settings-cont ">
-                        <p className="text-lg font-semibold">General Settings</p>
+                        <p className="text-md font-semibold">General Settings</p>
                         {/* company information */}
                         <div className="w-full flex flex-col justify-start items-start gap-3  ">
                             <span className="w-full h-[35px] flex justify-between items-center cursor-pointer hover:text-blue-500"  onClick={()=>{setEditCompanyInfo(!editCompanyInfo)}} >
-                                <p className="text-lg">Company information</p>
+                                <p className="text-md">Company information</p>
                                 <span className="w-[20px] h-[20px] cursor-pointer flex items-center justify-center "> {editCompanyInfo ? <FaCaretUp size={20} /> : <FaCaretDown size={20}  />} </span>
                             </span>
                             {editCompanyInfo && 
@@ -209,26 +206,26 @@ const AdminSystemSettings = () => {
                                     <ImageUploader id={'company-logo'} title={"Company Logo"} url={companyInfo.logo} image={image} />
                                 </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Company Name</h4>
-                                    <input type="text" name='name' className="normal-input bg-transparent" value={companyInfo.name} onChange={handleCompanyInfo} />
+                                    <h4 className="text-sm ">Company Name</h4>
+                                    <input type="text" name='name' className="normal-input bg-transparent text-sm " value={companyInfo.name} onChange={handleCompanyInfo} />
                                 </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Company Address</h4>
-                                    <input type="text" name='address' className="normal-input bg-transparent" value={companyInfo.address} onChange={handleCompanyInfo} />
+                                    <h4 className="text-sm ">Company Address</h4>
+                                    <input type="text" name='address' className="normal-input bg-transparent text-sm " value={companyInfo.address} onChange={handleCompanyInfo} />
                                 </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Company Email</h4>
-                                    <input type="email" name='email' className="normal-input bg-transparent" value={companyInfo.email} onChange={handleCompanyInfo} />
+                                    <h4 className="text-sm ">Company Email</h4>
+                                    <input type="email" name='email' className="normal-input bg-transparent text-sm " value={companyInfo.email} onChange={handleCompanyInfo} />
                                 </span>
                                 <span className="w-full flex flex-col items-start jusitify-start gap-2">
-                                <h4 className="text-md ">Company Phone Number</h4>
+                                <h4 className="text-sm ">Company Phone Number</h4>
                                 
                                 <span className="w-full flex items-center justify-start gap-[10px] ">
                                     <span className="h-full w-[90%] ">
-                                        <input onChange={handleCompanyInfo} value={companyInfo.phone} name='phone' type="text" className="normal-input bg-transparent" />
+                                        <input onChange={handleCompanyInfo} value={companyInfo.phone} name='phone' type="text" className="normal-input bg-transparent text-sm " />
                                     </span>
 
-                                    <button type="button" onClick={addNumbers} className= 'w-[10%] h-[40px] rounded-[3px] bg-blue-600 hover:bg-blue-700 text-white ' >
+                                    <button type="button" onClick={addNumbers} className= 'w-[10%] h-[40px] rounded-[3px] bg-blue-600 hover:bg-blue-700 text-white text-sm ' >
                                         Add
                                     </button>
 
@@ -255,13 +252,13 @@ const AdminSystemSettings = () => {
                         {/* NO of admins */}
                         <div className="w-full flex flex-col justify-start items-start gap-3">
                             <span className="w-full h-[35px] flex justify-start items-center " >
-                                <p className="text-lg">Set Number of Admin</p>
+                                <p className="text-md">Set Number of Admin</p>
                             </span>
-                            <p className="text-md">Select the number of admin allowed for the app.</p>
+                            <p className="text-sm">Select the number of admin allowed for the app.</p>
                             <div className="w-full flex flex-col justify-start items-start gap-3">
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Current number of Admin</h4>
-                                    <input onChange={handleCompanyInfo} value={companyInfo.number_of_admin} name='number_of_admin' type="text" className="normal-input bg-transparent" />
+                                    <h4 className="text-sm ">Current number of Admin</h4>
+                                    <input onChange={handleCompanyInfo} value={companyInfo.number_of_admin} name='number_of_admin' type="text" className="normal-input bg-transparent text-sm " />
                                 </span>
                                 
                             </div>
@@ -273,50 +270,50 @@ const AdminSystemSettings = () => {
                 {/* the right side */}
                 <div className="w-1/2 h-[100%] flex flex-col gap-3 items-start justify-start  ">
                     <div className="w-full flex flex-col items-start justify-start gap-5 settings-cont ">
-                    <p className="text-lg font-semibold text-white ">.</p>
+                    <p className="text-md font-semibold text-white ">.</p>
                         <div className="w-full flex flex-col justify-start items-start gap-3">
 
 
                             
                             {/* <span className="w-full h-[35px] flex justify-between items-center cursor-pointer hover:text-blue-500"  >
-                                <p className="text-lg">Payment Integration Setting</p>
+                                <p className="text-md">Payment Integration Setting</p>
                             </span>
                             <div className="w-full flex flex-col justify-start items-start gap-3">
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Select Payment Route</h4>
+                                    <h4 className="text-sm ">Select Payment Route</h4>
                                     <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'paymentRoute'} dropArray={['PayPal', 'Stripe']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  />
                                 </span>
                                 {dropElements.paymentRoute === "PayPal" && <div className="w-full flex flex-col justify-start items-start gap-3">
-                                    <p className="text-md font-semibold pt-[15px] pb-[5px] ">PayPal Integration</p>
+                                    <p className="text-sm font-semibold pt-[15px] pb-[5px] ">PayPal Integration</p>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">PayPal Client ID</h4>
-                                        <input type="text" name='clientId' className="normal-input bg-transparent" value={paypalInfo.clientId} onChange={handlePayPalIntegration} />
+                                        <h4 className="text-sm ">PayPal Client ID</h4>
+                                        <input type="text" name='clientId' className="normal-input bg-transparent text-sm " value={paypalInfo.clientId} onChange={handlePayPalIntegration} />
                                     </span>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">PayPal Secret Key</h4>
-                                        <input type="text" name='secretKey' className="normal-input bg-transparent" value={paypalInfo.secretKey} onChange={handlePayPalIntegration} />
+                                        <h4 className="text-sm ">PayPal Secret Key</h4>
+                                        <input type="text" name='secretKey' className="normal-input bg-transparent text-sm " value={paypalInfo.secretKey} onChange={handlePayPalIntegration} />
                                     </span>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">PayPal Mode</h4>
+                                        <h4 className="text-sm ">PayPal Mode</h4>
                                         <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'paypalMode'} dropArray={['Live', 'Sandbox']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                     </span>
                                     
                                 </div>}
 
                                 {dropElements.paymentRoute === "Stripe" && <div className="w-full flex flex-col justify-start items-start gap-3">
-                                    <p className="text-md font-semibold pt-[15px] pb-[5px] ">Stripe Integration</p>
+                                    <p className="text-sm font-semibold pt-[15px] pb-[5px] ">Stripe Integration</p>
 
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Stripe Publishable Key</h4>
-                                        <input type="text" name='publishableKey' className="normal-input bg-transparent" value={stripeInfo.publishableKey} onChange={handlePayPalIntegration} />
+                                        <h4 className="text-sm ">Stripe Publishable Key</h4>
+                                        <input type="text" name='publishableKey' className="normal-input bg-transparent text-sm " value={stripeInfo.publishableKey} onChange={handlePayPalIntegration} />
                                     </span>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Stripe Secret Key</h4>
-                                        <input type="text" name='secretKey' className="normal-input bg-transparent" value={stripeInfo.secretKey} onChange={handlePayPalIntegration} />
+                                        <h4 className="text-sm ">Stripe Secret Key</h4>
+                                        <input type="text" name='secretKey' className="normal-input bg-transparent text-sm " value={stripeInfo.secretKey} onChange={handlePayPalIntegration} />
                                     </span>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Webhook Secret</h4>
-                                        <input type="text" name='webhookSecret' className="normal-input bg-transparent" value={stripeInfo.webhookSecret} onChange={handlePayPalIntegration} />
+                                        <h4 className="text-sm ">Webhook Secret</h4>
+                                        <input type="text" name='webhookSecret' className="normal-input bg-transparent text-sm " value={stripeInfo.webhookSecret} onChange={handlePayPalIntegration} />
                                     </span>
                                     
                                     
@@ -327,7 +324,7 @@ const AdminSystemSettings = () => {
 
                             <div className="w-full flex flex-col justify-start items-start gap-3">
                                 <span className="w-full h-[35px] flex justify-between items-center cursor-pointer hover:text-blue-500"  onClick={()=>{setEditUserProfile(!editUserProfile)}} >
-                                    <p className="text-lg">User information</p>
+                                    <p className="text-md">User information</p>
                                     <span className="w-[20px] h-[20px] cursor-pointer flex items-center justify-center "> {editUserProfile ? <FaCaretUp size={20} /> : <FaCaretDown size={20}  />} </span>
                                 </span>
                                 {editUserProfile && 
@@ -336,24 +333,24 @@ const AdminSystemSettings = () => {
                                         <ImageUploader id={'user-image'} title={"User Image"} url={userProfile.avatar} image={image} />
                                     </span>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">First Name</h4>
-                                        <input type="text" name='first_name' className="normal-input bg-transparent" value={userProfile.first_name} onChange={handleUserProfile} />
+                                        <h4 className="text-sm ">First Name</h4>
+                                        <input type="text" name='first_name' className="normal-input bg-transparent text-sm " value={userProfile.first_name} onChange={handleUserProfile} />
                                     </span>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Last Name</h4>
-                                        <input type="text" name='last_name' className="normal-input bg-transparent" value={userProfile.last_name} onChange={handleUserProfile} />
+                                        <h4 className="text-sm ">Last Name</h4>
+                                        <input type="text" name='last_name' className="normal-input bg-transparent text-sm " value={userProfile.last_name} onChange={handleUserProfile} />
                                     </span>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">User_name (Optional)</h4>
-                                        <input type="text" name='user_name' className="normal-input bg-transparent" value={userProfile.user_name} onChange={handleUserProfile} />
+                                        <h4 className="text-sm ">Other name (Optional)</h4>
+                                        <input type="text" name='user_name' className="normal-input bg-transparent text-sm " value={userProfile.user_name} onChange={handleUserProfile} />
                                     </span>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Phone</h4>
-                                        <input type="text" name='phone_number' className="normal-input bg-transparent" value={userProfile.phone_number} onChange={handleUserProfile} />
+                                        <h4 className="text-sm ">Phone</h4>
+                                        <input type="text" name='phone_number' className="normal-input bg-transparent text-sm " value={userProfile.phone_number} onChange={handleUserProfile} />
                                     </span>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <h4 className="text-md font-light">Password</h4>
-                                        <input type="text" name='password' className="normal-input bg-transparent" value={userProfile.password} onChange={handleUserProfile} />
+                                        <h4 className="text-sm ">Password</h4>
+                                        <input type="text" name='password' className="normal-input bg-transparent text-sm " value={userProfile.password} onChange={handleUserProfile} />
                                     </span>
                                     
                                     
@@ -366,7 +363,7 @@ const AdminSystemSettings = () => {
 
                 </div>
                 <span className="flex justify-end absoute absolute bottom-[10px] right-0">
-                    <button className="mt-[10px] w-[170px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={updateSettings} disabled={loading}>
+                    <button className="mt-[10px] w-[170px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center text-sm" onClick={updateSettings} disabled={loading}>
                             {loading ? (
                             <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

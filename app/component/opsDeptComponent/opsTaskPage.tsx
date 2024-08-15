@@ -5,34 +5,33 @@ import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
 import Alert from '../alert';
-import { userArray } from '@/constants';
-import { get_auth_request } from '@/app/api/admin_api';
-import Job_Management_Modal from "./salesJobManagementModal"
+import { get_auth_request } from '../../api/admin_api';
+import Task_Management_Modal from "./opsTasksModal"
 
-interface Jobs_Props {
+interface Tasks_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
     filter?(arg0: (user: any) => any): unknown;
     map?(arg0: (data: any) => void): unknown;
-    total_number_of_jobs_pages?: number; // Now optional and can be undefined
-    total_number_of_jobs?: number; // Now optional and can be undefined
-    jobs: any;
+    total_number_of_tasks_pages?: number; // Now optional and can be undefined
+    total_number_of_tasks?: number; // Now optional and can be undefined
+    tasks: any;
 }  
 
-const SalesJobPage = () => {
+const OpsTaskPage = () => {
     const [modalFor, setModalFor] = useState('')
     const [showModal, setShowModal] = useState(false)
-    const [selectedJob, setSelectedJob] = useState(null)
+    const [selectedTask, setSelectedTask] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [page_number, setPage_number] = useState(1)
-    const [job_box, setjob_box] = useState<Jobs_Props | null>(null);
-    const [filtered_job_box, setFiltered_job_box] = useState<Jobs_Props | null>(null);
-    const [filters, setFilters] = useState({filter_input: '', permit_status: '', hoa_status: ''})
+    const [task_box, settask_box] = useState<Tasks_Props | null>(null);
+    const [filtered_task_box, setFiltered_task_box] = useState<Tasks_Props | null>(null);
+    const [filters, setFilters] = useState({filter_input: '', status: '', hoa_status: ''})
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        permit_status: false, hoa_status: false
+        status: false, hoa_status: false
     });
     const [dropElements, setDropElements] = useState({
-        permit_status: 'Permit Status', hoa_status: 'Hoa Status'
+        status: 'Status', hoa_status: 'Hoa Status'
 
     })
 
@@ -46,13 +45,13 @@ const SalesJobPage = () => {
     };
 
     const handleSelectDropdown = (dropdown: any, title:any)=>{
-        handle_new_filter(dropdown)
+        handle_new_filter(dropdown.replace(/ /g, '_'))
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
 
     useEffect(() => {
-        get_all_jobs()
+        get_all_tasks()
     }, [showModal])
 
     function showAlert(message: string, type: string){
@@ -62,17 +61,17 @@ const SalesJobPage = () => {
             }, 3000);
     }
 
-    async function get_all_jobs() {
+    async function get_all_tasks() {
 
         console.log('started fetching');
         
-        const response = await get_auth_request(`auth/all-jobs/${page_number}`)
+        const response = await get_auth_request(`auth/all-tasks/${page_number}`)
 
         if (response.status == 200 || response.status == 201){
             
-            setjob_box(response.data)      
+            settask_box(response.data)      
             
-            setFiltered_job_box(response.data)
+            setFiltered_task_box(response.data)
 
             console.log('here : ', response.data);
             
@@ -86,17 +85,17 @@ const SalesJobPage = () => {
         }
     }
 
-    async function filter_jobs(item:any) {
+    async function filter_tasks(item:any) {
 
         console.log('started fetching');
         
-        const response = await get_auth_request(`/filter-jobs/${item}/${page_number}`)
+        const response = await get_auth_request(`/filter-tasks/${item}/${page_number}`)
 
         if (response.status == 200 || response.status == 201){
             
-            setjob_box(response.data)      
+            settask_box(response.data)      
             
-            setFiltered_job_box(response.data)
+            setFiltered_task_box(response.data)
 
             console.log(response.data);
             
@@ -111,7 +110,7 @@ const SalesJobPage = () => {
 
     async function app_users_action(item: any) {
         let new_page_number = page_number;
-        let max_page_number = job_box?.total_number_of_jobs_pages
+        let max_page_number = task_box?.total_number_of_tasks_pages
 
         if (item === 'prev') {
         if (page_number > 1) {
@@ -131,61 +130,62 @@ const SalesJobPage = () => {
     }
 
     const render_page_numbers = () => {
-        const pages = [];
-        const max_page_number = job_box?.total_number_of_jobs_pages || 1;
+        const pages: JSX.Element[] = []; // Explicitly type the array as JSX.Element[]
+        const max_page_number = task_box?.total_number_of_tasks_pages || 1;
         const max_displayed_pages = 3;
-
+    
         if (max_page_number <= max_displayed_pages) {
-        for (let i = 1; i <= max_page_number; i++) {
-            pages.push(
-            <p
-                key={i}
-                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                page_number === i ? 'bg-blue-500 text-white' : ''
-                }`}
-                onClick={() => app_users_action(i)}
-            >
-                {i}
-            </p>
-            );
-        }
+            for (let i = 1; i <= max_page_number; i++) {
+                pages.push(
+                    <p
+                        key={i}
+                        className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                            page_number === i ? 'bg-blue-500 text-white' : ''
+                        }`}
+                        onClick={() => app_users_action(i)}
+                    >
+                        {i}
+                    </p>
+                );
+            }
         } else {
-        let startPage = Math.max(1, page_number - 1);
-        let endPage = Math.min(page_number + 1, max_page_number);
-
-        if (page_number === 1) {
-            startPage = 1;
-            endPage = max_displayed_pages;
-        } else if (page_number === max_page_number) {
-            startPage = max_page_number - 2;
-            endPage = max_page_number;
+            let startPage = Math.max(1, page_number - 1);
+            let endPage = Math.min(page_number + 1, max_page_number);
+    
+            if (page_number === 1) {
+                startPage = 1;
+                endPage = max_displayed_pages;
+            } else if (page_number === max_page_number) {
+                startPage = max_page_number - 2;
+                endPage = max_page_number;
+            }
+    
+            for (let i = startPage; i <= endPage; i++) {
+                pages.push(
+                    <p
+                        key={i}
+                        className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                            page_number === i ? 'bg-blue-500 text-white' : ''
+                        }`}
+                        onClick={() => app_users_action(i)}
+                    >
+                        {i}
+                    </p>
+                );
+            }
         }
-
-        for (let i = startPage; i <= endPage; i++) {
-            pages.push(
-            <p
-                key={i}
-                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                page_number === i ? 'bg-blue-500 text-white' : ''
-                }`}
-                onClick={() => app_users_action(i)}
-            >
-                {i}
-            </p>
-            );
-        }
-        }
-
+    
         return pages;
     };
+    
 
     async function handleFilter(e: any) {
         const value = e.target.value.toLowerCase();
         setFilters({ ...filters, filter_input: value });
     
-        if (job_box && job_box.jobs) {
+        if (task_box && task_box.tasks) {
             if (value.trim() !== '') {
-                const new_jobs = job_box.jobs.filter((data: any) => {
+                const new_tasks = task_box.tasks.filter((data: any) => {
                     const contract_amount = data.contract_amount || '';
                     const lead_name = data.lead?.customer_name?.toLowerCase() || '';
 
@@ -196,56 +196,55 @@ const SalesJobPage = () => {
                     );
                 });
                     
-                setFiltered_job_box({...filtered_job_box, jobs: new_jobs});
+                setFiltered_task_box({...filtered_task_box, tasks: new_tasks});
             } else {
-                setFiltered_job_box(job_box); // Reset to the original list
+                setFiltered_task_box(task_box); // Reset to the original list
             }
         }
     }
 
     async function handle_new_filter(item: string) {
-        if (job_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',job_box);
+        if (task_box && item.toLocaleLowerCase() == 'all') {
+            console.log('Disposition : all ',task_box);
             
             // If no filter is provided, reset to the original list
-            setFiltered_job_box(job_box);
+            setFiltered_task_box(task_box);
         
         } 
-        else if (item && job_box) {
-            console.log(item);
-            
-            const new_jobs = job_box.jobs.filter((data: any) => {
-                const permit_status = data.permit_status?.toLowerCase() || '';
-                const active_status = data.active_status ? 'active' : 'inactive';
+        else if (item && task_box) {
+
+            const new_tasks = task_box.tasks.filter((data: any) => {
+                const status = data.status?.toLowerCase() || '';
     
                 // Check if the filter item matches either the user_role or active_status
                 return (
-                    permit_status === item.toLowerCase()
+                    status === item.toLowerCase()
                 );
             });
     
-            setFiltered_job_box({ ...job_box, jobs: new_jobs });
+            setFiltered_task_box({ ...task_box, tasks: new_tasks });
         } else {
             // If no filter is provided, reset to the original list
-            setFiltered_job_box(job_box);
+            setFiltered_task_box(task_box);
         }
     }
-    
-    function add_job(){
+
+    function add_task(){
+        console.log('add task')
         setShowModal(true)
-        setSelectedJob(null)
+        setSelectedTask(null)
         setModalFor('add')
     }
 
-    function edit_job(job:any){
+    function edit_task(task:any){
         setShowModal(true)
-        setSelectedJob(job)
+        setSelectedTask(task)
         setModalFor('edit')
     }
 
-    function delete_job(job:any){
+    function delete_task(task:any){
         setShowModal(true)
-        setSelectedJob(job)
+        setSelectedTask(task)
         setModalFor('delete')
     }
 
@@ -257,21 +256,22 @@ const SalesJobPage = () => {
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-2">
-                        <p className="text-md font-semibold text-black">All jobs</p>
-                        <p className="text-sm text-black">{(job_box && job_box?.total_number_of_jobs) || 0 }</p>
+                        <p className="text-md font-semibold text-black">All Tasks</p>
+                        <p className="text-sm text-black">{(task_box && task_box?.total_number_of_tasks) || 0 }</p>
                     </span>
 
                     <span className=" flex flex-row items-center justif-start gap-[10px] h-[40px] ">
                         <span className="w-[300px] h-[40px] ">
-                            <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by lead name or contract amount' id="" className='normal-input bg-gray-100 text-sm ' />
+                            <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by name or contract amount' id="" className='normal-input bg-gray-100 text-sm ' />
                         </span>
+                        
                         <span className="h-[40px] min-w-[175px]">
-                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'hoa_status'} dropArray={['PENDING', 'SENT', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['PENDING', 'IN PROGRESS', 'COMPLETED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                         </span>
-                        <span className="h-[40px] min-w-[175px]">
-                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                        </span>
-                        <button type="button" className="h-full px-4 flex items-center text-white bg-blue-600 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_job}>Add job</button>
+
+                        <button type="button" className="px-4 h-full rounded-[3px] bg-blue-600 hover:bg-blue-700 text-sm text-white" onClick={add_task}>
+                            Add Task
+                        </button>
                     </span>
 
                         
@@ -281,44 +281,46 @@ const SalesJobPage = () => {
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-600 text-white">
+                        <p className="text-[16px] font-normal w-[7.5%] px-2 ">Task ID</p>
                         <p className="text-[16px] font-normal w-[7.5%] px-2 ">Job ID</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Lead Name</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Contract Amt</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Contract Date</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Hoa Status</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Permit Status</p>
+                        <p className="text-[16px] font-normal w-[15%] px-2 ">Desription</p>
+                        <p className="text-[16px] font-normal w-[12.5%] px-2 ">Status</p>
+                        <p className="text-[16px] font-normal w-[15%] px-2 ">Assigned To</p>
+                        <p className="text-[16px] font-normal w-[10%] px-2 ">Start Date</p>
+                        <p className="text-[16px] font-normal w-[10%] px-2 ">End Date</p>
+                        <p className="text-[16px] font-normal w-[15%] px-2 ">Completion Date</p>
                         <p className="text-[16px] font-normal w-[7.5%] px-2 ">Action</p>
-                        <p className="text-[16px] font-normal w-[10%] px-2 "></p>
                     </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                         
-                        {filtered_job_box !== null ?
+                        {filtered_task_box !== null ?
                         
                             <div className='h-full w-full flex flex-col justify-start '>
 
-                                {job_box?.jobs.length ?
+                                {task_box?.tasks.length ?
                                 <>
-                                { filtered_job_box?.jobs.map((data:any, ind:number)=>{
-                                    const {job_ind, lead, contract_amount, contract_date, hoa_status, permit_status } = data
+                                { filtered_task_box?.tasks.map((data:any, ind:number)=>{
+                                    const {task_ind, job, description, assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
                                     return (
-                                        <span key={ind} className="recent-activity-table-list " >
-                                            <p className="text-[15px] w-[7.5%] px-2 ">JB000{job_ind} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {lead.customer_name} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {Number(contract_amount).toLocaleString()} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {contract_date} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {hoa_status.replace(/_/g, ' ')} </p>
-                                            <p className="text-[15px] w-[15.5%] px-2 "> {permit_status.replace(/_/g, ' ')} </p>
-                                            <p className="text-[15px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
-                                        
-                                            <p className="text-[15px] w-[10.0%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                        <span key={ind} className="recent-activity-table-list " onClick={()=> edit_task(data)} >
+                                            <p className="text-[15px] w-[7.5%] px-2 ">TS000{task_ind} </p>
+                                            <p className="text-[15px] w-[7.5%] px-2 ">JB000{job.job_ind} </p>
+                                            <p className="text-[15px] w-[15%] px-2 "> {description} </p>
+                                            <p className="text-[15px] w-[12.5%] px-2 "> {status} </p>
+                                            <p className="text-[15px] w-[15%] px-2 "> {assigned_to} </p>
+                                            <p className="text-[15px] w-[10%] px-2 "> {start_date} </p>
+                                            <p className="text-[15px] w-[10%] px-2 "> {due_date} </p>
+                                            <p className="text-[15px] w-[15%] px-2 "> {completion_date} </p>
+                                            <p className="text-[15px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer"  ><MdEdit size={16} /> Edit</p>
+
                                         </span>
                                     )
                                 })}
                                 </>
                                 :
                                 <div className="w-full h-[100%] flex items-center justify-center">
-                                    <p className="text-normal"> No jobs yet </p>
+                                    <p className="text-normal"> No tasks yet </p>
                                 </div>}
 
                             </div>
@@ -342,15 +344,15 @@ const SalesJobPage = () => {
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-sm">Showing 1-15 of {(job_box && job_box?.total_number_of_jobs) || 0}</p>
+                            <p className="text-sm">Showing 1-15 of {(task_box && task_box?.total_number_of_tasks) || 0}</p>
                         </span>
                     </span>
                 </div>
 
             </div>
-            {showModal && <Job_Management_Modal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedJob={selectedJob} setModalFor={setModalFor} setSelectedJob={setSelectedJob} /> }
+            {showModal && <Task_Management_Modal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedTask={selectedTask} setModalFor={setModalFor} setSelectedTask={setSelectedTask} /> }
         </div>
     )
 }
 
-export default SalesJobPage
+export default OpsTaskPage

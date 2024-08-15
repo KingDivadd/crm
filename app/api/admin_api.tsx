@@ -1,11 +1,12 @@
 import axios from "axios"
 
-const base_url = process.env.NEXT_PUBLIC_LIVE_URL
+const base_url = process.env.NEXT_PUBLIC_BASE_URL
+// const base_url = process.env.NEXT_PUBLIC_LIVE_URL
 
 
 
 
-export const post_api_request = async (endpoint: string, payload: any) => {
+export const post_request = async (endpoint: string, payload: any) => {
     try {
         const response = await axios.post(`${base_url}/${endpoint}`, payload, {
             headers: {
@@ -21,7 +22,7 @@ export const post_api_request = async (endpoint: string, payload: any) => {
 };
 
 
-export const post_api_auth_request = async (endpoint: string, payload: any) => {
+export const post_auth_request = async (endpoint: string, payload: any) => {
     try {
         const auth_id = localStorage.getItem('x-id-key')
         const response = await axios.post(`${base_url}/${endpoint}`, payload, {
@@ -38,7 +39,7 @@ export const post_api_auth_request = async (endpoint: string, payload: any) => {
     }
 };
 
-export const patch_api_auth_request = async (endpoint: string, payload: any) => {
+export const patch_auth_request = async (endpoint: string, payload: any) => {
     try {
         const auth_id = localStorage.getItem('x-id-key')
         const response = await axios.patch(`${base_url}/${endpoint}`, payload, {
@@ -56,7 +57,7 @@ export const patch_api_auth_request = async (endpoint: string, payload: any) => 
 };
 
 
-export const get_api_auth_request = async (endpoint: string) => {
+export const get_auth_request = async (endpoint: string) => {
     try {
         const auth_id = localStorage.getItem('x-id-key')
         const response = await axios.get(`${base_url}/${endpoint}`, {
@@ -73,7 +74,7 @@ export const get_api_auth_request = async (endpoint: string) => {
     }
 };
 
-export const delete_api_auth_request = async (endpoint: string) => {
+export const delete_auth_request = async (endpoint: string) => {
     try {
         const auth_id = localStorage.getItem('x-id-key')
         const response = await axios.delete(`${base_url}/${endpoint}`, {

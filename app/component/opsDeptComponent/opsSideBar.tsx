@@ -61,6 +61,12 @@ const OpsSideBar = ({active, setActive}: SideBarNav) => {
                         <RiLuggageCartFill size={23} />
                         {active !== "sales" && <p className="text-[17px]">Sales</p> }
                     </span>
+
+                    <span className={active === "tasks"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('tasks')}}>
+                        <BiSolidNotepad size={23} />
+                        <p className="text-[17px]">Tasks</p>
+                    </span>
+
                     <span className={active === "installs"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('installs')}}>
                         <BiSolidNotepad size={23} />
                         {active !== "sales" && <p className="text-[17px]">Installs</p> }

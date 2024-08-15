@@ -8,7 +8,7 @@ import { AddUsersProps } from '@/types';
 import Alert from '../../alert';
 import { userResponsibilities } from '@/constants';
 import { IoMdArrowBack } from "react-icons/io";
-import { patch_api_auth_request, post_api_auth_request } from '@/app/api/admin_api';
+import { patch_auth_request, post_auth_request } from '@/app/api/admin_api';
 
 const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_of_users}:AddUsersProps) => {
 
@@ -94,7 +94,7 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
             console.log(new_auth);
     
             try {
-                const response = await post_api_auth_request(`user/create-user`, new_auth);
+                const response = await post_auth_request(`user/create-user`, new_auth);
     
                 if (response.status === 200 || response.status === 201) {
                     console.log(response.data);
@@ -141,7 +141,7 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
             console.log(new_auth);
     
             try {
-                const response = await patch_api_auth_request(`user/admin-update-user-data/${selectedUser.user_id}`, new_auth);
+                const response = await patch_auth_request(`user/admin-update-user-data/${selectedUser.user_id}`, new_auth);
     
                 if (response.status === 200 || response.status === 201) {
                     console.log(response.data);
@@ -171,19 +171,19 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         
-                        <p className="text-lg font-semibold text-blue-600 hover:underline cursor-pointer flex items-center justify-start gap-2 " onClick={()=>{setAddUsers(false)}}>
+                        <p className="text-md font-semibold text-blue-600 hover:underline cursor-pointer flex items-center justify-start gap-2 " onClick={()=>{setAddUsers(false)}}>
                         <IoMdArrowBack size={23} className='text-blue-600' />All Users</p>
-                        <p className="text-md text-black">{number_of_users}</p>
+                        <p className="text-sm text-black">{number_of_users}</p>
                         {/* <span className="w-[150px] flex items-center justify-start gap-3">
-                            <p className="text-md text-black">Status:</p>
-                            {auth.active_status == true ? <p className="text-md text-lime-600">Active</p> : <p className="text-md text-red-600">Inactive</p>}
+                            <p className="text-sm text-black">Status:</p>
+                            {auth.active_status == true ? <p className="text-sm text-lime-600">Active</p> : <p className="text-sm text-red-600">Inactive</p>}
 
                         </span> */}
                     </span>
                     <span className="flex flex-row items-center justify-start gap-4">
                         
 
-                        <p className="text-lg font-semibold">{selectedUser? "Modifying user data": "New User"}</p>
+                        <p className="text-md font-semibold">{selectedUser? "Modifying user data": "New User"}</p>
                     </span>
                 </span>
 
@@ -195,23 +195,23 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                         <p className="text-[17px] font-semibold">User Information</p>
                         <form action="" className="w-full flex flex-col items-start justify-start gap-4">
                             <span className="w-full flex flex-col items-start justify-start gap-2">
-                                <h4 className="text-md font-light">Last Name</h4>
+                                <h4 className="text-sm font-light">Last Name</h4>
                                 <input type="text" name='last_name' className={inputError.last_nameError ? 'normal-input-error' : 'normal-input'} value={auth.last_name} onChange={handleChange} />
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
-                                <h4 className="text-md font-light">First Name</h4>
+                                <h4 className="text-sm font-light">First Name</h4>
                                 <input type="text" name='first_name' className={inputError.first_nameError ? 'normal-input-error' : 'normal-input'} value={auth.first_name} onChange={handleChange} />
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
-                                <h4 className="text-md font-light">Email</h4>
+                                <h4 className="text-sm font-light">Email</h4>
                                 <input type="email" name='email' disabled={selectedUser !== null} className={inputError.emailError ? 'normal-input-error' : 'normal-input'} value={auth.email} onChange={handleChange} />
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
-                                <h4 className="text-md font-light">Phone</h4>
+                                <h4 className="text-sm font-light">Phone</h4>
                                 <input type="phone_number" name='phone_number' className={inputError.phone_numberError ? 'normal-input-error' : 'normal-input'} value={auth.phone_number} onChange={handleChange} />
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
-                                <h4 className="text-md font-light">Password</h4>
+                                <h4 className="text-sm font-light">Password</h4>
                                 <input type="text" name='new_password' className={inputError.passwordError ? 'normal-input-error' : 'normal-input'} value={new_password} onChange={(e)=>{setNew_password(e.target.value); setAuth({...auth, password: e.target.value}) }} />
                             </span>
                         </form>
@@ -221,11 +221,11 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                         <p className="text-[17px] font-semibold">User Role</p>
                         <div className="w-full flex flex-col items-start justify-start gap-4">
                             <span className="w-full flex flex-col items-start justify-start gap-2">
-                                <h4 className="text-md font-light">Select Role</h4>
+                                <h4 className="text-sm font-light">Select Role</h4>
                                 <span className="w-full">
                                     <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                 </span>
-                                <h4 className="text-md font-semibold mt-[8px]">Description</h4>
+                                <h4 className="text-sm font-semibold mt-[8px]">Description</h4>
                                 {/* now list the basic features of these user_roles */}
 
                                 <div className="w-full flex flex-col items-start justify-start max-h-[300px] overflow-y-auto ">
@@ -235,8 +235,8 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                                         {userResponsibilities.admin.map((data, ind)=>{
                                             return (
                                                 <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
-                                                    <p className="text-md">{ind + 1}.</p>
-                                                    <p className="text-md font-light">{data}</p>
+                                                    <p className="text-sm">{ind + 1}.</p>
+                                                    <p className="text-sm font-light">{data}</p>
                                                 </span>
                                             )
                                         })}
@@ -246,8 +246,8 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                                         {userResponsibilities.sales.map((data, ind)=>{
                                             return (
                                                 <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
-                                                    <p className="text-md">{ind + 1}.</p>
-                                                    <p className="text-md font-light">{data}</p>
+                                                    <p className="text-sm">{ind + 1}.</p>
+                                                    <p className="text-sm font-light">{data}</p>
                                                 </span>
                                             )
                                         })}
@@ -256,8 +256,8 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                                         {userResponsibilities.customer.map((data, ind)=>{
                                             return (
                                                 <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
-                                                    <p className="text-md">{ind + 1}.</p>
-                                                    <p className="text-md font-light">{data}</p>
+                                                    <p className="text-sm">{ind + 1}.</p>
+                                                    <p className="text-sm font-light">{data}</p>
                                                 </span>
                                             )
                                         })}
@@ -266,8 +266,8 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                                         {userResponsibilities.operation.map((data, ind)=>{
                                             return (
                                                 <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
-                                                    <p className="text-md">{ind + 1}.</p>
-                                                    <p className="text-md font-light">{data}</p>
+                                                    <p className="text-sm">{ind + 1}.</p>
+                                                    <p className="text-sm font-light">{data}</p>
                                                 </span>
                                             )
                                         })}
@@ -276,8 +276,8 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                                         {userResponsibilities.designer.map((data, ind)=>{
                                             return (
                                                 <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
-                                                    <p className="text-md">{ind + 1}.</p>
-                                                    <p className="text-md font-light">{data}</p>
+                                                    <p className="text-sm">{ind + 1}.</p>
+                                                    <p className="text-sm font-light">{data}</p>
                                                 </span>
                                             )
                                         })}
@@ -286,8 +286,8 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                                         {userResponsibilities.technician.map((data, ind)=>{
                                             return (
                                                 <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
-                                                    <p className="text-md">{ind + 1}.</p>
-                                                    <p className="text-md font-light">{data}</p>
+                                                    <p className="text-sm">{ind + 1}.</p>
+                                                    <p className="text-sm font-light">{data}</p>
                                                 </span>
                                             )
                                         })}
@@ -296,8 +296,8 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                                         {userResponsibilities.finance.map((data, ind)=>{
                                             return (
                                                 <span key={ind} className="w-full flex flex-row items-center justify-start gap-3">
-                                                    <p className="text-md">{ind + 1}.</p>
-                                                    <p className="text-md font-light">{data}</p>
+                                                    <p className="text-sm">{ind + 1}.</p>
+                                                    <p className="text-sm font-light">{data}</p>
                                                 </span>
                                             )
                                         })}
@@ -313,7 +313,7 @@ const AddUsers = ({addUsers, setAddUsers, selectedUser, setSelectedUser, number_
                 </div>
 
                 <span className="w-full h-[40px] flex justify-end px-[10px] ">
-                    {selectedUser != null ? <button className="mt-[10px] w-[150px] h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-500 flex items-center justify-center" onClick={update_user} disabled={loading}>
+                    {selectedUser != null ? <button className="mt-[10px] w-[175px] h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-500 flex items-center justify-center" onClick={update_user} disabled={loading}>
                         {loading ? (
                         <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

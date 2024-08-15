@@ -6,7 +6,7 @@ import { CiUnlock } from "react-icons/ci";
 import { IoMdEyeOff } from 'react-icons/io';
 import { IoEye } from 'react-icons/io5';
 import Alert from '@/app/component/alert';
-import { patch_api_auth_request, post_api_request } from '@/app/api/admin_api';
+import { patch_auth_request, post_request } from '@/app/api/admin_api';
 
 const RecoverPassword = () => {
     const router = useRouter();
@@ -53,25 +53,30 @@ const RecoverPassword = () => {
                 setAlert({message: 'Password do not match', type: 'error'})
             }else {
                 setLoading(true); 
-               
-                const response = await patch_api_auth_request('auth/forget-password', {email: sessionStorage.getItem('email'), new_password: auth.newPassword})
-
-                if (response.status == 201 || response.status == 200){
-                    showAlert(response.data.msg, "success")
-
-                    setAuth({ password: '', newPassword: '' })
-
-                    router.push('/auth/login')
-
-                    localStorage.setItem('x-id-key', response.headers.get('x-id-key'))
-
-                    setLoading(false)
+                try {
+                    const response = await patch_auth_request('auth/forget-password', {email: sessionStorage.getItem('email'), new_password: auth.newPassword})
+    
+                    if (response.status == 201 || response.status == 200){
+                        showAlert(response.data.msg, "success")
+    
+                        setAuth({ password: '', newPassword: '' })
+    
+                        router.push('/auth/login')
+    
+                        localStorage.setItem('x-id-key', response.headers.get('x-id-key'))
+    
+                        setLoading(false)
+                        
+                        return;
+                    }else{
+                        showAlert(response.response.data.err, "error")
+                        setLoading(false)
+                        return;
+                    }
                     
-                    return;
-                }else{
-                    showAlert(response.response.data.err, "error")
+                } catch (err:any) {
+                    showAlert("Error occured, please try again", "error")
                     setLoading(false)
-                    return;
                 }
 
 

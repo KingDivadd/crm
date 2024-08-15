@@ -7,12 +7,22 @@ import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
 import Alert from '../alert';
 import ViewLead from './salesViewLead';
 import { userArray } from '@/constants';
-import { get_api_auth_request } from '@/app/api/admin_api';
-import { Leads_Props } from '@/types';
+import { get_auth_request } from '@/app/api/admin_api';
+import Lead_Management_Modal from "./salesLeadManagementModal"
+
+interface Leads_Props {
+    forEach?(arg0: (data: any, ind: number) => void): unknown;
+    filter?(arg0: (user: any) => any): unknown;
+    map?(arg0: (data: any) => void): unknown;
+    total_number_of_leads_pages?: number; // Now optional and can be undefined
+    total_number_of_leads?: number; // Now optional and can be undefined
+    leads: any;
+}  
 
 const SalesLeadPage = () => {
-    const [addUsers, setAddUsers] = useState(false)
-    const [selectedUser, setSelectedUser] = useState(null)
+    const [modalFor, setModalFor] = useState('')
+    const [showModal, setShowModal] = useState(false)
+    const [selectedLead, setSelectedLead] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [page_number, setPage_number] = useState(1)
     const [lead_box, setLead_box] = useState<Leads_Props | null>(null);
@@ -41,14 +51,10 @@ const SalesLeadPage = () => {
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
-    function viewLead(data:any) {
-        setSelectedUser(data)
-        setAddUsers(true)
-    }
 
     useEffect(() => {
-       get_all_leads()
-    }, [])
+        get_all_leads()
+    }, [showModal])
 
     function showAlert(message: string, type: string){
         setAlert({message: message, type: type})
@@ -61,7 +67,7 @@ const SalesLeadPage = () => {
 
         console.log('started fetching');
         
-        const response = await get_api_auth_request(`auth/all-leads/${page_number}`)
+        const response = await get_auth_request(`auth/all-leads/${page_number}`)
 
         if (response.status == 200 || response.status == 201){
             
@@ -69,22 +75,18 @@ const SalesLeadPage = () => {
             
             setFiltered_lead_box(response.data)
 
-            console.log(response.data);
-            
-            showAlert(response.data.msg, "success")
-
-          }else{
-            console.log(response);
-            
-            showAlert(response.response.data.err, "error")
-          }
+        }else{
+        console.log(response);
+        
+        showAlert(response.response.data.err, "error")
+        }
     }
 
     async function filter_leads(item:any) {
 
         console.log('started fetching');
         
-        const response = await get_api_auth_request(`/filter-leads/${item}/${page_number}`)
+        const response = await get_auth_request(`/filter-leads/${item}/${page_number}`)
 
         if (response.status == 200 || response.status == 201){
             
@@ -96,11 +98,11 @@ const SalesLeadPage = () => {
             
             showAlert(response.data.msg, "success")
 
-          }else{
-            console.log(response);
-            
-            showAlert(response.response.data.err, "error")
-          }
+        }else{
+        console.log(response);
+        
+        showAlert(response.response.data.err, "error")
+        }
     }
 
     async function app_users_action(item: any) {
@@ -181,22 +183,22 @@ const SalesLeadPage = () => {
             if (value.trim() !== '') {
                 const filtered_leads = lead_box.leads.filter((data: any) => {
                     const customer_name = data.customer_name?.toLowerCase() || '';
-                    const first_name = data.user?.first_name?.toLowerCase() || '';
-                    const last_name = data.user?.last_name?.toLowerCase() || '';
-                    const other_names = data.user?.other_names?.toLowerCase() || '';
+                    const first_name = data.assigned_to?.first_name?.toLowerCase() || '';
+                    const last_name = data.assigned_to?.last_name?.toLowerCase() || '';
+                    const other_names = data.assigned_to?.other_names?.toLowerCase() || '';
+                    const phone_number = data.phone_number || ''
                     
                     return (
                         first_name.includes(value) ||
                         last_name.includes(value) ||
                         other_names.includes(value) ||
-                        customer_name.includes(value)
+                        customer_name.includes(value) || 
+                        phone_number.includes(value)
                     );
                 });
-
-                console.log('new leads ', filtered_leads);
                 
     
-                // setFiltered_lead_box({ ...filtered_lead_box, total_number_of_leads});
+                setFiltered_lead_box({...filtered_lead_box, leads:filter_leads});
             } else {
                 setFiltered_lead_box(lead_box); // Reset to the original list
             }
@@ -231,11 +233,26 @@ const SalesLeadPage = () => {
         }
     }
     
+    function add_lead(){
+        setShowModal(true)
+        setSelectedLead(null)
+        setModalFor('add')
+    }
+
+    function edit_lead(lead:any){
+        setShowModal(true)
+        setSelectedLead(lead)
+        setModalFor('edit')
+    }
+
+    function delete_lead(lead:any){
+        setShowModal(true)
+        setSelectedLead(lead)
+        setModalFor('delete')
+    }
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
-            {addUsers ? <ViewLead addUsers={addUsers} setAddUsers={setAddUsers} selectedUser={selectedUser} setSelectedUser={setSelectedUser} /> 
-            :
             <div className="relative w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} 
@@ -248,11 +265,12 @@ const SalesLeadPage = () => {
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
                             <span className="w-[300px] h-[40px] ">
-                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 ' />
+                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 text-sm ' />
                             </span>
-                            <span className="h-[40px] w-[150px]">
+                            <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
+                            <button type="button" className="h-full px-4 flex items-center text-white bg-blue-600 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>
                         </span>
 
                         
@@ -261,66 +279,74 @@ const SalesLeadPage = () => {
                 </span>
 
                 
-                <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b border-gray-300 ">
-                            <p className="text-sm font-normal w-[13%] pr-2 pl-2 ">Last Name</p>
-                            <p className="text-sm font-normal w-[13%] pr-2 pl-2 ">First Name</p>
-                            <p className="text-sm font-normal w-[29%] pr-2 pl-2 ">Email</p>
-                            <p className="text-sm font-normal w-[12.5%] pr-2 pl-2 ">Role</p>
-                            <p className="text-sm font-normal w-[12.5%] pr-2 pl-2 ">Status</p>
-                            <p className="text-sm font-normal w-[10%] pr-2 pl-2 ">Action</p>
-                            <p className="text-sm font-normal w-[10%] pr-2 pl-2 "></p>
-                        </span>
-                        <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
-                            
-                            {filtered_lead_box !== null ?
-                            
-                                <div className='h-full w-full flex flex-col justify-start '>
+                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-600 text-white">
+                        <p className="text-[16.5px] font-normal w-[17.5%] px-2 ">Customer Name</p>
+                        <p className="text-[16.5px] font-normal w-[17.5%] px-2 ">Customer Address</p>
+                        <p className="text-[16.5px] font-normal w-[17.5%] px-2 ">Phone Number</p>
+                        <p className="text-[16.5px] font-normal w-[17.5%] px-2 ">Assigned to</p>
+                        <p className="text-[16.5px] font-normal w-[10%] px-2 ">Disposition</p>
+                        <p className="text-[16.5px] font-normal w-[10%] px-2 ">Action</p>
+                        <p className="text-[16.5px] font-normal w-[10%] px-2 "></p>
+                    </span>
 
-                                    {lead_box?.leads.length ?
-                                     <>
-                                    { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                        const {last_name, first_name, email, user_role, active_status} = data
-                                        return (
-                                            <span key={ind} className="recent-activity-table-list " >
-                                                <p className="text-sm w-[13%] pr-2 pl-2 "> {last_name} </p>
-                                                <p className="text-sm w-[13%] pr-2 pl-2 "> {first_name} </p>
-                                                <p className="text-sm w-[29%] pr-2 pl-2 "> {email} </p>
-                                                <p className="text-sm w-[12.50%] pr-2 pl-2 "> {user_role} </p>
-                                            </span>
-                                        )
-                                    })}
-                                    </>
-                                    :
-                                    <div className="w-full h-[100%] flex items-center justify-center">
-                                        <p className="text-normal"> No Leads yet </p>
-                                    </div>}
+                    <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
+                        
+                        {filtered_lead_box !== null ?
+                        
+                            <div className='h-full w-full flex flex-col justify-start '>
 
-                                </div>
-                            
-                            :
+                                {lead_box?.leads.length ?
+                                <>
+                                { filtered_lead_box?.leads.map((data:any, ind:number)=>{
+                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition} = data
+                                    return (
+                                        <span key={ind} className="recent-activity-table-list " >
+                                            <p className="text-[15px] w-[17.5%] px-2 "> {customer_name} </p>
+                                            <p className="text-[15px] w-[17.5%] px-2 "> {address} </p>
+                                            <p className="text-[15px] w-[17.5%] px-2 "> {phone_number} </p>
+                                            <p className="text-[15px] w-[17.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
+                                            <p className="text-[15px] w-[10%] px-2 "> {disposition} </p>
+                                            <p className="text-[15px] w-[10.0%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
+                                        
+                                            <p className="text-[15px] w-[10.0%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                        </span>
+                                    )
+                                })}
+                                </>
+                                :
+                                <div className="w-full h-[100%] flex items-center justify-center">
+                                    <p className="text-normal"> No Leads yet </p>
+                                </div>}
 
-                                <div className="w-full h-full flex items-center justify-center">
-                                    <p className="text-md font-normal">Loading Data...</p>
-                                </div>
-                            
-                            }
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                {render_page_numbers()}
-                                </span>
-                                <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
+                            </div>
+                        
+                        :
+
+                            <div className="w-full h-full flex items-center justify-center">
+                                <p className="text-sm font-normal">Loading Data...</p>
+                            </div>
+                        
+                        }
+                    
+                    </div>
+                    
+                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                        <span className="flex flex-row items-center justify-start gap-3 h-full">
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
+                            <span className="w-auto h-full flex flex-row items-center justify-start">
+                            {render_page_numbers()}
                             </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-15 of {(lead_box && lead_box?.total_number_of_leads) || 0}</p>
-                            </span>
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
+                        <span className="flex flex-row items-center justify-end gap-3 h-full">
+                            <p className="text-sm">Showing 1-15 of {(lead_box && lead_box?.total_number_of_leads) || 0}</p>
+                        </span>
+                    </span>
                 </div>
 
-            </div>}
+            </div>
+            {showModal && <Lead_Management_Modal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedLead={selectedLead} setModalFor={setModalFor} setSelectedLead={setSelectedLead} /> }
         </div>
     )
 }

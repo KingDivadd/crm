@@ -144,7 +144,7 @@
 }
 
 .recent-activity-table-list {
-    @apply w-full h-[40px] flex flex-row items-center justify-start cursor-pointer;
+    @apply w-full min-h-[40px] flex flex-row items-center justify-start cursor-pointer py-[5px];
 }
 
 .recent-activity-table-list:hover {
@@ -265,15 +265,15 @@
 }
 
 .quick-access-bar {
-    @apply h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] bg-white rounded-[5px] border border-blue-500
+    @apply min-h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] bg-white rounded-[5px] border border-blue-500
 }
 
 .quick-access-bar:hover {
-    @apply bg-blue-600 text-white h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] rounded-[5px] cursor-pointer
+    @apply bg-blue-600 text-white min-h-[120px] flex flex-row items-start justify-start p-[10px] pt-[20px] gap-[20px] rounded-[5px] cursor-pointer
 }
 
 .regular-drop-element {
-    @apply h-[35px] flex flex-row items-center justify-start w-full pl-[10px] cursor-pointer
+    @apply h-[35px] flex flex-row items-center justify-start w-full pl-[10px] cursor-pointer text-[15px];
 }
 
 .regular-drop-element:hover {
@@ -329,7 +329,7 @@
 }
 
 .image-custom-button {
-    @apply h-[40px] rounded-[3px] text-white bg-blue-600 w-full
+    @apply h-[40px] rounded-[3px] text-white bg-blue-600 w-full text-sm;
 }
 
 .image-custom-button:hover {
@@ -382,7 +382,7 @@
 }
 
 .report-btn-style {
-    @apply h-[40px] px-[75px] rounded-[3px] flex items-center bg-white text-slate-800  border border-slate-600 
+    @apply h-[40px] px-[75px] rounded-[3px] flex items-center bg-white text-slate-800 border border-slate-600
 }
 
 .report-btn-style:hover {
@@ -390,7 +390,7 @@
 }
 
 .active-report-btn-style {
-    @apply h-[40px] px-[75px] rounded-[3px] flex items-center bg-blue-600 text-white  border border-blue-600 
+    @apply h-[40px] px-[75px] rounded-[3px] flex items-center bg-blue-600 text-white border border-blue-600
 }
 
 .cont-3 {
@@ -399,8 +399,9 @@
 
 .settings-cont {
     @apply overflow-y-auto;
-    height:  calc(100vh - 70px);
+    height: calc(100vh - 70px);
 }
+
 .admin-shortcut-cont {
     height: calc(100vh - 80px);
 }

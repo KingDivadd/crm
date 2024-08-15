@@ -252,7 +252,7 @@ const AdminHome = () => {
                 <div className="w-full flex flex-row items-center justify-between gap-[10px]">
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4 border border-blue-600 ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-blue-600">Total Lead.</p>
+                            <p className="text-md text-blue-600">Total Lead</p>
                             <p className="text-sm text-blue-600">{dash_box?.total_number_of_leads || 0}</p>
                             <p className="text-sm font-light text-blue-600">Last 30 days</p>
                         </div>
@@ -260,7 +260,7 @@ const AdminHome = () => {
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-lime-700 bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-lime-700">Total Sales</p>
+                            <p className="text-md text-lime-700">Total Sales</p>
                             <p className="text-sm text-lime-700">{dash_box?.total_number_of_sales || 0}</p>
                             <p className="text-sm font-light text-lime-700">Last 30 days</p>
                         </div>
@@ -268,7 +268,7 @@ const AdminHome = () => {
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-sky-600 rounded-[5px] bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-sky-600">Total Installations</p>
+                            <p className="text-md text-sky-600">Total Installations</p>
                             <p className="text-sm text-sky-600">{dash_box?.total_number_of_installations || 0}</p>
                             <p className="text-sm font-light text-sky-600">Last 30 days</p>
                         </div>
@@ -276,7 +276,7 @@ const AdminHome = () => {
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-lime-600 rounded-[5px] bg-white w-1/4  ">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-lime-700">Total Projects</p>
+                            <p className="text-md text-lime-700">Total Projects</p>
                             <p className="text-sm text-lime-700">{dash_box?.total_number_of_projects || 0}</p>
                             <p className="text-sm font-light text-lime-700">Last 30 days</p>
                         </div>
@@ -289,7 +289,7 @@ const AdminHome = () => {
 
                 {/* second section = recent activity */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px]">
-                    <p className="text-xl font-semibold">Recent Activities</p>
+                    <p className="text-lg font-semibold">Recent Activities</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b border-gray-300">
@@ -342,76 +342,76 @@ const AdminHome = () => {
 
                 {/* quick access secion */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Quick Access</p>
+                    <p className="text-lg font-semibold">Quick Access</p>
                     <div className="w-full flex flex-wrap justify-start gap-[10px]">
-                        <span className="w-[250px] quick-access-bar ">
+                        <span className="w-[260px] quick-access-bar group">
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GiChart size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg ">New Leads</p>
+                                <p className="text-[18px] ">New Leads</p>
                                 <p className="text-sm ">{dash_box?.new_lead.length} new leads</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('leads')}}>View Detials</p>
+                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100 " onClick={()=>{view_details('leads')}}>View Detials</p>
                             </span>
                         </span>
                         
-                        <span className="w-[250px] quick-access-bar ">
+                        <span className="w-[250px] quick-access-bar group">
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><BsBriefcase size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg ">Pending Sales</p>
+                                <p className="text-[18px] ">Pending Sales</p>
                                 <p className="text-sm ">{dash_box?.pending_sales.length} pending sales</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('pending_sales')}}>View Detials</p>
+                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100 " onClick={()=>{view_details('pending_sales')}}>View Detials</p>
                             </span>
                         </span>
-                        <span className="w-[300px] quick-access-bar ">
+                        <span className="w-[300px] quick-access-bar group">
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GiLightningSpanner size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg ">Installations</p>
+                                <p className="text-[18px] ">Installations</p>
                                 <p className="text-sm ">{dash_box?.ongoing_installations.length} ongoing installations</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('ongoing_installations')}}>View Detials</p>
+                                <p className="text-sm text-blue-500  hover:underline cursor-pointer group-hover:text-slate-100  " onClick={()=>{view_details('ongoing_installations')}}>View Detials</p>
                             </span>
                         </span>
 
-                        <span className="w-[300px] quick-access-bar ">
+                        <span className="w-[300px] quick-access-bar group ">
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GrServices size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg ">Service Tickets</p>
+                                <p className="text-[18px] ">Service Tickets</p>
                                 <p className="text-sm ">{dash_box?.open_service_tickets.length} open service ticket</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('service_tickets')}}>View Detials</p>
+                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100 " onClick={()=>{view_details('service_tickets')}}>View Detials</p>
                             </span>
                         </span>
 
-                        <span className="w-[300px] quick-access-bar ">
+                        <span className="w-[300px] quick-access-bar group">
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><FaMoneyBillAlt size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg ">Pending Payments</p>
+                                <p className="text-[18px] ">Pending Payments</p>
                                 <p className="text-sm ">{dash_box?.pending_payments.length} pending payments</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('pending_payment')}}>View Detials</p>
+                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100  " onClick={()=>{view_details('pending_payment')}}>View Detials</p>
                             </span>
                         </span>
 
-                        <span className="w-[300px] quick-access-bar ">
+                        <span className="w-[300px] quick-access-bar group">
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><LuPencilRuler size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg ">Engineerin Tasks</p>
+                                <p className="text-[18px] ">Engineerin Tasks</p>
                                 <p className="text-sm ">{dash_box?.engineering_task.length} tasks pending</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('engineering_task')}}>View Detials</p>
+                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100  " onClick={()=>{view_details('engineering_task')}}>View Detials</p>
                             </span>
                         </span>
 
-                        <span className="w-[300px] quick-access-bar ">
+                        <span className="w-[300px] quick-access-bar group ">
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><MdOutlineNoteAlt size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg ">Permits</p>
+                                <p className="text-[18px] ">Permits</p>
                                 <p className="text-sm ">{dash_box?.permit.length} permits pending</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('pending_permit')}}>View Detials</p>
+                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100  " onClick={()=>{view_details('pending_permit')}}>View Detials</p>
                             </span>
                         </span>
 
-                        <span className="w-[300px] quick-access-bar ">
+                        <span className="w-[300px] quick-access-bar group">
                             <span className="h-[80%] flex items-start justify-center w-[30%]  " ><RiBarChartFill size={35} /> </span>
                             <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-lg ">Accounting</p>
+                                <p className="text-[18px] ">Accounting</p>
                                 <p className="text-sm ">profit/loss details</p>
-                                <p className="text-sm  hover:underline cursor-pointer " onClick={()=>{view_details('accounting')}}>View Detials</p>
+                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100 " onClick={()=>{view_details('accounting')}}>View Detials</p>
                             </span>
                         </span>
 
@@ -421,7 +421,7 @@ const AdminHome = () => {
 
                 {/* task notification */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Task Notification</p>
+                    <p className="text-lg font-semibold">Task Notification</p>
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b border-gray-300 ">
                             <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Task Type</p>

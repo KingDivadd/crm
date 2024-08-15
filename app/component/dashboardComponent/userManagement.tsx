@@ -6,7 +6,7 @@ import { MdDeleteForever } from "react-icons/md";
 import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
 import AddUsers from "../dashboardComponent/subComponent/addUser"
 import Alert from '../alert';
-import { get_api_auth_request } from '@/app/api/admin_api';
+import { get_auth_request } from '@/app/api/admin_api';
 import { User_Management_Props } from '@/types';
 import DeleteModal from './deleteModal';
 
@@ -50,26 +50,26 @@ const UserManagement = () => {
         setFilters({ ...filters, filter_input: value });
     
         if (app_users && app_users.users) {
-          if (value.trim() !== '') {
-            const new_app_users = app_users.users.filter((data: any) => {
-              const firstName = data.first_name?.toLowerCase() || '';
-              const lastName = data.last_name?.toLowerCase() || '';
-              const otherNames = data.other_names?.toLowerCase() || '';
-              const email = data.email?.toLowerCase() || '';
-    
-              return (
-                firstName.includes(value) ||
-                lastName.includes(value) ||
-                otherNames.includes(value) ||
-                email.includes(value)
-              );
-            });
-    
-            setFiltered_users({ ...app_users, users: new_app_users });
-          } else {
-            setFiltered_users(app_users); // Reset to the original list
-          }
-        }
+            if (value.trim() !== '') {
+                const new_app_users = app_users.users.filter((data: any) => {
+                const firstName = data.first_name?.toLowerCase() || '';
+                const lastName = data.last_name?.toLowerCase() || '';
+                const otherNames = data.other_names?.toLowerCase() || '';
+                const email = data.email?.toLowerCase() || '';
+        
+                return (
+                    firstName.includes(value) ||
+                    lastName.includes(value) ||
+                    otherNames.includes(value) ||
+                    email.includes(value)
+                );
+                });
+        
+                setFiltered_users({ ...app_users, users: new_app_users });
+            } else {
+                setFiltered_users(app_users); // Reset to the original list
+            }
+            }
     }
 
     async function handle_new_filter(item: string) {
@@ -118,7 +118,7 @@ const UserManagement = () => {
 
         console.log('started fetching');
         
-        const response = await get_api_auth_request(`user/all-users/${page_number}`)
+        const response = await get_auth_request(`user/all-users/${page_number}`)
 
         if (response.status == 200 || response.status == 201){
             
@@ -129,7 +129,7 @@ const UserManagement = () => {
             console.log(response.data.data.users);
             
             showAlert(response.data.msg, "success")
-          }else{
+        }else{
             console.log(response);
             
             showAlert(response.response.data.err, "error")
@@ -228,23 +228,23 @@ const UserManagement = () => {
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
-                        <p className="text-lg font-semibold text-black">All Users</p>
+                        <p className="text-md font-semibold text-black">All Users</p>
                         <p className="text-sm text-black">{app_users?.total_number_of_users}</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
-                            <span className="h-[40px] w-[150px]">
+                            <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Active', 'Inactive', 'All']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
                             <span className="w-[250px] h-[40px] ">
-                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Enter name or email' id="" className='normal-input bg-gray-100 ' />
+                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Enter name or email' id="" className='normal-input bg-gray-100 text-sm ' />
                             </span>
-                            <span className="h-[40px] w-[150px]">
+                            <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance', 'All']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
                         </span>
 
-                        <button className="h-[40px] px-4 bg-blue-700 hover:bg-blue-800 text-white rounded-[3px] flex items-center justify-center gap-3" onClick={()=>{setAddUsers(true)}}>Add New User</button>
+                        <button className="h-[40px] px-4 bg-blue-700 hover:bg-blue-800 text-white rounded-[3px] flex items-center justify-center  text-sm" onClick={()=>{setSelectedUser(null); setAddUsers(true)}}>Add New User</button>
 
                     </span>
                 </span>

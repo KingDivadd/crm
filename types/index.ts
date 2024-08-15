@@ -211,14 +211,6 @@ export interface PipelineProps {
     setShowDetails: (showDetails: boolean) => void;
 }
 
-export interface Leads_Props {
-    forEach(arg0: (data: any, ind: number) => void): unknown;
-    filter(arg0: (user: any) => any): unknown;
-    map(arg0: (data: any) => void): unknown;
-    total_number_of_leads_pages:number;
-    total_number_of_leads:number;
-    leads:any;
-}
 
 export interface User_Management_Props {
     forEach(arg0: (data: any, ind: number) => void): unknown;

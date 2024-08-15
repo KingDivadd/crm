@@ -43,32 +43,32 @@ const SideBar = ({active, setActive}:SideBarNav) => {
                 <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px] ">
                     <span className={active === "home"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('home')}}>
                         <RiHome3Fill size={23} />
-                        <p className="text-[17px]">Home</p>
+                        <p className="text-sm">Home</p>
                     </span>
                     <span className={active === "user-management"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('user-management')}}>
                         <FaUserTie size={23} /> 
-                        <p className="text-[17px]">User Management</p>
+                        <p className="text-sm">User Management</p>
                     </span>
                     <span className={active === "analytics"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('analytics')}}>
                         <IoStatsChartSharp size={23} />
-                        <p className="text-[17px]">Reports and Analytics</p>
+                        <p className="text-sm">Reports and Analytics</p>
                     </span>
                     <span className={active === "notifications"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notifications')}}>
                         <MdNotifications size={23} />
-                        <p className="text-[17px]">Notifications</p>
+                        <p className="text-sm">Notifications</p>
                     </span>
                     <span className={active === "logs"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('logs')}}>
                         <BiSolidNotepad size={23} />
-                        <p className="text-[17px]">Logs</p>
+                        <p className="text-sm">Logs</p>
                     </span>
                     <span className={active === "system-settings"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('system-settings')}}>
                         <IoSettingsSharp size={23} />
-                        <p className="text-[17px]">System Settings</p>
+                        <p className="text-sm">System Settings</p>
                     </span>
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
-                    <FiLogOut size={25} />
-                    <p className="text-lg">Logout</p>
+                    <FiLogOut size={23} />
+                    <p className="text-sm">Logout</p>
                 </span>
             </div>
         </div>

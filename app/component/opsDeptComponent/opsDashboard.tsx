@@ -5,6 +5,7 @@ import OpsDashboardNav from './opsDashboardNav'
 import OpsDashboardPage from './opsDashboardPage'
 import OpsLeadsPage from './opsLeadsPage'
 import OpsSalesPage from './opsSalesPage'
+import OpsTaskPage from './opsTaskPage'
 import OpsInstallsPage from './opsInstallsPage'
 import OpsReportPage from './opsReportPage'
 import OpsUserTrackingPage from './opsUserTrackingPage'
@@ -15,7 +16,7 @@ const OpsDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
         const item = sessionStorage.getItem('salesSideNav')
-        if (item == null || item == "" || !['home', 'leads', 'sales', 'install','reports','notification', 'user-tracking','settings'].includes(item) ) {
+        if (item == null || item == "" || !['home', 'leads', 'sales', 'tasks', 'install','reports','notification', 'user-tracking','settings'].includes(item) ) {
             setActive('home')
         }else{
             setActive(item)
@@ -33,6 +34,7 @@ const OpsDashboard = () => {
                     {active === "home" && <OpsDashboardPage /> }
                     {active === "leads" && <OpsLeadsPage /> }
                     {active === "sales" && <OpsSalesPage /> }
+                    {active === "tasks" && <OpsTaskPage /> }
                     {active === "installs" && <OpsInstallsPage /> }
                     {active === "reports" && <OpsReportPage /> }
                     {active === "notification" && <OpsNotificationPage /> }

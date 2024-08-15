@@ -7,7 +7,7 @@ import { IoEye } from 'react-icons/io5';
 import Alert from "../../component/alert"
 import {  SignupImageUploader } from '@/app/component/imageUploader';
 import { IoIosClose } from "react-icons/io";
-import { get_api_auth_request, patch_api_auth_request, post_api_request } from '@/app/api/admin_api';
+import { get_auth_request, patch_auth_request, post_request } from '@/app/api/admin_api';
 
 
 
@@ -31,13 +31,12 @@ const Signup = () => {
         }else{
             setPage('signup')
         }
-       
-        
+
     }, [])
 
     async function get_user_auth_status() {
 
-        const response = await get_api_auth_request('auth/get-auth-status')
+        const response = await get_auth_request('auth/get-auth-status')
 
         if (response.status == 200 || response.status == 201){
             showAlert(response.data.msg, "success")
@@ -119,7 +118,7 @@ const Signup = () => {
         }else {
             setLoading(true);
 
-            const response = await post_api_request('auth/generate-otp', {email: otpData.email})
+            const response = await post_request('auth/generate-otp', {email: otpData.email})
 
             if (response.status == 201){
                 showAlert(response.data.msg, "success")
@@ -151,7 +150,7 @@ const Signup = () => {
         }else {
             setLoading(true);
 
-            const response = await post_api_request('auth/verify-otp', {otp: otpData.otp, email: sessionStorage.getItem('email')})
+            const response = await post_request('auth/verify-otp', {otp: otpData.otp, email: sessionStorage.getItem('email')})
 
             if (response.status == 201 || response.status == 200){
                 showAlert(response.data.msg, "success")
@@ -182,7 +181,7 @@ const Signup = () => {
             setInputError({...inputError, emailError: auth.email === "", firstNameError: auth.firstName === '', lastNameError: auth.lastName === '', passwordError: auth.password === '', phoneError: auth.phone === ''})
         }else {
             setLoading(true); 
-            const response = await post_api_request('auth/admin-signup', 
+            const response = await post_request('auth/admin-signup', 
                 {first_name: auth.firstName, last_name: auth.lastName, email: auth.email, phone_number: auth.phone, password: auth.password})
 
             if (response.status == 201){
@@ -228,7 +227,7 @@ const Signup = () => {
 
             console.log('here');
             
-            const response = await patch_api_auth_request('auth/complete-admin-setup', 
+            const response = await patch_auth_request('auth/complete-admin-setup', 
                 payload
             )
 
@@ -280,7 +279,7 @@ const Signup = () => {
 
     async function resent_otp() {
         
-        const response = await get_api_auth_request('auth/regenerate-otp')
+        const response = await get_auth_request('auth/regenerate-otp')
 
         if (response.status == 201){
             showAlert(response.data.msg, "success")

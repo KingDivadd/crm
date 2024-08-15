@@ -7,7 +7,7 @@ import { IoEye } from "react-icons/io5";
 import { IoMdEyeOff } from "react-icons/io";
 import Alert from "../../component/alert"
 import { authentication } from '@/constants';
-import {  count_users_request, post_api_request } from '@/app/api/admin_api';
+import {  count_users_request, post_request } from '@/app/api/admin_api';
 
 
 const Login = () => {
@@ -28,17 +28,16 @@ const Login = () => {
         const response = await count_users_request('user/test-db-connection')
 
         if (response.status == 200 || response.status == 201){
-           
+            
             setUsers(response.data.number_of_users)
-          }else if (response.code == "ERR_NETWORK"){
+        }else if (response.code == "ERR_NETWORK"){
 
-              showAlert(response.message, "error")
-          }
-          else{            
+            showAlert(response.message, "error")
+        }
+        else{            
             showAlert(response.response.data.err, "error")
             setLoading(false)
-          }
-
+        }
 
     }
 
@@ -72,53 +71,50 @@ const Login = () => {
 
     async function handleSubmit(e: any) {
         e.preventDefault();
-      
-        if (!auth.email || !auth.password) {
-          showAlert("Please enter all fields", "warning");
-          setInputError({
-            ...inputError,
-            emailError: auth.email === "",
-            passwordError: auth.password === "",
-          });
-          return;
-        } else {
-          setLoading(true); // Set loading to true when the request starts
 
-          try {
-            
-              const response = await post_api_request('auth/login', auth)
-    
-              if (response.status == 200 || response.status == 201){
-    
-                localStorage.setItem('x-id-key' ,response.headers.get('x-id-key'));
-                console.log('respnse ', response.data.user)
-                localStorage.setItem('user-role', response.data.user.user_role)
+        if (!auth.email || !auth.password) {
+            showAlert("Please enter all fields", "warning");
+            setInputError({
+                ...inputError,
+                emailError: auth.email === "",
+                passwordError: auth.password === "",
+            });
+            return;
+        } else {
+            setLoading(true); 
+
+            try {
                 
-                showAlert(response.data.msg, "success")
-                setAuth({email: '', password: ''})
-                setLoading(false)
-                router.push('/home')
-              }else if (response.response && response.response.status == 402){
-                sessionStorage.setItem('email', auth.email)
-                router.push('/auth/verifyotp')
-              }
-              else{
-                showAlert(response.response.data.err, "error")
-                setLoading(false)
-              }
-          } catch (err:any) {
-            console.error('Network or unexpected error:', err);
+                const response = await post_request('auth/login', auth)
+
+                if (response.status == 200 || response.status == 201){
+
+                    localStorage.setItem('x-id-key' ,response.headers.get('x-id-key'));
+                    localStorage.setItem('user-role', response.data.user.user_role)
+                    
+                    showAlert(response.data.msg, "success")
+                    setAuth({email: '', password: ''})
+                    setLoading(false)
+                    router.push('/home')
+                }else if (response.response && response.response.status == 402){
+                    sessionStorage.setItem('email', auth.email)
+                    router.push('/auth/verifyotp')
+                }
+                else{
+                    showAlert(response.response.data.err, "error")
+                    setLoading(false)
+                }
+            } catch (err:any) {
+                console.error('Network or unexpected error:', err);
                 showAlert('An unexpected error occurred. Please try again later.', 'error');
             } finally {
                 setLoading(false); // Set loading to false in both success and error cases
             }
-
-          
             setLoading(false)
 
         }
         setLoading(false)
-      }
+    }
 
     return (
         <div className=" relative w-full h-[100vh] p-[20px] flex items-center justify-center">

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { CiUnlock } from "react-icons/ci";
 import { CiLock } from "react-icons/ci";
 import Alert from '@/app/component/alert';
-import { post_api_request } from '@/app/api/admin_api';
+import { post_request } from '@/app/api/admin_api';
 
 const ForgetPassword = () => {
     const router = useRouter();
@@ -48,7 +48,7 @@ const ForgetPassword = () => {
         }else {
             setLoading(true);
 
-            const response = await post_api_request('auth/verify-otp', auth)
+            const response = await post_request('auth/verify-otp', auth)
 
             if (response.status == 201 || response.status == 200){
                 showAlert(response.data.msg, "success")
@@ -77,7 +77,7 @@ const ForgetPassword = () => {
 
         async function resend_otp() {
         
-            const response = await post_api_request('auth/generate-otp', {email: String(sessionStorage.getItem('email'))})
+            const response = await post_request('auth/generate-otp', {email: String(sessionStorage.getItem('email'))})
     
             if (response.status == 201){
                 showAlert(response.data.msg, "success")

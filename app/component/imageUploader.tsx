@@ -47,7 +47,7 @@ const ImageUploader = ({ id, title, url, image }: ImageUploaderProps) => {
     return (
         <div className="w-full flex flex-col justify-start items-start gap-2">
             <span className="w-full flex flex-col items-start justify-start gap-2">
-                <h4 className="text-md font-light">{title}</h4>
+                <h4 className="text-sm font-light">{title}</h4>
                 <input 
                     type="file" 
                     name={`logo-${id}`} 
@@ -58,7 +58,7 @@ const ImageUploader = ({ id, title, url, image }: ImageUploaderProps) => {
                 />
                 <button 
                     type="button" 
-                    className="image-custom-button" 
+                    className="image-custom-button " 
                     onClick={() => document.getElementById(`fileInput-${id}`)?.click()}
                 >
                     Select Image
@@ -120,7 +120,7 @@ export const FlexibleImageUploader = ({ id, title, url }: ImageUploaderProps) =>
     return (
         <div className="w-full flex flex-col justify-start items-start gap-2 h-full">
             <span className="w-full flex flex-col items-start justify-start gap-2">
-                <h4 className="text-md font-light">{title}</h4>
+                <h4 className="text-sm font-light">{title}</h4>
                 <input 
                     type="file" 
                     name={`logo-${id}`} 
@@ -192,7 +192,7 @@ export const SignupImageUploader = ({ id, title, url, image }: ImageUploaderProp
     return (
         <div className="w-full flex flex-col justify-start items-start gap-2 h-full">
             <span className="w-full flex flex-col items-start justify-start gap-2">
-                <h4 className="text-md font-normal">{title}</h4>
+                <h4 className="text-sm font-normal">{title}</h4>
                 <input 
                     type="file" 
                     name={`logo-${id}`} 
@@ -263,7 +263,7 @@ export const InstallerImageUploader = ({ id, title, url, disabled, handleUploadC
     return (
         <div className="w-full flex flex-col justify-start items-start gap-2 h-full">
             <span className="w-full flex flex-col items-start justify-start gap-2">
-                <h4 className="text-md font-light">{title}</h4>
+                <h4 className="text-sm font-light">{title}</h4>
                 <input
                     type="file"
                     name={`logo-${id}`}
@@ -443,7 +443,7 @@ export const FilesUpload =  ({ id, title, url, image }: ImageUploaderProps) => {
     return (
         <div className="w-full flex flex-col justify-start items-start gap-2 h-full">
             <span className="w-full flex flex-col items-start justify-start gap-2">
-                <h4 className="text-md font-light">{title}</h4>
+                <h4 className="text-sm font-light">{title}</h4>
                 <input 
                     type="file" 
                     name={`file-${id}`} 

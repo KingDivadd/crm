@@ -80,8 +80,8 @@ const SalesSideBar = ({active, setActive}: SideBarNav) => {
                     </span>
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
-                    <FiLogOut size={25} />
-                    <p className="text-lg">Logout</p>
+                    <FiLogOut size={23} />
+                    <p className="text-[17px]">Logout</p>
                 </span>
             </div>
         </div>
