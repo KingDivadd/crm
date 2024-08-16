@@ -281,7 +281,7 @@ const SalesJobPage = () => {
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Job Id</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Lead Name</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Contract Amt</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Contract Date</p>

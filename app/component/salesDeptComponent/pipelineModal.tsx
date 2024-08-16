@@ -78,25 +78,35 @@ const Pipeline_Modal = ({ showModal, setShowModal, selectedPipeline, setSelected
                                     </div>
 
                                     <div className="w-full h-full flex items-start justify-start gap-[15px]">
-                                        <div className="w-1/2 h-full flex flex-col items-start justify-start gap-[10px] bg-green-100 ">
+                                        <div className="w-1/2 h-full flex flex-col items-start justify-start gap-[10px] ">
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-medium w-[35%]">Pipeline Id</p>    
-                                                <p className="text-sm font-normal w-[65%] text-start">{selectedPipeline.pipeline_id}</p>    
+                                                <p className="text-sm font-normal w-[35%]">Pipeline Id</p>    
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.pipeline_ind}</p>    
+                                            </span>
+
+                                            {selectedPipeline.job && <span className="w-full flex items-center justify-start gap-[10px] ">
+                                                <p className="text-sm font-normal w-[35%]">Job Id</p>    
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.job_ind}</p>    
+                                            </span>}
+
+                                            {selectedPipeline.lead && <span className="w-full flex items-center justify-start gap-[10px] ">
+                                                <p className="text-sm font-normal w-[35%]">Lead Id</p>    
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.lead_ind}</p>    
+                                            </span>}
+
+                                            <span className="w-full flex items-center justify-start gap-[10px] ">
+                                                <p className="text-sm font-normal w-[35%]">Contract Amount</p>    
+                                                <p className="text-sm font-medium w-[65%] text-start">${Number(selectedPipeline.contract_amount).toLocaleString()}</p>    
                                             </span>
 
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-medium w-[35%]">Contract Amount</p>    
-                                                <p className="text-sm font-normal w-[65%] text-start">{selectedPipeline.contract_amount}</p>    
+                                                <p className="text-sm font-normal w-[35%]">Disposition</p>    
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.disposition.replace(/_/g, ' ')}</p>    
                                             </span>
 
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-medium w-[35%]">Disposition</p>    
-                                                <p className="text-sm font-normal w-[65%] text-start">{selectedPipeline.disposition.replace(/_/g, ' ')}</p>    
-                                            </span>
-
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-medium w-[35%]">Status</p>    
-                                                <p className="text-sm font-normal w-[65%] text-start">{selectedPipeline.status.replace(/_/g, ' ')}</p>    
+                                                <p className="text-sm font-normal w-[35%]">Status</p>    
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.status.replace(/_/g, ' ')}</p>    
                                             </span>
 
                                         </div>
