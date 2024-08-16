@@ -291,7 +291,7 @@ const SalesPipelinePage = () => {
 
                         <span className="w-full flex flex-col items-start justify-between gap-[5px] px-[20px]">
                             <p className="text-md">Contract Value</p>
-                            <p className="text-sm">${pipeline_page_info?.lead_sold?.toLocaleString() || 0}</p>
+                            <p className="text-sm">${pipeline_page_info?.total_contract_amount?.toLocaleString() || 0}</p>
                             <p className="text-sm">Last 30 days</p>
                         </span>
 
