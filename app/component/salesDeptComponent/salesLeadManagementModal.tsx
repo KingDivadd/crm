@@ -103,7 +103,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
             get_all_staff()
         }else if (modalFor == 'edit'){
             get_all_staff()
-            const {customer_name, address, phone_number, email, assigned_to, appointment_date, disposition, gate_code} = selectedLead
+            const {customer_name, address, phone_number, email, assigned_to, appointment_date, disposition, gate_code, lead_ind} = selectedLead
             
             setAuth({...auth,  customer_name, address, phone_number, email,  assigned_name: `${assigned_to.last_name} ${assigned_to.first_name}`, assigned_to: assigned_to.user_id , appointment_date, disposition, gate_code })
         }
@@ -394,7 +394,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                 {modalFor == 'edit' && 
                                 <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] ">
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
-                                        <p className="text-md font-semibold  text-slate-800 ">New Lead </p>
+                                        <p className="text-md font-semibold  text-slate-800 ">Edit Lead: <strong>{selectedLead.lead_ind}</strong> </p>
 
                                         <span className="h-[35px] min-w-[150px] z-5">
                                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 

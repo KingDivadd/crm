@@ -303,7 +303,7 @@ const SalesJobPage = () => {
                                     const {job_ind, lead, contract_amount, contract_date, hoa_status, permit_status } = data
                                     return (
                                         <span key={ind} className="recent-activity-table-list " >
-                                            <p className="text-sm w-[7.5%] px-2 ">JB000{job_ind} </p>
+                                            <p className="text-sm w-[7.5%] px-2 ">{job_ind} </p>
                                             <p className="text-sm w-[15%] px-2 "> {lead.customer_name} </p>
                                             <p className="text-sm w-[15%] px-2 "> {Number(contract_amount).toLocaleString()} </p>
                                             <p className="text-sm w-[15%] px-2 "> {contract_date} </p>

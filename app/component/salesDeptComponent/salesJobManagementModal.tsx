@@ -427,7 +427,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                 {modalFor == 'edit' && 
                                 <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
                                 <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] z-[15] ">
-                                    <p className="text-md font-semibold  text-slate-800 ">Edit job <strong>JB000{selectedJob.job_ind}</strong> </p>
+                                    <p className="text-md font-semibold  text-slate-800 ">Edit Job: <strong>{selectedJob.job_ind}</strong> </p>
 
                                     <div className="relative flex items-start justify-center">
                                         <div className="flex items-center justify-center gap-5">

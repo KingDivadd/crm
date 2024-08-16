@@ -335,8 +335,9 @@ const SalesPipelinePage = () => {
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Id</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Lead Id</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Appointment Date</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Assigned To</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Status</p>
@@ -353,11 +354,12 @@ const SalesPipelinePage = () => {
                                 {pipeline_box?.pipeline.length ?
                                 <>
                                 { filtered_pipeline_box?.pipeline.map((data:any, ind:number)=>{
-                                    const {lead, stage, disposition, status, contract_amount } = data
+                                    const {lead, stage, disposition, status, contract_amount,pipeline_ind } = data
                                     return (
                                         <span key={ind} className="recent-activity-table-list " onClick={()=> view_pipeline(data)} >
+                                            <p className="text-sm w-[7.5%] px-2 ">{pipeline_ind} </p>
                                             <p className="text-sm w-[15%] px-2 "> {lead.customer_name} </p>
-                                            <p className="text-sm w-[15%] px-2 ">LD000{lead.lead_ind} </p>
+                                            <p className="text-sm w-[7.5%] px-2 ">{lead.lead_ind} </p>
                                             <p className="text-sm w-[15%] px-2 "> {lead.appointment_date} </p>
                                             <p className="text-sm w-[15%] px-2 "> {lead.assigned_to.first_name} {lead.assigned_to.last_name} </p>
                                             <p className="text-sm w-[15%] px-2 "> {status.replace(/_/g, ' ')} </p>
