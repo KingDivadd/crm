@@ -21,7 +21,7 @@ const Dashboard = () => {
         // Trim the role to remove any leading/trailing whitespace
         const trimmedRole = role ? role.trim() : ''
 
-        if (!trimmedRole || !['admin', 'sales', 'operation', 'customer', 'installer', 'permit', 'engineering', 'electrical', 'accounting'].includes(trimmedRole)) {
+        if (!trimmedRole || !['admin', 'sales', 'operation', 'designer', 'customer', 'installer', 'permit', 'engineering', 'electrical', 'accounting'].includes(trimmedRole)) {
             // console.log('Redirecting due to invalid role:', trimmedRole)
             router.push('/auth/login')
         } else {
@@ -36,7 +36,7 @@ const Dashboard = () => {
             {userRole === 'sales' && <SalesDashboard />}
             {userRole === 'operation' && <OpsDashboard />}
             {userRole === 'customer' && <CustomerDashboard />}
-            {userRole === 'installer' && <InstallerDashboard />}
+            {userRole === 'designer' && <InstallerDashboard />}
             {userRole === 'permit' && <PermitPortalDashboard />}
             {userRole === 'engineering' && <EngineeringDashboard />}
             {userRole === 'electrical' && <ElecricalDashbaord />}

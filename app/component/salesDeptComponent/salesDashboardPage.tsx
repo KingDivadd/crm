@@ -17,6 +17,7 @@ import { RiBarChartFill } from "react-icons/ri";
 import { get_auth_request } from '@/app/api/admin_api';
 import Alert from '../alert';
 import { Sales_Dashboard_Props } from '@/types';
+import { timestamp_to_readable_value } from '../helper';
 
 const SalesDashboardPage = () => {
 
@@ -106,87 +107,30 @@ const SalesDashboardPage = () => {
                                     
                 </div>
 
-                {/* second section = recent activity */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-md">Recent Activities</p>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start  rounded-t-[4px] border-b border-gray-200 bg-blue-600 text-white">
-                            <p className="text-sm w-[15%] px-2 ">Activity Id</p>
-                            <p className="text-sm w-[15%] px-2 ">User</p>
-                            <p className="text-sm w-[15%] px-2 ">Action</p>
-                            <p className="text-sm w-[25%] px-2 ">Details</p>
-                            <p className="text-sm w-[15%] px-2 ">Job Id</p>
-                            <p className="text-sm w-[15%] px-2 ">Time</p>
-                        </span>
-                        {dash_components?.recent_activities.length ? 
-                        
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {dash_components?.recent_activities.map((data:any, ind:number)=>{
-                                
-                                const {activity_id, user,  action, details, job_id, updated_at, created_at } = data
-                                return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[15%] px-2 ">{activity_id}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{user.other_names || user.first_name}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{action}</p>
-                                        <p className="text-sm w-[25%] px-2 ">{details}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{job_id}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{updated_at}</p>
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        :
-                        <div className="w-full h-[200px] flex flex-col justify-center items-center">
-                            <p className="text-sm ">No Activity yet</p>
-                        </div>
-                        
-                        }
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer ">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-slate-500 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                </span>
-                                <p className="text-sm  cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm ">Showing 1-15 of {dash_components?.recent_activities.length}</p>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-
-                {/* sales pipeline overview  */}
-
-                {/* notification panel  */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-md ">Recent Notification</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[4px] border-b border-blue-600 bg-blue-600 text-white">
-                            <p className="text-sm w-[12.5%] px-2 ">Task Type</p>
-                            <p className="text-sm w-[35%] px-2 ">Message</p>
-                            <p className="text-sm w-[12.5%] px-2 ">Status</p>
-                            <p className="text-sm w-[12.5%] px-2 ">User</p>
-                            <p className="text-sm w-[12.5%] px-2 ">Due Date</p>
-                            <p className="text-sm w-[15%] px-2 ">Time</p>
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
+                            <p className="text-sm w-[15%] px-2  ">Date / Time</p>
+                            <p className="text-sm w-[20%] px-2  ">Subject</p>
+                            <p className="text-sm w-[32.5%] px-2  ">Details</p>
+                            <p className="text-sm w-[15%] px-2  ">Status</p>
+                            <p className="text-sm w-[17.5%] px-2  ">Source</p>
                         </span>
                         
-                        {dash_components?.recent_notifications.length ? <div className="w-full h-[200px] flex flex-col justify-start items-start">
+                        {dash_components?.recent_notifications.length ? <div className="w-full h-[250px] flex flex-col justify-start items-start">
                             {dash_components?.recent_notifications.map((data:any, ind:any)=>{
 
-                                const {message, task_type, due_date, task_notification_status, user, created_at, updated_at} = data
-
+                                const {created_at, subject, message, read, user, source, } = data
+                                
                                 return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[12.5%] px-2  ">{task_type}</p>
-                                        <p className="text-sm w-[35%] px-2  ">{message || 'Send proposal to Client B'}</p>
-                                        <p className="text-sm w-[12.5%] px-2  ">{task_notification_status}</p>
-                                        <p className="text-sm w-[12.5%] px-2  ">{user.other_names || user.first_name }</p>
-                                        <p className="text-sm w-[12.5%] px-2  ">{due_date}</p>
-                                        <p className="text-sm w-[15%] px-2  ">{updated_at}</p>
+                                    <span key={ind} className="recent-activity-table-list ">
+                                        <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{subject}</p>
+                                        <p className="text-sm w-[32.5%] px-2 ">{message}</p>
+                                        <p className={read ? "text-sm w-[15%] text-green-600 px-2 ":"text-sm w-[15%] px-2 text-red-600 "}>{read ? "read": "unread"}</p>
+                                        <p className="text-sm w-[17.5%] px-2 ">{source.last_name} {source.first_name} </p>
                                     </span>
                                 )
                             })}
@@ -201,7 +145,7 @@ const SalesDashboardPage = () => {
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-slate-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
 
                                 </span>
                                 <p className="text-sm cursor-pointer ">Next</p>
@@ -212,62 +156,57 @@ const SalesDashboardPage = () => {
                         </span>
                     </div>
                 </div>
-
-                {/* Task overview  */}
+                
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-md ">Recent Tasks</p>
+                    <p className="text-md ">Recent Lead</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[6px] border-b-2 bg-blue-600 text-white ">
-                            <p className="text-sm w-[15.0%] px-2 ">Title</p>
-                            <p className="text-sm w-[22.5%] px-2 ">Description</p>
-                            <p className="text-sm w-[12.5%] px-2 ">Status</p>
-                            <p className="text-sm w-[12.5%] px-2 ">Priority</p>
-                            <p className="text-sm w-[12.5%] px-2 ">Assigned To</p>
-                            <p className="text-sm w-[12.5%] px-2 ">Due Date</p>
-                            <p className="text-sm w-[12.5%] px-2 ">Created on</p>
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                            <p className="text-sm font-normal w-[15%] px-2 ">Lead Id</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Customer Name</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Customer Address</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Assigned to</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
                         </span>
+                        
+                        {dash_components?.recent_notifications.length ? <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                            {dash_components?.recent_notifications.map((data:any, ind:any)=>{
 
-                        {dash_components?.recent_tasks.length ?
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {dash_components?.recent_tasks.map((data:any, ind:number)=>{
+                                const {created_at, subject, message, read, user, source, } = data
                                 
-                                const {title, description, status, priority, assigned_to, due_date, created_at} = data
-
                                 return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[15.0%] px-2 ">{title}</p>
-                                        <p className="text-sm w-[22.5%] px-2 ">{description}</p>
-                                        <p className="text-sm w-[12.5%] px-2 ">{status}</p>
-                                        <p className="text-sm w-[12.5%] px-2 ">{priority}</p>
-                                        <p className="text-sm w-[12.5%] px-2 ">{assigned_to.other_names || assigned_to.first_name}</p>
-                                        <p className="text-sm w-[12.5%] px-2 ">{due_date}</p>
-                                        <p className="text-sm w-[12.5%] px-2 ">{created_at}</p>
+                                    <span key={ind} className="recent-activity-table-list ">
+                                        <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{subject}</p>
+                                        <p className="text-sm w-[32.5%] px-2 ">{message}</p>
+                                        <p className={read ? "text-sm w-[15%] text-green-600 px-2 ":"text-sm w-[15%] px-2 text-red-600 "}>{read ? "read": "unread"}</p>
+                                        <p className="text-sm w-[17.5%] px-2 ">{source.last_name} {source.first_name} </p>
                                     </span>
                                 )
                             })}
                         </div>
                         :
                         <div className="w-full h-[200px] flex flex-col justify-center items-center">
-                            <p className="text-sm">No Recent Task</p>
+                            <p className="text-sm ">No Notifications yet</p>
                         </div>
-                        }
+                         }
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-slate-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
+                                <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-slate-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
+
                                 </span>
-                                <p className="text-sm cursor-pointer">Next</p>
+                                <p className="text-sm cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-15 of {dash_components?.recent_tasks.length}</p>
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_notifications.length}</p>
                             </span>
                         </span>
                     </div>
                 </div>
-
                 
 
             </div>

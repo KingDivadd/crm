@@ -2,10 +2,59 @@
 import React, {useState, useEffect} from 'react'
 import { useRouter } from 'next/navigation'
 import SalesViewContractDetails from './salesViewContractDetails'
+import { get_auth_request } from '@/app/api/admin_api'
+
+interface Report_Dashboard__Props {
+    total_lead?:number, 
+    sold_lead?:number, 
+    total_lead_converted?:number, 
+    revenue_generated?:number, 
+    total_number_of_sales_person?:number, 
+    total_number_of_sales_person_pages?:number, 
+    sales_persons?:any, 
+    leads?:any, 
+    jobs?: any
+}
+
 
 const SalesReportPage = () => {
     const router = useRouter()
+    const [report_dashboard, setReport_dashboard] = useState<Report_Dashboard__Props | null>(null)
     const [viewDetails, setViewDetails] = useState({contractDetails: false, documentAndInvoices: false })
+    const [alert, setAlert] = useState({type: '', message: ''})
+    const [page_number, setPage_number] = useState(1)
+
+
+
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
+    }
+
+    useEffect(() => {
+      get_page_info(page_number)
+    
+    }, [])
+    
+
+    async function get_page_info(page_num:number) {
+        
+
+        const response = await get_auth_request(`auth/report-dashboard/${page_num}`)
+
+        if (response.status == 200 || response.status == 201){
+            
+            setReport_dashboard(response.data)                  
+            console.log(response.data)                  
+
+        }else{            
+            if (response.response){
+                showAlert(response.response.data.err, "error")
+            }
+        }
+    }
 
     function viewContractDetails(){
         setViewDetails({...viewDetails, contractDetails: !viewDetails.contractDetails})
@@ -14,261 +63,198 @@ const SalesReportPage = () => {
     function viewDocumentAndInvoice(){
         setViewDetails({...viewDetails, documentAndInvoices: !viewDetails.documentAndInvoices})
     }
+
+    async function app_users_action(item: any) {
+        let new_page_number = page_number;
+        let max_page_number = report_dashboard?.total_number_of_sales_person_pages
+
+        if (item === 'prev') {
+        if (page_number > 1) {
+            new_page_number = page_number - 1;
+        }
+        } else if (item === 'next') {
+        if (max_page_number && page_number < max_page_number) {
+            new_page_number = page_number + 1;
+        }
+        } else {
+        new_page_number = item;
+        }
+
+        get_page_info(new_page_number)
+
+        setPage_number(new_page_number);
+    }
+
+    const render_page_numbers = () => {
+        const pages = [];
+        const max_page_number = report_dashboard?.total_number_of_sales_person_pages || 1;
+        const max_displayed_pages = 3;
+
+        if (max_page_number <= max_displayed_pages) {
+        for (let i = 1; i <= max_page_number; i++) {
+            pages.push(
+            <p
+                key={i}
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                page_number === i ? 'bg-blue-700 text-white' : ''
+                }`}
+                onClick={() => app_users_action(i)}
+            >
+                {i}
+            </p>
+            );
+        }
+        } else {
+        let startPage = Math.max(1, page_number - 1);
+        let endPage = Math.min(page_number + 1, max_page_number);
+
+        if (page_number === 1) {
+            startPage = 1;
+            endPage = max_displayed_pages;
+        } else if (page_number === max_page_number) {
+            startPage = max_page_number - 2;
+            endPage = max_page_number;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(
+            <p
+                key={i}
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                page_number === i ? 'bg-blue-700 text-white' : ''
+                }`}
+                onClick={() => app_users_action(i)}
+            >
+                {i}
+            </p>
+            );
+        }
+        }
+
+        return pages;
+    };
+
     return (
         <div className="w-full p-[10px] pb-[10px]">
             {viewDetails.contractDetails && <SalesViewContractDetails viewContractDetails={viewContractDetails}  /> }
             {(viewDetails.contractDetails == false && viewDetails.documentAndInvoices == false) &&  <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">
                 
                 {/* first section = summary stat */}
-                <div className="w-full flex flex-row items-center justify-between gap-[10px]">
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4 border border-blue-500 ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl font-semibold">Total Lead</p>
-                            <p className="text-sm font-semibold">450</p>
-                            <p className="text-sm font-light">Last 30 days</p>
-                        </div>
+                <div className="w-full flex flex-row items-center justify-between gap-[10px] relative">
+                    <span className="absolute h-[145px] bg-blue-700 -top-[10px] -left-[10px] rounded-b-[3px] " style={{width: 'calc(100% + 20px)'}}></span>
+
+                    
+                    <span className="h-[120px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
+
+                        <span className="w-full flex flex-col items-start justify-between gap-[5px] px-[20px]">
+                            <p className="text-md">Total Lead</p>
+                            <p className="text-sm">{report_dashboard?.total_lead?.toLocaleString() || 0}</p>
+                            <p className="text-sm">Last 30 days</p>
+                        </span>
+
+                    </span>
+
+                    <span className="h-[120px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
+
+                        <span className="w-full flex flex-col items-start justify-between gap-[5px] px-[20px]">
+                            <p className="text-md">Lead Sold</p>
+                            <p className="text-sm">{report_dashboard?.sold_lead?.toLocaleString() || 0}</p>
+                            <p className="text-sm">Last 30 days</p>
+                        </span>
+
+                    </span>
+
+                    <span className="h-[120px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
+
+                        <span className="w-full flex flex-col items-start justify-between gap-[5px] px-[20px]">
+                            <p className="text-md">Revenue Generated</p>
+                            <p className="text-sm">${report_dashboard?.revenue_generated?.toLocaleString() || 0}</p>
+                            <p className="text-sm">Last 30 days</p>
+                        </span>
+
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-green-600 bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl font-semibold">Total Sales</p>
-                            <p className="text-sm font-semibold">450</p>
-                            <p className="text-sm font-light">Last 30 days</p>
-                        </div>
+                    <span className="h-[120px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
+
+                        <span className="w-full flex flex-col items-start justify-between gap-[5px] px-[20px]">
+                            <p className="text-md">Lead Converted</p>
+                            <p className="text-sm">{report_dashboard?.total_lead_converted?.toLocaleString() || 0}</p>
+                            <p className="text-sm">Last 30 days</p>
+                        </span>
+
                     </span>
-                    
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-sky-600 rounded-[5px] bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl font-semibold">Conversion Rate</p>
-                            <p className="text-sm font-semibold">75%</p>
-                            <p className="text-sm font-light">Last 30 days</p>
-                        </div>
-                    </span>
-                    
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-lime-600 rounded-[5px] bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl font-semibold">Pending Tasks</p>
-                            <p className="text-sm font-semibold">450</p>
-                            <p className="text-sm font-light">Last 30 days</p>
-                        </div>
-                    </span>
-                    
-                    
-                    
-                    
+
+
                 </div>
 
                 {/*Sales Performance*/}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Sales Performance</p>
+                    {/* <p className="text-xl font-semibold">Sales Performance</p> */}
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Sales Person</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Lead Assigned</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Lead Converted</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Conversion Rate</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Revenue Generated</p>
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md ">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
+                            <p className="text-sm w-[10%] px-2  ">User Id</p>
+                            <p className="text-sm w-[20%] px-2  ">Sales Person</p>
+                            <p className="text-sm w-[15%] px-2  ">Lead Assigned</p>
+                            <p className="text-sm w-[15%] px-2  ">Lead Converted</p>
+                            <p className="text-sm w-[20%] px-2  ">Conversion Rate</p>
+                            <p className="text-sm w-[20%] px-2  ">Revenue Generated</p>
                         </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
+
+                        {report_dashboard ? 
+                        
+                        <div className="w-full flex flex-col justify-start items-start" style={{height: 'calc(100vh - 315px)'}}>
+                            {report_dashboard?.sales_persons.map((data:any, ind:any)=>{
+                                const {first_name, last_name, user_id, user_ind} = data
+
+                                // Find the number of leads assigned to this user
+                                const user_jobs = report_dashboard.jobs.filter((data:any) => data.lead.assigned_to_id === user_id);
+                                const user_Leads = report_dashboard.leads.filter((data:any) => data.assigned_to_id === user_id);
+                                const lead_assigned = user_Leads.length;
+                                const leads_converted = user_Leads.filter((lead:any) => lead.disposition === 'SOLD').length;
+                                const conversion_rate = lead_assigned > 0 ? ((leads_converted / lead_assigned) * 100).toFixed(2): "0.00";
+                                const revenue_generated = user_jobs
+                                .reduce((total: any, lead: { contract_amount: any }) => total + (lead.contract_amount || 0), 0);
+
                                 return (
                                     <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">John Doe</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">50</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">30</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">60%</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">$150,000</p>
+                                        <p className="text-sm w-[10%] px-2 ">{user_ind}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{first_name} {last_name}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{lead_assigned}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{leads_converted}</p>
+                                        <p className={`text-sm w-[20%] px-2 ${ Number(conversion_rate) > 70 ? 'text-green-600' : Number(conversion_rate) > 50 ? 'text-amber-600' : 'text-red-600'
+                                        }`}
+                                        >
+                                        {conversion_rate}%
+                                        </p>
+
+                                        <p className="text-sm w-[20%] px-2 ">${Number(revenue_generated).toLocaleString()}</p>
                                     </span>
                                 )
                             })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
+                        </div> : 
 
+                        <div className="w-full h-[250px] flex items-center justify-center" style={{height: 'calc(100vh - 315px)'}}>
+                            <p className="text-sm font-normal">Loading Data...</p>
+                        </div>
+                        
+                        }
+
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                            <span className="flex flex-row items-center justify-start gap-3 h-full">
+                                <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
+                                <span className="w-auto h-full flex flex-row items-center justify-start">
+                                {render_page_numbers()}
                                 </span>
-                                <p className="text-sm cursor-pointer">Next</p>
+                                <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
+                                <p className="text-sm">Showing 1-15 of {(report_dashboard && report_dashboard?.total_number_of_sales_person) || 0}</p>
                             </span>
                         </span>
                     </div>
                 </div>
 
-                {/* Lead Analysis */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Lead Analysis</p>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Lead Source</p>
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Lead Generated</p>
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Lead Converted</p>
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Conversion Rate</p>
-                        </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
-                                return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">Website</p>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">100</p>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">60</p>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">60%</p>
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
-
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-
-                {/* Revenue by Product Service */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Revenue by Product Service</p>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[40%] pr-2 pl-2 ">Product / Service</p>
-                            <p className="text-sm font-semibold w-[30%] pr-2 pl-2 ">Quantity Sold</p>
-                            <p className="text-sm font-semibold w-[30%] pr-2 pl-2 ">Total Revenue</p>
-                        </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
-                                return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[40%] pr-2 pl-2 ">Product A</p>
-                                        <p className="text-sm w-[30%] pr-2 pl-2 ">100</p>
-                                        <p className="text-sm w-[30%] pr-2 pl-2 ">$125,000</p>
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
-
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-
-                {/* Monthly Sales Trend*/}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Monthly Sales Trend</p>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[40%] pr-2 pl-2 ">Month</p>
-                            <p className="text-sm font-semibold w-[30%] pr-2 pl-2 ">Lead Converted</p>
-                            <p className="text-sm font-semibold w-[30%] pr-2 pl-2 ">Revenue Generated</p>
-                        </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {['January', 'February', 'March', 'April', 'May'].map((data, ind)=>{
-                                return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[40%] pr-2 pl-2 ">{data}</p>
-                                        <p className="text-sm w-[30%] pr-2 pl-2 ">45</p>
-                                        <p className="text-sm w-[30%] pr-2 pl-2 ">$45,000</p>
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
-
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-
-                {/* Sales Report*/}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Sales Report</p>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Sales Id</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Customer Name</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Sales Person</p>
-                            <p className="text-sm font-semibold w-[20%] pr-2 pl-2 ">Product/Services</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Sales Date</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Revenue Generated</p>
-                        </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
-                                return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">SALES100012</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">John Doe</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">Marry Jane</p>
-                                        <p className="text-sm w-[20%] pr-2 pl-2 ">Product A</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">June 11, 2024</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">$125,000</p>
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
-
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
-                    </div>
-                </div>
             </div>}
 
         </div>

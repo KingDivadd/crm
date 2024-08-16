@@ -22,7 +22,7 @@ interface Pipeline_Page_Props {
     total_lead?: number, 
     lead_sold?:number, 
     total_contract_amount?:number, 
-    lead_in_progress?:number
+    lead_in_progress?:any
 }
 
 const SalesPipelinePage = () => {
@@ -79,6 +79,7 @@ const SalesPipelinePage = () => {
         if (response.status == 200 || response.status == 201){
             
             setPipeline_page_info(response.data)                  
+            console.log(response.data)                  
 
         }else{            
             if (response.response){
@@ -201,6 +202,7 @@ const SalesPipelinePage = () => {
         if (pipeline_box && pipeline_box.pipeline) {
             if (value.trim() !== '') {
                 const new_pipeline = pipeline_box.pipeline.filter((data: any) => {
+                    const pipeline_id = data.pipeline_ind.toLowerCase() || '';
                     const assigned_to = data.lead.assigned_to.first_name.toLowerCase() || data.lead.assigned_to.first_name.toLowerCase() || '';
                     const contract_amount = data.contract_amount || '';
                     const lead_name = data.lead?.customer_name?.toLowerCase() || '';
@@ -209,9 +211,12 @@ const SalesPipelinePage = () => {
                     return (
                         String(contract_amount).includes(value) || 
                         lead_name.includes(value)  ||
-                        assigned_to.includes(value)
+                        assigned_to.includes(value) || pipeline_id.includes(value)
                     );
                 });
+
+                console.log(new_pipeline);
+                
                     
                 setFiltered_pipeline_box({...filtered_pipeline_box, pipeline: new_pipeline});
             } else {
@@ -301,7 +306,7 @@ const SalesPipelinePage = () => {
 
                         <span className="w-full flex flex-col items-start justify-between gap-[5px] px-[20px]">
                             <p className="text-md">Lead in progress</p>
-                            <p className="text-sm">{pipeline_page_info?.lead_in_progress || 0}</p>
+                            <p className="text-sm">{pipeline_page_info?.lead_in_progress?.length}</p>
                             <p className="text-sm">Last 30 days</p>
                         </span>
 
