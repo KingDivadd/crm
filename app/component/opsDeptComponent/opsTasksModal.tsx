@@ -93,7 +93,11 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
             get_all_jobs()
             console.log('seleted job ',selectedTask)
 
-            const { job_id, description, assigned_to, status, engineering_submitted, engineering_received, start_date, due_date, completion_date, note,  }  = selectedTask
+            const { job, job_id, description, assigned_to, status, engineering_submitted, engineering_received, start_date, due_date, completion_date, note,  }  = selectedTask
+
+            setAuth({...auth, job_id, description, assigned_to, start_date, completion_date, due_date, note})
+
+            setSelected_job(job.job_ind)
 
             // setSelected_job()
         }
@@ -136,7 +140,7 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
             try {
                 setLoading(true)
                 
-                const response = await post_auth_request(`job/create-task`, {job_id: auth.job_id, description: auth.description, start_date: auth.start_date, due_date: auth.due_date, status: 'PENDING', assigned_to: auth.assigned_to})
+                const response = await post_auth_request(`job/create-task`, {job_id: auth.job_id, description: auth.description, start_date: auth.start_date, due_date: auth.due_date, status: 'PENDING', assigned_to: auth.assigned_to, note: auth.note})
                 if (response.status == 200 || response.status == 201){
                                 
                     showAlert(response.data.msg, "success")
@@ -166,7 +170,7 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
             try {
                 setLoading(true)
                 console.log('auth. ', auth)
-                const response = await patch_auth_request(`job/edit-task/${selectedTask.task_id}`, auth)
+                const response = await patch_auth_request(`job/edit-task/${selectedTask.task_id}`, {job_id: auth.job_id, description: auth.description, start_date: auth.start_date, due_date: auth.due_date, status: 'PENDING', assigned_to: auth.assigned_to, note: auth.note})
                 if (response.status == 200 || response.status == 201){
                                 
                     showAlert(response.data.msg, "success")

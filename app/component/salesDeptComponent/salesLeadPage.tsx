@@ -137,7 +137,7 @@ const SalesLeadPage = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                page_number === i ? 'bg-blue-500 text-white' : ''
+                page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
             >
@@ -162,7 +162,7 @@ const SalesLeadPage = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                page_number === i ? 'bg-blue-500 text-white' : ''
+                page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
             >
@@ -270,7 +270,7 @@ const SalesLeadPage = () => {
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            <button type="button" className="h-full px-4 flex items-center text-white bg-blue-600 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>
+                            <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>
                         </span>
 
                         
@@ -280,14 +280,15 @@ const SalesLeadPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-600 text-white">
-                        <p className="text-[16.5px] font-normal w-[17.5%] px-2 ">Customer Name</p>
-                        <p className="text-[16.5px] font-normal w-[17.5%] px-2 ">Customer Address</p>
-                        <p className="text-[16.5px] font-normal w-[17.5%] px-2 ">Phone Number</p>
-                        <p className="text-[16.5px] font-normal w-[17.5%] px-2 ">Assigned to</p>
-                        <p className="text-[16.5px] font-normal w-[10%] px-2 ">Disposition</p>
-                        <p className="text-[16.5px] font-normal w-[10%] px-2 ">Action</p>
-                        <p className="text-[16.5px] font-normal w-[10%] px-2 "></p>
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
+                        <p className="text-sm font-normal w-[17.5%] px-2 ">Customer Address</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Assigned to</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Action</p>
+                        <p className="text-sm font-normal w-[10%] px-2 "></p>
                     </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -299,17 +300,18 @@ const SalesLeadPage = () => {
                                 {lead_box?.leads.length ?
                                 <>
                                 { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition} = data
+                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind} = data
                                     return (
                                         <span key={ind} className="recent-activity-table-list " >
-                                            <p className="text-[15px] w-[17.5%] px-2 "> {customer_name} </p>
-                                            <p className="text-[15px] w-[17.5%] px-2 "> {address} </p>
-                                            <p className="text-[15px] w-[17.5%] px-2 "> {phone_number} </p>
-                                            <p className="text-[15px] w-[17.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className="text-[15px] w-[10%] px-2 "> {disposition} </p>
-                                            <p className="text-[15px] w-[10.0%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
+                                            <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {customer_name} </p>
+                                            <p className="text-sm w-[17.5%] px-2 "> {address} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {phone_number} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {disposition} </p>
+                                            <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
                                         
-                                            <p className="text-[15px] w-[10.0%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                            <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
                                         </span>
                                     )
                                 })}

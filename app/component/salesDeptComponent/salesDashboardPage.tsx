@@ -69,36 +69,37 @@ const SalesDashboardPage = () => {
 
             <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">
                 {/* first section = summary stat */}
-                <div className="w-full flex flex-row items-center justify-between gap-[10px]">
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] w-1/4 border border-blue-700 group bg-blue-700 shadow-md">
+                <div className="w-full flex flex-row items-center justify-between gap-[10px] relative ">
+                    <span className="absolute h-[145px] bg-blue-700 -top-[10px] -left-[10px] rounded-b-[3px] " style={{width: 'calc(100% + 20px)'}}></span>
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] w-1/4 group bg-white shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
-                            <p className="text-md text-white">Total Lead</p>
-                            <p className="text-sm text-white">{dash_components?.total_lead || 0}</p>
-                            <p className="text-sm font-light text-white">Last 30 days</p>
+                            <p className="text-md">Total Lead</p>
+                            <p className="text-sm ">{dash_components?.total_lead || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-green-600  w-1/4  bg-green-700 shadow-md">
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
-                            <p className="text-md text-white">Total Sales</p>
-                            <p className="text-sm text-white">{dash_components?.total_sales || 0}</p>
-                            <p className="text-sm font-light text-white">Last 30 days</p>
+                            <p className="text-md ">Total Sales</p>
+                            <p className="text-sm ">{dash_components?.total_sales || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-sky-600 rounded-[5px]  w-1/4  bg-sky-600 shadow-md">
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
-                            <p className="text-md text-white">Conversion Rate</p>
-                            <p className="text-sm text-white">{(dash_components?.conversion_rate != null) ? `${dash_components?.conversion_rate } %` : `0 %`}</p>
-                            <p className="text-sm font-light text-white">Last 30 days</p>
+                            <p className="text-md ">Conversion Rate</p>
+                            <p className="text-sm ">{(dash_components?.conversion_rate != null) ? `${dash_components?.conversion_rate } %` : `0 %`}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-amber-600 rounded-[5px] bg-amber-600 w-1/4  shadow-md">
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] bg-white w-1/4  shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
-                            <p className="text-md text-white">Pending Tasks</p>
-                            <p className="text-sm text-white">{dash_components?.pending_task || 0}</p>
-                            <p className="text-sm font-light text-white">Last 30 days</p>
+                            <p className="text-md ">Pending Tasks</p>
+                            <p className="text-sm ">{dash_components?.pending_task || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
                     

@@ -141,7 +141,7 @@ const SalesJobPage = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                page_number === i ? 'bg-blue-500 text-white' : ''
+                page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
             >
@@ -166,7 +166,7 @@ const SalesJobPage = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                page_number === i ? 'bg-blue-500 text-white' : ''
+                page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
             >
@@ -271,7 +271,7 @@ const SalesJobPage = () => {
                         <span className="h-[40px] min-w-[175px]">
                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                         </span>
-                        <button type="button" className="h-full px-4 flex items-center text-white bg-blue-600 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_job}>Add job</button>
+                        <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-600 rounded-[4px] text-sm" onClick={add_job}>Add job</button>
                     </span>
 
                         
@@ -280,15 +280,15 @@ const SalesJobPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-600 text-white">
-                        <p className="text-[16px] font-normal w-[7.5%] px-2 ">Job ID</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Lead Name</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Contract Amt</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Contract Date</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Hoa Status</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Permit Status</p>
-                        <p className="text-[16px] font-normal w-[7.5%] px-2 ">Action</p>
-                        <p className="text-[16px] font-normal w-[10%] px-2 "></p>
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Lead Name</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Contract Amt</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Contract Date</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Hoa Status</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Permit Status</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
+                        <p className="text-sm font-normal w-[10%] px-2 "></p>
                     </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -303,15 +303,15 @@ const SalesJobPage = () => {
                                     const {job_ind, lead, contract_amount, contract_date, hoa_status, permit_status } = data
                                     return (
                                         <span key={ind} className="recent-activity-table-list " >
-                                            <p className="text-[15px] w-[7.5%] px-2 ">JB000{job_ind} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {lead.customer_name} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {Number(contract_amount).toLocaleString()} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {contract_date} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {hoa_status.replace(/_/g, ' ')} </p>
-                                            <p className="text-[15px] w-[15.5%] px-2 "> {permit_status.replace(/_/g, ' ')} </p>
-                                            <p className="text-[15px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
+                                            <p className="text-sm w-[7.5%] px-2 ">JB000{job_ind} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {lead.customer_name} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {Number(contract_amount).toLocaleString()} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {contract_date} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {hoa_status.replace(/_/g, ' ')} </p>
+                                            <p className="text-sm w-[15.5%] px-2 "> {permit_status.replace(/_/g, ' ')} </p>
+                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
                                         
-                                            <p className="text-[15px] w-[10.0%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                            <p className="text-sm w-[10.0%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Delete</p>
                                         </span>
                                     )
                                 })}

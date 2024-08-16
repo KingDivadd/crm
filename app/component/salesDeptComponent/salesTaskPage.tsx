@@ -141,7 +141,7 @@ const SalesTaskPage = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                page_number === i ? 'bg-blue-500 text-white' : ''
+                page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
             >
@@ -166,7 +166,7 @@ const SalesTaskPage = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                page_number === i ? 'bg-blue-500 text-white' : ''
+                page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
             >
@@ -269,16 +269,15 @@ const SalesTaskPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-600 text-white">
-                        <p className="text-[16px] font-normal w-[7.5%] px-2 ">Task ID</p>
-                        <p className="text-[16px] font-normal w-[7.5%] px-2 ">Job ID</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Desription</p>
-                        <p className="text-[16px] font-normal w-[12.5%] px-2 ">Status</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Assigned To</p>
-                        <p className="text-[16px] font-normal w-[10%] px-2 ">Start Date</p>
-                        <p className="text-[16px] font-normal w-[10%] px-2 ">End Date</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Completion Date</p>
-                        <p className="text-[16px] font-normal w-[7.5%] px-2 ">Action</p>
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Task ID</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
+                        <p className="text-sm font-normal w-[20%] px-2 ">Desription</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
+                        <p className="text-sm font-normal w-[17.5%] px-2 ">Assigned To</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Start Date</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">End Date</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Completion Date</p>
                     </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -293,16 +292,14 @@ const SalesTaskPage = () => {
                                     const {task_ind, job, description, assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
                                     return (
                                         <span key={ind} className="recent-activity-table-list " >
-                                            <p className="text-[15px] w-[7.5%] px-2 ">TS000{task_ind} </p>
-                                            <p className="text-[15px] w-[7.5%] px-2 ">JB000{job.job_ind} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {description} </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {status} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className="text-[15px] w-[10%] px-2 "> {start_date} </p>
-                                            <p className="text-[15px] w-[10%] px-2 "> {due_date} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {completion_date} </p>
-                                            <p className="text-[15px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer"  ><MdEdit size={16} /> Edit</p>
-
+                                            <p className="text-sm w-[7.5%] px-2 ">TS000{task_ind} </p>
+                                            <p className="text-sm w-[7.5%] px-2 ">JB000{job.job_ind} </p>
+                                            <p className="text-sm w-[20%] px-2 "> {description} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {status} </p>
+                                            <p className="text-sm w-[17.5%] px-2 "> {assigned_to} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {start_date} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {due_date} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {completion_date} </p>
                                         </span>
                                     )
                                 })}
