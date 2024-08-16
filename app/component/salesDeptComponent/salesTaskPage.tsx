@@ -292,8 +292,8 @@ const SalesTaskPage = () => {
                                     const {task_ind, job, description, assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
                                     return (
                                         <span key={ind} className="recent-activity-table-list " >
-                                            <p className="text-sm w-[7.5%] px-2 ">TS000{task_ind} </p>
-                                            <p className="text-sm w-[7.5%] px-2 ">JB000{job.job_ind} </p>
+                                            <p className="text-sm w-[7.5%] px-2 ">{task_ind} </p>
+                                            <p className="text-sm w-[7.5%] px-2 ">{job.job_ind} </p>
                                             <p className="text-sm w-[20%] px-2 "> {description} </p>
                                             <p className="text-sm w-[12.5%] px-2 "> {status} </p>
                                             <p className="text-sm w-[17.5%] px-2 "> {assigned_to} </p>
