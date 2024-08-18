@@ -388,32 +388,7 @@ const AdminHome = () => {
                             </span>
                         </span>
 
-                        <span className="w-[300px] quick-access-bar group">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><LuPencilRuler size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">Engineerin Tasks</p>
-                                <p className="text-sm ">{dash_box?.engineering_task.length} tasks pending</p>
-                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100  " onClick={()=>{view_details('engineering_task')}}>View Detials</p>
-                            </span>
-                        </span>
 
-                        <span className="w-[300px] quick-access-bar group ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><MdOutlineNoteAlt size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">Permits</p>
-                                <p className="text-sm ">{dash_box?.permit.length} permits pending</p>
-                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100  " onClick={()=>{view_details('pending_permit')}}>View Detials</p>
-                            </span>
-                        </span>
-
-                        <span className="w-[300px] quick-access-bar group">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><RiBarChartFill size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">Accounting</p>
-                                <p className="text-sm ">profit/loss details</p>
-                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100 " onClick={()=>{view_details('accounting')}}>View Detials</p>
-                            </span>
-                        </span>
 
                     </div>
 

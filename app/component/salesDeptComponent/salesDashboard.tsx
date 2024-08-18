@@ -1,16 +1,15 @@
 'use client'
 import React, {useState, useEffect} from 'react'
 import SalesSideBar from './salesSideBar'
-import SalesDashboardNav from './salesDashboardNav'
 import SalesDashboardPage from './salesDashboardPage'
 import SalesLeadPage from './salesLeadPage'
 import SalesJobsPage from './salesJobsPage'
 import SalesPipeline from './salesPipeline'
 import SalesTaskPage from './salesTaskPage'
 import SalesReportPage from './salesReportPage'
-import SalesSystemSettings from './salesSettingsPage'
-import SalesNotificationPage from './salesNotificationPage'
 import NotificationPage from '../notificationPage'
+import SystemSettings from '../setting'
+import DashboardNav from '../dashboardNav'
 
 const SalesDashboard = () => {
     const [active, setActive] = useState('')
@@ -29,7 +28,7 @@ const SalesDashboard = () => {
                 <SalesSideBar active={active} setActive={setActive} />
             </div>
             <div className="flex-1 h-full bg-blue-100">
-                <SalesDashboardNav />
+                <DashboardNav />
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "dashboard" && <SalesDashboardPage /> }
                     {active === "leads" && <SalesLeadPage /> }
@@ -38,7 +37,7 @@ const SalesDashboard = () => {
                     {active === "tasks" && <SalesTaskPage /> }
                     {active === "reports" && <SalesReportPage /> }
                     {active === "notification" && <NotificationPage /> }
-                    {active === "settings" && <SalesSystemSettings /> }
+                    {active === "settings" && <SystemSettings /> }
                     
                 </div>
             </div>

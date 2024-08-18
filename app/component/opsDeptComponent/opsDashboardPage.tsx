@@ -2,49 +2,58 @@
 import React, {useState, useEffect} from 'react'
 import { useRouter } from 'next/navigation';
 import OpsWorkflowSection, {ProjectWorkFlowApproval, ProjectWorkFlowEngineering, ProjectWorkFlowInstallation, ProjectWorkFlowPermitApproval} from './opsWorkflowSection'
-import SchedulingAndLogistics, { SchedulingAndLogisticData } from './opsSchedulingLogistic'
+import { SchedulingAndLogisticData } from './opsSchedulingLogistic'
+
+interface Dashboard_Props {
+    total_lead?: number, converted_lead?:number, total_job?:number, total_task?:number, recent_lead?:any, recent_tasks?:any, recent_notifications?:any
+}
 
 const OpsDashboardPage = () => {
     const router = useRouter()
+    const [dash_components, setDash_components] = useState<Dashboard_Props | null>(null)
+
     return (
         <div className="w-full p-[10px] pb-[10px]">
             <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">
                 {/* first section = summary stat */}
-                <div className="w-full flex flex-row items-center justify-between gap-[10px]">
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4 border border-blue-500 ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-blue-600 ">Total Projects</p>
-                            <p className="text-sm text-blue-600 ">145</p>
-                            <p className="text-sm font-light text-blue-600 ">Last 30 days</p>
+                <div className="w-full flex flex-row items-center justify-between gap-[10px] relative ">
+                    <span className="absolute h-[145px] bg-blue-700 -top-[10px] -left-[10px] rounded-b-[3px] " style={{width: 'calc(100% + 20px)'}}></span>
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] w-1/4 group bg-white shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md">Total Lead</p>
+                            <p className="text-sm ">{dash_components?.total_lead?.toLocaleString() || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
-                    
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-amber-600 bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-amber-600 ">Projects in Progress</p>
-                            <p className="text-sm text-amber-600 ">45</p>
-                            <p className="text-sm font-light text-amber-600 ">Last 30 days</p>
+
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] bg-white w-1/4  shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md ">Total Tasks</p>
+                            <p className="text-sm ">{dash_components?.total_task?.toLocaleString() || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
-                    
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-sky-600 rounded-[5px] bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-sky-600 ">Project Completed</p>
-                            <p className="text-sm text-sky-600 ">65</p>
-                            <p className="text-sm font-light text-sky-600 ">Last 30 days</p>
-                        </div>
-                    </span>
-                    
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-lime-600 rounded-[5px] bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-lime-600 ">Pending Approval</p>
-                            <p className="text-sm text-lime-600 ">50</p>
-                            <p className="text-sm font-light text-lime-600 ">Last 30 days</p>
+
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] bg-white w-1/4  shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md ">Total Install</p>
+                            <p className="text-sm ">{dash_components?.total_task?.toLocaleString() || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
                     
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md ">Total Sale</p>
+                            <p className="text-sm ">{dash_components?.total_job?.toLocaleString() || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
+                        </div>
+                    </span>
                     
+
+                    
+                                    
                 </div>
 
                 {/* workflow section */}

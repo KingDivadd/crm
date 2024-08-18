@@ -2,49 +2,87 @@
 import React, {useState, useEffect} from 'react'
 import { FaCaretDown } from 'react-icons/fa'
 import { FaCaretUp } from 'react-icons/fa6'
-import { DropDownBlankTransparent } from '../dropDown'
-import { paymentRoute, timeZone } from '../../../constants/index'
-import Alert from '../alert'
+import { DropDownBlankTransparent } from './dropDown'
+import { paymentRoute, timeZone } from '../../constants/index'
+import Alert from './alert'
 import Image from "next/image";
-import ImageUploader from '../imageUploader'
+import ImageUploader from './imageUploader'
+import { get_auth_request, patch_auth_request } from '@/app/api/admin_api'
 
+interface Settings_Props {
+    user?:any;
+}
 
-const SalesSystemSettings = () => {
-    const [editCompanyInfo, setEditCompanyInfo] = useState(true)
-    const [editUserProfile, setEditUserProfile] = useState(true)
-    const [userProfile, setUserProfile] = useState({firstName: '', lastName: '', userName: '', phone: '', avatar: '', password: ''})
-    const [companyInfo, setCompanyInfo] = useState({name: '', address: '', email: '', phone: '', logo: ''})
-    const [paypalInfo, setPaypalInfo] = useState({clientId: '', secretKey: '', mode: '' })
-    const [stripeInfo, setStripeInfo] = useState({publishableKey: '', secretKey: '', webhookSecret: '' })
-    const [adminNumber, setAdminNumber] = useState(2)
+const SystemSettings = () => {
+    const [userProfile, setUserProfile] = useState({first_name: '', last_name: '', other_names: '', phone_number: '', avatar: '', password: '', email: ''})
     const [loading, setLoading] = useState(false)
+    const [setting_page, setSetting_page] = useState<Settings_Props | null>(null)
     const [alert, setAlert] = useState({message: '', type: ''})
 
-    const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        timeZone: false, paymentRoute: false, paypalMode: false
-    });
-    const [dropElements, setDropElements] = useState({
-        timeZone: 'Time Zone', paymentRoute: 'Stripe', paypalMode: 'Sandbox'
-
-    })
-
-    const handleDropMenu = (dropdown: any) => {
-        const updatedDropMenus = Object.keys(dropMenus).reduce((acc, key) => {
-            acc[key] = key === dropdown ? !dropMenus[key] : false;
-            return acc;
-        }, {} as { [key: string]: boolean });
-        setDropMenus(updatedDropMenus);
-        setDropElements({...dropElements, [dropdown]: 'SELECT'});
-    };
-
-    const handleSelectDropdown = (dropdown: any, title:any)=>{
-        setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
     }
 
-    function handleCompanyInfo(e:any){
-        const name = e.target.name;
-        const value = e.target.value;
-        setCompanyInfo({...companyInfo, [name]:value})
+    useEffect(() => {
+        get_dashboard_data()
+    }, [])
+
+    async function get_dashboard_data() {
+
+        try {            
+            const response = await get_auth_request(`auth/settings-info`)
+            
+    
+            if (response.status == 200 || response.status == 201){
+                
+                setSetting_page(response.data)      
+
+                const {first_name, last_name, other_names, phone_number, email } = response.data.user
+
+                setUserProfile({...userProfile, first_name, last_name, phone_number, other_names, email })
+    
+                console.log( 'sales data 1',response.data);
+                
+            }else{
+                console.log(response);
+                
+            }
+            
+        } catch (err:any) {
+            
+            showAlert('Something went wrong, logout and login again.', "error")
+        }
+        
+    }
+
+    async function updateSettings() {
+
+        try {
+            setLoading(true)     
+                   
+            const response = await patch_auth_request(`auth/update-settings-info`, userProfile)
+
+            if (response.status == 200 || response.status == 201){
+                
+                showAlert('Settings updated susccessfully', 'success')
+                setLoading(false)
+                
+            }else{
+                console.log(response);
+                
+                setLoading(false)
+                
+            }
+            
+        } catch (err:any) {
+            setLoading(false)
+            
+            showAlert('Something went wrong, logout and login again.', "error")
+        }
+        
     }
 
     function handleUserProfile(e:any){
@@ -53,38 +91,12 @@ const SalesSystemSettings = () => {
         setUserProfile({...userProfile, [name]:value})
     }
     
-    function handlePayPalIntegration(e:any){
-        const name = e.target.name;
-        const value = e.target.value;
-        setPaypalInfo({...paypalInfo, [name]:value})
-    }
-
-    function handleStripeIntegration(e:any){
-        const name = e.target.name;
-        const value = e.target.value;
-        setStripeInfo({...stripeInfo, [name]:value})
-    }
 
     function triggerAlert(message: string, type: string){
         setAlert({message: message, type: type})
             setTimeout(() => {
                 setAlert({message: '', type: ''})
             }, 3000);
-    }
-
-    async function updateSettings(){
-        if(false){
-
-        }else {
-            setLoading(true); 
-            console.log();  // log what was updated here
-
-            setTimeout(() => {
-            setLoading(false);
-                triggerAlert("Setting updated successfully", "success")
-            // Handle successful login here
-            }, 3000);
-        }
     }
 
     return (
@@ -105,14 +117,13 @@ const SalesSystemSettings = () => {
                                 <p className="text-lg">User information</p>
                                 {/* <span className="w-[20px] h-[20px] cursor-pointer flex items-center justify-center "> {editUserProfile ? <FaCaretUp size={20} /> : <FaCaretDown size={20}  />} </span> */}
                             </span>
-                            {editUserProfile && 
                             <div className="w-full flex flex-col justify-start items-start gap-3">
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
                                     <ImageUploader id={'user-image'} title={"User Image"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192427/ugxr954jsbyd1utozwzy.jpg'} image={''} />
                                 </span>
                                 
                                 
-                            </div>}
+                            </div>
                         </div>
 
                     </div>
@@ -125,19 +136,23 @@ const SalesSystemSettings = () => {
                             <div className="w-full flex flex-col justify-start items-start gap-3">
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
                                     <h4 className="text-md font-light">First Name</h4>
-                                    <input type="text" name='firstName' className="normal-input bg-transparent" value={userProfile.firstName} onChange={handleUserProfile} />
+                                    <input type="text" name='first_name' className="normal-input bg-transparent" value={userProfile.first_name} onChange={handleUserProfile} />
                                 </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
                                     <h4 className="text-md font-light">Last Name</h4>
-                                    <input type="text" name='lastName' className="normal-input bg-transparent" value={userProfile.lastName} onChange={handleUserProfile} />
+                                    <input type="text" name='last_name' className="normal-input bg-transparent" value={userProfile.last_name} onChange={handleUserProfile} />
                                 </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Username (Optional)</h4>
-                                    <input type="text" name='userName' className="normal-input bg-transparent" value={userProfile.userName} onChange={handleUserProfile} />
+                                    <h4 className="text-md font-light">other_names (Optional)</h4>
+                                    <input type="text" name='other_names' className="normal-input bg-transparent" value={userProfile.other_names} onChange={handleUserProfile} />
                                 </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">Phone</h4>
-                                    <input type="text" name='phone' className="normal-input bg-transparent" value={userProfile.phone} onChange={handleUserProfile} />
+                                    <h4 className="text-md font-light">Email</h4>
+                                    <input type="email" disabled name='email' className="normal-input bg-transparent" value={userProfile.email} onChange={handleUserProfile} />
+                                </span>
+                                <span className="w-full flex flex-col items-start justify-start gap-2">
+                                    <h4 className="text-md font-light">Phone </h4>
+                                    <input type="text" name='phone_number' className="normal-input bg-transparent" value={userProfile.phone_number} onChange={handleUserProfile} />
                                 </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
                                     <h4 className="text-md font-light">Password</h4>
@@ -148,7 +163,7 @@ const SalesSystemSettings = () => {
                     </div>
 
                 </div>
-                <span className="w-full flex justify-end absoute absolute bottom-[10px] right-0">
+                <span className="w-full flex justify-end absoute absolute bottom-[20px] right-0">
                     <button className="mt-[10px] w-[170px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={updateSettings} disabled={loading}>
                             {loading ? (
                             <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -164,4 +179,4 @@ const SalesSystemSettings = () => {
     )
 }
 
-export default SalesSystemSettings
+export default SystemSettings

@@ -49,43 +49,43 @@ const OpsSideBar = ({active, setActive}: SideBarNav) => {
             <div className="w-full h-[600px]  flex flex-col items-start justify-between admin-side-bar-cont ">
                 <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px] ">
                     <span className={active === "home"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('home')}}>
-                        <RiHome3Fill size={23} />
-                        {active !== "sales" && <p className="text-[17px]">Home</p>}
+                        <RiHome3Fill size={21} className='text-slate-800' />
+                        {active !== "sales" && <p className="text-[15.5px]">Home</p>}
                     </span>
                     <span className={active === "leads"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('leads')}}>
-                        <FaUserTag size={23} /> 
-                        {active !== "sales" && <p className="text-[17px]">Leads</p> }
+                        <FaUserTag size={21} className='text-slate-800' /> 
+                        {active !== "sales" && <p className="text-[15.5px]">Leads</p> }
                     </span>
                     
                     <span className={active === "sales"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('sales')}}>
-                        <RiLuggageCartFill size={23} />
-                        {active !== "sales" && <p className="text-[17px]">Sales</p> }
+                        <RiLuggageCartFill size={21} className='text-slate-800' />
+                        {active !== "sales" && <p className="text-[15.5px]">Sales</p> }
                     </span>
 
                     <span className={active === "tasks"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('tasks')}}>
-                        <BiSolidNotepad size={23} />
-                        <p className="text-[17px]">Tasks</p>
+                        <BiSolidNotepad size={21} className='text-slate-800' />
+                        <p className="text-[15.5px]">Tasks</p>
                     </span>
 
                     <span className={active === "installs"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('installs')}}>
-                        <BiSolidNotepad size={23} />
-                        {active !== "sales" && <p className="text-[17px]">Installs</p> }
+                        <BiSolidNotepad size={21} className='text-slate-800' />
+                        {active !== "sales" && <p className="text-[15.5px]">Installs</p> }
                     </span>
                     <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
-                        <BiSolidReport size={23} />
-                        {active !== "sales" && <p className="text-[17px]">Reports</p>  }
+                        <BiSolidReport size={21} className='text-slate-800' />
+                        {active !== "sales" && <p className="text-[15.5px]">Reports</p>  }
                     </span>
                     <span className={active === "user-tracking"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('user-tracking')}}>
-                        <RiUserLocationFill size={23} />
-                        {active !== "sales" && <p className="text-[17px]">User Tracking</p> }
+                        <RiUserLocationFill size={21} className='text-slate-800' />
+                        {active !== "sales" && <p className="text-[15.5px]">User Tracking</p> }
                     </span>
                     <span className={active === "notification"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notification')}}>
-                        <MdNotifications size={23} />
-                        {active !== "sales" && <p className="text-[17px]">Notification</p>}
+                        <MdNotifications size={21} className='text-slate-800' />
+                        {active !== "sales" && <p className="text-[15.5px]">Notification</p>}
                     </span>
                     <span className={active === "settings"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('settings')}}>
-                        <IoSettingsSharp size={23} />
-                        {active !== "sales" && <p className="text-[17px]">Settings</p>}
+                        <IoSettingsSharp size={21} className='text-slate-800' />
+                        {active !== "sales" && <p className="text-[15.5px]">Settings</p>}
                     </span>
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">

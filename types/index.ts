@@ -243,16 +243,6 @@ export interface Admin_dashboard_props {
     total_number_of_task_notifications_pages?:number
 
   }
-  
-  export interface Sales_Dashboard_Props {
-    total_lead: number;
-    total_sales: number;
-    conversion_rate: any;
-    pending_task: number;
-    recent_activities: any;
-    recent_notifications: any;
-    recent_tasks: any;
-  }
 
 
 export const opsStages = [

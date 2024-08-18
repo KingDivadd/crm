@@ -28,6 +28,7 @@ const SalesLeadPage = () => {
     const [lead_box, setLead_box] = useState<Leads_Props | null>(null);
     const [filtered_lead_box, setFiltered_lead_box] = useState<Leads_Props | null>(null);
     const [filters, setFilters] = useState({filter_input: '', disposition: ''})
+    const [role, setRole] = useState('')
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
         disposition: false
@@ -47,12 +48,18 @@ const SalesLeadPage = () => {
     };
 
     const handleSelectDropdown = (dropdown: any, title:any)=>{
-        handle_new_filter(dropdown)
+        handle_new_filter(dropdown.replace(/ /g, '_'))
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
 
     useEffect(() => {
+        const user_role = localStorage.getItem('user-role')
+        if (user_role) {
+            setRole(user_role)
+        }else{
+            setRole('sales')
+        }
         get_all_leads()
     }, [showModal])
 
@@ -74,6 +81,9 @@ const SalesLeadPage = () => {
             setLead_box(response.data)      
             
             setFiltered_lead_box(response.data)
+
+            console.log('master ', response.data);
+            
 
         }else{
         console.log(response);
@@ -270,7 +280,7 @@ const SalesLeadPage = () => {
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>
+                            {role == 'sales' && <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>}
                         </span>
 
                         
@@ -280,16 +290,26 @@ const SalesLeadPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
+                    {role == 'sales' ? 
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[17.5%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Assigned to</p>
+                        <p className="text-sm font-normal w-[14.5%] px-2 ">Customer Name</p>
+                        <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
+                        <p className="text-sm font-normal w-[13%] px-2 ">Phone Number</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Assigned to</p>
                         <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Action</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
                         <p className="text-sm font-normal w-[10%] px-2 "></p>
-                    </span>
+                    </span>:
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[10%] px-2 ">Lead Id</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Gate Code</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
+                        <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
+                        <p className="text-sm font-normal w-[17.5%] px-2 ">Assigned to</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
+                    </span>}
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                         
@@ -300,19 +320,31 @@ const SalesLeadPage = () => {
                                 {lead_box?.leads.length ?
                                 <>
                                 { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind} = data
+                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind, gate_code} = data
                                     return (
+                                        <>
+                                        {role == "sales" ? 
                                         <span key={ind} className="recent-activity-table-list " >
                                             <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[17.5%] px-2 "> {address} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className="text-sm w-[10%] px-2 "> {disposition} </p>
-                                            <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
+                                            <p className="text-sm w-[14.5%] px-2 "> {customer_name} </p>
+                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
+                                            <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
+                                            <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-green-600 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
                                         
                                             <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
-                                        </span>
+                                        </span>:
+                                        <span key={ind} className="recent-activity-table-list " >
+                                            <p className="text-sm w-[10%] px-2 "> {lead_ind} </p>
+                                            <p className="text-sm w-[7.5%] px-2 "> {gate_code} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {customer_name} </p>
+                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {phone_number} </p>
+                                            <p className="text-sm w-[17.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
+                                            <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                        </span>}
+                                        </>
                                     )
                                 })}
                                 </>
