@@ -79,25 +79,32 @@ const Pipeline_Modal = ({ showModal, setShowModal, selectedPipeline, setSelected
 
                                     <div className="w-full h-full flex items-start justify-start gap-[15px]">
                                         <div className="w-1/2 h-full flex flex-col items-start justify-start gap-[10px] ">
+
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Pipeline Id</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.pipeline_ind}</p>    
+                                                <p className="text-sm font-normal w-[35%]">Job Id</p>    
+                                                {selectedPipeline.job ?
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.job_ind}</p>   :
+                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
                                             </span>
 
-                                            {selectedPipeline.job && <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Job Id</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.job_ind}</p>    
-                                            </span>}
-
-                                            {selectedPipeline.lead && <span className="w-full flex items-center justify-start gap-[10px] ">
+                                            <span className="w-full flex items-center justify-start gap-[10px] ">
                                                 <p className="text-sm font-normal w-[35%]">Lead Id</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.lead_ind}</p>    
-                                            </span>}
+                                                {selectedPipeline.lead ?
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.lead_ind}</p>    :
+                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
+                                            </span>
 
-                                            {selectedPipeline.lead.gate_code && <span className="w-full flex items-center justify-start gap-[10px] ">
+                                            <span className="w-full flex items-center justify-start gap-[10px] ">
+                                                <p className="text-sm font-normal w-[35%]">Assigned to </p>    
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.assigned_to.first_name} {selectedPipeline.lead.assigned_to.last_name}</p>    
+                                            </span>
+
+                                             <span className="w-full flex items-center justify-start gap-[10px] ">
                                                 <p className="text-sm font-normal w-[35%]">Gate Code</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.gate_code}</p>    
-                                            </span>}
+                                                {selectedPipeline.lead.gate_code ? 
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.gate_code}</p>    :
+                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
+                                            </span>
 
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
                                                 <p className="text-sm font-normal w-[35%]">Appointment Date</p>    
@@ -114,10 +121,12 @@ const Pipeline_Modal = ({ showModal, setShowModal, selectedPipeline, setSelected
                                                 <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.address}</p>    
                                             </span>
                                             
-                                            {selectedPipeline.lead.phone_number && <span className="w-full flex items-center justify-start gap-[10px] ">
+                                             <span className="w-full flex items-center justify-start gap-[10px] ">
                                                 <p className="text-sm font-normal w-[35%]">Phone Number</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.phone_number}</p>    
-                                            </span>}
+                                                {selectedPipeline.lead.phone_number ? 
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.phone_number}</p>    :
+                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
+                                            </span>
 
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
                                                 <p className="text-sm font-normal w-[35%]">Email</p>    
@@ -142,20 +151,21 @@ const Pipeline_Modal = ({ showModal, setShowModal, selectedPipeline, setSelected
                                         </div>
 
                                         <div className="w-1/2 h-full flex flex-col items-start justify-start gap-[10px] ">
+                                            
+
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Assigned to </p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.assigned_to.first_name} {selectedPipeline.lead.assigned_to.last_name}</p>    
+                                                <p className="text-sm font-normal w-[35%]">Contract Date </p>    
+                                                {selectedPipeline.job ?
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.contract_date}</p>  :
+                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
                                             </span>
 
-                                            {selectedPipeline.job && <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Contract Date </p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.contract_date}</p>    
-                                            </span>}
-
-                                            {selectedPipeline.job && <span className="w-full flex items-center justify-start gap-[10px] ">
+                                             <span className="w-full flex items-center justify-start gap-[10px] ">
                                                 <p className="text-sm font-normal w-[35%]">Cover Size </p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.cover_size}</p>    
-                                            </span>}
+                                                {selectedPipeline.job ?
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.cover_size}</p>    :
+                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}   
+                                            </span>
 
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
                                                 <p className="text-sm font-normal w-[35%]">Cover Color </p>    
