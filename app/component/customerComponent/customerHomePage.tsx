@@ -1,12 +1,15 @@
 'use client'
 import React, {useState, useEffect} from 'react'
 import ViewProjectInfo from './viewProjectInfo'
+import { get_auth_request } from '@/app/api/admin_api';
 
 interface Dashboard_Props {
     total_project?:number;
     completed_project?:number;
     project_in_progress?:number;
     pending_project?:number;
+    running_project?:any;
+    notifications?:any;
 
 }
 
@@ -15,6 +18,43 @@ const CustomerHomePage = () => {
     const [showModal, setShowModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState(null)
     const [dash_components, setDash_components] = useState<Dashboard_Props | null>(null)
+    const [alert, setAlert] = useState({message: '', type: ''})
+
+    useEffect(()=>{
+        get_dashboard_data()
+    },[])
+
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
+    }
+
+    async function get_dashboard_data() {
+
+        try {
+            const response = await get_auth_request(`sales/customer-dashboard`)
+            
+    
+            if (response.status == 200 || response.status == 201){
+                
+                setDash_components(response.data)      
+    
+                console.log( 'customer data ',response.data);
+                
+            }else{
+                console.log(response);
+                
+                showAlert(response.response.data.err, "error")
+            }
+            
+        } catch (err:any) {
+            
+            showAlert('Something went wrong while fetching data', "error")
+        }
+        
+    }
 
     function viewProjectDetiail(data:any){
         console.log('clicked ',data)
@@ -64,84 +104,137 @@ const CustomerHomePage = () => {
                     
                                     
                 </div>
-             
 
-                {/* Current Project*/}
+                {/* current projects */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-md">Current Projects</p>
+                    <p className="text-md ">Current Projects</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
-                            <p className="text-sm w-[20%] px-2 ">Project Name</p>
-                            <p className="text-sm w-[20%] px-2 ">HOA Status</p>
-                            <p className="text-sm w-[30%] px-2 ">Permit Status</p>
-                            <p className="text-sm w-[30%] px-2 ">Payment Status</p>
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                            <p className="text-sm font-normal w-[15%] px-2 ">Project Id</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Job Id</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Contract Amt</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Attached</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Structure Type</p>
+                            <p className="text-sm font-normal w-[15%] px-2 "></p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Status</p>
                         </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
+                        
+                        {dash_components != null ? 
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start">
+                            {dash_components?.running_project.length ? <>
+                            {dash_components?.running_project.map((data:any, ind:any)=>{
+
+                                const {project_ind, job, contract_amount, attached, structure_type, status} = data   
+                                
                                 return (
-                                    <span key={ind} className="recent-activity-table-list" onClick={()=> viewProjectDetiail(data)}>
-                                        <p className="text-sm w-[20%] px-2 ">Project {ind + 1}</p>
-                                        <p className="text-sm w-[20%] px-2 ">{ind % 2 === 1 ? "Approved":"Pending"}</p>
-                                        <p className="text-sm w-[30%] px-2 ">In Progress (Expected: 2024-07-01)</p>
-                                        <p className="text-sm w-[30%] px-2 ">50% Paid ($5,000 / $10,000)</p>
+                                    <span key={ind} className="recent-activity-table-list ">
+                                        <p className="text-sm w-[15%] px-2 ">{project_ind}</p>
+                                        <p className="text-sm w-[10%] px-2 ">{job.job_ind}</p>
+                                        <p className="text-sm w-[15%] px-2 ">$ {Number(contract_amount).toLocaleString()}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{attached ? "True": "False"}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{structure_type.replace(/_/g,' ')}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{status}</p>
                                     </span>
                                 )
                             })}
+                            </>
+                            :
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Lead yet</p>
+                            </div>
+                            }
+
                         </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] rounded-b-[5px] ">
+                        :
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
+                        </div>
+                        }
+                        
+
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
+                                <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
 
                                 </span>
-                                <p className="text-sm cursor-pointer">Next</p>
+                                <p className="text-sm cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.running_project.length}</p>
                             </span>
                         </span>
                     </div>
                 </div>
 
-                {/* Notification*/}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-md">Notification</p>
+                    <p className="text-md ">Recent Notification</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[30%] px-2 ">Date</p>
-                            <p className="text-sm font-semibold w-[70%] px-2 ">Update</p>
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                            <p className="text-sm font-normal w-[15%] px-2 ">Project Id</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Job Id</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Contract Amt</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Attached</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Structure Type</p>
+                            <p className="text-sm font-normal w-[15%] px-2 "></p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Status</p>
                         </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
+                        
+                        {dash_components != null ? 
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start">
+                            {dash_components?.running_project.length ? <>
+                            {dash_components?.running_project.map((data:any, ind:any)=>{
+
+                                const {project_ind, job, contract_amount, attached, structure_type, status} = data   
+                                
                                 return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[30%] px-2 ">June 21, 2024</p>
-                                        <p className="text-sm w-[70%] px-2 ">Permit application submitted for Project 1.</p>
+                                    <span key={ind} className="recent-activity-table-list ">
+                                        <p className="text-sm w-[15%] px-2 ">{project_ind}</p>
+                                        <p className="text-sm w-[10%] px-2 ">{}</p>
+                                        <p className="text-sm w-[15%] px-2 ">$ {Number(contract_amount).toLocaleString()}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{attached ? "True": "False"}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{structure_type.replace(/_/g,' ')}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{status}</p>
                                     </span>
                                 )
                             })}
+                            </>
+                            :
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Lead yet</p>
+                            </div>
+                            }
+
                         </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
+                        :
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
+                        </div>
+                        }
+                        
+
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
+                                <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
 
                                 </span>
-                                <p className="text-sm cursor-pointer">Next</p>
+                                <p className="text-sm cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.running_project.length}</p>
                             </span>
                         </span>
                     </div>
                 </div>
+
+
             </div>
 
             {showModal && <ViewProjectInfo showModal={showModal} setShowModal={setShowModal} selectedItem={selectedItem} setSelectedItem={setSelectedItem} setShow={setShow} show={show} />}

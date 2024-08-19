@@ -115,16 +115,16 @@ const SalesDashboardPage = () => {
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
-                            <p className="text-sm w-[15%] px-2  ">Date / Time</p>
+                            <p className="text-sm w-[16.5%] px-2  ">Date / Time</p>
                             <p className="text-sm w-[20%] px-2  ">Subject</p>
                             <p className="text-sm w-[32.5%] px-2  ">Details</p>
-                            <p className="text-sm w-[15%] px-2  ">Status</p>
+                            <p className="text-sm w-[13.5%] px-2  ">Status</p>
                             <p className="text-sm w-[17.5%] px-2  ">Source</p>
                         </span>
                         
                         
                         {dash_components !== null ? <div className="w-full h-[250px] flex flex-col justify-start items-start">
-                           
+
                             {dash_components?.recent_notifications.length ? 
                             <>
                             {dash_components?.recent_notifications.map((data:any, ind:any)=>{
@@ -133,10 +133,10 @@ const SalesDashboardPage = () => {
                                 
                                 return (
                                     <span key={ind} className="recent-activity-table-list ">
-                                        <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
+                                        <p className="text-sm w-[16.5%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
                                         <p className="text-sm w-[20%] px-2 ">{subject}</p>
                                         <p className="text-sm w-[32.5%] px-2 ">{message}</p>
-                                        <p className={read ? "text-sm w-[15%] text-green-600 px-2 ":"text-sm w-[15%] px-2 text-red-600 "}>{read ? "read": "unread"}</p>
+                                        <p className={read ? "text-sm w-[13.5%] text-green-600 px-2 ":"text-sm w-[15%] px-2 text-red-600 "}>{read ? "read": "unread"}</p>
                                         <p className="text-sm w-[17.5%] px-2 ">{source.last_name} {source.first_name} </p>
                                     </span>
                                 )
