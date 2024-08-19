@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import ViewProjectInfo from './viewProjectInfo'
 import { get_auth_request } from '@/app/api/admin_api';
+import { timestamp_to_readable_value } from '../helper';
 
 interface Dashboard_Props {
     total_project?:number;
@@ -176,9 +177,9 @@ const CustomerHomePage = () => {
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
                             <p className="text-sm font-normal w-[7.5%] px-2 "> Id</p>
-                            <p className="text-sm font-normal w-[25%] px-2 ">Subject</p>
+                            <p className="text-sm font-normal w-[22.5%] px-2 ">Subject</p>
                             <p className="text-sm font-normal w-[30%] px-2 ">Message</p>
-                            <p className="text-sm font-normal w-[20%] px-2 ">Status</p>
+                            <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
                             <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
                             <p className="text-sm font-normal w-[15%] px-2 ">Date/Time</p>
                         </span>
@@ -188,17 +189,16 @@ const CustomerHomePage = () => {
                             {dash_components?.running_project.length ? <>
                             {dash_components?.running_project.map((data:any, ind:any)=>{
 
-                                const {project_ind, job, contract_amount, attached, structure_type, status} = data   
+                                const {notification_ind, subject, message, status, updated_at} = data   
                                 
                                 return (
                                     <span key={ind} className="recent-activity-table-list ">
-                                        <p className="text-sm w-[15%] px-2 ">{project_ind}</p>
-                                        <p className="text-sm w-[10%] px-2 ">{}</p>
-                                        <p className="text-sm w-[15%] px-2 ">$ {Number(contract_amount).toLocaleString()}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{attached ? "True": "False"}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{structure_type.replace(/_/g,' ')}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{status}</p>
+                                        <p className="text-sm w-[7.5%] px-2 ">{notification_ind}</p>
+                                        <p className="text-sm w-[22.5%] px-2 ">{subject}</p>
+                                        <p className="text-sm w-[30%] px-2 ">{message}</p>
+                                        <p className="text-sm w-[12.5%] px-2 ">{}</p>
+                                        <p className="text-sm w-[12.5%] px-2 ">{status? "read" : "unread"}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(updated_at)}</p>
                                     </span>
                                 )
                             })}
