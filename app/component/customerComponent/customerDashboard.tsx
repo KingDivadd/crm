@@ -8,6 +8,8 @@ import ServiceTicketPage from './serviceTicketPage'
 import NotificationPage from './notificationPage'
 import WarrantyPage from './warrantyPage'
 import SettingsPage from './settingsPage'
+import DashboardNav from '../dashboardNav'
+import SystemSettings from '../setting'
 
 
 
@@ -24,18 +26,18 @@ const CustomerDashboard = () => {
     }, [])
     return (
         <div className="w-full h-[100vh] flex flex-row  items-start justify-between">
-            <div className="w-[280px] h-full bg-red-100 ">
+            <div className="w-[240px] h-full bg-red-100 ">
                 <CustomerSideBar active={active} setActive={setActive} />
             </div>
             <div className="flex-1 h-full bg-blue-100">
-                <CustomerDashboardNav />
+                <DashboardNav />
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "home" && <CustomerHomePage /> }
                     {active === "project-status" && <ProjectStatusPage /> }
                     {active === "service-ticket" && <ServiceTicketPage /> }
                     {active === "notifications" && <NotificationPage /> }
                     {active === "warranty" && <WarrantyPage /> }
-                    {active === "system-settings" && <SettingsPage /> }
+                    {active === "system-settings" && <SystemSettings /> }
                     
                 </div>
             </div>

@@ -131,13 +131,13 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
     async function create_lead(e:any) {
         e.preventDefault()
         console.log('auth', auth)
-        if (!auth.customer_name || !auth.phone_number || !auth.email || !auth.assigned_to || !auth.appointment_date || !auth.disposition) {
+        if (!auth.customer_name || !auth.phone_number || !auth.email || !auth.assigned_to || !auth.appointment_date) {
             showAlert('Please fill required fields', 'error')
         }else{
             try {
                 setLoading(true)
                 
-                const response = await post_auth_request(`lead/create-lead`, { customer_name: auth.customer_name, address: auth.address , phone_number: auth.phone_number, email: auth.email, assigned_to_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: auth.disposition.toUpperCase().replace(/ /g, '_'), gate_code: auth.gate_code })
+                const response = await post_auth_request(`lead/create-lead`, { customer_name: auth.customer_name, address: auth.address , phone_number: auth.phone_number, email: auth.email, assigned_to_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: 'NOT_SOLD', gate_code: auth.gate_code })
                 if (response.status == 200 || response.status == 201){
                                 
                     showAlert(response.data.msg, "success")
@@ -272,15 +272,15 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
                                         <p className="text-md font-semibold  text-slate-800 ">New Lead </p>
 
-                                        <span className="h-[35px] min-w-[150px] z-5">
+                                        {/* <span className="h-[35px] min-w-[150px] z-5">
                                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                        </span>
+                                        </span> */}
                                     </span>
 
                                     <form  action="" className="w-full flex items-start justify-between gap-[15px]">
                                         <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Customer Name.</p>
+                                            <p className="text-sm text-slate-900 flex items-center gap-2">Customer Name <p className="font-light">(first name and last name)</p> </p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name='customer_name' value={auth.customer_name} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
@@ -294,14 +294,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             </span>
                                             
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Phone Number</p>
+                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Phone <p className="font-light">(Please enter a valid phone number)</p> </p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name="phone_number" value={auth.phone_number} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
                                             
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Email</p>
+                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Email <p className="font-light">(Please enter a valid email)</p> </p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name="email" value={auth.email} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
@@ -347,7 +347,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 <span className="h-[40px] w-full ">
                                                     <input type="email" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-sm' />
                                                 </span>
-                                                <div className="w-full h-[315px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[5px] ">
+                                                <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[5px] ">
                                                     <div className="w-full flex flex-col items-start justify-start">
                                                         {filtered_staff.map((data, ind)=>{
                                                             const {first_name, last_name, user_id, user_role } = data
@@ -374,7 +374,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                     </div>
                                                 </div>
 
-                                                <button className=" w-full h-[45px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_lead} >
+                                                <button className=" w-full h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_lead} >
                                             {loading ? (
                                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -396,7 +396,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
                                         <p className="text-md font-semibold  text-slate-800 ">Edit Lead: <strong>{selectedLead.lead_ind}</strong> </p>
 
-                                        <span className="h-[35px] min-w-[150px] z-5">
+                                        <span className="h-[35px] min-w-[150px] z-[10]">
                                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                         </span>
                                     </span>
@@ -418,14 +418,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             </span>
                                             
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Phone Number</p>
+                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Phone <p className="font-light">(Please enter a valid phone number)</p> </p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name="phone_number" value={auth.phone_number} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
                                             
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Email</p>
+                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Email <p className="font-light">(Please enter a valid email)</p> </p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name="email" value={auth.email} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
@@ -451,7 +451,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             <span className="w-full flex flex-col items-start justify-start gap-[10px] ">
 
                                                 <h4 className="text-sm ">Appointment Date</h4>
-                                                <div className="w-full flex flex-col items-end justify-end relative z-[15] ">
+                                                <div className="w-full flex flex-col items-end justify-end relative z-[5] ">
                                                     <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-sm" onClick={(e:any) => {e.preventDefault(); setShowCalender(!showCalender)}}>
 
                                                         {auth.appointment_date ? auth.appointment_date : "Select Appointment Date"}
@@ -471,7 +471,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 <span className="h-[40px] w-full ">
                                                     <input type="email" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-sm' />
                                                 </span>
-                                                <div className="w-full h-[315px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[5px] ">
+                                                <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[5px] ">
                                                     <div className="w-full flex flex-col items-start justify-start">
                                                         {filtered_staff.map((data, ind)=>{
                                                             const {first_name, last_name, user_id, user_role } = data
@@ -498,15 +498,15 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                     </div>
                                                 </div>
 
-                                                <button className=" w-full h-[45px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-700 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
-                                            {loading ? (
-                                                <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                </svg>
-                                            ) : 'Update Lead'}
+                                                <button className=" w-full h-[40px] text-white bg-amber-700 rounded-[5px] hover:bg-amber-600 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
+                                                {loading ? (
+                                                    <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                    </svg>
+                                                ) : 'Update Lead'}
 
-                                        </button>
+                                            </button>
                                             </span>
                                         </div>
                                         

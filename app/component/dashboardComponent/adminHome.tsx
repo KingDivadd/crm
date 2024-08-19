@@ -46,13 +46,10 @@ const AdminHome = () => {
           if (response.status == 200 || response.status == 201){
             
             setDash_box(response.data)
-
-            console.log(response.data);
             
             
             showAlert(response.data.msg, "success")
           }else{
-            console.log(response);
             if (response){
 
                 showAlert(response.response.data.err, "error")
@@ -104,7 +101,6 @@ const AdminHome = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
 
         setActivity_page(new_page_number);
     }
@@ -174,7 +170,6 @@ const AdminHome = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
 
         setTask_notification_page(new_page_number);
     }
@@ -229,7 +224,6 @@ const AdminHome = () => {
     };
 
     const view_details = (item:any) =>{
-        console.log('selected ', item);
         if (item == 'leads'){ setSelectedItem({title: 'Leads', item: dash_box?.new_lead}) }
         else if (item == 'pending_sales'){ setSelectedItem({title: 'Pending Sales', item: dash_box?.pending_sales}) }
         else if (item == 'ongoing_installations'){ setSelectedItem({title: 'Ongoing Installations', item: dash_box?.ongoing_installations}) }
@@ -388,32 +382,7 @@ const AdminHome = () => {
                             </span>
                         </span>
 
-                        <span className="w-[300px] quick-access-bar group">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><LuPencilRuler size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">Engineerin Tasks</p>
-                                <p className="text-sm ">{dash_box?.engineering_task.length} tasks pending</p>
-                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100  " onClick={()=>{view_details('engineering_task')}}>View Detials</p>
-                            </span>
-                        </span>
 
-                        <span className="w-[300px] quick-access-bar group ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><MdOutlineNoteAlt size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">Permits</p>
-                                <p className="text-sm ">{dash_box?.permit.length} permits pending</p>
-                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100  " onClick={()=>{view_details('pending_permit')}}>View Detials</p>
-                            </span>
-                        </span>
-
-                        <span className="w-[300px] quick-access-bar group">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><RiBarChartFill size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">Accounting</p>
-                                <p className="text-sm ">profit/loss details</p>
-                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100 " onClick={()=>{view_details('accounting')}}>View Detials</p>
-                            </span>
-                        </span>
 
                     </div>
 

@@ -21,6 +21,11 @@ interface Job_Management_Props {
 
 }
 
+interface FilteredJobsProps {
+    lead: any;
+
+}
+
 const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelectedTask, modalFor}: Job_Management_Props) => {
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
@@ -277,24 +282,27 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
 
                                     <form  action="" className="w-full h-full flex items-start justify-between gap-[15px]">
                                         <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] h-full ">
-                                            <span className="w-full h-full flex flex-col items-self justify-self gap-[10px] ">
+                                            <span className="w-full h-full flex flex-col items-self justify-self ">
                                                 <p className="text-sm text-slate-900">Select Job</p>
 
-                                                <span className="h-[40px] w-full rounded-[5px] text-sm flex items-center justify-center border border-slate-400">
-                                                    JB000{selected_job}
+                                                <span className="h-[40px] w-full rounded-[5px] text-sm flex items-center justify-center border border-slate-400 mt-[10px] ">
+                                                    {selected_job}
                                                 </span>
 
-                                                {/* <span className="h-[40px] w-full ">
-                                                    <input type="text" name='' value={auth.due_date} placeholder='Enter job number' onChange={handlefilter} className='normal-input text-sm' />
-                                                </span> */}
-
-
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-700 text-white rounded-t-[5px] mt-[10px]">
+                                                    <p className="text-sm w-[20%] px-2 ">Job Id</p>
+                                                    <p className="text-sm w-[35%] px-2 ">Contract Amount</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Customer Name</p>
+                                                </span>
                                                 <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-[5px] bg-slate-100 overflow-y-auto">
                                                     {filtered_jobs.reverse().map((data, ind)=>{
-                                                        const {job_id, job_ind} = data
+                                                        const {job_id, job_ind, contract_amount, lead} = data
+                                                        const {customer_name} = lead
                                                         return(
-                                                            <span key={ind} className="h-[35px] flex items-center justify-start gap-3 px-2 text-[15px] hover:bg-slate-300 cursor-pointer" onClick={()=> {setAuth({...auth, job_id: job_id }); setSelected_job(job_ind) } }>
-                                                                {ind + 1}. JB000{job_ind}
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-slate-300 cursor-pointer " onClick={()=> {setAuth({...auth, job_id: job_id }); setSelected_job(job_ind) } }>
+                                                                <p className="text-sm w-[20%] px-2 ">{job_ind}</p>
+                                                                <p className="text-sm w-[35%] px-2 ">${Number(contract_amount).toLocaleString()}</p>
+                                                                <p className="text-sm font-medium w-[45%] px-2 ">{customer_name}</p>
                                                             </span>
                                                         )
                                                     })}
@@ -366,30 +374,33 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
                                 {modalFor == 'edit' && 
                                 <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] z-[15] ">
-                                        <p className="text-md font-semibold  text-slate-800 ">Edit Task </p>
+                                        <p className="text-md font-semibold  text-slate-800 ">Edit Task: <strong>{selectedTask.task_ind}</strong> </p>
 
                                     </span>
 
                                     <form  action="" className="w-full h-full flex items-start justify-between gap-[15px]">
                                         <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] h-full ">
-                                            <span className="w-full h-full flex flex-col items-self justify-self gap-[10px] ">
+                                            <span className="w-full h-full flex flex-col items-self justify-self ">
                                                 <p className="text-sm text-slate-900">Select Job</p>
 
-                                                <span className="h-[40px] w-full rounded-[5px] text-sm flex items-center justify-center border border-slate-400">
-                                                    JB000{selected_job}
+                                                <span className="h-[40px] w-full rounded-[5px] text-sm flex items-center justify-center border border-slate-400 mt-[10px] ">
+                                                    {selected_job}
                                                 </span>
 
-                                                {/* <span className="h-[40px] w-full ">
-                                                    <input type="text" name='' value={auth.due_date} placeholder='Enter job number' onChange={handlefilter} className='normal-input text-sm' />
-                                                </span> */}
-
-
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-700 text-white rounded-t-[5px] mt-[10px]">
+                                                    <p className="text-sm w-[20%] px-2 ">Job Id</p>
+                                                    <p className="text-sm w-[35%] px-2 ">Contract Amount</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Customer Name</p>
+                                                </span>
                                                 <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-[5px] bg-slate-100 overflow-y-auto">
                                                     {filtered_jobs.reverse().map((data, ind)=>{
-                                                        const {job_id, job_ind} = data
+                                                        const {job_id, job_ind, contract_amount, lead} = data
+                                                        const {customer_name} = lead
                                                         return(
-                                                            <span key={ind} className="h-[35px] flex items-center justify-start gap-3 px-2 text-[15px] hover:bg-slate-300 cursor-pointer" onClick={()=> {setAuth({...auth, job_id: job_id }); setSelected_job(job_ind) } }>
-                                                                {ind + 1}. JB000{job_ind}
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-slate-300 cursor-pointer " onClick={()=> {setAuth({...auth, job_id: job_id }); setSelected_job(job_ind) } }>
+                                                                <p className="text-sm w-[20%] px-2 ">{job_ind}</p>
+                                                                <p className="text-sm w-[35%] px-2 ">${Number(contract_amount).toLocaleString()}</p>
+                                                                <p className="text-sm font-medium w-[45%] px-2 ">{customer_name}</p>
                                                             </span>
                                                         )
                                                     })}

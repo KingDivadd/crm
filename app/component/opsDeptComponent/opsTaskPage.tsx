@@ -140,7 +140,7 @@ const OpsTaskPage = () => {
                     <p
                         key={i}
                         className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                            page_number === i ? 'bg-blue-500 text-white' : ''
+                            page_number === i ? 'bg-blue-700 text-white' : ''
                         }`}
                         onClick={() => app_users_action(i)}
                     >
@@ -165,7 +165,7 @@ const OpsTaskPage = () => {
                     <p
                         key={i}
                         className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                            page_number === i ? 'bg-blue-500 text-white' : ''
+                            page_number === i ? 'bg-blue-700 text-white' : ''
                         }`}
                         onClick={() => app_users_action(i)}
                     >
@@ -269,7 +269,7 @@ const OpsTaskPage = () => {
                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['PENDING', 'IN PROGRESS', 'COMPLETED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                         </span>
 
-                        <button type="button" className="px-4 h-full rounded-[3px] bg-blue-600 hover:bg-blue-700 text-sm text-white" onClick={add_task}>
+                        <button type="button" className="px-4 h-full rounded-[3px] bg-blue-700 hover:bg-blue-700 text-sm text-white" onClick={add_task}>
                             Add Task
                         </button>
                     </span>
@@ -280,16 +280,16 @@ const OpsTaskPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-600 text-white">
-                        <p className="text-[16px] font-normal w-[7.5%] px-2 ">Task ID</p>
-                        <p className="text-[16px] font-normal w-[7.5%] px-2 ">Job ID</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Desription</p>
-                        <p className="text-[16px] font-normal w-[12.5%] px-2 ">Status</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Assigned To</p>
-                        <p className="text-[16px] font-normal w-[10%] px-2 ">Start Date</p>
-                        <p className="text-[16px] font-normal w-[10%] px-2 ">End Date</p>
-                        <p className="text-[16px] font-normal w-[15%] px-2 ">Completion Date</p>
-                        <p className="text-[16px] font-normal w-[7.5%] px-2 ">Action</p>
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Task ID</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Desription</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Assigned To</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Start Date</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">End Date</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Completion Date</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
                     </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -304,15 +304,15 @@ const OpsTaskPage = () => {
                                     const {task_ind, job, description, assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
                                     return (
                                         <span key={ind} className="recent-activity-table-list " onClick={()=> edit_task(data)} >
-                                            <p className="text-[15px] w-[7.5%] px-2 ">{task_ind} </p>
-                                            <p className="text-[15px] w-[7.5%] px-2 ">{job.job_ind} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {description} </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {status} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {assigned_to} </p>
-                                            <p className="text-[15px] w-[10%] px-2 "> {start_date} </p>
-                                            <p className="text-[15px] w-[10%] px-2 "> {due_date} </p>
-                                            <p className="text-[15px] w-[15%] px-2 "> {completion_date} </p>
-                                            <p className="text-[15px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer"  ><MdEdit size={16} /> Edit</p>
+                                            <p className="text-sm w-[7.5%] px-2 ">{task_ind} </p>
+                                            <p className="text-sm w-[7.5%] px-2 ">{job.job_ind} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {description} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {status} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {assigned_to} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {start_date} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {due_date} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {completion_date} </p>
+                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer"  ><MdEdit size={16} /> Edit</p>
 
                                         </span>
                                     )
