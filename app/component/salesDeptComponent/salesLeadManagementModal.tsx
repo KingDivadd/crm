@@ -396,7 +396,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
                                         <p className="text-md font-semibold  text-slate-800 ">Edit Lead: <strong>{selectedLead.lead_ind}</strong> </p>
 
-                                        <span className="h-[35px] min-w-[150px] z-5">
+                                        <span className="h-[35px] min-w-[150px] z-[10]">
                                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                         </span>
                                     </span>
@@ -451,7 +451,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             <span className="w-full flex flex-col items-start justify-start gap-[10px] ">
 
                                                 <h4 className="text-sm ">Appointment Date</h4>
-                                                <div className="w-full flex flex-col items-end justify-end relative z-[15] ">
+                                                <div className="w-full flex flex-col items-end justify-end relative z-[5] ">
                                                     <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-sm" onClick={(e:any) => {e.preventDefault(); setShowCalender(!showCalender)}}>
 
                                                         {auth.appointment_date ? auth.appointment_date : "Select Appointment Date"}
@@ -498,15 +498,15 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                     </div>
                                                 </div>
 
-                                                <button className=" w-full h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-700 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
-                                            {loading ? (
-                                                <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                </svg>
-                                            ) : 'Update Lead'}
+                                                <button className=" w-full h-[40px] text-white bg-amber-700 rounded-[5px] hover:bg-amber-600 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
+                                                {loading ? (
+                                                    <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                    </svg>
+                                                ) : 'Update Lead'}
 
-                                        </button>
+                                            </button>
                                             </span>
                                         </div>
                                         

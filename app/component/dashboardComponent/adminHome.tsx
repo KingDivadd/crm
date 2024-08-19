@@ -46,13 +46,10 @@ const AdminHome = () => {
           if (response.status == 200 || response.status == 201){
             
             setDash_box(response.data)
-
-            console.log(response.data);
             
             
             showAlert(response.data.msg, "success")
           }else{
-            console.log(response);
             if (response){
 
                 showAlert(response.response.data.err, "error")
@@ -104,7 +101,6 @@ const AdminHome = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
 
         setActivity_page(new_page_number);
     }
@@ -174,7 +170,6 @@ const AdminHome = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
 
         setTask_notification_page(new_page_number);
     }
@@ -229,7 +224,6 @@ const AdminHome = () => {
     };
 
     const view_details = (item:any) =>{
-        console.log('selected ', item);
         if (item == 'leads'){ setSelectedItem({title: 'Leads', item: dash_box?.new_lead}) }
         else if (item == 'pending_sales'){ setSelectedItem({title: 'Pending Sales', item: dash_box?.pending_sales}) }
         else if (item == 'ongoing_installations'){ setSelectedItem({title: 'Ongoing Installations', item: dash_box?.ongoing_installations}) }

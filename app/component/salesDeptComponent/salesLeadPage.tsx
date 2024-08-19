@@ -322,9 +322,9 @@ const SalesLeadPage = () => {
                                 { filtered_lead_box?.leads.map((data:any, ind:number)=>{
                                     const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind, gate_code} = data
                                     return (
-                                        <>
+                                        <div key={ind}>
                                         {role == "sales" ? 
-                                        <span key={ind} className="recent-activity-table-list " >
+                                        <span className="recent-activity-table-list " >
                                             <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
                                             <p className="text-sm w-[14.5%] px-2 "> {customer_name} </p>
                                             <p className="text-sm w-[25%] px-2 "> {address} </p>
@@ -335,7 +335,7 @@ const SalesLeadPage = () => {
                                         
                                             <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
                                         </span>:
-                                        <span key={ind} className="recent-activity-table-list " >
+                                        <span className="recent-activity-table-list " >
                                             <p className="text-sm w-[10%] px-2 "> {lead_ind} </p>
                                             <p className="text-sm w-[7.5%] px-2 "> {gate_code} </p>
                                             <p className="text-sm w-[15%] px-2 "> {customer_name} </p>
@@ -344,7 +344,7 @@ const SalesLeadPage = () => {
                                             <p className="text-sm w-[17.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
                                             <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
                                         </span>}
-                                        </>
+                                        </div>
                                     )
                                 })}
                                 </>

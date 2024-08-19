@@ -122,7 +122,11 @@ const SalesDashboardPage = () => {
                             <p className="text-sm w-[17.5%] px-2  ">Source</p>
                         </span>
                         
-                        {dash_components?.recent_notifications.length ? <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                        
+                        {dash_components !== null ? <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                           
+                            {dash_components?.recent_notifications.length ? 
+                            <>
                             {dash_components?.recent_notifications.map((data:any, ind:any)=>{
 
                                 const {created_at, subject, message, read, user, source, } = data
@@ -137,12 +141,19 @@ const SalesDashboardPage = () => {
                                     </span>
                                 )
                             })}
+                            </> 
+                            :
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Notifications yet</p>
+                            </div>
+                            }
                         </div>
                         :
-                        <div className="w-full h-[250px] flex flex-col justify-center items-center">
-                            <p className="text-sm ">No Notifications yet</p>
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
                         </div>
-                         }
+                        }
+                       
 
                         <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
@@ -173,7 +184,9 @@ const SalesDashboardPage = () => {
                             <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
                         </span>
                         
-                        {dash_components?.recent_lead.length ? <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                        {dash_components != null ? 
+                        <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                            {dash_components?.recent_lead.length ? <>
                             {dash_components?.recent_lead.map((data:any, ind:any)=>{
 
                                 const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind} = data   
@@ -189,12 +202,20 @@ const SalesDashboardPage = () => {
                                     </span>
                                 )
                             })}
+                            </>
+                            :
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Lead yet</p>
+                            </div>
+                            }
+
                         </div>
                         :
-                        <div className="w-full h-[250px] flex flex-col justify-center items-center">
-                            <p className="text-sm ">No Lead yet</p>
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
                         </div>
-                         }
+                        }
+                        
 
                         <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
@@ -227,7 +248,12 @@ const SalesDashboardPage = () => {
                             <p className="text-sm font-normal w-[15%] px-2 ">Completion Date</p>
                         </span>
                         
-                        {dash_components?.recent_tasks.length ? <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                        {dash_components !== null ? 
+                        
+                        <div className="w-full h-[250px] flex flex-col justify-start items-start">
+
+                            {dash_components?.recent_tasks.length ?
+                            <>
                             {dash_components?.recent_tasks.map((data:any, ind:any)=>{
 
                                 const {task_ind, job, description, assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
@@ -244,13 +270,19 @@ const SalesDashboardPage = () => {
                                     </span>
                                 )
                             })}
+                            </>:
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Task yet</p>
+                            </div>
+                            }
+
                         </div>
                         :
-                        <div className="w-full h-[250px] flex flex-col justify-center items-center">
-                            <p className="text-sm ">No Task yet</p>
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
                         </div>
-                         }
-
+                        }
+                        
                         <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-sm cursor-pointer ">Prev</p>

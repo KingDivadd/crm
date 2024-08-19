@@ -16,6 +16,7 @@ import {SideBarNav} from '../../../types/index'
 import { RiUserLocationFill } from "react-icons/ri";
 import { MdNotifications } from "react-icons/md";
 import { RiLuggageCartFill } from "react-icons/ri";
+import { GiSuitcase } from 'react-icons/gi';
 
 
 
@@ -56,11 +57,16 @@ const OpsSideBar = ({active, setActive}: SideBarNav) => {
                         <FaUserTag size={21} className='text-slate-800' /> 
                         {active !== "sales" && <p className="text-[15.5px]">Leads</p> }
                     </span>
+
+                    <span className={active === "jobs"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('jobs')}}>
+                        <GiSuitcase size={21} className='text-slate-800' />
+                        <p className="text-[16px]">Jobs</p>
+                    </span>
                     
-                    <span className={active === "sales"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('sales')}}>
+                    {/* <span className={active === "sales"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('sales')}}>
                         <RiLuggageCartFill size={21} className='text-slate-800' />
                         {active !== "sales" && <p className="text-[15.5px]">Sales</p> }
-                    </span>
+                    </span> */}
 
                     <span className={active === "tasks"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('tasks')}}>
                         <BiSolidNotepad size={21} className='text-slate-800' />
@@ -75,10 +81,7 @@ const OpsSideBar = ({active, setActive}: SideBarNav) => {
                         <BiSolidReport size={21} className='text-slate-800' />
                         {active !== "sales" && <p className="text-[15.5px]">Reports</p>  }
                     </span>
-                    <span className={active === "user-tracking"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('user-tracking')}}>
-                        <RiUserLocationFill size={21} className='text-slate-800' />
-                        {active !== "sales" && <p className="text-[15.5px]">User Tracking</p> }
-                    </span>
+                   
                     <span className={active === "notification"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notification')}}>
                         <MdNotifications size={21} className='text-slate-800' />
                         {active !== "sales" && <p className="text-[15.5px]">Notification</p>}

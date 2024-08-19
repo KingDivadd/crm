@@ -12,12 +12,13 @@ import SystemSettings from '../setting'
 import NotificationPage from '../notificationPage'
 import DashboardNav from '../dashboardNav'
 import SalesLeadPage from '../salesDeptComponent/salesLeadPage'
+import SalesJobsPage from '../salesDeptComponent/salesJobsPage'
 
 const OpsDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
         const item = sessionStorage.getItem('salesSideNav')
-        if (item == null || item == "" || !['home', 'leads', 'sales', 'tasks', 'install','reports','notification', 'user-tracking','settings'].includes(item) ) {
+        if (item == null || item == "" || !['home', 'leads','jobs', 'sales', 'tasks', 'install','reports','notification', 'user-tracking','settings'].includes(item) ) {
             setActive('home')
         }else{
             setActive(item)
@@ -35,6 +36,7 @@ const OpsDashboard = () => {
                     {active === "home" && <OpsDashboardPage /> }
                     {active === "leads" && <SalesLeadPage /> }
                     {active === "sales" && <OpsSalesPage /> }
+                    {active === "jobs" && <SalesJobsPage /> }
                     {active === "tasks" && <OpsTaskPage /> }
                     {active === "installs" && <OpsInstallsPage /> }
                     {active === "reports" && <OpsReportPage /> }

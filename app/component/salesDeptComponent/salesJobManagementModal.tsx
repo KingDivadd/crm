@@ -29,17 +29,20 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
     const [filtered_leads, setFiltered_leads] = useState([])
     const [show_all_lead, setShow_all_lead] = useState(false)
     const [selected_lead, setSelected_lead] = useState('')
-    const [auth, setAuth] = useState({lead_id: '', contract_amount: '', contract_date: '', hoa_status: '', engineering_submitted: '', engineering_received: '', permit_sent_date: '', permit_approved_date: '', cover_color: '', cover_size: '', engineering_status: '', permit_status: ''})
+    const [role, setRole] = useState('')
+
+
+    const [auth, setAuth] = useState({lead_id: '', contract_amount: '', contract_date: '', hoa_status: '', hoa_sent_date: '', hoa_approval_date: '', engineering_submitted: '', engineering_received: '', permit_sent_date: '', permit_approved_date: '', cover_color: '', cover_size: '', engineering_status: '', permit_status: '', attached: '', structure_type: '', description: '', end_cap_style: '', trim_color: '', permit_number: '',   })
 
     const [showCalenders, setShowCalenders] = useState({contract_date: false, engineering_sub_date: false, engineering_received_date: false, permit_sent_date: false, permit_approved_date: false})
 
     const [clicked_date, setClicked_date] = useState({contract_date: '', engineering_sub_date: '', engineering_received_date: '', permit_sent_date: '', permit_approved_date: ''})
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        disposition: false, hoa_status: false, engineering_status: false, permit_status: false
+        disposition: false, hoa_status: false, engineering_status: false, permit_status: false, attached: false,structure_type: false, 
     });
     const [dropElements, setDropElements] = useState({
-        disposition: 'Disposition', hoa_status: 'HOA Status',  engineering_status: 'Engineering Status', permit_status: 'Permit Status'
+        disposition: 'Disposition', hoa_status: 'HOA Status',  engineering_status: 'Engineering Status', permit_status: 'Permit Status', attached: 'Attached', structure_type: 'Structure Type',
 
     })
 
@@ -54,8 +57,17 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
     };
 
     const handleSelectDropdown = (dropdown: any, title:any)=>{
-        setAuth({...auth, [title]: dropdown.replace(/ /g, '_').toUpperCase()})
-        setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
+        if (title == 'attached'){
+            const value = dropdown.toLowerCase() == 'true' ? true : false
+            console.log(' hello ', title, ' : ', value);
+
+            setAuth({...auth, [title]: value})
+            setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
+        }else{
+
+            setAuth({...auth, [title]: dropdown.replace(/ /g, '_').toUpperCase()})
+            setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
+        }
     }
 
 
@@ -90,6 +102,9 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
     }
     
     useEffect(() => {
+        const user_role = localStorage.getItem('user-role')
+        
+        setRole(user_role || 'sales')
         if (modalFor == 'add'){
             get_all_leads()
         }else if (modalFor == 'edit'){
@@ -228,7 +243,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                 </div>
                 <div className={ modalFor == 'delete' ? "w-full h-screen pt-[150px] rounded-lg overflow-hidden shadow-xl transform transition-all": "w-full h-screen pt-[25px] rounded-lg overflow-hidden shadow-xl transform transition-all" } role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
 
-                    <div className={"h-auto w-[70%] mx-auto shadow-xl flex items-start "}>
+                    <div className={modalFor == 'delete' ?  "h-auto w-[70%] mx-auto shadow-xl flex items-start ":  "h-auto w-[85%] mx-auto shadow-xl flex items-start "}>
                         {/* the container for the input fields */}
                         <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
                             <div className="w-full min-h-[250px] flex flex-col justify-start items-center p-[10px] ">
@@ -268,7 +283,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                 {modalFor == 'add' && 
                                 <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] z-[15] ">
-                                        <p className="text-md font-semibold  text-slate-800 ">New job. </p>
+                                        <p className="text-md font-semibold  text-slate-800 ">New Job </p>
 
                                         <div className="relative flex items-start justify-center">
                                             <div className="flex items-center justify-center gap-5">
@@ -277,7 +292,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                                     <p className="text-sm font-semibold">{selected_lead}</p>
                                                 </span>}
 
-                                                <span className="h-[40px] rounded-[5px] flex items-center justify-center text-sm border border-slate-600 px-5 cursor-pointer" onClick={()=> setShow_all_lead(!show_all_lead)}>Select Lead</span>
+                                                <span className="h-[40px] rounded-[3px] flex items-center justify-center text-sm border border-slate-600 px-5 cursor-pointer flex items-center gap-[5px]" onClick={()=> setShow_all_lead(!show_all_lead)}>Select Lead <span className="h-full flex items-center"> {show_all_lead ? <FaCaretUp size={22} className='text-slate-700' /> :  <FaCaretDown size={20} className='text-slate-700' />} </span>  </span>
                                             </div>
 
                                             {show_all_lead && 
@@ -317,8 +332,9 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                     </span>
 
-                                    <form  action="" className="w-full flex items-start justify-between gap-[15px]">
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
+                                    <form  action="" className="w-full flex items-start justify-between gap-[20px]">
+                                        <div className="w-1/3 flex flex-col items-start justify-start gap-[20px] ">
+                                            
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Contract Amount</p>
                                                 <span className="h-[40px] w-full ">
@@ -365,7 +381,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                             
                                         </div>
 
-                                        <div className="w-1/2 flex flex-col item-start justify-start gap-[20px]">
+                                        <div className="w-1/3 flex flex-col item-start justify-start gap-[20px]">
 
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Permit Status</p>
@@ -393,7 +409,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Cover size</p>
                                                 <span className="h-[40px] w-full ">
-                                                    <input type="text" name='cover_size' placeholder='yyyy-mm-dd' value={auth.cover_size} onChange={handle_change} className='normal-input text-sm' />
+                                                    <input type="text" name='cover_size' value={auth.cover_size} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
 
@@ -404,19 +420,64 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                                 </span>
                                             </span>
 
+                                          
+                                        </div>
+                                        
+                                        <div className="w-1/3 flex flex-col item-start justify-start gap-[20px]">
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
+                                                <p className="text-sm text-slate-900">Attached</p>
+
+                                                <span className="h-[40px] min-w-[150px] z-5">
+                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'attached'} dropArray={['True', 'False' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                </span>
+                                            </span>
+
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Struture Type</p>
+                                                <span className="h-[40px] min-w-[150px] z-5">
+                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'structure_type'} dropArray={['IRP', 'LATTICE', 'COMBO', 'FLAT PAN', 'LOUVER', 'HYBRID', 'OTHER' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                </span>
+                                            </span>
+
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Description</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='description' disabled={auth.structure_type !== 'OTHER' } placeholder='' value={auth.description} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">End Cap Style</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='end_cap_style' value={auth.end_cap_style} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Trim color</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='trim_color' value={auth.trim_color} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-white">.</p>
                                                 
-                                                <button className=" w-full h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_job} >
-                                            {loading ? (
-                                                <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                </svg>
-                                            ) : 'Create job'}
+                                                    <button className=" w-full h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_job} >
+                                                {loading ? (
+                                                    <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                    </svg>
+                                                ) : 'Create job'}
 
-                                        </button>
+                                                </button>
                                             </span>
+
+                                            
                                         </div>
                                         
                                     </form>
@@ -426,161 +487,221 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                 {modalFor == 'edit' && 
                                 <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
-                                <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] z-[15] ">
-                                    <p className="text-md font-semibold  text-slate-800 ">Edit Job: <strong>{selectedJob.job_ind}</strong> </p>
+                                    <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] z-[15] ">
+                                        <p className="text-md font-semibold  text-slate-800 ">Edit Job: <strong>{selectedJob.job_ind}</strong> </p>
 
-                                    <div className="relative flex items-start justify-center">
-                                        <div className="flex items-center justify-center gap-5">
-                                            {selected_lead && <span className="flex items-center justify-start gap-2">
-                                                <p className="text-sm">Lead name:</p>
-                                                <p className="text-sm font-semibold">{selected_lead}</p>
-                                            </span>}
+                                        {role == 'sale' && 
+                                        <div className="relative flex items-start justify-center">
+                                            <div className="flex items-center justify-center gap-5">
+                                                {selected_lead && <span className="flex items-center justify-start gap-2">
+                                                    <p className="text-sm">Lead name:</p>
+                                                    <p className="text-sm font-semibold">{selected_lead}</p>
+                                                </span>}
 
-                                            <span className="h-[40px] rounded-[5px] flex items-center justify-center text-sm border border-slate-600 px-5 cursor-pointer" onClick={()=> setShow_all_lead(!show_all_lead)}>Select Lead</span>
-                                        </div>
-
-                                        {show_all_lead && 
-                                        <div className="absolute top-[45px] right-0  w-[300px]">
-                                            <span className="h-[40px] w-full ">
-                                                    <input type="hoa_status" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-sm' />
-                                            </span>
-
-                                            <div className="w-full h-[315px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-white shadow-md rounded-[5px] ">
-                                                    <div className="w-full flex flex-col items-start justify-start">
-                                                        {filtered_leads.map((data, ind)=>{
-                                                            const {customer_name, customer_contract_date, hoa_status, lead_id } = data
-                                                            return(
-                                                                <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-100 px-[10px] gap-[10px] rounded-[3px] " onClick={()=> {setSelected_lead(customer_name); setAuth({...auth, lead_id: lead_id}); setShow_all_lead(!show_all_lead) }}>
-
-                                                                    <span className="h-[35px] flex items-center justify-start gap-[10px] w-full cursor-pointer "  >
-
-                                                                        <p className="text-start text-sm text-slate-900 " >{ind + 1}. </p>
-
-
-                                                                        <p className=" text-start text-sm text-slate-900 font-semibold " > {customer_name} </p>
-
-                                                                    </span>
-                                                                        
-                                                                    <p key={ind} className=" text-start text-sm text-slate-900 text-end " > {} </p>
-
-
-                                                                </span>
-                                                            )
-                                                        })}
-
-                                                    </div>
+                                                <span className="h-[40px] rounded-[5px] flex items-center justify-center text-sm border border-slate-600 px-5 cursor-pointer" onClick={()=> setShow_all_lead(!show_all_lead)}>Select Lead</span>
                                             </div>
 
+                                            {show_all_lead && 
+                                            <div className="absolute top-[45px] right-0  w-[300px]">
+                                                <span className="h-[40px] w-full ">
+                                                        <input type="hoa_status" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-sm' />
+                                                </span>
+
+                                                <div className="w-full h-[315px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-white shadow-md rounded-[5px] ">
+                                                        <div className="w-full flex flex-col items-start justify-start">
+                                                            {filtered_leads.map((data, ind)=>{
+                                                                const {customer_name, customer_contract_date, hoa_status, lead_id } = data
+                                                                return(
+                                                                    <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-100 px-[10px] gap-[10px] rounded-[3px] " onClick={()=> {setSelected_lead(customer_name); setAuth({...auth, lead_id: lead_id}); setShow_all_lead(!show_all_lead) }}>
+
+                                                                        <span className="h-[35px] flex items-center justify-start gap-[10px] w-full cursor-pointer "  >
+
+                                                                            <p className="text-start text-sm text-slate-900 " >{ind + 1}. </p>
+
+
+                                                                            <p className=" text-start text-sm text-slate-900 font-semibold " > {customer_name} </p>
+
+                                                                        </span>
+                                                                            
+                                                                        <p key={ind} className=" text-start text-sm text-slate-900 text-end " > {} </p>
+
+
+                                                                    </span>
+                                                                )
+                                                            })}
+
+                                                        </div>
+                                                </div>
+
+                                            </div>}
                                         </div>}
-                                    </div> 
 
-                                </span>
+                                    </span>
 
-                                <form  action="" className="w-full flex items-start justify-between gap-[15px]">
-                                    <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900">Contract Amount</p>
-                                            <span className="h-[40px] w-full ">
-                                                <input type="text" name='contract_amount' value={Number(String(auth.contract_amount).replace(/,/g,'')).toLocaleString()} onChange={handle_change} className='normal-input text-sm' />
-                                            </span>
-                                        </span>
+                                    <form  action="" className="w-full flex items-start justify-between gap-[15px]">
+                                        <div className="w-1/3 flex flex-col items-start justify-start gap-[20px] ">
+                                            {role == 'sales' && <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Contract Amount</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='contract_amount' value={Number(String(auth.contract_amount).replace(/,/g,'')).toLocaleString()} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>}
 
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900">Contract Date</p>
-                                            <span className="h-[40px] w-full ">
-                                                <input type="text" name='contract_date' placeholder='yyyy-mm-dd' value={auth.contract_date} onChange={handle_change} className='normal-input text-sm' />
-                                            </span>
-                                        </span>
-                                        
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
-                                            <p className="text-sm text-slate-900">HOA Status</p>
-
-                                            <span className="h-[40px] min-w-[150px] z-5">
-                                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'hoa_status'} dropArray={['PENDING', 'SENT', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                            </span>
-                                        </span>
-
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900">Engineering Status</p>
-
-                                            <span className="h-[40px] min-w-[150px] z-5">
-                                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'engineering_status'} dropArray={['SUBMITTED', 'NOT REQUIRED', 'REVISION REQUIRED', 'APPROVED', 'REJECTED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                            </span>
-                                        </span>
-                                        
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900">Engineering Submition Date</p>
-                                            <span className="h-[40px] w-full ">
-                                                <input type="text" name='engineering_submitted' placeholder='yyyy-mm-dd' value={auth.engineering_submitted} onChange={handle_change} className='normal-input text-sm' />
-                                            </span>
-                                        </span>
-                                        
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900">Engineering Received Date</p>
-                                            <span className="h-[40px] w-full ">
-                                                <input type="text" name='engineering_received' placeholder='yyyy-mm-dd' value={auth.engineering_received} onChange={handle_change} className='normal-input text-sm' />
-                                            </span>
-                                        </span>
-                                        
-                                    </div>
-
-                                    <div className="w-1/2 flex flex-col item-start justify-start gap-[20px]">
-
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900">Permit Status</p>
-
-                                            <span className="h-[40px] min-w-[150px] z-5">
-                                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                            </span>
-                                        </span>
-
-
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900">Permit Sent Date</p>
-                                            <span className="h-[40px] w-full ">
-                                                <input type="text" name='permit_sent_date' placeholder='yyyy-mm-dd' value={auth.permit_sent_date} onChange={handle_change} className='normal-input text-sm' />
-                                            </span>
-                                        </span>
-
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900">Permit Approval Date</p>
-                                            <span className="h-[40px] w-full ">
-                                                <input type="text" name='permit_approved_date' placeholder='yyyy-mm-dd' value={auth.permit_approved_date} onChange={handle_change} className='normal-input text-sm' />
-                                            </span>
-                                        </span>
-
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900">Cover size</p>
-                                            <span className="h-[40px] w-full ">
-                                                <input type="text" name='cover_size' placeholder='yyyy-mm-dd' value={auth.cover_size} onChange={handle_change} className='normal-input text-sm' />
-                                            </span>
-                                        </span>
-
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900">Cover color</p>
-                                            <span className="h-[40px] w-full ">
-                                                <input type="text" name='cover_color' value={auth.cover_color} onChange={handle_change} className='normal-input text-sm' />
-                                            </span>
-                                        </span>
-
-                                        <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-white">.</p>
+                                            {role == 'sales' && <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Contract Date</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='contract_date'  placeholder='yyyy-mm-dd' value={auth.contract_date} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>}
                                             
-                                            <button className=" w-full h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-700 flex items-center justify-center text-sm "  disabled={loading} onClick={update_job} >
-                                        {loading ? (
-                                            <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                            </svg>
-                                        ) : 'Update Job'}
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
+                                                <p className="text-sm text-slate-900">HOA Status</p>
 
-                                    </button>
-                                        </span>
-                                    </div>
-                                    
-                                </form>
+                                                <span className="h-[40px] min-w-[150px] z-5">
+                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'hoa_status'} dropArray={['PENDING', 'SENT', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                </span>
+                                            </span>
 
-                            </div>
+                                            {role !== 'sales' && <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Hoa Sent Date</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='hoa_sent_date' placeholder='yyyy-mm-dd' value={auth.hoa_sent_date} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>}
+
+                                            {role !== 'sales' && <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Hoa Approval Date</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='hoa_approval_date' placeholder='yyyy-mm-dd' value={auth.hoa_approval_date} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>}
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Engineering Status</p>
+
+                                                <span className="h-[40px] min-w-[150px] z-5">
+                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'engineering_status'} dropArray={['SUBMITTED', 'NOT REQUIRED', 'REVISION REQUIRED', 'APPROVED', 'REJECTED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                </span>
+                                            </span>
+                                            
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Engineering Submition Date</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='engineering_submitted' placeholder='yyyy-mm-dd' value={auth.engineering_submitted} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+                                            
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Engineering Received Date</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='engineering_received' placeholder='yyyy-mm-dd' value={auth.engineering_received} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+                                            
+                                        </div>
+
+                                        <div className="w-1/3 flex flex-col item-start justify-start gap-[20px]">
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Permit Status</p>
+
+                                                <span className="h-[40px] min-w-[150px] z-5">
+                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                </span>
+                                            </span>
+
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Permit Sent Date</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='permit_sent_date' placeholder='yyyy-mm-dd' value={auth.permit_sent_date} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Permit Approval Date</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='permit_approved_date' placeholder='yyyy-mm-dd' value={auth.permit_approved_date} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Cover size</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='cover_size'  value={auth.cover_size} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Cover color</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='cover_color' value={auth.cover_color} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+
+                                            
+                                        </div>
+
+                                        <div className="w-1/3 flex flex-col item-start justify-start gap-[20px]">
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
+                                                <p className="text-sm text-slate-900">Attached</p>
+
+                                                <span className="h-[40px] min-w-[150px] z-5">
+                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'attached'} dropArray={['True', 'False' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                </span>
+                                            </span>
+
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Struture Type</p>
+                                                <span className="h-[40px] min-w-[150px] z-5">
+                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'structure_type'} dropArray={['IRP', 'LATTICE', 'COMBO', 'FLAT PAN', 'LOUVER', 'HYBRID', 'OTHER' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                </span>
+                                            </span>
+
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Description</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='description' disabled={auth.structure_type !== 'OTHER' } placeholder='' value={auth.description} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">End Cap Style</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='end_cap_style' value={auth.end_cap_style} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900">Trim color</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='trim_color' value={auth.trim_color} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-white">.</p>
+                                                
+                                                    <button className=" w-full h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_job} >
+                                                {loading ? (
+                                                    <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                    </svg>
+                                                ) : 'Create job'}
+
+                                                </button>
+                                            </span>
+
+                                            
+                                        </div>
+                                        
+                                    </form>
+
+                                </div>
                                 }
 
                             </div>
