@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 import { BsBell } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
 import Image from "next/image"
-import { get_auth_request } from '@/app/api/admin_api';
+import {get_auth_request} from "../api/admin_api"
 
 interface Nav_Props {
     user?:any;
@@ -36,6 +36,7 @@ const DashboardNav = () => {
                 
                 setUser_info(response.data)      
     
+                console.log('dashboard nav ', response.data)
                 
             }else{
                 console.log('something went wrong');
@@ -117,7 +118,7 @@ const DashboardNav = () => {
 
                         {user_info?.user && <p className='text-sm text-white text-end'>{user_info?.user.first_name} {user_info?.user.last_name} </p>}
                 
-                {user_info && <div className="relative w-[35px] h-[35px] rounded-[100%] overflow-hidden p-[7.5px] bg-blue-200">
+                {user_info && user_info.user && <div className="relative w-[35px] h-[35px] rounded-[100%] overflow-hidden p-[7.5px] bg-blue-200">
                     <Image
                         src={user_info?.user.avatar || "https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718748903/u6wmwqvxzfinumomdfro.jpg"}
                         alt="avatar"

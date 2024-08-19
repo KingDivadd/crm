@@ -7,7 +7,7 @@ import { paymentRoute, timeZone } from '@/constants'
 import Alert from '../alert'
 import Image from "next/image";
 import ImageUploader from '../imageUploader'
-import { get_auth_request, patch_api_auth_request } from '@/app/api/admin_api'
+import { get_auth_request, patch_auth_request } from '@/app/api/admin_api'
 import { IoIosClose } from 'react-icons/io'
 
 
@@ -127,7 +127,7 @@ const AdminSystemSettings = () => {
                 company_name: companyInfo.name, company_address: companyInfo.address, company_email: companyInfo.email, 
                 number_of_admin: companyInfo.number_of_admin, company_logo: companyInfo.logo, company_phone: companyInfo.company_phone }
         
-            const response = await patch_api_auth_request('settings/update-settings-info', payload)
+            const response = await patch_auth_request('settings/update-settings-info', payload)
     
             if (response.status == 200 || response.status == 201){
 
