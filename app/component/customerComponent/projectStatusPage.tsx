@@ -1,103 +1,100 @@
 'use client'
 import React, {useState, useEffect} from 'react'
-import ViewProjectInfo from './viewProjectInfo'
+import { get_auth_request } from '../../api/admin_api';
+import { timestamp_to_readable_value } from '.././helper';
 
-const ProjectStatusPage = () => {
-    const [show, setShow] = useState(false)
-    const [showModal, setShowModal] = useState(false)
-    const [selectedItem, setSelectedItem] = useState(null)
 
-    function viewProjectDetiail(data:any){
-        console.log('clicked ',data)
-        setShow(!show)
-        setSelectedItem(data)
-        setShowModal(!showModal)
+
+interface Notificaiton_Props {
+    total_number_of_notifications?:number;
+    total_number_of_notifications_pages?:number;
+    notification?:any
+
+}
+
+const NotificationPage = () => {
+
+    const [notification_page, setNotification_page] = useState<Notificaiton_Props | null >(null)
+    const [alert, setAlert] = useState({type: '', message: ''})
+    const [page_number, setPage_number] = useState(1)
+
+
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
+    }
+
+    useEffect(() => {
+        get_notification(page_number)
+    
+    }, [])
+
+    async function get_notification(page_num:number) {
+        console.log(' start')        
+
+        const response = await get_auth_request(`auth/all-notifications/${page_num}`)
+
+        if (response.status == 200 || response.status == 201){
+            
+            setNotification_page(response.data)                  
+            console.log(response.data)                  
+
+        }else{            
+            if (response.response){
+                showAlert(response.response.data.err, "error")
+            }
+        }
     }
 
     return (
-        <div className="w-full p-[10px] flex ">
-            <div className="w-full h-full flex flex-col gap-[25px] pt-[20px] ">
-                {/* summary tabs */}
-                <div className="w-full flex flex-row items-center justify-between gap-[10px]">
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] rounded-[5px] bg-white w-1/4 border border-blue-600 ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-blue-600">Total Project</p>
-                            <p className="text-sm text-blue-600">5</p>
-                        </div>
+        <div className="w-full p-[10px] pb-[10px]">
+            <div className="w-full flex flex-row items-start justify-between gap-[10px] relative">
+                <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md ">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
+                        <p className="text-sm w-[15%] px-2  ">Date / Time</p>
+                        <p className="text-sm w-[17.5%] px-2  ">Subject</p>
+                        <p className="text-sm w-[27.5%] px-2  ">Details</p>
+                        <p className="text-sm w-[15%] px-2  ">Status</p>
+                        <p className="text-sm w-[15%] px-2  ">Source</p>
+                        <p className="text-sm w-[10%] px-2  ">Action</p>
                     </span>
-                    
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] rounded-[5px] border border-lime-600 bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-lime-600">Completed Project</p>
-                            <p className="text-sm text-lime-600">3</p>
-                        </div>
-                    </span>
-                    
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] border border-amber-600 rounded-[5px] bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-amber-600">Projects In Progress</p>
-                            <p className="text-sm text-amber-600">2</p>
-                        </div>
-                    </span>
-                    
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] border border-sky-500 rounded-[5px] bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-sky-500">Pending Project</p>
-                            <p className="text-sm text-sky-500">0</p>
-                        </div>
-                    </span>                    
-                </div>
 
-                {/* Current Project*/}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">All Projects</p>
+                    {notification_page ? 
+                    
+                    <div className="w-full flex flex-col justify-start items-start" style={{height: 'calc(100vh - 120px)'}}>
+                        {
+                            notification_page.notification.length ? 
+                            <>
+                            {notification_page.notification.map((data:any, ind:any)=>{
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[17.5%] px-2 ">Project Name</p>
-                            <p className="text-sm font-semibold w-[17.5%] px-2 ">HOA Status</p>
-                            <p className="text-sm font-semibold w-[25%] px-2 ">Permit Status</p>
-                            <p className="text-sm font-semibold w-[25%] px-2 ">Payment Status</p>
-                            <p className="text-sm font-semibold w-[15%] px-2 ">Status</p>
-                        </span>
-                        <div className="w-full all-project-cont flex flex-col justify-start items-start" >
-                            {[1,2,3,4,5,6,7,8,9,0,1].map((data, ind)=>{
+                                const {created_at, subject, message, read, user, source, } = data
                                 return (
-                                    <span key={ind} className="recent-activity-table-list" onClick={()=>viewProjectDetiail(data)}>
-                                        <p className="text-sm w-[17.5%] px-2 ">Project {ind + 1}</p>
-                                        <p className="text-sm w-[17.5%] px-2 ">{ind % 2 === 1 ? "Approved":"Pending"}</p>
-                                        <p className="text-sm w-[25%] px-2 ">In Progress (Expected: 2024-07-01)</p>
-                                        <p className="text-sm w-[25%] px-2 ">50% Paid ($5,000 / $10,000)</p>
-                                        <p className="text-sm w-[15%] px-2 ">{ind % 2 === 1 ? "In Progress":"Pending"}</p>
+                                    <span key={ind} className="recent-activity-table-list ">
+                                        <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
+                                        <p className="text-sm w-[17.5%] px-2 ">{subject}</p>
+                                        <p className="text-sm w-[27.5%] px-2 ">{message}</p>
+                                        <p className={read ? "text-sm w-[15%] text-green-600 px-2 ":"text-sm w-[15%] px-2 text-red-600 "}>{read ? "read": "unread"}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{source.last_name} {source.first_name} </p>
+                                        <p className="text-sm w-[10%] px-2 "> action </p>
                                     </span>
                                 )
                             })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
-
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
-                    </div>
+                            </>
+                            :
+                            <p className="text-sm font-normal">No Notification yet.</p>
+                        
+                        }
+                    </div> 
+                    :
+                    <div className="w-full flex flex-col justify-center items-center" style={{height: 'calc(100vh - 120px)'}}>
+                        <p className="text-sm font-normal">Loading Data...</p>
+                    </div>}
                 </div>
-
-                
             </div>
-            {showModal && <ViewProjectInfo showModal={showModal} setShowModal={setShowModal} selectedItem={selectedItem} setSelectedItem={setSelectedItem} setShow={setShow} show={show} />}
-        </div>
+        </div>   
     )
 }
 
-export default ProjectStatusPage
-
+export default NotificationPage

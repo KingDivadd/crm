@@ -12,7 +12,6 @@ import DashboardNav from '../dashboardNav'
 import SystemSettings from '../setting'
 
 
-
 const CustomerDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
