@@ -8,7 +8,7 @@ import { DropDownBlankTransparent } from '../dropDown'
 import ImageUploader, { FilesUpload, FlexibleImageUploader } from '../imageUploader'
 import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
-import { delete_api_auth_request } from '@/app/api/admin_api'
+import { delete_auth_request } from '@/app/api/admin_api'
 import LeadTable from './subComponent/shortcutTables'
 
 const ShortCutModal = ({ showModal, setShowModal, selectedItem, setSelectedItem}: AdminShortcutProps) => {
@@ -21,7 +21,7 @@ const ShortCutModal = ({ showModal, setShowModal, selectedItem, setSelectedItem}
                 setAlert({message: '', type: ''})
             }, 3000);
     }
-   
+
 
     function handleCloseModal() {
         setShowModal(false)

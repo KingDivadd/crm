@@ -243,42 +243,39 @@ const AdminHome = () => {
         <div className="w-full p-[10px] pb-[10px] ">
             <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">
                 {/* first section = summary stat */}
-                <div className="w-full flex flex-row items-center justify-between gap-[10px]">
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] bg-white w-1/4 border border-blue-600 ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-md text-blue-600">Total Lead</p>
-                            <p className="text-sm text-blue-600">{dash_box?.total_number_of_leads || 0}</p>
-                            <p className="text-sm font-light text-blue-600">Last 30 days</p>
+                <div className="w-full flex flex-row items-center justify-between gap-[10px] relative ">
+                    <span className="absolute h-[145px] bg-blue-700 -top-[10px] -left-[10px] rounded-b-[3px] " style={{width: 'calc(100% + 20px)'}}></span>
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] w-1/4 group bg-white shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md">Total Lead</p>
+                            <p className="text-sm ">{dash_box?.total_number_of_leads || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[5px] border border-lime-700 bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-md text-lime-700">Total Sales</p>
-                            <p className="text-sm text-lime-700">{dash_box?.total_number_of_sales || 0}</p>
-                            <p className="text-sm font-light text-lime-700">Last 30 days</p>
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md ">Total Sales</p>
+                            <p className="text-sm ">{dash_box?.total_number_of_sales || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-sky-600 rounded-[5px] bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-md text-sky-600">Total Installations</p>
-                            <p className="text-sm text-sky-600">{dash_box?.total_number_of_installations || 0}</p>
-                            <p className="text-sm font-light text-sky-600">Last 30 days</p>
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] bg-white w-1/4  shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md ">Total Installations</p>
+                            <p className="text-sm ">{dash_box?.total_number_of_installations || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
-                    </span>
+                    </span>  
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] border border-lime-600 rounded-[5px] bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-md text-lime-700">Total Projects</p>
-                            <p className="text-sm text-lime-700">{dash_box?.total_number_of_projects || 0}</p>
-                            <p className="text-sm font-light text-lime-700">Last 30 days</p>
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md ">Total Projects</p>
+                            <p className="text-sm ">{dash_box?.total_number_of_projects || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
-                    </span>
-                    
-                    
-                    
-                    
+                    </span>                  
                 </div>
 
                 {/* second section = recent activity */}

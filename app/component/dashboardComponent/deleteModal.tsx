@@ -8,7 +8,7 @@ import { DropDownBlankTransparent } from '../dropDown'
 import ImageUploader, { FilesUpload, FlexibleImageUploader } from '../imageUploader'
 import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
-import { delete_api_auth_request } from '@/app/api/admin_api'
+import { delete_auth_request } from '@/app/api/admin_api'
 
 const DeleteModal = ({ showModal, setShowModal, selectedUser, setSelectedUser}: UserDeleteProps) => {
     const [alert, setAlert] = useState({type: '', message: ''})
@@ -23,7 +23,7 @@ const DeleteModal = ({ showModal, setShowModal, selectedUser, setSelectedUser}: 
 
     async function delete_user() {
         setLoading(true)
-        const response = await delete_api_auth_request(`user/delete-user/${selectedUser.user_id}`)
+        const response = await delete_auth_request(`user/delete-user/${selectedUser.user_id}`)
 
         if (response.status == 200 || response.status == 201){
             
