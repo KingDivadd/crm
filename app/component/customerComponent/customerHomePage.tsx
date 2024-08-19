@@ -175,13 +175,12 @@ const CustomerHomePage = () => {
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
-                            <p className="text-sm font-normal w-[15%] px-2 ">Project Id</p>
-                            <p className="text-sm font-normal w-[10%] px-2 ">Job Id</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Contract Amt</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Attached</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Structure Type</p>
-                            <p className="text-sm font-normal w-[15%] px-2 "></p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Status</p>
+                            <p className="text-sm font-normal w-[7.5%] px-2 "> Id</p>
+                            <p className="text-sm font-normal w-[25%] px-2 ">Subject</p>
+                            <p className="text-sm font-normal w-[30%] px-2 ">Message</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Status</p>
+                            <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Date/Time</p>
                         </span>
                         
                         {dash_components != null ? 
