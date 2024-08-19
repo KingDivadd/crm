@@ -99,6 +99,7 @@ const SalesPipelinePage = () => {
             
             setFiltered_pipeline_box(response.data)
 
+            console.log('pipeline ', response.data);
             
 
         }else{            
