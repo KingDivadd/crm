@@ -50,9 +50,6 @@ const Pipeline_Modal = ({ showModal, setShowModal, selectedPipeline, setSelected
         }
     }, [])
 
-   
-
-
 
     return (
         <div className="fixed z-30 inset-0 overflow-y-auto" id="modal">
