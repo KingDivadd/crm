@@ -53,169 +53,129 @@ const OpsDashboardPage = () => {
                                     
                 </div>
 
-                {/* workflow section */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Project Workflow</p>
+                    <p className="text-md ">Recent Task</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px]  flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[25%] px-[10px] ">HOA Approval</p>
-                            <p className="text-sm font-semibold w-[25%] px-[10px] ">Engineering </p>
-                            <p className="text-sm font-semibold w-[25%] px-[10px] ">Permit Approval</p>
-                            <p className="text-sm font-semibold w-[25%] px-[10px] ">Installation</p>
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                            <p className="text-sm font-normal w-[7.5%] px-2 ">Task ID</p>
+                            <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Desription</p>
+                            <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
+                            <p className="text-sm font-normal w-[17.5%] px-2 ">Assigned To</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Start Date</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">End Date</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Completion Date</p>
                         </span>
-                        <div className="w-full  flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
+                        
+                        {dash_components !== null ? 
+                        
+                        <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
+
+                            {dash_components?.recent_tasks.length ?
+                            <>
+                            {dash_components?.recent_tasks.map((data:any, ind:any)=>{
+
+                                const {task_ind, job, description, assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
                                 return (
-                                    <span key={ind} className="approval-flow-table-list">
-                                        <span className="w-[25%] flex flex-col items-start justify-betw">
-                                            <ProjectWorkFlowApproval />
-                                        </span>
-                                        <span className="w-[25%] flex flex-col items-start justify-betw">
-                                            <ProjectWorkFlowEngineering />
-                                        </span>
-                                        <span className="w-[25%] flex flex-col items-start justify-betw">
-                                            <ProjectWorkFlowPermitApproval />
-                                        </span>
-                                        <span className="w-[25%] flex flex-col items-start justify-betw">
-                                            <ProjectWorkFlowInstallation />
-                                        </span>
+                                    <span key={ind} className="recent-activity-table-list " >
+                                        <p className="text-sm w-[7.5%] px-2 ">{task_ind} </p>
+                                        <p className="text-sm w-[7.5%] px-2 ">{job.job_ind} </p>
+                                        <p className="text-sm w-[20%] px-2 "> {description} </p>
+                                        <p className="text-sm w-[12.5%] px-2 "> {status} </p>
+                                        <p className="text-sm w-[17.5%] px-2 "> {assigned_to} </p>
+                                        <p className="text-sm w-[10%] px-2 "> {start_date} </p>
+                                        <p className="text-sm w-[10%] px-2 "> {due_date} </p>
+                                        <p className="text-sm w-[15%] px-2 "> {completion_date} </p>
                                     </span>
                                 )
                             })}
+                            </>:
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Task yet</p>
+                            </div>
+                            }
+
                         </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
+                        :
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
+                        </div>
+                        }
+                        
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
+                                <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
 
                                 </span>
-                                <p className="text-sm cursor-pointer">Next</p>
+                                <p className="text-sm cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_tasks.length}</p>
                             </span>
                         </span>
                     </div>
                 </div>
-
-
-                {/* Scheduling and Logistic */}
-
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Project Workflow</p>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px]  flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[33%] px-[10px] ">Scheduled</p>
-                            <p className="text-sm font-semibold w-[34%] px-[10px] ">In Progress </p>
-                            <p className="text-sm font-semibold w-[33%] px-[10px] ">Completed</p>
-                        </span>
-                        <div className="w-full  flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
-                                return (
-                                    <span key={ind} className="approval-flow-table-list">
-                                        <span className="w-[33%] flex flex-col items-start justify-betw">
-                                            <SchedulingAndLogisticData date='June 10, 2024' team="Team A" task='Scheduled Installation' />
-                                        </span>
-                                        <span className="w-[34%] flex flex-col items-start justify-betw">
-                                            <SchedulingAndLogisticData date='June 15, 2024' team='Team C' task='Engineering Review' />
-                                        </span>
-                                        <span className="w-[33%] flex flex-col items-start justify-betw">
-                                            <SchedulingAndLogisticData date='June 17, 2024' team='Team F' task='HOA Approval' />
-                                        </span>
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
-
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-                
-
-                {/* <div className="w-full flex flex-col gap-4">
-                    <p className="text-xl font-semibold">Approval Flow Tracking</p>
-                    <ApprovalFlowTracking />
-                </div> */}
+               
 
                 {/* Approval Flow tracking */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Approval Flow Trackings</p>
+                <div className="w-full min-h-[150px] flex flex-col gap-[10px]">
+                    <p className="text-md font-medium">Approval Flow Trackings</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px]  flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[20%] px-[10px] ">Project Name</p>
-                            <p className="text-sm font-semibold w-[20%] px-[10px] ">Approval Step</p>
-                            <p className="text-sm font-semibold w-[20%] px-[10px] ">Project Status</p>
-                            <p className="text-sm font-semibold w-[20%] px-[10px] ">Approval Date</p>
-                            <p className="text-sm font-semibold w-[20%] px-[10px] ">Responsible Team</p>
+                    <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                            <p className="text-sm font-normal w-[20%] px-2 ">Project Name</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Approval Step</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Project Status</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Approval Date</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Responsible Team</p>
                         </span>
                         <div className="w-full  flex flex-col justify-start items-start">
                             {[1,2,3,4,5].map((data, ind)=>{
                                 return (
                                     <span key={ind} className="approval-flow-table-list">
                                         <span className="w-[20%] flex flex-col items-start justify-betw">
-                                            <p className="text-sm  px-[10px] h-[30px] ">Project Alpha</p>
-                                            <p className="text-sm  px-[10px] h-[30px] ">Project Alpha</p>
-                                            <p className="text-sm  px-[10px] h-[30px] ">Project Alpha</p>
+                                            <p className="text-sm  px-2 h-[30px] ">Project Alpha</p>
+                                            <p className="text-sm  px-2 h-[30px] ">Project Alpha</p>
+                                            <p className="text-sm  px-2 h-[30px] ">Project Alpha</p>
                                         </span>
                                         <span className="w-[20%] flex flex-col items-start justify-betw">
-                                            <p className="text-sm  px-[10px] h-[30px] ">HOA</p>
-                                            <p className="text-sm  px-[10px] h-[30px] ">Engineering</p>
-                                            <p className="text-sm  px-[10px] h-[30px] ">Permit</p>
+                                            <p className="text-sm  px-2 h-[30px] ">HOA</p>
+                                            <p className="text-sm  px-2 h-[30px] ">Engineering</p>
+                                            <p className="text-sm  px-2 h-[30px] ">Permit</p>
                                         </span>
                                         <span className="w-[20%] flex flex-col items-start justify-betw">
-                                            <p className="text-sm  px-[10px] h-[30px] ">Completed</p>
-                                            <p className="text-sm  px-[10px] h-[30px] ">In Progress</p>
-                                            <p className="text-sm  px-[10px] h-[30px] ">Pending</p>
+                                            <p className="text-sm  px-2 h-[30px] ">Completed</p>
+                                            <p className="text-sm  px-2 h-[30px] ">In Progress</p>
+                                            <p className="text-sm  px-2 h-[30px] ">Pending</p>
                                         </span>
                                         <span className="w-[20%] flex flex-col items-start justify-betw">
-                                            <p className="text-sm  px-[10px] h-[30px] ">June 12, 2024</p>
-                                            <p className="text-sm  px-[10px] h-[30px] ">N/A</p>
-                                            <p className="text-sm  px-[10px] h-[30px] ">N/A</p>
+                                            <p className="text-sm  px-2 h-[30px] ">June 12, 2024</p>
+                                            <p className="text-sm  px-2 h-[30px] ">N/A</p>
+                                            <p className="text-sm  px-2 h-[30px] ">N/A</p>
                                         </span>
                                         <span className="w-[20%] flex flex-col items-start justify-betw">
-                                            <p className="text-sm  px-[10px] h-[30px] ">HOA Team</p>
-                                            <p className="text-sm  px-[10px] h-[30px] ">Engineering Team</p>
-                                            <p className="text-sm  px-[10px] h-[30px] ">Permit Team</p>
+                                            <p className="text-sm  px-2 h-[30px] ">HOA Team</p>
+                                            <p className="text-sm  px-2 h-[30px] ">Engineering Team</p>
+                                            <p className="text-sm  px-2 h-[30px] ">Permit Team</p>
                                         </span>
                                     </span>
                                 )
                             })}
                         </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
+                                <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
 
                                 </span>
-                                <p className="text-sm cursor-pointer">Next</p>
+                                <p className="text-sm cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_notifications.length || 0}</p>
                             </span>
                         </span>
                     </div>
