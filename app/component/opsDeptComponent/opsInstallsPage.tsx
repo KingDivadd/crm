@@ -1,293 +1,365 @@
 'use client'
-import { paymentSection } from '@/types'
 import React, {useState, useEffect} from 'react'
-import { MdEdit, MdDeleteForever } from 'react-icons/md'
-import OpsViewInstall from './opsViewInstall'
+import { IoAddOutline } from "react-icons/io5";
+import { MdEdit } from "react-icons/md";
+import { MdDeleteForever } from "react-icons/md";
+import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
+import Alert from '../alert';
+import { userArray } from '@/constants';
+import { get_auth_request } from '@/app/api/admin_api';
+import OpsInstallModal from './opsInstallModal';
 
-const OpsInstallsPage = () => {
-    const [addInvoice, setAddInvoice] = useState(false)
-    const [selectedInvoice, setSelectedInvoice] = useState(null)
-    const [show, setShow] = useState(false)
+interface Projects_Props {
+    forEach?(arg0: (data: any, ind: number) => void): unknown;
+    filter?(arg0: (user: any) => any): unknown;
+    map?(arg0: (data: any) => void): unknown;
+    total_number_of_projects_pages?: number; // Now optional and can be undefined
+    total_number_of_projects?: number; // Now optional and can be undefined
+    projects: any;
+}  
 
-    function editInvoice(data:any){
-        setSelectedInvoice(data)
-        setAddInvoice(false)
-        setShow(true)
+const OpsInstallPage = () => {
+    const [modalFor, setModalFor] = useState('')
+    const [showModal, setShowModal] = useState(false)
+    const [selectedProject, setSelectedProject] = useState(null)
+    const [alert, setAlert] = useState({type: '', message: ''})
+    const [page_number, setPage_number] = useState(1)
+    const [project_box, setProject_box] = useState<Projects_Props | null>(null);
+    const [filtered_project_box, setFiltered_project_box] = useState<Projects_Props | null>(null);
+    const [filters, setFilters] = useState({filter_input: '', disposition: ''})
+    const [role, setRole] = useState('')
+
+    const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
+        status: false
+    });
+    const [dropElements, setDropElements] = useState({
+        status: 'Project Status'
+
+    })
+
+    const handleDropMenu = (dropdown: any) => {
+        const updatedDropMenus = Object.keys(dropMenus).reduce((acc, key) => {
+            acc[key] = key === dropdown ? !dropMenus[key] : false;
+            return acc;
+        }, {} as { [key: string]: boolean });
+        setDropMenus(updatedDropMenus);
+        setDropElements({...dropElements, [dropdown]: 'SELECT'});
+    };
+
+    const handleSelectDropdown = (dropdown: any, title:any)=>{
+        handle_new_filter(dropdown.replace(/ /g, '_'))
+        setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
+
+
+    useEffect(() => {
+        const user_role = localStorage.getItem('user-role')
+        if (user_role) {
+            setRole(user_role)
+        }else{
+            setRole('project')
+        }
+        get_all_projects()
+    }, [showModal])
+
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
+    }
+
+    async function get_all_projects() {
+        
+        const response = await get_auth_request(`auth/all-projects/${page_number}`)
+
+        if (response.status == 200 || response.status == 201){
+            
+            setProject_box(response.data)      
+            
+            setFiltered_project_box(response.data)
+
+            
+
+        }else{
+        
+        showAlert(response.response.data.err, "error")
+        }
+    }
+
+    async function filter_projects(item:any) {
+
+        
+        const response = await get_auth_request(`/filter-projects/${item}/${page_number}`)
+
+        if (response.status == 200 || response.status == 201){
+            
+            setProject_box(response.data)      
+            
+            setFiltered_project_box(response.data)
+
+            
+            showAlert(response.data.msg, "success")
+
+        }else{
+        
+        showAlert(response.response.data.err, "error")
+        }
+    }
+
+    async function app_users_action(item: any) {
+        let new_page_number = page_number;
+        let max_page_number = project_box?.total_number_of_projects_pages
+
+        if (item === 'prev') {
+        if (page_number > 1) {
+            new_page_number = page_number - 1;
+        }
+        } else if (item === 'next') {
+        if (max_page_number && page_number < max_page_number) {
+            new_page_number = page_number + 1;
+        }
+        } else {
+        new_page_number = item;
+        }
+
+
+        setPage_number(new_page_number);
+    }
+
+    const render_page_numbers = () => {
+        const pages = [];
+        const max_page_number = project_box?.total_number_of_projects_pages || 1;
+        const max_displayed_pages = 3;
+
+        if (max_page_number <= max_displayed_pages) {
+        for (let i = 1; i <= max_page_number; i++) {
+            pages.push(
+            <p
+                key={i}
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                page_number === i ? 'bg-blue-700 text-white' : ''
+                }`}
+                onClick={() => app_users_action(i)}
+            >
+                {i}
+            </p>
+            );
+        }
+        } else {
+        let startPage = Math.max(1, page_number - 1);
+        let endPage = Math.min(page_number + 1, max_page_number);
+
+        if (page_number === 1) {
+            startPage = 1;
+            endPage = max_displayed_pages;
+        } else if (page_number === max_page_number) {
+            startPage = max_page_number - 2;
+            endPage = max_page_number;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(
+            <p
+                key={i}
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                page_number === i ? 'bg-blue-700 text-white' : ''
+                }`}
+                onClick={() => app_users_action(i)}
+            >
+                {i}
+            </p>
+            );
+        }
+        }
+
+        return pages;
+    };
+
+    async function handleFilter(e: any) {
+        const value = e.target.value.toLowerCase().trim();
+        setFilters({ ...filters, filter_input: value });
+    
+        // Only apply filtering logic if there is a value to filter by
+        if (project_box && project_box.projects) {
+            if (value !== '') {
+                const filtered_projects = project_box.projects.filter((data: any) => {
+                    const project_ind = data.project_ind?.toLowerCase() || '';
+                    const contract_amount = Number(data.contract_amount).toLocaleString() || '';
+                    const contract_amount_without_comma = String(data.contract_amount) || '';
+                    const structure_type = data.structure_type?.toLowerCase().replace(/ /g, '_') || '';
+    
+                    return (
+                        project_ind.includes(value) ||
+                        contract_amount.includes(value) ||
+                        contract_amount_without_comma.includes(value) ||
+                        structure_type.includes(value)
+                    );
+                });
+    
+                // Set the filtered projects to the state if any match the condition
+                setFiltered_project_box({
+                    ...filtered_project_box,
+                    projects: filtered_projects
+                });
+            } else {
+                // Reset to original projects list if input is cleared
+                setFiltered_project_box({
+                    ...filtered_project_box,
+                    projects: project_box.projects
+                });
+            }
+        }
+        
+        // Log the result to verify
+    }
+    
+    
+
+    async function handle_new_filter(item: string) {
+        if (project_box && item.toLocaleLowerCase() == 'all') {            
+            // If no filter is provided, reset to the original list
+            setFiltered_project_box(project_box);
+        
+        } 
+        else if (item && project_box) {            
+            const new_projects = project_box.projects.filter((data: any) => {
+                const status = data.status?.toLowerCase() 
+
+                // Check if the filter item matches either the user_role or active_status
+                return (
+                    status === item.toLowerCase()
+                );
+            });
+    
+            setFiltered_project_box({ ...project_box, projects: new_projects });
+        } else {
+            // If no filter is provided, reset to the original list
+            setFiltered_project_box(project_box);
+        }
+    }
+    
+    function add_project(){
+        setShowModal(true)
+        setSelectedProject(null)
+        setModalFor('add')
+    }
+
+    function view_project(project:any){
+        setShowModal(true)
+        setSelectedProject(project)
+        setModalFor('edit')
+    }
+
+    function delete_project(project:any){
+        setShowModal(true)
+        setSelectedProject(project)
+        setModalFor('delete')
+    }
+
     return (
-        <div className='w-full p-[10px]' >
-
-            {show ?
-            <OpsViewInstall show={show} setShow={setShow} selectedInvoice={selectedInvoice} setSelectedInvoice={setSelectedInvoice} addInvoice={addInvoice} setAddInvoice={setAddInvoice} /> : 
-            <div className="w-full h-full flex flex-col items-start justify-start gap-[25px]">
-                {/* summary card */}
-                <div className="w-full flex flex-row items-center justify-between gap-[10px]">
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] rounded-[5px] bg-white w-1/4 border border-blue-500 ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-blue-600 ">Total Installations</p>
-                            <p className="text-sm text-blue-600 ">145</p>
-                        </div>
+        <div className="w-full h-full p-[10px] pb-[10px] ">
+            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[10px] ">
+                <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
+                    {alert.message && <Alert message={alert.message} type={alert.type} />} 
+                </span>
+                <span className="w-full flex flex-row items-center justify-between">
+                    <span className="h-full flex flex-row items-center justify-start gap-4">
+                        <p className="text-lg font-semibold text-black">All Projects</p>
+                        <p className="text-sm text-black">{(project_box && project_box?.total_number_of_projects) || 0 }</p>
                     </span>
-                    
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] rounded-[5px] border border-sky-600 bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-sky-600">Scheduled Installations</p>
-                            <p className="text-sm text-sky-600">45</p>
-                        </div>
+                    <span className="flex flex-row items-start justify-start gap-4">
+                        <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
+                            <span className="w-[350px] h-[40px] ">
+                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by project id, contract amount ' id="" className='normal-input bg-gray-100 text-sm ' />
+                            </span>
+                            <span className="h-[40px] min-w-[150px]">
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Pending', 'In Pending', 'Completed', 'On Hold', 'Cancelled', 'All' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                            </span>
+
+                        </span>
+
+                        
+
                     </span>
+                </span>
+
+                
+                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] border border-blue-600 rounded-[5px] bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-blue-600">Installations in Progress</p>
-                            <p className="text-sm text-blue-600">65</p>
-                        </div>
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[10%] px-2 ">Project Id</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Contract Date</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Contract Amount</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Project Status</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Added By</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Attached Status</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Structure Type</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Action</p>
                     </span>
-                    
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] border border-lime-600 rounded-[5px] bg-white w-1/4  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-lime-600">Completed Installations</p>
-                            <p className="text-sm text-lime-600">65</p>
-                        </div>
-                    </span>
-                    
-                </div>
+                    <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
+                        
+                        {filtered_project_box !== null ?
+                        
+                            <div className='h-full w-full flex flex-col justify-start '>
 
-                {/* Material Section */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Materials Section</p>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Material Item</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Status</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Date Ordered</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Date Received</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Date Delivered</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Cost</p>
-                        </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
-                                return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">Roofing Sheet</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">{ind % 2 === 1 ? "Ordered": "Delivered"}</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">June 10, 2024</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">June 11, 2024</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">June 11, 2024</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">$15,000</p>
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
-
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-
-                {/* Payment Section */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Payment Section</p>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[30%] pr-2 pl-2 ">Phase</p>
-                            <p className="text-sm font-semibold w-[22.5%] pr-2 pl-2 ">Status</p>
-                            <p className="text-sm font-semibold w-[22.5%] pr-2 pl-2 ">Amount</p>
-                            <p className="text-sm font-semibold w-[25%] pr-2 pl-2 ">Date Received</p>
-                        </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {paymentSection.map((data, ind)=>{
-                                const {amount, dateReceived, phase, status} = data
-                                return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[30%] pr-2 pl-2 ">{phase}</p>
-                                        <p className="text-sm w-[22.5%] pr-2 pl-2 ">{status}</p>
-                                        <p className="text-sm w-[22.5%] pr-2 pl-2 ">{amount}</p>
-                                        <p className="text-sm w-[25%] pr-2 pl-2 ">{dateReceived}</p>
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
-
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-
-                {/* Installation Workflow */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Approval Flow Trackings</p>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px]  flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[32.5%] pr-2 pl-2 ">Scheduled</p>
-                            <p className="text-sm font-semibold w-[35%] pr-2 pl-2 ">In Progress</p>
-                            <p className="text-sm font-semibold w-[32.5%] pr-2 pl-2 ">Completed</p>
-                        </span>
-                        <div className="w-full  flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
-                                return (
-                                    <span key={ind} className="approval-flow-table-list">
-                                        <span className="w-[32.5%] flex flex-col items-start justify-betw px-[10px] ">
-                                            <span className="w-full flex flex-row items-center justif-start gap-3  ">
-                                                <p className="text-sm font-light h-[30px] ">Task:</p>
-                                                <p className="text-sm h-[30px] ">Footing Date</p>
-                                            </span>
-                                            <span className="w-full flex flex-row items-center justif-start gap-3  ">
-                                                <p className="text-sm font-light h-[30px] ">Date:</p>
-                                                <p className="text-sm h-[30px] ">June 20, 2024</p>
-                                            </span>
-                                            <span className="w-full flex flex-row items-center justif-start gap-3 ">
-                                                <p className="text-sm font-light h-[30px] ">Crew:</p>
-                                                <p className="text-sm h-[30px] ">Crew A</p>
-                                            </span>
-                                            <span className="w-full flex flex-row items-center justif-start gap-3 ">
-                                                <p className="text-sm font-light h-[30px] ">Bill Sheet:</p>
-                                                <p className="text-sm h-[30px] ">Pending</p>
-                                            </span>
-                                        </span>
-                                        <span className="w-[35%] flex flex-col items-start justify-betw px-[10px]">
-                                            <span className="w-full flex flex-row items-center justif-start gap-3  ">
-                                                <p className="text-sm font-light h-[30px] ">Task:</p>
-                                                <p className="text-sm h-[30px] ">Electrical Work</p>
-                                            </span>
-                                            <span className="w-full flex flex-row items-center justif-start gap-3 ">
-                                                <p className="text-sm font-light h-[30px] ">Date:</p>
-                                                <p className="text-sm h-[30px] ">June 15, 2024</p>
-                                            </span>
-                                            <span className="w-full flex flex-row items-center justif-start gap-3  ">
-                                                <p className="text-sm font-light h-[30px] ">Crew:</p>
-                                                <p className="text-sm h-[30px] ">Crew C</p>
-                                            </span>
-                                            <span className="w-full flex flex-row items-center justif-start gap-3  ">
-                                                <p className="text-sm font-light h-[30px] ">Bill Sheet:</p>
-                                                <p className="text-sm h-[30px] ">Submitted</p>
-                                            </span>
-                                        </span>
-                                        <span className="w-[32.5%] flex flex-col items-start justify-betw px-[10px] ">
-                                            <span className="w-full flex flex-row items-center justif-start gap-3  ">
-                                                <p className="text-sm font-light h-[30px] ">Task:</p>
-                                                <p className="text-sm h-[30px] ">Inspection</p>
-                                            </span>
-                                            <span className="w-full flex flex-row items-center justif-start gap-3  ">
-                                                <p className="text-sm font-light h-[30px] ">Date:</p>
-                                                <p className="text-sm h-[30px] ">June 14, 2024</p>
-                                            </span>
-                                            <span className="w-full flex flex-row items-center justif-start gap-3  ">
-                                                <p className="text-sm font-light h-[30px] ">Crew:</p>
-                                                <p className="text-sm h-[30px] ">Crew F</p>
-                                            </span>
-                                            <span className="w-full flex flex-row items-center justif-start gap-3 ">
-                                                <p className="text-sm font-light h-[30px] ">Bill Sheet:</p>
-                                                <p className="text-sm h-[30px] ">Approved</p>
-                                            </span>
+                                {project_box?.projects.length ?
+                                <>
+                                { filtered_project_box?.projects.map((data:any, ind:number)=>{
+                                    const {project_ind, contract_amount, contract_date,status, project_adder, attached, structure_type } = data
+                                    return (
+                                        <div key={ind}>
+                                        
+                                        <span className="recent-activity-table-list " onClick={()=> view_project(data)} >
+                                            <p className="text-sm w-[10%] px-2 "> {project_ind} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {contract_date} </p>
+                                            <p className="text-sm w-[12.5%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {status.replace(/_/g, ' ')} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {project_adder.last_name}  {project_adder.first_name} </p>
+                                            <p className={attached ? "text-sm w-[15%] px-2 text-blue-700 ": "text-sm w-[15%] px-2 text-amber-600 "}>{attached ? "Attached" : "Not Attached"} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {structure_type.replace(/_/g, ' ')} </p>
+                                            <p className="text-sm w-[10%] px-2 hover:underline text-blue-700"> view </p>
                                         </span>
                                         
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
+                                        </div>
+                                    )
+                                })}
+                                </>
+                                :
+                                <div className="w-full h-[100%] flex items-center justify-center">
+                                    <p className="text-normal"> No projects yet </p>
+                                </div>}
 
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
+                            </div>
+                        
+                        :
+
+                            <div className="w-full h-full flex items-center justify-center">
+                                <p className="text-sm font-normal">Loading Projects...</p>
+                            </div>
+                        
+                        }
+                    
                     </div>
-                </div>
-
-                {/* Material Section */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <span className="w-full flex flex-row items-center justify-between">
-                        <p className="text-xl font-semibold">Invoice Section</p>
-                        <p className="text-md hover:text-blue-600 hover:underline cursor-pointer " onClick={()=>{setShow(true); setAddInvoice(true);}}>Add Invoice</p>
+                    
+                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                        <span className="flex flex-row items-center justify-start gap-3 h-full">
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
+                            <span className="w-auto h-full flex flex-row items-center justify-start">
+                            {render_page_numbers()}
+                            </span>
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
+                        </span>
+                        <span className="flex flex-row items-center justify-end gap-3 h-full">
+                            <p className="text-sm">Showing 1-15 of {(project_box && project_box?.total_number_of_projects) || 0}</p>
+                        </span>
                     </span>
-
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Invoice Type</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Upload Date</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Status</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Cost</p>
-                            <p className="text-sm font-semibold w-[15%] pr-2 pl-2 ">Job</p>
-                            <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 "></p>
-                            <p className="text-sm font-semibold w-[12.5%] pr-2 pl-2 "></p>
-                        </span>
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {[1,2,3,4,5].map((data, ind)=>{
-                                return (
-                                    <span key={ind} className="recent-activity-table-list">
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">Duralum</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">June 13, 2024</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">Uploaded</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">$500</p>
-                                        <p className="text-sm w-[15%] pr-2 pl-2 ">JB10023</p>
-                                        <p className="text-sm w-[12.5%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-lime-600" onClick={()=>editInvoice(data)} ><MdEdit size={16} /> Edit</p>
-                                        <p className="text-sm w-[12.5%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-red-400" onClick={()=>editInvoice(data)}  ><MdDeleteForever size={18} /> Delete</p>
-                                    </span>
-                                )
-                            })}
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
-
-                                </span>
-                                <p className="text-sm cursor-pointer">Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of 60</p>
-                            </span>
-                        </span>
-                    </div>
                 </div>
 
-
-            </div>}
+            </div>
+            {showModal && <OpsInstallModal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedProject={selectedProject} setModalFor={setModalFor} setSelectedProject={setSelectedProject} /> }
         </div>
     )
 }
 
-export default OpsInstallsPage
+export default OpsInstallPage
