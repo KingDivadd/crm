@@ -92,8 +92,8 @@ const OpsSideBar = ({active, setActive}: SideBarNav) => {
                     </span>
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
-                    <FiLogOut size={25} />
-                    {active !== "sales" && <p className="text-lg">Logout</p>}
+                    <FiLogOut size={21} />
+                    {active !== "sales" && <p className="text-[15.5px] ">Logout</p>}
                 </span>
             </div>
         </div>

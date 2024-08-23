@@ -42,3 +42,29 @@ export function timestamp_to_readable_value(timestamp:number) {
     
     return formattedDate;
   }
+
+  export function get_current_time() {
+    const now = new Date();
+
+    // Extract date components
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0');
+    const day = String(now.getDate()).padStart(2, '0');
+    
+    // Extract time components
+    let hours = now.getHours();
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    
+    // Determine AM/PM
+    const ampm = hours >= 12 ? 'PM' : 'AM';
+    
+    // Convert 24-hour time to 12-hour time
+    hours = hours % 12;
+    hours = hours ? hours : 12; // Adjust midnight (0 hours) to 12 AM
+    const formattedHours = String(hours).padStart(2, '0');
+
+    // Format time as YYYY-MM-DD HH:MM AM/PM
+    const formattedTime = `${year}-${month}-${day} ${formattedHours}:${minutes} ${ampm}`;
+    
+    return formattedTime;
+}

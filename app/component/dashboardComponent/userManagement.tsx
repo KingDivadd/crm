@@ -4,16 +4,16 @@ import { IoAddOutline } from "react-icons/io5";
 import { MdEdit } from "react-icons/md";
 import { MdDeleteForever } from "react-icons/md";
 import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
-import AddUsers from "../dashboardComponent/subComponent/addUser"
 import Alert from '../alert';
 import { get_auth_request } from '@/app/api/admin_api';
 import { User_Management_Props } from '@/types';
-import DeleteModal from './deleteModal';
+import DeleteModal from './userManagementModal';
+import UserManagementModal from './userManagementModal';
 
 
 const UserManagement = () => {
 
-    const [addUsers, setAddUsers] = useState(false)
+    const [modalFor, setModalFor] = useState('')
     const [selectedUser, setSelectedUser] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [page_number, setPage_number] = useState(1)
@@ -105,7 +105,7 @@ const UserManagement = () => {
         
         get_all_users()
 
-    }, [addUsers, showModal])
+    }, [showModal])
 
     function showAlert(message: string, type: string){
         setAlert({message: message, type: type})
@@ -168,7 +168,7 @@ const UserManagement = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                page_number === i ? 'bg-blue-500 text-white' : ''
+                page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
             >
@@ -193,7 +193,7 @@ const UserManagement = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                page_number === i ? 'bg-blue-500 text-white' : ''
+                page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
             >
@@ -205,24 +205,30 @@ const UserManagement = () => {
 
         return pages;
     };
+
+    function add_user() {
+        setSelectedUser(null)
+        setShowModal(true)
+        setModalFor('add')
+    }
     
 
     function edit_user(data:any) {
         setSelectedUser(data)
-        setAddUsers(true)
+        setShowModal(true)
+        setModalFor('edit')
     }
 
     function delete_user(data:any) {
-        console.log('deleting user ', data)
-        setShowModal(!showModal) 
-        setSelectedUser(data)
+        setSelectedUser(null)
+        setShowModal(true)
+        setModalFor('delete')
     }
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
-            {addUsers ? <AddUsers addUsers={addUsers} setAddUsers={setAddUsers} selectedUser={selectedUser} setSelectedUser={setSelectedUser} number_of_users={app_users?.total_number_of_users} /> 
-            :
-            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
+            
+            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[10px] ">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} 
                 </span>
@@ -244,69 +250,71 @@ const UserManagement = () => {
                             </span>
                         </span>
 
-                        <button className="h-[40px] px-4 bg-blue-700 hover:bg-blue-800 text-white rounded-[3px] flex items-center justify-center  text-sm" onClick={()=>{setSelectedUser(null); setAddUsers(true)}}>Add New User</button>
+                        <button className="h-[40px] px-4 bg-blue-700 hover:bg-blue-800 text-white rounded-[3px] flex items-center justify-center  text-sm" onClick={add_user}>Add New User</button>
 
                     </span>
                 </span>
 
                 {/* user table */}
 
-                <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b border-gray-300 ">
-                            <p className="text-sm font-normal w-[13%] pr-2 pl-2 ">Last Name</p>
-                            <p className="text-sm font-normal w-[13%] pr-2 pl-2 ">First Name</p>
-                            <p className="text-sm font-normal w-[29%] pr-2 pl-2 ">Email</p>
-                            <p className="text-sm font-normal w-[12.5%] pr-2 pl-2 ">Role</p>
-                            <p className="text-sm font-normal w-[12.5%] pr-2 pl-2 ">Status</p>
-                            <p className="text-sm font-normal w-[10%] pr-2 pl-2 ">Action</p>
-                            <p className="text-sm font-normal w-[10%] pr-2 pl-2 "></p>
-                        </span>
-                        <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
-                            
-                            {filtered_users !== null ?
-                            
-                                <div className='h-auto w-full flex flex-col justify-start '>
-                                { filtered_users?.users.map((data:any, ind:number)=>{
-                                    const {last_name, first_name, email, user_role, active_status} = data
-                                    return (
-                                        <span key={ind} className="recent-activity-table-list " >
-                                            <p className="text-sm w-[13%] pr-2 pl-2 "> {last_name} </p>
-                                            <p className="text-sm w-[13%] pr-2 pl-2 "> {first_name} </p>
-                                            <p className="text-sm w-[29%] pr-2 pl-2 "> {email} </p>
-                                            <p className="text-sm w-[12.50%] pr-2 pl-2 "> {user_role} </p>
-                                            <p className={active_status ? "text-sm text-green-500 w-[12.5%] pr-2 pl-2 ": "text-sm text-red-500 w-[15%] pr-2 pl-2 "}>{active_status ? "Active" : "InActive"}</p>
-                                            <p className="text-sm w-[10%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-lime-600" onClick={()=>{edit_user(data)}} ><MdEdit size={16} /> Edit</p>
-                                            
-                                            <p className="text-sm w-[10%] pr-2 pl-2 flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-red-400"  onClick={()=>delete_user(data)} ><MdDeleteForever size={18} /> Delete</p>
-                                        </span>
-                                    )
-                                })}
-                                </div>
-                            
-                            :
+                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">User Id</p>
+                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">Last Name</p>
+                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">First Name</p>
+                        <p className="text-sm font-normal w-[30%] px-[10px] text-white ">Email</p>
+                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">Role</p>
+                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">Status</p>
+                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">Action</p>
+                        <p className="text-sm font-normal w-[10%] px-[10px] text-white "></p>
+                    </span>
+                    <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
+                        
+                        {filtered_users !== null ?
+                        
+                            <div className='h-auto w-full flex flex-col justify-start '>
+                            { filtered_users?.users.map((data:any, ind:number)=>{
+                                const {last_name, first_name, email, user_role, active_status, user_ind} = data
+                                return (
+                                    <span key={ind} className="recent-activity-table-list " >
+                                        <p className="text-sm w-[10%] px-[10px] "> {user_ind} </p>
+                                        <p className="text-sm w-[10%] px-[10px] "> {last_name} </p>
+                                        <p className="text-sm w-[10%] px-[10px] "> {first_name} </p>
+                                        <p className="text-sm w-[30%] px-[10px] "> {email} </p>
+                                        <p className="text-sm w-[10%] px-[10px] "> {user_role} </p>
+                                        <p className={active_status ? "text-sm text-green-500 w-[10%] px-[10px] ": "text-sm text-red-500 w-[10%] px-[10px] "}>{active_status ? "Active" : "Inactive"}</p>
+                                        <p className="text-sm w-[10%] px-[10px] flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-amber-600" onClick={()=>{edit_user(data)}} ><MdEdit size={16} /> Edit</p>
+                                        
+                                        <p className="text-sm w-[10%] px-[10px] flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-red-400"  onClick={()=>delete_user(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                    </span>
+                                )
+                            })}
+                            </div>
+                        
+                        :
 
-                                <div className="w-full h-full flex items-center justify-center">
-                                    <p className="text-md font-normal">Loading Data...</p>
-                                </div>
-                            
-                            }
-                        </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                {render_page_numbers()}
-                                </span>
-                                <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
+                            <div className="w-full h-full flex items-center justify-center">
+                                <p className="text-md font-normal">Loading Data...</p>
+                            </div>
+                        
+                        }
+                    </div>
+                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                        <span className="flex flex-row items-center justify-start gap-3 h-full">
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
+                            <span className="w-auto h-full flex flex-row items-center justify-start">
+                            {render_page_numbers()}
                             </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-15 of {app_users?.total_number_of_users || 0}</p>
-                            </span>
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
+                        <span className="flex flex-row items-center justify-end gap-3 h-full">
+                            <p className="text-sm">Showing 1-15 of {app_users?.total_number_of_users || 0}</p>
+                        </span>
+                    </span>
                 </div>
-            </div>}
+            </div>
 
-            {showModal && <DeleteModal showModal={showModal} setShowModal={setShowModal} selectedUser={selectedUser} setSelectedUser={setSelectedUser}  />}
+            {showModal && <UserManagementModal modalFor={modalFor} setModalFor={setModalFor} showModal={showModal} setShowModal={setShowModal} selectedUser={selectedUser} setSelectedUser={setSelectedUser}  />}
         </div>
     )
 }

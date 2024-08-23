@@ -147,7 +147,7 @@ const Login = () => {
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
                                 <h4 className="text-md font-light">Password</h4>
-                                <span className="w-full relative bg-red-100 ">
+                                <span className="w-full relative  ">
                                     <input type={showPassword ? "text" : "password"} name='password' className={inputError.passwordError ? 'password-input-error' : 'password-input'} value={auth.password} onChange={handleChange} />
                                     <span className='absolute w-[40px] flex items-center justify-center top-[30%] right-0 text-blue-600' onClick={handlePassword} >
                                         {showPassword ? <IoEye size={20} className='cursor-pointer' /> : <IoMdEyeOff size={20} className='cursor-pointer' />}

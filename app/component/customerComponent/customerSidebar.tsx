@@ -2,21 +2,11 @@
 import React, {useState, useEffect} from 'react'
 import { RiHome3Fill } from "react-icons/ri";
 import { FiLogOut } from "react-icons/fi";
-import { FaTasks, FaTicketAlt, FaUserTie } from "react-icons/fa";
-import { IoStatsChartSharp } from "react-icons/io5";
-import { RiNotificationBadgeFill } from "react-icons/ri";
-import { BiSolidNotepad } from "react-icons/bi";
-import { IoSettingsSharp } from "react-icons/io5";
+import { FaTicketAlt, } from "react-icons/fa";
+import { IoSettingsSharp, IoTicketSharp } from "react-icons/io5";
 import {useRouter} from 'next/navigation'
-import { BiSolidDashboard } from "react-icons/bi";
-import { FaUserTag } from "react-icons/fa6";
-import { FaBriefcase } from "react-icons/fa";
-import { PiClipboardTextFill } from "react-icons/pi";
-import { BiSolidReport } from "react-icons/bi";
 import {SideBarNav} from '../../../types/index'
-import { GiSuitcase } from "react-icons/gi";
-import { RiHome8Fill } from "react-icons/ri";
-import { MdNotifications, MdVerifiedUser } from 'react-icons/md';
+import { MdNotifications, MdVerifiedUser, MdWork, } from 'react-icons/md';
 
 
 
@@ -25,7 +15,7 @@ const CustomerSideBar = ({active, setActive}: SideBarNav) => {
     
 
     useEffect(() => {
-        const item = sessionStorage.getItem('salesSideNav')
+        const item = sessionStorage.getItem('side_nav')
         if (item == null || item == ""){
             setActive('home')
         }else {
@@ -35,7 +25,7 @@ const CustomerSideBar = ({active, setActive}: SideBarNav) => {
 
     function handleActive(item:any){
         setActive(item)
-        sessionStorage.setItem('salesSideNav', item)
+        sessionStorage.setItem('side_nav', item)
     }
 
     return (
@@ -54,11 +44,11 @@ const CustomerSideBar = ({active, setActive}: SideBarNav) => {
                         <p className="text-[16px]">Home</p>
                     </span>
                     <span className={active === "project-status"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('project-status')}}>
-                        <FaTasks size={22} /> 
-                        <p className="text-[16px]">Project Status</p>
+                        <MdWork size={22} /> 
+                        <p className="text-[16px]">All Projects</p>
                     </span>
                     <span className={active === "service-ticket"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('service-ticket')}}>
-                        <FaTicketAlt  size={21} />
+                        <IoTicketSharp  size={21} />
                         <p className="text-[16px]">Service Ticket</p>
                     </span>
                     <span className={active === "notifications"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notifications')}}>

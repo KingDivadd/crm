@@ -7,6 +7,9 @@ import AllPermitPage from './allPermitPage'
 import InspectionPage from './inspectionPage'
 import PermitApprovalPage from './permitApprovalPage'
 import PermitHistory from './permitHistoryPage'
+import SystemSettings from '../setting'
+import NotificationPage from '../notificationPage'
+import DashboardNav from '../dashboardNav'
 
 
 
@@ -23,19 +26,20 @@ const PermitPortalDashboard = () => {
     }, [])
     return (
         <div className="w-full h-[100vh] flex flex-row  items-start justify-between">
-            <div className="w-[280px] h-full  ">
+            <div className="w-[250px] h-full  ">
                 <PermitRoleSidebar active={active} setActive={setActive} />
             </div>
             <div className="flex-1 h-full bg-blue-100">
             
-                <PermitRoleNavbar />
+                <DashboardNav />
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
 
-                    {active === "dashboard" && <PermitHomePage /> }
+                    {active === "home" && <PermitHomePage /> }
                     {active === "all-permit" && <AllPermitPage /> }
                     {active === "inspection" && <InspectionPage /> }
-                    {active === "permit-approval" && <PermitApprovalPage /> }
-                    {active === "permit-history" && <PermitHistory /> }
+
+                    {active === "notification" && <NotificationPage /> }
+                    {active === "settings" && <SystemSettings /> }
 
                 </div>
             </div>

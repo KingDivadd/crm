@@ -122,7 +122,7 @@ const CustomerHomePage = () => {
                         </span>
                         
                         {dash_components != null ? 
-                        <div className="w-full h-[300px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[350px] flex flex-col justify-start items-start">
                             {dash_components?.running_project.length ? <>
                             {dash_components?.running_project.map((data:any, ind:any)=>{
 
@@ -184,7 +184,7 @@ const CustomerHomePage = () => {
                         </span>
                         
                         {dash_components != null ? 
-                        <div className="w-full h-[300px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[350px] flex flex-col justify-start items-start">
                             {dash_components?.notifications.length ? <>
                             {dash_components?.notifications.map((data:any, ind:any)=>{
 

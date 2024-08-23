@@ -26,14 +26,14 @@ const SalesJobPage = () => {
     const [page_number, setPage_number] = useState(1)
     const [job_box, setjob_box] = useState<Jobs_Props | null>(null);
     const [filtered_job_box, setFiltered_job_box] = useState<Jobs_Props | null>(null);
-    const [filters, setFilters] = useState({filter_input: '', permit_status: '', hoa_status: ''})
+    const [filters, setFilters] = useState({filter_input: '', general_permit_status: '', hoa_permit_status: ''})
     const [role, setRole] = useState('')
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        permit_status: false, hoa_status: false
+        general_permit_status: false, hoa_permit_status: false
     });
     const [dropElements, setDropElements] = useState({
-        permit_status: 'Permit Status', hoa_status: 'Hoa Status'
+        general_permit_status: 'Permit Status', hoa_permit_status: 'Hoa Status'
 
     })
 
@@ -69,7 +69,6 @@ const SalesJobPage = () => {
 
     async function get_all_jobs() {
 
-        console.log('started fetching');
         
         const response = await get_auth_request(`auth/all-jobs/${page_number}`)
 
@@ -79,11 +78,9 @@ const SalesJobPage = () => {
             
             setFiltered_job_box(response.data)
 
-            console.log('here : ', response.data);
             
 
         }else{
-            console.log(response);
             
             if (response.response){
                 showAlert(response.response.data.err, "error")
@@ -93,7 +90,6 @@ const SalesJobPage = () => {
 
     async function filter_jobs(item:any) {
 
-        console.log('started fetching');
         
         const response = await get_auth_request(`/filter-jobs/${item}/${page_number}`)
 
@@ -103,12 +99,10 @@ const SalesJobPage = () => {
             
             setFiltered_job_box(response.data)
 
-            console.log(response.data);
             
             showAlert(response.data.msg, "success")
 
         }else{
-        console.log(response);
         
         showAlert(response.response.data.err, "error")
         }
@@ -130,7 +124,6 @@ const SalesJobPage = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
 
         setPage_number(new_page_number);
     }
@@ -210,14 +203,12 @@ const SalesJobPage = () => {
 
     async function handle_new_filter(item: string) {
         if (job_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',job_box);
             
             // If no filter is provided, reset to the original list
             setFiltered_job_box(job_box);
         
         } 
         else if (item && job_box) {
-            console.log(item);
             
             const new_jobs = job_box.jobs.filter((data: any) => {
                 const permit_status = data.permit_status?.toLowerCase() || '';
@@ -256,7 +247,7 @@ const SalesJobPage = () => {
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
-            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
+            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[10px] ">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} 
                 </span>
@@ -271,7 +262,7 @@ const SalesJobPage = () => {
                             <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by lead name or contract amount' id="" className='normal-input bg-gray-100 text-sm ' />
                         </span>
                         <span className="h-[40px] min-w-[175px]">
-                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'hoa_status'} dropArray={['PENDING', 'SENT', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'hoa_permit_status'} dropArray={['PENDING', 'SENT', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                         </span>
                         <span className="h-[40px] min-w-[175px]">
                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
@@ -289,7 +280,7 @@ const SalesJobPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    {role == 'sales' ? 
+                    {(role == 'sales' || role == 'admin') ? 
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Job Id</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Lead Name</p>
@@ -320,18 +311,18 @@ const SalesJobPage = () => {
                                 {job_box?.jobs.length ?
                                 <>
                                 { filtered_job_box?.jobs.map((data:any, ind:number)=>{
-                                    const {job_ind, lead, contract_amount, contract_date, hoa_status, permit_status, engineering_status } = data
+                                    const {job_ind, lead, contract_amount, contract_date, hoa_permit_status, electrical_permit_status, engineering_permit_status } = data
                                     return (
                                         <>
-                                        {role == 'sales' ? 
+                                        {(role == 'sales' || role == 'admin') ? 
                                         <span key={ind} className="recent-activity-table-list " onClick={()=> edit_job(data)} >
                                             <p className="text-sm w-[7.5%] px-2 ">{job_ind} </p>
                                             <p className="text-sm w-[15%] px-2 "> {lead.customer_name} </p>
-                                            <p className="text-sm w-[11%] px-2 "> {Number(contract_amount).toLocaleString()} </p>
+                                            <p className="text-sm w-[11%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
                                             <p className="text-sm w-[15%] px-2 "> {contract_date} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {hoa_status.replace(/_/g, ' ')} </p>
-                                            <p className="text-sm w-[15.5%] px-2 "> {permit_status.replace(/_/g, ' ')} </p>
-                                            <p className="text-sm w-[13.5%] px-2 ">{engineering_status.replace(/_/g, ' ')}</p>
+                                            <p className="text-sm w-[15%] px-2 "> {hoa_permit_status.replace(/_/g, ' ')} </p>
+                                            <p className="text-sm w-[15.5%] px-2 "> {electrical_permit_status.replace(/_/g, ' ')} </p>
+                                            <p className="text-sm w-[13.5%] px-2 ">{engineering_permit_status.replace(/_/g, ' ')}</p>
                                         
                                             <p className="text-sm w-[10.0%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Delete</p>
                                         </span>
@@ -341,9 +332,9 @@ const SalesJobPage = () => {
                                             <p className="text-sm w-[15%] px-2 "> {lead.customer_name} </p>
                                             <p className="text-sm w-[11%] px-2 "> {Number(contract_amount).toLocaleString()} </p>
                                             <p className="text-sm w-[15%] px-2 "> {contract_date} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {hoa_status.replace(/_/g, ' ')} </p>
-                                            <p className="text-sm w-[15.5%] px-2 "> {permit_status.replace(/_/g, ' ')} </p>
-                                            <p className="text-sm w-[13.5%] px-2 ">{engineering_status.replace(/_/g, ' ')}</p>
+                                            <p className="text-sm w-[15%] px-2 "> {hoa_permit_status.replace(/_/g, ' ')} </p>
+                                            <p className="text-sm w-[15.5%] px-2 "> {electrical_permit_status.replace(/_/g, ' ')} </p>
+                                            <p className="text-sm w-[13.5%] px-2 ">{engineering_permit_status.replace(/_/g, ' ')}</p>
                                         
                                             <p className="text-sm w-[10.0%] px-2 "></p>
                                         </span>}

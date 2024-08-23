@@ -340,7 +340,7 @@ const Signup = () => {
                             </span>
                             <span className="w-full flex flex-col items-start justify-start gap-2">
                                 <h4 className="text-md font-light">Password</h4>
-                                <span className="w-full relative bg-red-100 ">
+                                <span className="w-full relative ">
                                     <input  type={showPassword ? "text" : "password"} name='password' className={inputError.passwordError ? 'password-input-error':'password-input'} value={auth.password} onChange={handleChange} />
                                     <span className='absolute w-[40px] flex items-center justify-center top-[30%] right-0 text-blue-600' onClick={handlePassword} >
                                         {showPassword ? <IoEye size={20} className='cursor-pointer' />: <IoMdEyeOff size={20} className='cursor-pointer' /> }
@@ -466,7 +466,7 @@ const Signup = () => {
                             </span>
                             
                             
-                            <p className="text-[15px] text-blue-600 cursor-pointer text-center hover:underline " onClick={resent_otp}>Didn't receive otp? Resend. </p>
+                            <p className="text-[15px] hover:text-blue-600 cursor-pointer text-center hover:underline " onClick={resent_otp}>Didn't receive otp? Resend. </p>
 
                             <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={generateOtp} disabled={loading}>
                                 {loading ? (
@@ -495,7 +495,7 @@ const Signup = () => {
                     <div className="w-full h-full flex flex-col items-start justify-center gap-[25px]  ">
                         <span className="mx-auto w-[70%] flex flex-col items-center justify-start gap-2">
                             <h2 className="text-3xl font-semibold text-black">Verify Otp</h2>
-                            <p className="text-[15px] text-blue-600 text-center ">A six digit uniqe code has been sent to your email, kindly check and provide in the field below </p>
+                            <p className="text-[15px] text-center ">A six digit uniqe code has been sent to your email, kindly check and provide in the field below </p>
                         </span>
                         <form action="" className='w-[80%] mx-auto flex flex-col gap-[15px]'>
                             
@@ -505,7 +505,7 @@ const Signup = () => {
                                 <input onChange={handleOtpChange} value={otpData.otp} name='otp' type="string" className={inputError.phoneError ? 'signup-input-error':'signup-input'} />
                             </span>
                             
-                            <p className="text-[15px] text-blue-600 cursor-pointer text-center hover:underline " onClick={resent_otp}>Didn't receive otp? Resend. </p>
+                            <p className="text-[15px] hover:text-blue-600 cursor-pointer text-center hover:underline " onClick={resent_otp}>Didn't receive otp? Resend. </p>
 
                             <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={verifyAccount} disabled={loading}>
                                 {loading ? (

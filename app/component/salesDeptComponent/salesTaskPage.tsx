@@ -243,7 +243,7 @@ const SalesTaskPage = () => {
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
-            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
+            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[10px]">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} 
                 </span>

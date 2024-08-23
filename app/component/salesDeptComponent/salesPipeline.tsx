@@ -264,7 +264,7 @@ const SalesPipelinePage = () => {
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] overflow-y-auto">
-            <div className="relative w-full flex flex-col items-start justify-start gap-[30px]">
+            <div className="relative w-full flex flex-col items-start justify-start gap-[10px]">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} 
                 </span>
@@ -275,7 +275,7 @@ const SalesPipelinePage = () => {
                     
                     <span className="h-[100px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
 
-                        <span className="w-full flex flex-col items-start justify-between gap-[5px] px-[20px]">
+                        <span className="w-full flex flex-col items-start justify-between gap-[3px] px-[20px]">
                             <p className="text-md">Total Lead</p>
                             <p className="text-sm">{pipeline_page_info?.total_lead || 0}</p>
                             <p className="text-sm">Last 30 days</p>
@@ -285,7 +285,7 @@ const SalesPipelinePage = () => {
 
                     <span className="h-[100px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
 
-                        <span className="w-full flex flex-col items-start justify-between gap-[5px] px-[20px]">
+                        <span className="w-full flex flex-col items-start justify-between gap-[3px] px-[20px]">
                             <p className="text-md">Lead Sold</p>
                             <p className="text-sm">{pipeline_page_info?.lead_sold || 0}</p>
                             <p className="text-sm">Last 30 days</p>
@@ -295,7 +295,7 @@ const SalesPipelinePage = () => {
 
                     <span className="h-[100px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
 
-                        <span className="w-full flex flex-col items-start justify-between gap-[5px] px-[20px]">
+                        <span className="w-full flex flex-col items-start justify-between gap-[3px] px-[20px]">
                             <p className="text-md">Contract Value</p>
                             <p className="text-sm">${pipeline_page_info?.total_contract_amount?.toLocaleString() || 0}</p>
                             <p className="text-sm">Last 30 days</p>
@@ -305,7 +305,7 @@ const SalesPipelinePage = () => {
 
                     <span className="h-[100px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
 
-                        <span className="w-full flex flex-col items-start justify-between gap-[5px] px-[20px]">
+                        <span className="w-full flex flex-col items-start justify-between gap-[3px] px-[20px]">
                             <p className="text-md">Lead in progress</p>
                             <p className="text-sm">{pipeline_page_info?.lead_in_progress?.length}</p>
                             <p className="text-sm">Last 30 days</p>
@@ -315,7 +315,7 @@ const SalesPipelinePage = () => {
 
                 </div>
 
-                <span className="w-full flex flex-row items-center justify-between">
+                <span className="w-full h-[40px] mt-[15px] flex flex-row items-center justify-between ">
                     <span className="h-full flex flex-row items-center justify-start gap-2">
                         <p className="text-md font-semibold text-black">All Pipelines</p>
                         <p className="text-sm text-black">{(pipeline_box && pipeline_box?.total_number_of_pipeline) || 0 }</p>
@@ -339,8 +339,8 @@ const SalesPipelinePage = () => {
                 </span>
 
                 
-                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[3px]">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Id</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
@@ -393,7 +393,7 @@ const SalesPipelinePage = () => {
                     
                     </div>
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">

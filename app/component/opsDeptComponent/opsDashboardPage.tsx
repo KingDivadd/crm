@@ -1,4 +1,4 @@
-'use cleient'
+'use client'
 import React, {useState, useEffect} from 'react'
 import { useRouter } from 'next/navigation';
 import OpsWorkflowSection, {ProjectWorkFlowApproval, ProjectWorkFlowEngineering, ProjectWorkFlowInstallation, ProjectWorkFlowPermitApproval} from './opsWorkflowSection'
@@ -50,9 +50,6 @@ const OpsDashboardPage = () => {
                             <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
-                    
-
-                    
                                     
                 </div>
 

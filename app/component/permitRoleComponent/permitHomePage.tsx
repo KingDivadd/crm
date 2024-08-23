@@ -1,119 +1,249 @@
 'use client'
 import React, {useState, useEffect} from 'react'
-import PermitUploadModal from './permitUploadModal'
-import VeiwRedLinesModal from './viewRedLines'
+import { IoList } from "react-icons/io5";
+import { GrProjects } from "react-icons/gr";
+import { RiInstallFill } from "react-icons/ri";
+import { FaChartSimple } from "react-icons/fa6";
+import { HiMiniQueueList } from "react-icons/hi2";
+import { useRouter } from 'next/navigation';
+import { GiChart } from "react-icons/gi";
+import { BsBriefcase } from "react-icons/bs";
+import { GiLightningSpanner } from "react-icons/gi";
+import { FaMoneyBillAlt } from "react-icons/fa";
+import { GrServices } from "react-icons/gr";
+import { LuPencilRuler } from 'react-icons/lu';
+import { MdOutlineNoteAlt } from "react-icons/md";
+import { RiBarChartFill } from "react-icons/ri";
+import { get_auth_request } from '@/app/api/admin_api';
+import Alert from '../alert';
+import { timestamp_to_readable_value } from '../helper';
+
+interface Sales_Dashboard_Props {
+    total_lead?: number, converted_lead?:number, total_job?:number, total_task?:number, recent_lead?:any, recent_tasks?:any, recent_notifications?:any
+}
 
 const PermitHomePage = () => {
-    const [show, setShow] = useState(false)
-    const [showModal, setShowModal] = useState(false)
-    const [selectedItem, setSelectedItem] = useState(null)
-    const [showRedlineModal, setShowRedlineModal] = useState(false)
 
-    function viewProjectDetiail(data:any){
-        console.log('clicked ',data)
-        setShow(!show)
-        setSelectedItem(data)
-        setShowModal(!showModal)
+    const [alert, setAlert] = useState({message: '', type: ''})
+    const [dash_components, setDash_components] = useState<Sales_Dashboard_Props | null>(null);
+
+    useEffect(() => {
+        get_sales_dashboard_data()
+    }, [])
+
+    function showAlert(message: string, type: string){
+        setAlert({message: message, type: type})
+            setTimeout(() => {
+                setAlert({message: '', type: ''})
+            }, 3000);
     }
 
-    function addPermit(){
-        setShowModal(!showModal)
-        setSelectedItem(null)
-        setShow(!show)
+    async function get_sales_dashboard_data() {
+
+        try {
+            const response = await get_auth_request(`sales/sales-main-dashboard`)
+            
+    
+            if (response.status == 200 || response.status == 201){
+                
+                setDash_components(response.data)      
+    
+                console.log( 'sales data 1 ',response.data);
+                
+            }else{
+                console.log(response);
+                
+                showAlert(response.response.data.err, "error")
+            }
+            
+        } catch (err:any) {
+            
+            showAlert('Something went wrong while fetching data', "error")
+        }
+        
     }
+    
 
-    function viewRedLines() {
-        setShowRedlineModal(true)
-    }
-
-
-
+    const router = useRouter()
     return (
-        <div className="w-full p-[10px] flex ">
-            <div className="w-full h-full flex flex-col gap-[25px] pt-[20px] ">
-                {/* summary tabs */}
-                <div className="w-full flex flex-row items-center justify-between gap-[10px]">
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] rounded-[5px] bg-white w-1/3 border border-blue-600 ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-blue-600">Total Permit</p>
-                            <p className="text-sm text-blue-600">120</p>
+        <div className="w-full p-[10px] pb-[10px] relative">
+            <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
+                {alert.message && <Alert message={alert.message} type={alert.type} />} {/* Display alert */}
+            </span>
+
+            <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">
+                {/* first section = summary stat */}
+                <div className="w-full flex flex-row items-center justify-between gap-[10px] relative ">
+                    <span className="absolute h-[145px] bg-blue-700 -top-[10px] -left-[10px] rounded-b-[3px] " style={{width: 'calc(100% + 20px)'}}></span>
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] w-1/4 group bg-white shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md">Total Permit</p>
+                            <p className="text-sm ">{dash_components?.total_lead?.toLocaleString() || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] rounded-[5px] border border-lime-600 bg-white w-1/3  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-lime-600">Pending Approval</p>
-                            <p className="text-sm text-lime-600">13</p>
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md ">Pending Approval</p>
+                            <p className="text-sm ">{dash_components?.converted_lead?.toLocaleString() || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
-                    <span className=" flex flex-col gap-3 items-start justify-start h-[85px] border border-amber-600 rounded-[5px] bg-white w-1/3  ">
-                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  pl-[20px] pr-[20px]  ">
-                            <p className="text-xl text-amber-600">Upcomming Inspection</p>
-                            <p className="text-sm text-amber-600">3</p>
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md ">Approved Permit</p>
+                            <p className="text-sm ">{dash_components?.total_job?.toLocaleString() || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
+                    <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] bg-white w-1/4  shadow-md z-[5]">
+                        <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
+                            <p className="text-md ">Upcoming Inspections</p>
+                            <p className="text-sm ">{dash_components?.total_task?.toLocaleString() || 0}</p>
+                            <p className="text-sm font-light ">Last 30 days</p>
+                        </div>
+                    </span>
+                    
+                                    
                 </div>
 
-                <span className="w-full flex items-center justify-between">
-                    <p className="text-lg font-normal text-blue-600 cursor-pointer hover:underline  " onClick={addPermit} >Add New Permit</p>
-                    <p className="text-lg font-normal text-blue-600 cursor-pointer hover:underline  " onClick={viewRedLines}  >View Red Lines</p>
-                </span>
-
-                {/* Current Project*/}
+                   
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-xl font-semibold">Recent Activities</p>
+                    <p className="text-md ">Recent Task</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b-2 border-gray-200 ">
-                            <p className="text-sm font-semibold w-[20%] px-2 ">Permit Id</p>
-                            <p className="text-sm font-semibold w-[20%] px-2 ">Date Submitted</p>
-                            <p className="text-sm font-semibold w-[20%] px-2 ">Status</p>
-                            <p className="text-sm font-semibold w-[40%] px-2 ">Activity</p>
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                            <p className="text-sm font-normal w-[7.5%] px-2 ">Task ID</p>
+                            <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Desription</p>
+                            <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
+                            <p className="text-sm font-normal w-[17.5%] px-2 ">Assigned To</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Start Date</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">End Date</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Completion Date</p>
                         </span>
-                        <div className="w-full permit-cont-1 flex flex-col justify-start items-start overflow-y-auto">
-                            <span className="w-full  flex flex-col justify-start items-start ">
-                                {[1,2,3,4,5,6,7,8,9,10].map((data, ind)=>{
-                                    return (
-                                        <span key={ind} className="recent-activity-table-list" >
-                                            <p className="text-sm w-[20%] px-2 ">PT1000123{ind}</p>
-                                            <p className="text-sm w-[20%] px-2 ">June 11, 2024</p>
-                                            <p className="text-sm w-[20%] px-2 ">Pending Approval</p>
-                                            <p className="text-sm w-[40%] px-2 ">Permit #123 submitted for approval</p>
-                                        </span>
-                                    )
-                                })}
-                            </span>
+                        
+                        {dash_components !== null ? 
+                        
+                        <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
+
+                            {dash_components?.recent_tasks.length ?
+                            <>
+                            {dash_components?.recent_tasks.map((data:any, ind:any)=>{
+
+                                const {task_ind, job, description, assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
+                                return (
+                                    <span key={ind} className="recent-activity-table-list " >
+                                        <p className="text-sm w-[7.5%] px-2 ">{task_ind} </p>
+                                        <p className="text-sm w-[7.5%] px-2 ">{job.job_ind} </p>
+                                        <p className="text-sm w-[20%] px-2 "> {description} </p>
+                                        <p className="text-sm w-[12.5%] px-2 "> {status} </p>
+                                        <p className="text-sm w-[17.5%] px-2 "> {assigned_to} </p>
+                                        <p className="text-sm w-[10%] px-2 "> {start_date} </p>
+                                        <p className="text-sm w-[10%] px-2 "> {due_date} </p>
+                                        <p className="text-sm w-[15%] px-2 "> {completion_date} </p>
+                                    </span>
+                                )
+                            })}
+                            </>:
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Task yet</p>
+                            </div>
+                            }
+
                         </div>
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t-2 border-gray-200 px-[15px] rounded-b-[5px] ">
+                        :
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
+                        </div>
+                        }
+                        
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer">Prev</p>
+                                <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light border border-gray-400 h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">1</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">2</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">3</p>
-                                    <p className="text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer">4</p>
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
 
                                 </span>
-                                <p className="text-sm cursor-pointer">Next</p>
+                                <p className="text-sm cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-10 of 60</p>
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_tasks.length}</p>
                             </span>
                         </span>
                     </div>
                 </div>
 
+                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
+                    <p className="text-md ">Recent Notification</p>
+
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
+                            <p className="text-sm w-[16.5%] px-2  ">Date / Time</p>
+                            <p className="text-sm w-[20%] px-2  ">Subject</p>
+                            <p className="text-sm w-[32.5%] px-2  ">Details</p>
+                            <p className="text-sm w-[13.5%] px-2  ">Status</p>
+                            <p className="text-sm w-[17.5%] px-2  ">Source</p>
+                        </span>
+                        
+                        
+                        {dash_components !== null ? <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
+
+                            {dash_components?.recent_notifications.length ? 
+                            <>
+                            {dash_components?.recent_notifications.map((data:any, ind:any)=>{
+
+                                const {created_at, subject, message, read, user, source, } = data
+                                
+                                return (
+                                    <span key={ind} className="recent-activity-table-list ">
+                                        <p className="text-sm w-[16.5%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{subject}</p>
+                                        <p className="text-sm w-[32.5%] px-2 ">{message}</p>
+                                        <p className={read ? "text-sm w-[13.5%] text-green-600 px-2 ":"text-sm w-[15%] px-2 text-red-600 "}>{read ? "read": "unread"}</p>
+                                        <p className="text-sm w-[17.5%] px-2 ">{source.last_name} {source.first_name} </p>
+                                    </span>
+                                )
+                            })}
+                            </> 
+                            :
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Notifications yet</p>
+                            </div>
+                            }
+                        </div>
+                        :
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
+                        </div>
+                        }
+                       
+
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
+                            <span className="flex flex-row items-center justify-start gap-3 h-full">
+                                <p className="text-sm cursor-pointer ">Prev</p>
+                                <span className="w-auto h-full flex flex-row items-center justify-start">
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
+
+                                </span>
+                                <p className="text-sm cursor-pointer ">Next</p>
+                            </span>
+                            <span className="flex flex-row items-center justify-end gap-3 h-full">
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_notifications.length}</p>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                
+             
+                
+
             </div>
-            {showModal && <PermitUploadModal showModal={showModal} setShowModal={setShowModal} selectedItem={selectedItem} setSelectedItem={setSelectedItem} setShow={setShow} show={show} />}
-
-            {showRedlineModal && <VeiwRedLinesModal showRedlineModal={showRedlineModal} setShowRedlineModal={setShowRedlineModal}  setShow={setShow} show={show} />}
-        
-
         </div>
     )
 }
 
 export default PermitHomePage
-

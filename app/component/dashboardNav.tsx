@@ -3,6 +3,7 @@ import { BsBell } from "react-icons/bs";
 import { CiSearch } from "react-icons/ci";
 import Image from "next/image"
 import {get_auth_request} from "../api/admin_api"
+import { get_current_time } from './helper';
 
 interface Nav_Props {
     user?:any;
@@ -13,6 +14,7 @@ const DashboardNav = () => {
     const [user_info, setUser_info] = useState<Nav_Props | null>(null)
     const [alert, setAlert] = useState({message: '', type: ''})
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
+    const [date_time, setDate_time] = useState('')
     const calendarRef = useRef(null);
 
     function showAlert(message: string, type: string){
@@ -24,7 +26,23 @@ const DashboardNav = () => {
 
     useEffect(() => {
         get_dashboard_data()
+        const gotten_time = get_current_time()
+        if (gotten_time) {
+            setDate_time(gotten_time)
+        }
+        setInterval(() => {
+            const gotten_time = get_current_time()
+            if (gotten_time) {
+                setDate_time(gotten_time)                
+            }
+        }, 60000);
+
     }, [])
+
+    useEffect(() => {
+        
+    }, [])
+    
 
     async function get_dashboard_data() {
 
@@ -70,7 +88,7 @@ const DashboardNav = () => {
 
     return (
         <div className='w-full h-[50px] bg-blue-700 flex flex-row items-center justify-between pr-[10px]'>
-            <span className="w-[60%] h-full flex  flex-row items-center justify-start gap-5 px-[10px]">
+            <span className="w-[70%] h-full flex  flex-row items-center justify-start gap-5 px-[10px]">
                 {user_info?.user && 
                 
                 <p className="text-md font-medium text-white whitespace-nowrap">
@@ -79,6 +97,8 @@ const DashboardNav = () => {
                     {user_info.user.user_role == 'operation' && "Operation Porter"}
                     {user_info.user.user_role == 'designer' && "Designer Porter"}
                     {user_info.user.user_role == 'customer' && "Customer Porter"}
+                    {user_info.user.user_role == 'engineering' && "Engineering Porter"}
+                    {user_info.user.user_role == 'permit' && "Permit Porter"}
                 </p>
                 
                 }
@@ -89,6 +109,9 @@ const DashboardNav = () => {
                         <CiSearch size={22} className='font-bold' />
                     </span>
                 </span>
+
+                <p className="text-sm text-white whitespace-nowrap">{date_time}</p>
+
             </span>
 
             <span className="flex flex-row h-full items-center justify-center gap-5">

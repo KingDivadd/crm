@@ -263,7 +263,7 @@ const SalesLeadPage = () => {
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
-            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
+            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[10px]">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} 
                 </span>
@@ -280,7 +280,7 @@ const SalesLeadPage = () => {
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            {role == 'sales' && <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>}
+                            {(role == 'sales' || role == 'admin') && <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>}
                         </span>
 
                         
@@ -290,8 +290,8 @@ const SalesLeadPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    {role == 'sales' ? 
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                    {(role == 'sales' || role == 'admin') ? 
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
                         <p className="text-sm font-normal w-[14.5%] px-2 ">Customer Name</p>
                         <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
@@ -301,7 +301,7 @@ const SalesLeadPage = () => {
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
                         <p className="text-sm font-normal w-[10%] px-2 "></p>
                     </span>:
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[10%] px-2 ">Lead Id</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Gate Code</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
@@ -323,7 +323,7 @@ const SalesLeadPage = () => {
                                     const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind, gate_code} = data
                                     return (
                                         <div key={ind}>
-                                        {role == "sales" ? 
+                                        {(role == 'sales' || role == 'admin') ? 
                                         <span className="recent-activity-table-list " >
                                             <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
                                             <p className="text-sm w-[14.5%] px-2 "> {customer_name} </p>
@@ -365,7 +365,7 @@ const SalesLeadPage = () => {
                     
                     </div>
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">

@@ -1,4 +1,4 @@
-'use cleient'
+'use client'
 import React, {useState, useEffect} from 'react'
 import { useRouter } from 'next/navigation';
 import { GiChart } from "react-icons/gi";
@@ -13,6 +13,10 @@ import { admin_dashboard_request } from '@/app/api/admin_api';
 import { Admin_dashboard_props } from '@/types';
 import ShortCutModal from './shortCutModal';
 
+interface Sales_Dashboard_Props {
+    total_lead?: number, converted_lead?:number, total_job?:number, total_task?:number, recent_lead?:any, recent_tasks?:any, recent_notifications?:any
+}
+
 const AdminHome = () => {
     const router = useRouter()
     const [alert, setAlert] = useState({message: '', type: ''})
@@ -21,6 +25,7 @@ const AdminHome = () => {
     const [task_notification_page, setTask_notification_page] = useState(1)
     const [showModal, setShowModal] = useState(false)
     const [selectedItem, setSelectedItem] = useState({title: '', item: []})
+    const [dash_components, setDash_components] = useState<Sales_Dashboard_Props | null>(null);
 
 
     useEffect(() => {
@@ -116,7 +121,7 @@ const AdminHome = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                activity_page === i ? 'bg-blue-500 text-white' : ''
+                activity_page === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => recent_activity_action(i)}
             >
@@ -141,7 +146,7 @@ const AdminHome = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                activity_page === i ? 'bg-blue-500 text-white' : ''
+                activity_page === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => recent_activity_action(i)}
             >
@@ -185,7 +190,7 @@ const AdminHome = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                task_notification_page === i ? 'bg-blue-500 text-white' : ''
+                task_notification_page === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => task_notification_action(i)}
             >
@@ -210,7 +215,7 @@ const AdminHome = () => {
             <p
                 key={i}
                 className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
-                task_notification_page === i ? 'bg-blue-500 text-white' : ''
+                task_notification_page === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => task_notification_action(i)}
             >
@@ -278,167 +283,195 @@ const AdminHome = () => {
                     </span>                  
                 </div>
 
-                {/* second section = recent activity */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px]">
-                    <p className="text-lg font-semibold">Recent Activities</p>
+                {/* Recent Lead */}
+                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
+                    <p className="text-md ">Recent Lead</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b border-gray-300">
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2">Activity Type</p>
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2">Description</p>
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2">User</p>
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2">Date</p>
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2">Time</p>
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                            <p className="text-sm font-normal w-[15%] px-2 ">Lead Id</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Customer Name</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Customer Address</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Assigned to</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
                         </span>
-
-                        { dash_box?.activities.length ?
                         
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {dash_box?.activities.map((data: any, ind: number) => {
-                                const { details, user, created_at, action } = data;
+                        {dash_components != null ? 
+                        <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                            {dash_components?.recent_lead.length ? <>
+                            {dash_components?.recent_lead.map((data:any, ind:any)=>{
+
+                                const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind} = data   
+                                
                                 return (
-                                <span key={ind} className="recent-activity-table-list">
-                                    <p className="text-sm w-[20%] pr-2 pl-2">{action}</p>
-                                    <p className="text-sm w-[20%] pr-2 pl-2">{details}</p>
-                                    <p className="text-sm w-[20%] pr-2 pl-2">{user?.last_name}</p>
-                                    <p className="text-sm w-[20%] pr-2 pl-2">{created_at}</p>
-                                    <p className="text-sm w-[20%] pr-2 pl-2">{created_at}</p>
-                                </span>
-                                );
-                            })}
-                        </div>
-
-                        :
-
-                        <div className="w-full h-[200px] flex items-center justify-center ">
-                            <p className="text-md font-normal">No Activity yet</p>
-                        </div>
-                        
-                        }
-
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] rounded-b-[5px]">
-                            <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer" onClick={() => recent_activity_action('prev')}>Prev</p>
-                                <span className="w-auto h-full flex flex-row items-center justify-start">
-                                {render_page_numbers()}
-                                </span>
-                                <p className="text-sm cursor-pointer" onClick={() => recent_activity_action('next')}>Next</p>
-                            </span>
-                            <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of {dash_box?.total_number_of_recent_activities || 0}</p>
-                            </span>
-                        </span>
-                    </div>
-                </div>
-
-                {/* quick access secion */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-lg font-semibold">Quick Access</p>
-                    <div className="w-full flex flex-wrap justify-start gap-[10px]">
-                        <span className="w-[260px] quick-access-bar group">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GiChart size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">New Leads</p>
-                                <p className="text-sm ">{dash_box?.new_lead.length} new leads</p>
-                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100 " onClick={()=>{view_details('leads')}}>View Detials</p>
-                            </span>
-                        </span>
-                        
-                        <span className="w-[250px] quick-access-bar group">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><BsBriefcase size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">Pending Sales</p>
-                                <p className="text-sm ">{dash_box?.pending_sales.length} pending sales</p>
-                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100 " onClick={()=>{view_details('pending_sales')}}>View Detials</p>
-                            </span>
-                        </span>
-                        <span className="w-[300px] quick-access-bar group">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GiLightningSpanner size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">Installations</p>
-                                <p className="text-sm ">{dash_box?.ongoing_installations.length} ongoing installations</p>
-                                <p className="text-sm text-blue-500  hover:underline cursor-pointer group-hover:text-slate-100  " onClick={()=>{view_details('ongoing_installations')}}>View Detials</p>
-                            </span>
-                        </span>
-
-                        <span className="w-[300px] quick-access-bar group ">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><GrServices size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">Service Tickets</p>
-                                <p className="text-sm ">{dash_box?.open_service_tickets.length} open service ticket</p>
-                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100 " onClick={()=>{view_details('service_tickets')}}>View Detials</p>
-                            </span>
-                        </span>
-
-                        <span className="w-[300px] quick-access-bar group">
-                            <span className="h-[80%] flex items-start justify-center w-[30%]  " ><FaMoneyBillAlt size={35} /> </span>
-                            <span className="h-full flex w-full flex flex-col items-start justify-start gap-[10px] ">
-                                <p className="text-[18px] ">Pending Payments</p>
-                                <p className="text-sm ">{dash_box?.pending_payments.length} pending payments</p>
-                                <p className="text-sm text-blue-500 hover:underline cursor-pointer group-hover:text-slate-100  " onClick={()=>{view_details('pending_payment')}}>View Detials</p>
-                            </span>
-                        </span>
-
-
-
-                    </div>
-
-                </div>
-
-                {/* task notification */}
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-lg font-semibold">Task Notification</p>
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] border border-blue-500 ">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-white rounded-t-[5px] border-b border-gray-300 ">
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Task Type</p>
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Task</p>
-
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Assigned To</p>
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Due Date</p>
-                            <p className="text-sm font-normal w-[20%] pr-2 pl-2 ">Status</p>
-                        </span>
-
-
-                        {dash_box?.task_notification.length ? 
-                        
-                        <div className="w-full h-[200px] flex flex-col justify-start items-start">
-                            {dash_box?.task_notification.map((data:any, ind: any)=>{
-
-                                const { message, read, task_type, due_date, task_notification_status, user , total_number_of_recent_activities}  = data
-                                return (                                        
-                                        <span key={ind} className={task_notification_status === 'OVERDUE' ? "overdue-row":" recent-activity-table-list"}>
-                                            <p className="text-sm w-[20%] pr-2 pl-2 ">{task_type}</p>
-                                            <p className="text-sm w-[20%] pr-2 pl-2 ">{message}</p>
-                                            <p className="text-sm w-[20%] pr-2 pl-2 ">{user.first_name}</p>
-                                            <p className="text-sm w-[20%] pr-2 pl-2 ">{due_date}</p>
-                                            <p className="text-sm w-[20%] pr-2 pl-2 ">{task_notification_status}</p>
-                                        </span>
+                                    <span key={ind} className="recent-activity-table-list ">
+                                        <p className="text-sm w-[15%] px-2 ">{lead_ind}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{customer_name}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{address}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{phone_number}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{assigned_to.last_name} {assigned_to.first}</p>
+                                        <p className="text-sm w-[10%] px-2 ">{disposition}</p>
+                                    </span>
                                 )
                             })}
+                            </>
+                            :
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Lead yet</p>
+                            </div>
+                            }
+
                         </div>
-                        
                         :
-
-                        <div className="w-full h-[200px] flex items-center justify-center">
-                            <p className="text-md font-normal"> No Task Notification yet. </p>
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
                         </div>
+                        }
                         
-                    }
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer" onClick={() => task_notification_action('prev')}>Prev</p>
+                                <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
-                                {render_task_notification_page_numbers()}
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
+
                                 </span>
-                                <p className="text-sm cursor-pointer" onClick={() => task_notification_action('next')}>Next</p>
+                                <p className="text-sm cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm">Showing 1-5 of {dash_box?.total_number_of_recent_activities || 0}</p>
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_lead.length}</p>
                             </span>
                         </span>
                     </div>
                 </div>
+
+                {/* Recent Project */}
+                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
+                    <p className="text-md ">Recent Project</p>
+
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                            <p className="text-sm font-normal w-[15%] px-2 ">Lead Id</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Customer Name</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Customer Address</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Assigned to</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
+                        </span>
+                        
+                        {dash_components != null ? 
+                        <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                            {dash_components?.recent_lead.length ? <>
+                            {dash_components?.recent_lead.map((data:any, ind:any)=>{
+
+                                const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind} = data   
+                                
+                                return (
+                                    <span key={ind} className="recent-activity-table-list ">
+                                        <p className="text-sm w-[15%] px-2 ">{lead_ind}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{customer_name}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{address}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{phone_number}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{assigned_to.last_name} {assigned_to.first}</p>
+                                        <p className="text-sm w-[10%] px-2 ">{disposition}</p>
+                                    </span>
+                                )
+                            })}
+                            </>
+                            :
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Lead yet</p>
+                            </div>
+                            }
+
+                        </div>
+                        :
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
+                        </div>
+                        }
+                        
+
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
+                            <span className="flex flex-row items-center justify-start gap-3 h-full">
+                                <p className="text-sm cursor-pointer ">Prev</p>
+                                <span className="w-auto h-full flex flex-row items-center justify-start">
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
+
+                                </span>
+                                <p className="text-sm cursor-pointer ">Next</p>
+                            </span>
+                            <span className="flex flex-row items-center justify-end gap-3 h-full">
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_lead.length}</p>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
+                {/* Recent Notification */}
+                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
+                    <p className="text-md ">Recent Notification</p>
+
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                            <p className="text-sm font-normal w-[15%] px-2 ">Lead Id</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Customer Name</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Customer Address</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Assigned to</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
+                        </span>
+                        
+                        {dash_components != null ? 
+                        <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                            {dash_components?.recent_lead.length ? <>
+                            {dash_components?.recent_lead.map((data:any, ind:any)=>{
+
+                                const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind} = data   
+                                
+                                return (
+                                    <span key={ind} className="recent-activity-table-list ">
+                                        <p className="text-sm w-[15%] px-2 ">{lead_ind}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{customer_name}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{address}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{phone_number}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{assigned_to.last_name} {assigned_to.first}</p>
+                                        <p className="text-sm w-[10%] px-2 ">{disposition}</p>
+                                    </span>
+                                )
+                            })}
+                            </>
+                            :
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Lead yet</p>
+                            </div>
+                            }
+
+                        </div>
+                        :
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
+                        </div>
+                        }
+                        
+
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
+                            <span className="flex flex-row items-center justify-start gap-3 h-full">
+                                <p className="text-sm cursor-pointer ">Prev</p>
+                                <span className="w-auto h-full flex flex-row items-center justify-start">
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
+
+                                </span>
+                                <p className="text-sm cursor-pointer ">Next</p>
+                            </span>
+                            <span className="flex flex-row items-center justify-end gap-3 h-full">
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_lead.length}</p>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+
             </div>
 
             {showModal && <ShortCutModal selectedItem={selectedItem} setSelectedItem={setSelectedItem} showModal={showModal} setShowModal={setShowModal} /> }

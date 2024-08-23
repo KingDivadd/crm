@@ -250,7 +250,7 @@ const OpsTaskPage = () => {
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
-            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[30px] pt-[10px]">
+            <div className="relative w-full h-full flex flex-col items-start justify-start gap-[10px] ">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} 
                 </span>
@@ -269,7 +269,7 @@ const OpsTaskPage = () => {
                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['PENDING', 'IN PROGRESS', 'COMPLETED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                         </span>
 
-                        <button type="button" className="px-4 h-full rounded-[3px] bg-blue-700 hover:bg-blue-700 text-sm text-white" onClick={add_task}>
+                        <button type="button" className="px-5 h-full rounded-[3px] bg-blue-700 hover:bg-blue-700 text-sm text-white" onClick={add_task}>
                             Add Task
                         </button>
                     </span>
@@ -301,17 +301,17 @@ const OpsTaskPage = () => {
                                 {task_box?.tasks.length ?
                                 <>
                                 { filtered_task_box?.tasks.map((data:any, ind:number)=>{
-                                    const {task_ind, job, description, assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
+                                    const {task_ind, job, description, task_assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
                                     return (
                                         <span key={ind} className="recent-activity-table-list " onClick={()=> edit_task(data)} >
                                             <p className="text-sm w-[7.5%] px-2 ">{task_ind} </p>
                                             <p className="text-sm w-[7.5%] px-2 ">{job.job_ind} </p>
                                             <p className="text-sm w-[15%] px-2 "> {description} </p>
                                             <p className="text-sm w-[12.5%] px-2 "> {status} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {assigned_to} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {task_assigned_to.last_name}  {task_assigned_to.first_name} </p>
                                             <p className="text-sm w-[10%] px-2 "> {start_date} </p>
                                             <p className="text-sm w-[10%] px-2 "> {due_date} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {completion_date} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {completion_date || 'nil'} </p>
                                             <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer"  ><MdEdit size={16} /> Edit</p>
 
                                         </span>

@@ -1,4 +1,4 @@
-'use cleient'
+'use client'
 import React, {useState, useEffect} from 'react'
 import { IoList } from "react-icons/io5";
 import { GrProjects } from "react-icons/gr";
@@ -123,7 +123,7 @@ const SalesDashboardPage = () => {
                         </span>
                         
                         
-                        {dash_components !== null ? <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                        {dash_components !== null ? <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
 
                             {dash_components?.recent_notifications.length ? 
                             <>
@@ -185,7 +185,7 @@ const SalesDashboardPage = () => {
                         </span>
                         
                         {dash_components != null ? 
-                        <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
                             {dash_components?.recent_lead.length ? <>
                             {dash_components?.recent_lead.map((data:any, ind:any)=>{
 
@@ -250,7 +250,7 @@ const SalesDashboardPage = () => {
                         
                         {dash_components !== null ? 
                         
-                        <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
 
                             {dash_components?.recent_tasks.length ?
                             <>

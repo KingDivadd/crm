@@ -52,7 +52,7 @@ const JobListModal = ({showModal, setShowModal, selectedItem, setSelectedItem, s
                     <div className="absolute inset-0 bg-gray-500 opacity-35"> </div>
                 </div>
                 <div className="w-full h-screen pt-[90px] rounded-lg overflow-hidden shadow-xl transform transition-all" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
-                    <div className="h-auto w-[95%] mx-auto shadow-xl flex bg-red-200 items-start ">
+                    <div className="h-auto w-[95%] mx-auto shadow-xl flex items-start ">
                         {/* the container for the input fields */}
                         <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
                             <div className="w-full min-h-[270px] flex flex-col justify-center items-center gap-[40px] p-[20px] pb-0 ">

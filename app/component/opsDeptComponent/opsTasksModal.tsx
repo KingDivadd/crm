@@ -9,6 +9,7 @@ import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
 import {get_todays_date, convert_to_unix} from "../helper"
+import { IoCheckmark } from 'react-icons/io5';
 
 
 interface Job_Management_Props {
@@ -26,22 +27,28 @@ interface FilteredJobsProps {
 
 }
 
+interface TeamProps {
+    jobs?: any;
+    admin_team?:any, engineering_team?:any, permit_team?:any, electrical_team?:any
+}
+
 const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelectedTask, modalFor}: Job_Management_Props) => {
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
-    const [approve_loading, setApprove_loading] = useState(false)
-    const [all_jobs, setAll_jobs] = useState([])
-    const [filtered_jobs, setFiltered_jobs] = useState([])
-    const [show_all_lead, setShow_all_lead] = useState(false)
+    const [show_job, setShow_job] = useState(false)
+    
+    const [all_teams, setAll_teams] = useState<TeamProps | null>(null)
+
+    const [filtered_teams, setFiltered_teams] = useState<TeamProps | null>(null)
     const [selected_job, setSelected_job] = useState('')
-    const [auth, setAuth] = useState({job_id: '', description: '', start_date: '', due_date: '', completion_date: '', note: '', assigned_to: '' })
+    const [auth, setAuth] = useState({job_id: '', description: '', start_date: '', due_date: '', completion_date: '', note: '', team: '', task_assigned_to: '' })
 
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        disposition: false, engineering_status: false, permit_status: false, status: false
+        disposition: false, engineering_status: false, permit_status: false, status: false, team: false
     });
     const [dropElements, setDropElements] = useState({
-        disposition: 'Disposition', engineering_status: 'Engineering Status', permit_status: 'Permit Status', status: 'Status'
+        disposition: 'Disposition', engineering_status: 'Engineering Status', permit_status: 'Permit Status', status: 'Status', team: 'Select Assigned Team'
     })
 
     const handleDropMenu = (dropdown: any) => {
@@ -55,7 +62,7 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
     };
 
     const handleSelectDropdown = (dropdown: any, title:any)=>{
-        setAuth({...auth, [title]: dropdown.replace(/ /g, '_').toUpperCase()})
+        setAuth({...auth, [title]: dropdown.replace(/ /g, '').replace(/\//g,'').toLowerCase()})
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
@@ -82,12 +89,12 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
 
         const value = e.target.value
             
-        const filtered_items = all_jobs.filter((data: { first_name: string, last_name: string }) =>
+        const filtered_items = filtered_teams?.jobs.filter((data: { first_name: string, last_name: string }) =>
             data.first_name.toLowerCase().includes(value.toLowerCase()) ||
             data.last_name.toLowerCase().includes(value.toLowerCase())
         );
     
-        setFiltered_jobs(value === '' ? all_jobs : filtered_items);
+        setFiltered_teams(value === '' ? filtered_teams?.jobs : filtered_items);
     }
     
     useEffect(() => {
@@ -98,9 +105,9 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
             get_all_jobs()
             console.log('seleted job ',selectedTask)
 
-            const { job, job_id, description, assigned_to, status, engineering_submitted, engineering_received, start_date, due_date, completion_date, note,  }  = selectedTask
+            const { job, job_id, description, task_assigned_to, status, engineering_submitted, engineering_received, start_date, due_date, completion_date, note,  }  = selectedTask
 
-            setAuth({...auth, job_id, description, assigned_to, start_date, completion_date, due_date, note})
+            setAuth({...auth, job_id, description, task_assigned_to, start_date, completion_date, due_date, note})
 
             setSelected_job(job.job_ind)
 
@@ -119,12 +126,10 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
         try {
             const response = await get_auth_request(`user/jobs`)
             if (response.status == 200 || response.status == 201){
+                
+                setAll_teams(response.data)
 
-                setAll_jobs(response.data.jobs)
-
-                setFiltered_jobs(response.data.jobs)
-
-                console.log('lead ', response.data.jobs);
+                setFiltered_teams(response.data)                
                 
                 }else{       
                                 
@@ -145,7 +150,7 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
             try {
                 setLoading(true)
                 
-                const response = await post_auth_request(`job/create-task`, {job_id: auth.job_id, description: auth.description, start_date: auth.start_date, due_date: auth.due_date, status: 'PENDING', assigned_to: auth.assigned_to, note: auth.note})
+                const response = await post_auth_request(`job/create-task`, {job_id: auth.job_id, description: auth.description, start_date: auth.start_date, due_date: auth.due_date, status: 'PENDING', task_assigned_to: auth.task_assigned_to, note: auth.note})
                 if (response.status == 200 || response.status == 201){
                                 
                     showAlert(response.data.msg, "success")
@@ -175,7 +180,7 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
             try {
                 setLoading(true)
                 console.log('auth. ', auth)
-                const response = await patch_auth_request(`job/edit-task/${selectedTask.task_id}`, {job_id: auth.job_id, description: auth.description, start_date: auth.start_date, due_date: auth.due_date, status: 'PENDING', assigned_to: auth.assigned_to, note: auth.note})
+                const response = await patch_auth_request(`job/edit-task/${selectedTask.task_id}`, {job_id: auth.job_id, description: auth.description, start_date: auth.start_date, due_date: auth.due_date, status: 'PENDING', task_assigned_to: auth.task_assigned_to, note: auth.note})
                 if (response.status == 200 || response.status == 201){
                                 
                     showAlert(response.data.msg, "success")
@@ -275,39 +280,148 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
 
                                 {modalFor == 'add' && 
                                 <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
-                                    <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] z-[15] ">
+                                    <div className="w-full flex  items-center justify-between border-b border-slate-200 h-[55px] z-[15] ">
                                         <p className="text-md font-semibold  text-slate-800 ">New Task </p>
 
-                                    </span>
+                                        <div className=" flex flex-col items-self justify-self relative ">
+                                            <span className="flex items-center justify-end gap-[10px]">
 
-                                    <form  action="" className="w-full h-full flex items-start justify-between gap-[15px]">
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] h-full ">
-                                            <span className="w-full h-full flex flex-col items-self justify-self ">
-                                                <p className="text-sm text-slate-900">Select Job</p>
+                                                {selected_job && <h4 className="text-sm flex items-center gap-[5px]">Selected Job: <p className="font-medium">{selected_job}</p> </h4>}
 
-                                                <span className="h-[40px] w-full rounded-[5px] text-sm flex items-center justify-center border border-slate-400 mt-[10px] ">
-                                                    {selected_job}
-                                                </span>
+                                                <button className="text-sm text-slate-900 rounded-[3px] px-5 border border-gray-400 flex items-center h-[40px]" onClick={()=> {setShow_job(!show_job)}} >Select Job {show_job ?<FaCaretUp size={18} className='text-slate-600 mt-[2px]' /> : <FaCaretDown size={18} className='text-slate-600 mb-[3px]' />} </button>
+                                            </span>
 
-                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-700 text-white rounded-t-[5px] mt-[10px]">
+                                            {show_job && 
+                                            <div className="w-[450px] absolute top-[45px] right-[0] z-2 shadow-md bg-white">
+
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
                                                     <p className="text-sm w-[20%] px-2 ">Job Id</p>
-                                                    <p className="text-sm w-[35%] px-2 ">Contract Amount</p>
+                                                    <p className="text-sm w-[30%] px-2 ">Contract Amt</p>
                                                     <p className="text-sm w-[45%] px-2 ">Customer Name</p>
+                                                    <p className="text-sm w-[5%] px-2 "></p>
                                                 </span>
-                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-[5px] bg-slate-100 overflow-y-auto">
-                                                    {filtered_jobs.reverse().map((data, ind)=>{
+                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
+                                                    {filtered_teams?.jobs.reverse().map((data:any, ind:number)=>{
+
                                                         const {job_id, job_ind, contract_amount, lead} = data
                                                         const {customer_name} = lead
                                                         return(
-                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-slate-300 cursor-pointer " onClick={()=> {setAuth({...auth, job_id: job_id }); setSelected_job(job_ind) } }>
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, job_id: job_id }); setSelected_job(job_ind); setShow_job(!show_job) } }>
                                                                 <p className="text-sm w-[20%] px-2 ">{job_ind}</p>
-                                                                <p className="text-sm w-[35%] px-2 ">${Number(contract_amount).toLocaleString()}</p>
+                                                                <p className="text-sm w-[30%] px-2 ">${Number(contract_amount).toLocaleString()}</p>
                                                                 <p className="text-sm font-medium w-[45%] px-2 ">{customer_name}</p>
+                                                                <span className="w-[5%] ">{auth.job_id == job_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
                                                             </span>
                                                         )
                                                     })}
                                                 </div>
+                                            </div>}
+
+                                        </div>
+
+                                    </div>
+
+                                    <form  action="" className="w-full h-full flex items-start justify-between gap-[15px]">
+                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[10px] h-full ">
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
+                                                <p className="text-sm text-slate-900">Select Team</p>
+
+                                                <span className="h-[40px] min-w-[150px] z-5">
+                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'team'} dropArray={['Engineering', 'Electrical', 'General Permit', 'Admin / Hoa' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                </span>
                                             </span>
+
+                                            {auth.team.toLowerCase() == 'electrrical' && <div className="w-full ">
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
+                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
+                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
+                                                    <p className="text-sm w-[10%] px-2 "></p>
+                                                </span>
+                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
+                                                    {filtered_teams?.electrical_team.reverse().map((data:any, ind:number)=>{
+                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
+                                                        return(
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
+                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
+                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
+                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
+                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
+                                                            </span>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>}
+
+                                            {auth.team.toLowerCase() == 'engineering' && <div className="w-full ">
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
+                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
+                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
+                                                    <p className="text-sm w-[10%] px-2 "></p>
+                                                </span>
+                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
+                                                    {filtered_teams?.engineering_team.reverse().map((data:any, ind:number)=>{
+                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
+                                                        return(
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
+                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
+                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
+                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
+                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
+                                                            </span>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>}
+
+                                            {auth.team.toLowerCase() == 'generalpermit' && <div className="w-full ">
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
+                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
+                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
+                                                    <p className="text-sm w-[10%] px-2 "></p>
+                                                </span>
+                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
+                                                    {filtered_teams?.permit_team.reverse().map((data:any, ind:number)=>{
+                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
+                                                        return(
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
+                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
+                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
+                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
+                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
+                                                            </span>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>}
+
+                                            {auth.team.toLowerCase() == "adminhoa" && <div className="w-full ">
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
+                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
+                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
+                                                    <p className="text-sm w-[10%] px-2 "></p>
+                                                </span>
+                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
+                                                    {filtered_teams?.admin_team.reverse().map((data:any, ind:number)=>{
+                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
+                                                        return(
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
+                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
+                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
+                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
+                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
+                                                            </span>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>}
+                                                    
+                                       
+                                            
                                         </div>
 
                                         <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
@@ -318,12 +432,6 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
                                                 </span>
                                             </span>
 
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Assigned To</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='assigned_to' value={auth.assigned_to} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
                                             
                                             {/* <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
                                                 <p className="text-sm text-slate-900">Status</p>
@@ -379,33 +487,127 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
                                     </span>
 
                                     <form  action="" className="w-full h-full flex items-start justify-between gap-[15px]">
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] h-full ">
-                                            <span className="w-full h-full flex flex-col items-self justify-self ">
-                                                <p className="text-sm text-slate-900">Select Job</p>
+                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[10px] h-full ">
 
-                                                <span className="h-[40px] w-full rounded-[5px] text-sm flex items-center justify-center border border-slate-400 mt-[10px] ">
-                                                    {selected_job}
-                                                </span>
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
+                                                <p className="text-sm text-slate-900">Select Team</p>
 
-                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-700 text-white rounded-t-[5px] mt-[10px]">
-                                                    <p className="text-sm w-[20%] px-2 ">Job Id</p>
-                                                    <p className="text-sm w-[35%] px-2 ">Contract Amount</p>
-                                                    <p className="text-sm w-[45%] px-2 ">Customer Name</p>
+                                                <span className="h-[40px] min-w-[150px] z-5">
+                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'team'} dropArray={['Engineering', 'General Permit', 'Admin / Hoa', 'Electrical' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                                 </span>
-                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-[5px] bg-slate-100 overflow-y-auto">
-                                                    {filtered_jobs.reverse().map((data, ind)=>{
-                                                        const {job_id, job_ind, contract_amount, lead} = data
-                                                        const {customer_name} = lead
+                                            </span>
+
+                                            {auth.team.toLowerCase() == 'engineering' && <div className="w-full border border-gray-400">
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
+                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
+                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
+                                                    <p className="text-sm w-[10%] px-2 "></p>
+                                                </span>
+                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
+                                                    {filtered_teams?.engineering_team.reverse().map((data:any, ind:number)=>{
+                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
                                                         return(
-                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-slate-300 cursor-pointer " onClick={()=> {setAuth({...auth, job_id: job_id }); setSelected_job(job_ind) } }>
-                                                                <p className="text-sm w-[20%] px-2 ">{job_ind}</p>
-                                                                <p className="text-sm w-[35%] px-2 ">${Number(contract_amount).toLocaleString()}</p>
-                                                                <p className="text-sm font-medium w-[45%] px-2 ">{customer_name}</p>
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
+                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
+                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
+                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
+                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
                                                             </span>
                                                         )
                                                     })}
                                                 </div>
-                                            </span>
+                                            </div>}
+
+                                            {auth.team.toLowerCase() == 'electrical' && <div className="w-full ">
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
+                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
+                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
+                                                    <p className="text-sm w-[10%] px-2 "></p>
+                                                </span>
+                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
+                                                    {filtered_teams?.electrical_team.reverse().map((data:any, ind:number)=>{
+                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
+                                                        return(
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
+                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
+                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
+                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
+                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
+                                                            </span>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>}
+
+                                            {auth.team.toLowerCase() == "adminhoa" && <div className="w-full ">
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
+                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
+                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
+                                                    <p className="text-sm w-[10%] px-2 "></p>
+                                                </span>
+                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
+                                                    {filtered_teams?.admin_team.reverse().map((data:any, ind:number)=>{
+                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
+                                                        return(
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
+                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
+                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
+                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
+                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
+                                                            </span>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>}
+
+                                            {auth.team.toLowerCase() == 'generalpermit' && <div className="w-full ">
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
+                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
+                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
+                                                    <p className="text-sm w-[10%] px-2 "></p>
+                                                </span>
+                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
+                                                    {filtered_teams?.permit_team.reverse().map((data:any, ind:number)=>{
+                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
+                                                        return(
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
+                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
+                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
+                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
+                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
+                                                            </span>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>}
+
+                                            {auth.team.toLowerCase() == "adminhoa" && <div className="w-full ">
+                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
+                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
+                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
+                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
+                                                    <p className="text-sm w-[10%] px-2 "></p>
+                                                </span>
+                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
+                                                    {filtered_teams?.admin_team.reverse().map((data:any, ind:number)=>{
+                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
+                                                        return(
+                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
+                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
+                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
+                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
+                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
+                                                            </span>
+                                                        )
+                                                    })}
+                                                </div>
+                                            </div>}
+                                                    
+
                                         </div>
 
                                         <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
@@ -416,20 +618,14 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
                                                 </span>
                                             </span>
 
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Assigned To</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='assigned_to' value={auth.assigned_to} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
                                             
-                                            {/* <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
                                                 <p className="text-sm text-slate-900">Status</p>
 
                                                 <span className="h-[40px] min-w-[150px] z-5">
                                                     <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['PENDING', 'IN PROGRESS', 'COMPLETED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                                 </span>
-                                            </span> */}
+                                            </span>
 
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Start Date</p>
@@ -452,13 +648,13 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
                                                 </span>
                                             </span>
 
-                                            <button className="w-full h-[40px] text-white bg-amber-600 rounded-[5px] hover:bg-amber-700 flex items-center justify-center text-sm "  disabled={loading} onClick={update_task} >
+                                            <button className="w-full h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={update_task} >
                                                 {loading ? (
                                                     <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
                                                         <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                                                     </svg>
-                                                ) : 'Update Task'}
+                                                ) : 'Create Task'}
 
                                             </button>
                                             

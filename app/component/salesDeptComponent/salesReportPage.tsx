@@ -137,7 +137,7 @@ const SalesReportPage = () => {
     return (
         <div className="w-full p-[10px] pb-[10px]">
             {viewDetails.contractDetails && <SalesViewContractDetails viewContractDetails={viewContractDetails}  /> }
-            {(viewDetails.contractDetails == false && viewDetails.documentAndInvoices == false) &&  <div className="w-full h-full flex flex-col items-start justify-start gap-[30px]">
+            {(viewDetails.contractDetails == false && viewDetails.documentAndInvoices == false) &&  <div className="w-full h-full flex flex-col items-start justify-start gap-[25px]">
                 
                 {/* first section = summary stat */}
                 <div className="w-full flex flex-row items-center justify-between gap-[10px] relative">
@@ -203,7 +203,7 @@ const SalesReportPage = () => {
 
                         {report_dashboard ? 
                         
-                        <div className="w-full flex flex-col justify-start items-start" style={{height: 'calc(100vh - 315px)'}}>
+                        <div className="w-full flex flex-col justify-start items-start" style={{height: 'calc(100vh - 300px)'}}>
                             {report_dashboard?.sales_persons.map((data:any, ind:any)=>{
                                 const {first_name, last_name, user_id, user_ind} = data
 

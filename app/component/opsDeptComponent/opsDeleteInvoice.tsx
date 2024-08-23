@@ -50,7 +50,7 @@ const DeleteInvoiceModal = ({showModal, setShowModal, selectedItem, setSelectedI
                     <div className="absolute inset-0 bg-gray-500 opacity-35"></div>
                 </div>
                 <div className="w-full h-screen pt-[120px] rounded-lg overflow-hidden shadow-xl transform transition-all" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
-                    <div className="h-auto w-[60%] mx-auto shadow-xl flex bg-red-200 items-start ">
+                    <div className="h-auto w-[60%] mx-auto shadow-xl flex  items-start ">
                         {/* the container for the input fields */}
                         <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
                             <span className="w-full h-[10px]  rounded-t-[5px] "></span>
