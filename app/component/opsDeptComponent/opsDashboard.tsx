@@ -39,7 +39,7 @@ const OpsDashboard = () => {
                     {active === "jobs" && <SalesJobsPage /> }
                     {active === "tasks" && <OpsTaskPage /> }
                     {active === "installs" && <OpsInstallsPage /> }
-                    {active === "reports" && <OpsReportPage /> }
+                    {/* {active === "reports" && <OpsReportPage /> } */}
                     {active === "notification" && <NotificationPage /> }
                     {active === "user-tracking" && <OpsUserTrackingPage /> }
                     {active === "settings" && <SystemSettings /> }

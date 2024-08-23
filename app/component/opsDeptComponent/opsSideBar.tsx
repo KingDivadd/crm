@@ -77,10 +77,10 @@ const OpsSideBar = ({active, setActive}: SideBarNav) => {
                         <BiSolidNotepad size={21} className='text-slate-800' />
                         {active !== "sales" && <p className="text-[15.5px]">Installs</p> }
                     </span>
-                    <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
+                    {/* <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
                         <BiSolidReport size={21} className='text-slate-800' />
                         {active !== "sales" && <p className="text-[15.5px]">Reports</p>  }
-                    </span>
+                    </span> */}
                    
                     <span className={active === "notification"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notification')}}>
                         <MdNotifications size={21} className='text-slate-800' />

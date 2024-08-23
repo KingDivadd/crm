@@ -144,7 +144,7 @@
 }
 
 .recent-activity-table-list {
-    @apply w-full min-h-[40px] flex flex-row items-center justify-start cursor-pointer py-[5px];
+    @apply w-full  flex flex-row items-center justify-start cursor-pointer py-[10px];
 }
 
 .recent-activity-table-list:hover {

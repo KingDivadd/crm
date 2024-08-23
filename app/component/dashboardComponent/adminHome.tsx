@@ -285,7 +285,7 @@ const AdminHome = () => {
 
                 {/* Recent Lead */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-md ">Recent Lead</p>
+                    <p className="text-md ">Recent Task</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
@@ -346,6 +346,69 @@ const AdminHome = () => {
                     </div>
                 </div>
 
+                {/* Recent Project */}
+                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
+                    <p className="text-md ">Recent Project</p>
+
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
+                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                            <p className="text-sm font-normal w-[15%] px-2 ">Lead Id</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Customer Name</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Customer Address</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
+                            <p className="text-sm font-normal w-[20%] px-2 ">Assigned to</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
+                        </span>
+                        
+                        {dash_components != null ? 
+                        <div className="w-full h-[250px] flex flex-col justify-start items-start">
+                            {dash_components?.recent_lead.length ? <>
+                            {dash_components?.recent_lead.map((data:any, ind:any)=>{
+
+                                const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind} = data   
+                                
+                                return (
+                                    <span key={ind} className="recent-activity-table-list ">
+                                        <p className="text-sm w-[15%] px-2 ">{lead_ind}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{customer_name}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{address}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{phone_number}</p>
+                                        <p className="text-sm w-[20%] px-2 ">{assigned_to.last_name} {assigned_to.first}</p>
+                                        <p className="text-sm w-[10%] px-2 ">{disposition}</p>
+                                    </span>
+                                )
+                            })}
+                            </>
+                            :
+                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                                <p className="text-sm ">No Lead yet</p>
+                            </div>
+                            }
+
+                        </div>
+                        :
+                        <div className="w-full h-[250px] flex items-center justify-center">
+                            <p className="text-sm font-normal">Loading Data...</p>
+                        </div>
+                        }
+                        
+
+                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
+                            <span className="flex flex-row items-center justify-start gap-3 h-full">
+                                <p className="text-sm cursor-pointer ">Prev</p>
+                                <span className="w-auto h-full flex flex-row items-center justify-start">
+                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
+
+                                </span>
+                                <p className="text-sm cursor-pointer ">Next</p>
+                            </span>
+                            <span className="flex flex-row items-center justify-end gap-3 h-full">
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_lead.length}</p>
+                            </span>
+                        </span>
+                    </div>
+                </div>
+                
                 {/* Recent Project */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-md ">Recent Project</p>

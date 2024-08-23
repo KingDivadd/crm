@@ -61,7 +61,7 @@ const EngineeringSideBar = ({active, setActive}: SideBarNav) => {
                         <MdWork size={22} /> 
                         <p className="text-[16px]">All Projects</p>
                     </span>
-                    <span className={active === "uploadDrawing"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('uploadDrawing')}}>
+                    {/* <span className={active === "uploadDrawing"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('uploadDrawing')}}>
                         <MdAssignmentTurnedIn size={21} /> 
                         <p className="text-[15.5px]"> Drawing Upload</p>
                     </span>
@@ -69,7 +69,7 @@ const EngineeringSideBar = ({active, setActive}: SideBarNav) => {
                     <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
                         <BiSolidReport size={21} /> 
                         <p className="text-[15.5px]">Reports</p>
-                    </span>
+                    </span> */}
                     <span className={active === "notification"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notification')}}>
                         <MdNotifications size={21} className='text-slate-800' />
                         {active !== "sales" && <p className="text-[15.5px]">Notification</p>}

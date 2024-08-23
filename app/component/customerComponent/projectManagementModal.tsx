@@ -497,48 +497,66 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
 
                                         <div className="w-1/2 flex flex-col item-start justify-start gap-[15px]">
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Added By</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.project_adder.first_name} {selectedProject.project_adder.last_name}</p>
+                                                <p className="text-sm w-[50%] ">Added By</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.project_adder.first_name} {selectedProject.project_adder.last_name}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Permit Status</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.permit_status.replace(/_/g, ' ')}</p>
+                                                <p className="text-sm w-[50%] ">General Permit Status</p>
+                                                {selectedProject.job.general_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedProject.job.general_permit_status.replace(/_/g, ' ')}</p>:
+                                                <p className="text-sm w-[50%] font-medium ">-</p>}
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Permit Number</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.permit_number || '-'}</p>
+                                                <p className="text-sm w-[50%] ">Genral Permit Number</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.general_permit_number || '-'}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Permit Submit Date</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.permit_submit_date || '-'}</p>
+                                                <p className="text-sm w-[50%] ">General Permit Submit Date</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.general_permit_submit_date || '-'}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Permit Approval Date</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.permit_approval_date || '-'}</p>
+                                                <p className="text-sm w-[50%] ">General Permit Approval Date</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.general_permit_approval_date || '-'}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Hoa Status</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.permit_status.replace(/_/g, ' ')}</p>
+                                                <p className="text-sm w-[50%] ">Hoa Permit Status</p>
+                                                {selectedProject.job.hoa_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedProject.job.hoa_permit_status.replace(/_/g, ' ')}</p>:
+                                                <p className="text-sm w-[50%] font-medium ">-</p>}
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Hoa Submit Date</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.hoa_sent_date || '-'}</p>
+                                                <p className="text-sm w-[50%] ">Hoa Permit Submit Date</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.hoa_permit_submit_date || '-'}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Hoa Approval Date</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.hoa_approval_date || '-'}</p>
+                                                <p className="text-sm w-[50%] ">Hoa Approval Date</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.hoa_permit_approval_date || '-'}</p>
+                                            </span>
+                                            
+                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm w-[50%] ">Engineering Permit Status</p>
+                                                {selectedProject.job.engineering_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedProject.job.engineering_permit_status.replace(/_/g, ' ')}</p>:
+                                                <p className="text-sm w-[50%] font-medium ">-</p>}
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Engineering Status</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.engineering_status.replace(/_/g, ' ')}</p>
+                                                <p className="text-sm w-[50%] ">Engineering Permit Submit Date</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.engineering_permit_submit_date || '-'}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Engineering Submit Date</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.engineering_submit_date || '-'}</p>
+                                                <p className="text-sm w-[50%] ">Engineering Permit Approval Date</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.engineering_permit_approval_date || '-'}</p>
+                                            </span>
+                                            
+                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm w-[50%] ">Electrical Permit Status</p>
+                                                {selectedProject.job.electrical_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedProject.job.electrical_permit_status.replace(/_/g, ' ')}</p>:
+                                                <p className="text-sm w-[50%] font-medium ">-</p>}
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[45%] ">Engineering Approval Date</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.engineering_approval_date || '-'}</p>
+                                                <p className="text-sm w-[50%] ">Electrical Permit Submit Date</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.electrical_permit_submit_date || '-'}</p>
+                                            </span>
+                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm w-[50%] ">Electrical Permit Approval Date</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.electrical_permit_approval_date || '-'}</p>
                                             </span>
                                             
                                         </div>

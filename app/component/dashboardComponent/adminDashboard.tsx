@@ -49,7 +49,7 @@ const AdminDashboard = () => {
                     {active === "leads" && <SalesLeadPage /> }
                     {active === "jobs" && <SalesJobsPage /> }
                     {active === "project-status" && <ProjectStatusPage /> }
-                    {active === "analytics" && <ReportsAndAnalytics /> }
+                    
                     {active === "notifications" && <NotificationPage /> }
                     {/* {active === "logs" && <AdminLogsPage /> } */}
                     {active === "system-settings" && <AdminSystemSettings /> }

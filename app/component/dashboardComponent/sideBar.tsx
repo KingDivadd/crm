@@ -66,10 +66,7 @@ const SideBar = ({active, setActive}:SideBarNav) => {
                         <FaFileAlt size={21} /> 
                         <p className="text-[15.5px]">Task Management</p>
                     </span>
-                    <span className={active === "analytics"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('analytics')}}>
-                        <IoStatsChartSharp size={21} />
-                        <p className="text-[15px]">Reports and Analytics</p>
-                    </span>
+                   
                     <span className={active === "notifications"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notifications')}}>
                         <MdNotifications size={21} />
                         <p className="text-[15px]">Notifications</p>

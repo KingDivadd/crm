@@ -132,7 +132,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                 engineering_permit_submit_date, engineering_permit_approval_date, engineering_permit_status, engineering_permit_documents, 
                 electrical_permit_submit_date, electrical_permit_approval_date, electrical_permit_status, electrical_permit_documents, 
                 general_permit_submit_date, generall_permit_approval_date, general_permit_status, general_permit_documents, 
-                cover_color, cover_size,  attached, structure_type, description, end_cap_style, trim_color, permit_number 
+                cover_color, cover_size, trim_color, attached, structure_type, description, end_cap_style, permit_number 
              })
 
             // setDropElements({...dropElements,
