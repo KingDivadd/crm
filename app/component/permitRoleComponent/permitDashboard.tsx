@@ -10,6 +10,7 @@ import PermitHistory from './permitHistoryPage'
 import SystemSettings from '../setting'
 import NotificationPage from '../notificationPage'
 import DashboardNav from '../dashboardNav'
+import TaskManagement from './taskManagementPage'
 
 
 
@@ -37,7 +38,7 @@ const PermitPortalDashboard = () => {
                     {active === "home" && <PermitHomePage /> }
                     {active === "all-permit" && <AllPermitPage /> }
                     {active === "inspection" && <InspectionPage /> }
-
+                    {active === "taskManagement" && <TaskManagement /> }
                     {active === "notification" && <NotificationPage /> }
                     {active === "settings" && <SystemSettings /> }
 

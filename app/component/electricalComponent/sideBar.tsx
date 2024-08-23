@@ -11,6 +11,7 @@ import { FaFileInvoice } from "react-icons/fa6";
 import { RiFolderUploadFill } from "react-icons/ri";
 import { MdDescription } from "react-icons/md";
 import { BsCalendar2WeekFill } from "react-icons/bs";
+import { FaFileAlt } from 'react-icons/fa';
 
 
 
@@ -44,33 +45,37 @@ const ElectricalSidebar = ({active, setActive}:SideBarNav) => {
             <div className="w-full h-[600px]  flex flex-col items-start justify-between admin-side-bar-cont  ">
                 <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px]">
                     <span className={active === "dashboard"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('dashboard')}}>
-                        <RiDashboardFill size={22}  />
-                        <p className="text-[17px]">Dashboard</p>
+                        <RiDashboardFill size={21}  />
+                        <p className="text-[15.5px]">Dashboard</p>
+                    </span>
+                    <span className={active === "taskManagement"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('taskManagement')}}>
+                        <FaFileAlt size={21} /> 
+                        <p className="text-[15.5px]">Task Management</p>
                     </span>
                     <span className={active === "taskNotification"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('taskNotification')}}>
-                        <MdNotifications size={24}  className='text-slate-700'/> 
-                        <p className="text-[17px]">Task Notificaitions</p>
+                        <MdNotifications size={21}  className='text-slate-700'/> 
+                        <p className="text-[15.5px]">Task Notificaitions</p>
                     </span>
                     <span className={active === "serviceTicket"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('serviceTicket')}}>
-                        <RiTicket2Fill size={22}  className='text-slate-700'/> 
-                        <p className="text-[17px]"> Service Tickets</p>
+                        <RiTicket2Fill size={21}  className='text-slate-700'/> 
+                        <p className="text-[15.5px]"> Service Tickets</p>
                     </span>
                     <span className={active === "invoices"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('invoices')}}>
                         <FaFileInvoice size={21}  className='text-slate-700'/> 
-                        <p className="text-[17px]">Invoices</p>
+                        <p className="text-[15.5px]">Invoices</p>
                     </span>
                     <span className={active === "photoUpload"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('photoUpload')}}>
-                        <RiFolderUploadFill size={22}  className='text-slate-700'/> 
-                        <p className="text-[17px]">Photo Upload</p>
+                        <RiFolderUploadFill size={21}  className='text-slate-700'/> 
+                        <p className="text-[15.5px]">Photo Upload</p>
                     </span>
                    
                     {/* <span className={active === "calender"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('calender')}}>
                         <BsCalendar2WeekFill size={20}  className='text-slate-700'/> 
-                        <p className="text-[17px]">Calender</p>
+                        <p className="text-[15.5px]">Calender</p>
                     </span>
                     <span className={active === "settings"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('settings')}}>
                         <FaGear size={21}  className='text-slate-700'/> 
-                        <p className="text-[17px]">Settings</p>
+                        <p className="text-[15.5px]">Settings</p>
                     </span> */}
                     
                 </div>

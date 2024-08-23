@@ -283,12 +283,12 @@ const OpsTaskPage = () => {
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Task ID</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Desription</p>
+                        <p className="text-sm font-normal w-[20%] px-2 ">Desription</p>
                         <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Assigned To</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Assigned To</p>
                         <p className="text-sm font-normal w-[10%] px-2 ">Start Date</p>
                         <p className="text-sm font-normal w-[10%] px-2 ">End Date</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Completion Date</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Completion Date</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
                     </span>
 
@@ -306,12 +306,12 @@ const OpsTaskPage = () => {
                                         <span key={ind} className="recent-activity-table-list " onClick={()=> edit_task(data)} >
                                             <p className="text-sm w-[7.5%] px-2 ">{task_ind} </p>
                                             <p className="text-sm w-[7.5%] px-2 ">{job.job_ind} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {description} </p>
+                                            <p className="text-sm w-[20%] px-2 "> {description} </p>
                                             <p className="text-sm w-[12.5%] px-2 "> {status} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {task_assigned_to.last_name}  {task_assigned_to.first_name} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {task_assigned_to.last_name}  {task_assigned_to.first_name} </p>
                                             <p className="text-sm w-[10%] px-2 "> {start_date} </p>
                                             <p className="text-sm w-[10%] px-2 "> {due_date} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {completion_date || 'nil'} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {completion_date || 'nil'} </p>
                                             <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer"  ><MdEdit size={16} /> Edit</p>
 
                                         </span>

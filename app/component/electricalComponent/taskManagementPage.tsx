@@ -6,7 +6,7 @@ import { MdDeleteForever } from "react-icons/md";
 import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
 import Alert from '../alert';
 import { get_auth_request } from '../../api/admin_api';
-import TaskModal from './taskModal';
+import TaskModal from './taskModalPage';
 // import Task_Management_Modal from "./opsTasksModal"
 
 interface Tasks_Props {

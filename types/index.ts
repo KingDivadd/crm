@@ -138,6 +138,7 @@ export interface ImageUploaderProps {
     url: string;
     id: string;
     image: string;
+    onFileUpload?: (fileUrl: string) => void;
 }
 
 export interface ProjectImageUploaderProps {
@@ -146,6 +147,7 @@ export interface ProjectImageUploaderProps {
     id: string;
     disabled: boolean;
     handleUploadClick: () => void;
+
 }
 
 export interface JobListProps {

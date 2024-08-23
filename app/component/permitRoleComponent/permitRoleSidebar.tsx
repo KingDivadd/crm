@@ -57,6 +57,10 @@ const PermitRoleSidebar = ({active, setActive}: SideBarNav) => {
                         <FaFileAlt size={21} /> 
                         <p className="text-[15.5px]">All Permit</p>
                     </span>
+                    <span className={active === "taskManagement"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('taskManagement')}}>
+                        <FaFileAlt size={21} /> 
+                        <p className="text-[15.5px]">Task Management</p>
+                    </span>
                     <span className={active === "inspection"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('inspection')}}>
                         <MdAssignmentTurnedIn size={21} /> 
                         <p className="text-[15.5px]"> Inspection Page</p>

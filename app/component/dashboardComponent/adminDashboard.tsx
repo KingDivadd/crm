@@ -12,6 +12,7 @@ import DashboardNav from '../dashboardNav'
 import SalesLeadPage from '../salesDeptComponent/salesLeadPage'
 import SalesJobsPage from '../salesDeptComponent/salesJobsPage'
 import ProjectStatusPage from '../customerComponent/projectStatusPage'
+import TaskManagement from './taskManagementPage'
 
 const AdminDashboard = () => {
     const [active, setActive] = useState('')
@@ -52,6 +53,7 @@ const AdminDashboard = () => {
                     {active === "notifications" && <NotificationPage /> }
                     {/* {active === "logs" && <AdminLogsPage /> } */}
                     {active === "system-settings" && <AdminSystemSettings /> }
+                    {active === "taskManagement" && <TaskManagement /> }
                 </div>
             </div>
         </div>

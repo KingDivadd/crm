@@ -7,12 +7,13 @@ import TaskNotificationPage from './taskNotification'
 import ServiceTicketPage from './serviceTicket'
 import InvoicePage from './invoices'
 import PhotoUpload from './photoUpload'
+import TaskManagement from './taskManagementPage'
 
 const ElecricalDashbaord = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
         const item = sessionStorage.getItem('sideNav')
-        if (item == null || item == "" || !['dashboard', 'taskNotificaition', 'serviceTicket', 'invoices', 'photoUpload'].includes(item)) {
+        if (item == null || item == "" || !['dashboard', 'taskNotificaition', 'serviceTicket', 'invoices', 'photoUpload', 'taskManagement'].includes(item)) {
             setActive('dashboard')
         }else{
             setActive(item)
@@ -34,6 +35,7 @@ const ElecricalDashbaord = () => {
                     {active === "serviceTicket" && <ServiceTicketPage /> }
                     {active === "invoices" && <InvoicePage /> }
                     {active === "photoUpload" && <PhotoUpload /> }
+                    {active === "taskManagement" && <TaskManagement /> }
 
                 </div>
             </div>

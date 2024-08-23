@@ -2,7 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import { RiHome3Fill } from "react-icons/ri";
 import { FiLogOut } from "react-icons/fi";
-import { FaUserTag, FaUserTie } from "react-icons/fa";
+import { FaFileAlt, FaUserTag, FaUserTie } from "react-icons/fa";
 import { IoStatsChartSharp } from "react-icons/io5";
 import { RiNotificationBadgeFill } from "react-icons/ri";
 import { BiSolidNotepad } from "react-icons/bi";
@@ -61,6 +61,10 @@ const SideBar = ({active, setActive}:SideBarNav) => {
                     <span className={active === "project-status"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('project-status')}}>
                         <MdWork size={22} /> 
                         <p className="text-[15px]">All Projects</p>
+                    </span>
+                    <span className={active === "taskManagement"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('taskManagement')}}>
+                        <FaFileAlt size={21} /> 
+                        <p className="text-[15.5px]">Task Management</p>
                     </span>
                     <span className={active === "analytics"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('analytics')}}>
                         <IoStatsChartSharp size={21} />

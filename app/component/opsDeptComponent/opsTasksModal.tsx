@@ -62,6 +62,7 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
     };
 
     const handleSelectDropdown = (dropdown: any, title:any)=>{
+        
         setAuth({...auth, [title]: dropdown.replace(/ /g, '').replace(/\//g,'').toLowerCase()})
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
@@ -129,7 +130,9 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
                 
                 setAll_teams(response.data)
 
-                setFiltered_teams(response.data)                
+                setFiltered_teams(response.data)           
+                
+                console.log('teams ', response.data)
                 
                 }else{       
                                 
@@ -332,7 +335,7 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
                                                 </span>
                                             </span>
 
-                                            {auth.team.toLowerCase() == 'electrrical' && <div className="w-full ">
+                                            {auth.team.toLowerCase() == 'electrical' && <div className="w-full ">
                                                 <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
                                                     <p className="text-sm w-[20%] px-2 ">User Id</p>
                                                     <p className="text-sm w-[45%] px-2 ">Staff Name</p>
@@ -519,7 +522,8 @@ const Task_Management_Modal = ({ showModal, setShowModal, selectedTask, setSelec
                                                 </div>
                                             </div>}
 
-                                            {auth.team.toLowerCase() == 'electrical' && <div className="w-full ">
+                                            {auth.team.toLowerCase() == 'electrical' && 
+                                            <div className="w-full ">
                                                 <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
                                                     <p className="text-sm w-[20%] px-2 ">User Id</p>
                                                     <p className="text-sm w-[45%] px-2 ">Staff Name</p>
