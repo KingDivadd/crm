@@ -55,10 +55,10 @@ const CustomerSideBar = ({active, setActive}: SideBarNav) => {
                         <MdNotifications size={21} />
                         <p className="text-[16px]">Notifications</p>
                     </span>
-                    <span className={active === "warranty"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('warranty')}}>
+                    {/* <span className={active === "warranty"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('warranty')}}>
                         <MdVerifiedUser size={21} />
                         <p className="text-[16px]">Warranty</p>
-                    </span>
+                    </span> */}
                     <span className={active === "system-settings"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('system-settings')}}>
                         <IoSettingsSharp size={21} />
                         <p className="text-[16px]">System Settings</p>
