@@ -1,25 +1,20 @@
 'use client'
 import React, {useState, useEffect} from 'react'
-import AccountingNav from './navBar'
 import AccountingSideBar from './sideBar'
 import AccountingDashboardPage from './accountingDashboardPage'
-import ProfitAndLossPage from './profitAndLoss'
-import AverageCostPerPage from './averageCostPerPage'
-import ProfitMarginPage from './profitMargin'
-import LossPage from './lossPage'
-import BillsOrInvoicePage from './billsOrInvoice'
-import PayrollPage from './payroll'
-import Settings from './settingPage'
 import NotificationPage from '../notificationPage'
 import SystemSettings from '../setting'
 import DashboardNav from '../dashboardNav'
+import InvoicePage from './invoicePage'
+import PaymentPage from './paymentPage'
+import ExpensesPage from './expensesPage'
 
 
 const AccountingDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
-        const item = sessionStorage.getItem('sideNav')
-        if (item == null || item == "") {
+        const item = sessionStorage.getItem('side_nav')
+        if (item == null || item == "" || !['home', 'invoice', 'payment',  'expenses', 'notification', 'settings' ].includes(item) ) {
             setActive('dashboard')
         }else{
             setActive(item)
@@ -36,13 +31,11 @@ const AccountingDashboard = () => {
                 <DashboardNav />
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
 
-                    {active === "homie" && <AccountingDashboardPage /> }
-                    {active === "profit&loss" && <ProfitAndLossPage /> }
-                    {active === "averageCostPerPage" && <AverageCostPerPage /> }
-                    {active === "profitMargin" && <ProfitMarginPage /> }
-                    {active === "loss" && <LossPage /> }
-                    {active === "bills&report" && <BillsOrInvoicePage /> }
-                    {active === "payroll" && <PayrollPage /> }
+                    {active === "home" && <AccountingDashboardPage /> }
+                    {active === "invoice" && <InvoicePage /> }
+                    {active === "payment" && <PaymentPage /> }
+                    {active === "expenses" && <ExpensesPage /> }
+
                     {active === "notification" && <NotificationPage /> }
                     {active === "settings" && <SystemSettings /> }
                   

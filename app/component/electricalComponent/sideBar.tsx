@@ -37,8 +37,8 @@ const ElectricalSideBar = ({active, setActive}: SideBarNav) => {
                 </span>
             </div>
             {/* sidebar items */}
-            <div className="w-full h-[600px]  flex flex-col items-start justify-between admin-side-bar-cont ">
-                <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px]">
+            <div className="w-full flex flex-col items-start justify-between admin-side-bar-cont shadow-md rounded-[3px] ">
+                <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] px-[10px]">
                     <span className={active === "home"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('home')}}>
                         <RiHome3Fill size={21} />
                         <p className="text-[15.5px]">Home</p>
@@ -74,7 +74,7 @@ const ElectricalSideBar = ({active, setActive}: SideBarNav) => {
                     </span>
                     
                 </div>
-                <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
+                <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[10px] ">
                     <IoLogOutSharp size={21} />
                     {active !== "sales" && <p className="text-[15.5px] ">Logout</p>}
                 </span>

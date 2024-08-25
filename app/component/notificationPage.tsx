@@ -51,7 +51,7 @@ const NotificationPage = () => {
     return (
         <div className="w-full p-[10px] pb-[10px]">
             <div className="w-full flex flex-row items-start justify-between gap-[10px] relative">
-                <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md ">
+                <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px] shadow-md ">
                     <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
                         <p className="text-sm w-[15%] px-2  ">Date / Time</p>
                         <p className="text-sm w-[17.5%] px-2  ">Subject</p>
@@ -63,7 +63,7 @@ const NotificationPage = () => {
 
                     {notification_page ? 
                     
-                    <div className="w-full flex flex-col justify-start items-start" style={{height: 'calc(100vh - 120px)'}}>
+                    <div className="w-full flex flex-col justify-start items-start" style={{height: 'calc(100vh - 110px)'}}>
                         {
                             notification_page.notification.length ? 
                             <>
@@ -88,7 +88,7 @@ const NotificationPage = () => {
                         }
                     </div> 
                     :
-                    <div className="w-full flex flex-col justify-center items-center" style={{height: 'calc(100vh - 120px)'}}>
+                    <div className="w-full flex flex-col justify-center items-center" style={{height: 'calc(100vh - 110px)'}}>
                         <p className="text-sm font-normal">Loading Data...</p>
                     </div>}
                 </div>

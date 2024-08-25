@@ -108,7 +108,7 @@ const CustomerHomePage = () => {
 
                 {/* current projects */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-md ">Current Projects</p>
+                    <p className="text-md font-medium ">Current Projects</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
@@ -122,7 +122,7 @@ const CustomerHomePage = () => {
                         </span>
                         
                         {dash_components != null ? 
-                        <div className="w-full h-[350px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[375px] flex flex-col justify-start items-start">
                             {dash_components?.running_project.length ? <>
                             {dash_components?.running_project.map((data:any, ind:any)=>{
 
@@ -184,7 +184,7 @@ const CustomerHomePage = () => {
                         </span>
                         
                         {dash_components != null ? 
-                        <div className="w-full h-[350px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[375px] flex flex-col justify-start items-start overflow-y-auto ">
                             {dash_components?.notifications.length ? <>
                             {dash_components?.notifications.map((data:any, ind:any)=>{
 
@@ -194,7 +194,7 @@ const CustomerHomePage = () => {
                                         <p className="text-sm w-[15%] px-2 ">{notification_ind}</p>
                                         <p className="text-sm w-[22.5%] px-2 ">{subject}</p>
                                         <p className="text-sm w-[35%] px-2 ">{message}</p>
-                                        <p className="text-sm w-[12.5%] px-2 ">{status? "read" : "unread"}</p>
+                                        <p className={status == 'read' ? "text-sm w-[12.5%] px-2 text-lime-700 ": "text-sm w-[12.5%] px-2 text-red-600 "}>{status? "read" : "unread"}</p>
                                         <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(updated_at))}</p>
                                     </span>
                                 )

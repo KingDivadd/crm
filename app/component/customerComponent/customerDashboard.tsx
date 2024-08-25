@@ -10,6 +10,7 @@ import SettingsPage from './settingsPage'
 import DashboardNav from '../dashboardNav'
 import SystemSettings from '../setting'
 import NotificationPage from '../notificationPage'
+import PaymentPage from '../accountingComponent/paymentPage'
 
 
 const CustomerDashboard = () => {
@@ -17,7 +18,7 @@ const CustomerDashboard = () => {
     useEffect(() => {
         const item = sessionStorage.getItem('side_nav')
         
-        if (item == null || item == "" || !['home', 'project-status', 'service-ticket', 'notifications', 'warranty', 'system-settings'].includes(item)) {
+        if (item == null || item == "" || !['home', 'project-status', 'service-ticket', 'payment', 'notifications', 'warranty', 'system-settings'].includes(item)) {
             setActive('home')
         }else{
             setActive(item)
@@ -33,6 +34,7 @@ const CustomerDashboard = () => {
                 <DashboardNav />
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "home" && <CustomerHomePage /> }
+                    {active === "payment" && <PaymentPage /> }
                     {active === "project-status" && <ProjectStatusPage /> }
                     {active === "service-ticket" && <ServiceTicketPage /> }
                     {active === "notifications" && <NotificationPage /> }

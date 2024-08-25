@@ -21,7 +21,7 @@ interface Lead_Management_Props {
 
 }
 
-const InvoiceModal = ({ showModal, setShowModal, selectedLead, setSelectedLead, modalFor}: Lead_Management_Props) => {
+const ExpensesModal = ({ showModal, setShowModal, selectedLead, setSelectedLead, modalFor}: Lead_Management_Props) => {
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
     const [approve_loading, setApprove_loading] = useState(false)
@@ -526,4 +526,4 @@ const InvoiceModal = ({ showModal, setShowModal, selectedLead, setSelectedLead, 
     )
 }
 
-export default InvoiceModal
+export default ExpensesModal

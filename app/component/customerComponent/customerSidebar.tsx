@@ -1,6 +1,6 @@
 'use client'
 import React, {useState, useEffect} from 'react'
-import { RiHome3Fill } from "react-icons/ri";
+import { RiHome3Fill, RiMoneyDollarBoxFill } from "react-icons/ri";
 import { FiLogOut } from "react-icons/fi";
 import { FaTicketAlt, } from "react-icons/fa";
 import { IoLogOutSharp, IoSettingsSharp, IoTicketSharp } from "react-icons/io5";
@@ -29,7 +29,7 @@ const CustomerSideBar = ({active, setActive}: SideBarNav) => {
     }
 
     return (
-        <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-white ">
+        <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-gray-100 ">
             {/* sidebar nav */}
             <div className="w-full flex flex-row items-center justify-start h-[50px] bg-blue-700 pl-[20px] ">
                 <span className="flex flex-row items-center justify-start">
@@ -37,9 +37,9 @@ const CustomerSideBar = ({active, setActive}: SideBarNav) => {
                 </span>
             </div>
             {/* sidebar items */}
-            <div className="w-full h-[600px]  flex flex-col items-start justify-between admin-side-bar-cont ">
-                <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px] ">
-                <span className={active === "home"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('home')}}>
+            <div className="w-full flex flex-col bg-red-200 items-start justify-between admin-side-bar-cont shadow-md rounded-[3px]  ">
+                <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] px-[10px]">
+                    <span className={active === "home"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('home')}}>
                         <RiHome3Fill size={21} />
                         <p className="text-[16px]">Home</p>
                     </span>
@@ -50,6 +50,10 @@ const CustomerSideBar = ({active, setActive}: SideBarNav) => {
                     <span className={active === "service-ticket"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('service-ticket')}}>
                         <IoTicketSharp  size={21} />
                         <p className="text-[16px]">Service Ticket</p>
+                    </span>
+                    <span className={active === "payment"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('payment')}}>
+                        <RiMoneyDollarBoxFill size={21} /> 
+                        <p className="text-[15.5px]">Payments </p>
                     </span>
                     <span className={active === "notifications"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notifications')}}>
                         <MdNotifications size={21} />
@@ -64,7 +68,7 @@ const CustomerSideBar = ({active, setActive}: SideBarNav) => {
                         <p className="text-[16px]">System Settings</p>
                     </span>
                 </div>
-                <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
+                <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[10px] ">
                     <IoLogOutSharp size={21} className='text-slate-800' />
                     <p className="text-[16px]">Logout</p>
                 </span>
