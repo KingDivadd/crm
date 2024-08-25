@@ -56,6 +56,11 @@ const AdminHome = () => {
             showAlert(response.data.msg, "success")
           }else{
             if (response){
+                if (response.response.status == 402) {
+                    setTimeout(() => {
+                        router.push('auth/login')
+                    }, 3000)
+                }
 
                 showAlert(response.response.data.err, "error")
             }

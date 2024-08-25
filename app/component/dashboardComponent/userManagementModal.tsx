@@ -9,6 +9,7 @@ import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, patch_auth_request, post_auth_request } from '@/app/api/admin_api'
 import { userResponsibilities } from '@/constants';
+import { useRouter } from 'next/navigation';
 
 interface User_Management_Props {
     selectedUser:any;
@@ -20,6 +21,7 @@ interface User_Management_Props {
 }
 
 const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelectedUser, modalFor, setModalFor}: User_Management_Props) => {
+    const router = useRouter()
     const [auth, setAuth] = useState({last_name: '', first_name: '', email: '', phone_number: '', user_role: '', password: '', active_status: true })
     const [inputError, setInputError] = useState({last_nameError: false, first_nameError: false, emailError: false, phone_numberError: false, user_roleError: false, passwordError: false})
     const [loading, setLoading] = useState(false)
@@ -71,9 +73,6 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
         setAuth({...auth, [name]:value})
     }
 
-
-
-
     async function add_new_user(e:any) {
         e.preventDefault(); // Prevent the default form submission if this is part of a form
     
@@ -100,6 +99,11 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                     showAlert(response.data.msg, "success");
                     setShowModal(false)
                 } else {
+                    if (response.response.status == 402) {
+                        setTimeout(() => {
+                            router.push('auth/login')
+                        }, 3000)
+                    }
                     showAlert(response.response.data.err, "error");
                 }
             } catch (error:any) {
@@ -145,6 +149,11 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                     setTimeout(() => {
                     }, 2000);
                 } else {
+                    if (response.response.status == 402) {
+                        setTimeout(() => {
+                            router.push('auth/login')
+                        }, 3000)
+                    }
                     showAlert(response.response.data.err, "error");
                 }
             } catch (error) {
@@ -176,14 +185,17 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
             
             setLoading(false)
           }else{
-            
+            if (response.response.status == 402) {
+                setTimeout(() => {
+                    router.push('auth/login')
+                }, 3000)
+            }
             showAlert(response.response.data.err, "error")
             
             setLoading(false)
         }
         
     }
-   
 
     function handleCloseModal() {
         setShowModal(false)

@@ -10,6 +10,8 @@ import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
 import {get_todays_date, convert_to_unix} from "../helper"
 import { IoCheckmark } from 'react-icons/io5';
+import { useRouter } from 'next/navigation';
+
 
 
 interface Job_Management_Props {
@@ -49,6 +51,7 @@ interface AuthState {
   }
   
 const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, modalFor}: Job_Management_Props) => {
+    const router = useRouter()
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
     const [loadingtwo, setLoadingtwo] = useState(false)
@@ -154,8 +157,13 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
                 
                 
                 }else{       
+                    if (response.response.status == 402) {
+                        setTimeout(() => {
+                            router.push('auth/login')
+                        }, 3000)
+                    }
                                 
-                showAlert(response.response.data.err, "error")
+                    showAlert(response.response.data.err, "error")
                 
             }
         } catch (err) {
@@ -182,10 +190,15 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
                     setLoading(false)
 
                     }else{       
+                        if (response.response.status == 402) {
+                            setTimeout(() => {
+                                router.push('auth/login')
+                            }, 3000)
+                        }
                                     
-                    showAlert(response.response.data.err, "error")
-                    
-                    setLoading(false)
+                        showAlert(response.response.data.err, "error")
+                        
+                        setLoading(false)
                 }
             } catch (err) {
                 showAlert('Error occured ', 'error')
@@ -212,11 +225,16 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
                                         
                     setLoading(false)
 
-                    }else{       
+                    }else{     
+                        if (response.response.status == 402) {
+                            setTimeout(() => {
+                                router.push('auth/login')
+                            }, 3000)
+                        }  
                                     
-                    showAlert(response.response.data.err, "error")
+                        showAlert(response.response.data.err, "error")
                     
-                    setLoading(false)
+                        setLoading(false)
                 }
             } catch (err) {
                 showAlert('Error occured ', 'error')
@@ -246,7 +264,12 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
                     
                     setLoadingtwo(false)
 
-                    }else{       
+                    }else{  
+                        if (response.response.status == 402) {
+                            setTimeout(() => {
+                                router.push('auth/login')
+                            }, 3000)
+                        }
 
                     showAlert(response.response.data.err, "error")
                     

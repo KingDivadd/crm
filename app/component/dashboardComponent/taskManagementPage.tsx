@@ -7,7 +7,9 @@ import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
 import Alert from '../alert';
 import { get_auth_request } from '../../api/admin_api';
 import TaskModal from './taskModal';
-// import Task_Management_Modal from "./opsTasksModal"
+import { useRouter } from 'next/navigation';
+
+
 
 interface Tasks_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -19,6 +21,7 @@ interface Tasks_Props {
 }  
 
 const TaskManagement = () => {
+    const router = useRouter()
     const [modalFor, setModalFor] = useState('')
     const [showModal, setShowModal] = useState(false)
     const [selectedTask, setSelectedTask] = useState(null)
@@ -78,7 +81,11 @@ const TaskManagement = () => {
             
 
         }else{
-            console.log(response);
+            if (response.response.status == 402) {
+                setTimeout(() => {
+                    router.push('auth/login')
+                }, 3000)
+            }
             
             if (response.response){
                 showAlert(response.response.data.err, "error")
@@ -103,9 +110,13 @@ const TaskManagement = () => {
             showAlert(response.data.msg, "success")
 
         }else{
-        console.log(response);
+            if (response.response.status == 402) {
+                setTimeout(() => {
+                    router.push('auth/login')
+                }, 3000)
+            }
         
-        showAlert(response.response.data.err, "error")
+            showAlert(response.response.data.err, "error")
         }
     }
 

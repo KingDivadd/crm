@@ -9,9 +9,11 @@ import { get_auth_request } from '@/app/api/admin_api';
 import { User_Management_Props } from '@/types';
 import DeleteModal from './userManagementModal';
 import UserManagementModal from './userManagementModal';
+import { useRouter } from 'next/navigation';
 
 
 const UserManagement = () => {
+    const router = useRouter()
 
     const [modalFor, setModalFor] = useState('')
     const [selectedUser, setSelectedUser] = useState(null)
@@ -74,14 +76,12 @@ const UserManagement = () => {
 
     async function handle_new_filter(item: string) {
         if (app_users && item.toLocaleLowerCase() == 'all') {
-            console.log(app_users);
             
             // If no filter is provided, reset to the original list
             setFiltered_users(app_users);
         
         } 
         else if (item && app_users) {
-            console.log(item);
             
             const new_app_users = app_users.users.filter((data: any) => {
                 const user_role = data.user_role?.toLowerCase() || '';
@@ -116,9 +116,11 @@ const UserManagement = () => {
 
     async function get_all_users() {
 
-        console.log('started fetching');
         
         const response = await get_auth_request(`user/all-users/${page_number}`)
+
+        console.log('response ', response.response );
+        
 
         if (response.status == 200 || response.status == 201){
             
@@ -126,12 +128,14 @@ const UserManagement = () => {
             
             setFiltered_users(response.data.data)
 
-            console.log(response.data.data.users);
             
             showAlert(response.data.msg, "success")
         }else{
-            console.log(response);
-            
+            if (response.response.status == 402) {
+                setTimeout(() => {
+                    router.push('auth/login')
+                }, 3000)
+            }
             showAlert(response.response.data.err, "error")
           }
     }
@@ -152,7 +156,6 @@ const UserManagement = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
 
         setPage_number(new_page_number);
     }
