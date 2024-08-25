@@ -274,7 +274,7 @@ const CustomerProjectPage = () => {
                                 <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by project id, contract amount ' id="" className='normal-input bg-gray-100 text-sm ' />
                             </span>
                             <span className="h-[40px] min-w-[150px]">
-                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Pending', 'In Pending', 'Completed', 'On Hold', 'Cancelled', 'All' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Pending', 'In Progress', 'Completed', 'On Hold', 'Cancelled', 'All' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
 
                         </span>
