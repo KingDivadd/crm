@@ -10,6 +10,9 @@ import LossPage from './lossPage'
 import BillsOrInvoicePage from './billsOrInvoice'
 import PayrollPage from './payroll'
 import Settings from './settingPage'
+import NotificationPage from '../notificationPage'
+import SystemSettings from '../setting'
+import DashboardNav from '../dashboardNav'
 
 
 const AccountingDashboard = () => {
@@ -24,23 +27,24 @@ const AccountingDashboard = () => {
         console.log(active)
     }, [])
     return (
-        <div className="w-full h-[100vh] flex flex-row  items-start justify-between">
-            <div className="w-[280px] h-full  ">
+        <div className="w-full h-[100vh] flex   items-start justify-between">
+            <div className="w-[250px] h-full  ">
                 <AccountingSideBar active={active} setActive={setActive} />
             </div>
             <div className="flex-1 h-full bg-blue-100">
             
-                <AccountingNav />
+                <DashboardNav />
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
 
-                    {active === "dashboard" && <AccountingDashboardPage /> }
+                    {active === "homie" && <AccountingDashboardPage /> }
                     {active === "profit&loss" && <ProfitAndLossPage /> }
                     {active === "averageCostPerPage" && <AverageCostPerPage /> }
                     {active === "profitMargin" && <ProfitMarginPage /> }
                     {active === "loss" && <LossPage /> }
                     {active === "bills&report" && <BillsOrInvoicePage /> }
                     {active === "payroll" && <PayrollPage /> }
-                    {active === "settings" && <Settings /> }
+                    {active === "notification" && <NotificationPage /> }
+                    {active === "settings" && <SystemSettings /> }
                   
 
                 </div>

@@ -99,6 +99,7 @@ const DashboardNav = () => {
                     {user_info.user.user_role == 'customer' && "Customer Porter"}
                     {user_info.user.user_role == 'engineering' && "Engineering Porter"}
                     {user_info.user.user_role == 'electrical' && "Electrical Porter"}
+                    {user_info.user.user_role == 'accounting' && "Accounting Porter"}
                     {user_info.user.user_role == 'permit' && "Permit Porter"}
                 </p>
                 

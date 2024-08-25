@@ -1,27 +1,22 @@
 'use client'
 import React, {useState, useEffect} from 'react'
-import { FiLogOut } from "react-icons/fi";
-import { SideBarNav } from '../../../types/index';
+import { RiFolderUploadFill, RiHome3Fill, RiMoneyDollarBoxFill, RiMoneyDollarCircleFill } from "react-icons/ri";
+import { FaFileAlt, FaFileInvoice, FaTasks, FaUserTie } from "react-icons/fa";
+import { IoLogOutSharp, IoStatsChartSharp, IoTicket } from "react-icons/io5";
+import { IoSettingsSharp } from "react-icons/io5";
 import {useRouter} from 'next/navigation'
-import { FaTasks  } from "react-icons/fa";
-import { RiDashboardFill } from "react-icons/ri";
-import { FaGear } from "react-icons/fa6";
-import { BiSolidReport } from "react-icons/bi";
-import { RiMoneyDollarBoxFill } from "react-icons/ri";
-import { RiMoneyDollarCircleFill } from "react-icons/ri";
-import { BiSolidChart } from "react-icons/bi";
-import { BiLineChartDown } from "react-icons/bi";
-import { IoLogOutSharp } from 'react-icons/io5';
+import {SideBarNav} from '../../../types/index'
+import { MdAssignmentTurnedIn, MdLiveHelp, MdNotifications, MdPhotoCamera, MdWork } from "react-icons/md";
+import { BiSolidChart, BiLineChartDown, BiSolidReport } from 'react-icons/bi';
 
 
 
-
-const AccountingSideBar = ({active, setActive}:SideBarNav) => {
+const AccountingSideBar = ({active, setActive}: SideBarNav) => {
     const router = useRouter()
     
 
     useEffect(() => {
-        const item = sessionStorage.getItem('sideNav')
+        const item = sessionStorage.getItem('salesSideNav')
         if (item == null || item == ""){
             setActive('home')
         }else {
@@ -31,61 +26,61 @@ const AccountingSideBar = ({active, setActive}:SideBarNav) => {
 
     function handleActive(item:any){
         setActive(item)
-        sessionStorage.setItem('sideNav', item)
+        sessionStorage.setItem('salesSideNav', item)
     }
 
     return (
         <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-gray-100 ">
             {/* sidebar nav */}
-            <div className="w-full flex flex-row items-center justify-start h-[50px] bg-blue-700 pl-[20px] border-b border-gray-100 ">
+            <div className="w-full flex flex-row items-center justify-start h-[50px] bg-blue-700 pl-[20px] ">
                 <span className="flex flex-row items-center justify-start">
-                    <p className="text-xl font-semibold text-white ">SBD</p>
+                    <p className="text-xl font-semibold text-white">SBD</p>
                 </span>
             </div>
             {/* sidebar items */}
-            <div className="w-full h-[600px]  flex flex-col items-start justify-between admin-side-bar-cont  ">
+            <div className="w-full h-[600px]  flex flex-col items-start justify-between admin-side-bar-cont ">
                 <div className="w-full h-auto flex flex-col items-start justify-start gap-1 mt-[50px] pl-[10px] pr-[10px]">
-                    <span className={active === "dashboard"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('dashboard')}}>
-                        <RiDashboardFill size={22} />
-                        <p className="text-[17px]">Dashboard</p>
+                    <span className={active === "home"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('home')}}>
+                        <RiHome3Fill size={21} />
+                        <p className="text-[15.5px]">Home</p>
                     </span>
                     <span className={active === "profit&loss"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('profit&loss')}}>
-                        <RiMoneyDollarBoxFill size={22} /> 
-                        <p className="text-[17px]">Profit & Loss</p>
+                        <RiMoneyDollarBoxFill size={21} /> 
+                        <p className="text-[15.5px]">Profit & Loss</p>
                     </span>
                     <span className={active === "averageCostPerPage"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('averageCostPerPage')}}>
-                        <RiMoneyDollarCircleFill size={22} /> 
-                        <p className="text-[17px]"> Avarage Cost Per Project</p>
+                        <RiMoneyDollarCircleFill size={21} /> 
+                        <p className="text-[15.5px]"> Cost Per Project</p>
                     </span>
                     <span className={active === "profitMargin"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('profitMargin')}}>
-                        <BiSolidChart size={23} /> 
-                        <p className="text-[17px]">Profit Margin</p>
+                        <BiSolidChart size={21} /> 
+                        <p className="text-[15.5px]">Profit Margin</p>
                     </span>
                     <span className={active === "loss"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('loss')}}>
-                        <BiLineChartDown size={22} /> 
-                        <p className="text-[17px]">Loss</p>
+                        <BiLineChartDown size={21} /> 
+                        <p className="text-[15.5px]">Loss</p>
                     </span>
                     <span className={active === "bills&report"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('bills&report')}}>
-                        <BiSolidReport size={23} /> 
-                        <p className="text-[17px]">Bills/Invoices</p>
+                        <BiSolidReport size={21} /> 
+                        <p className="text-[15.5px]">Bills/Invoices</p>
                     </span>
                     <span className={active === "payroll"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('payroll')}}>
-                        <RiMoneyDollarBoxFill size={23} /> 
-                        <p className="text-[17px]">Payroll</p>
+                        <RiMoneyDollarBoxFill size={21} /> 
+                        <p className="text-[15.5px]">Payroll</p>
                     </span>
-                    {/* <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
-                        <BiSolidReport size={23} /> 
-                        <p className="text-[17px]">Calendar Integration</p>
-                    </span> */}
+                    <span className={active === "notification"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notification')}}>
+                        <MdNotifications size={21} className='text-slate-800' />
+                        {active !== "sales" && <p className="text-[15.5px]">Notification</p>}
+                    </span>
                     <span className={active === "settings"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('settings')}}>
-                        <FaGear size={21} /> 
-                        <p className="text-[17px]">Settings</p>
+                        <IoSettingsSharp size={21} className='text-slate-800' />
+                        {active !== "sales" && <p className="text-[15.5px]">Settings</p>}
                     </span>
                     
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
-                    <IoLogOutSharp size={25} />
-                    <p className="text-lg">Logout</p>
+                    <IoLogOutSharp size={21} />
+                    {active !== "sales" && <p className="text-[15.5px] ">Logout</p>}
                 </span>
             </div>
         </div>
