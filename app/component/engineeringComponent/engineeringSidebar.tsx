@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { RiHome3Fill } from "react-icons/ri";
 import { FiLogOut } from "react-icons/fi";
 import { FaFileAlt, FaTasks, FaUserTie } from "react-icons/fa";
-import { IoStatsChartSharp } from "react-icons/io5";
+import { IoLogOutSharp, IoStatsChartSharp, IoTicket } from "react-icons/io5";
 import { RiNotificationBadgeFill } from "react-icons/ri";
 import { BiSolidNotepad } from "react-icons/bi";
 import { IoSettingsSharp } from "react-icons/io5";
@@ -61,6 +61,10 @@ const EngineeringSideBar = ({active, setActive}: SideBarNav) => {
                         <MdWork size={22} /> 
                         <p className="text-[16px]">All Projects</p>
                     </span>
+                    <span className={active === "service-ticket"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('service-ticket')}}>
+                        <IoTicket  size={21} />
+                        <p className="text-[15.5px]">Service Ticket</p>
+                    </span>
                     {/* <span className={active === "uploadDrawing"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('uploadDrawing')}}>
                         <MdAssignmentTurnedIn size={21} /> 
                         <p className="text-[15.5px]"> Drawing Upload</p>
@@ -81,7 +85,7 @@ const EngineeringSideBar = ({active, setActive}: SideBarNav) => {
                     
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
-                    <FiLogOut size={21} />
+                    <IoLogOutSharp size={21} />
                     {active !== "sales" && <p className="text-[15.5px] ">Logout</p>}
                 </span>
             </div>

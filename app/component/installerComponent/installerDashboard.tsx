@@ -4,11 +4,14 @@ import InstallerSideBar from './installerSidebar'
 import InstallerNavbar from './installerNavbar'
 import InstallerHomePage from './installerHomePage'
 import JobListPage from './jobListPage'
-import ServiceTicketPage from './serviceTickets'
 import PhotoUpload from './photoUpload'
 import BillSheetPage from './billSheetPage'
 import ReportsPage from './reportsPage'
 import Image from 'next/image'
+import DashboardNav from '../dashboardNav'
+import SystemSettings from '../setting'
+import NotificationPage from '../notificationPage'
+import ServiceTicketPage from '../customerComponent/serviceTicketPage'
 
 
 
@@ -16,7 +19,7 @@ const InstallerDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
         const item = sessionStorage.getItem('sideNav')
-        if (item == null || item == "") {
+        if (item == null || item == "" || !['home', 'job-list', 'service-ticket', 'photo-upload', 'bill-sheet', 'report', 'notification', 'settings'] ) {
             setActive('home')
         }else{
             setActive(item)
@@ -25,12 +28,12 @@ const InstallerDashboard = () => {
     }, [])
     return (
         <div className="w-full h-[100vh] flex flex-row  items-start justify-between">
-            <div className="w-[280px] h-full  ">
+            <div className="w-[250px] h-full  ">
                 <InstallerSideBar active={active} setActive={setActive} />
             </div>
             <div className="flex-1 h-full bg-blue-100">
             
-                <InstallerNavbar />
+                <DashboardNav />
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "home" && <InstallerHomePage /> }
                     {active === "job-list" && <JobListPage /> }
@@ -38,6 +41,8 @@ const InstallerDashboard = () => {
                     {active === "photo-upload" && <PhotoUpload /> }
                     {active === "bill-sheet" && <BillSheetPage /> }
                     {active === "report" && <ReportsPage /> }
+                    {active === "notification" && <NotificationPage /> }
+                    {active === "settings" && <SystemSettings /> }
                     
                 </div>
             </div>

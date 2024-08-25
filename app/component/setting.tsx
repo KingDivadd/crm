@@ -100,13 +100,13 @@ const SystemSettings = () => {
     }
 
     return (
-        <div className="w-full p-[10px] ">
-            <div className="w-full relative flex flex-row items-start justify-start gap-3  ">
+        <div className="w-full p-[10px] h-full ">
+            <div className="w-full h-full relative flex flex-row items-start justify-start gap-3  bg-white p-[10px] rounded-[4px] shadow-md ">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} {/* Display alert */}
                 </span>
                 {/* the left side */}
-                <div className="overflow-y-auto admin-left-setting-cont">
+                <div className="overflow-y-auto h-full admin-left-setting-cont">
                     {/* General Settings */}
                     <div className="w-full flex flex-col items-start justify-start gap-5">
                         <p className="text-lg font-semibold">General Settings</p>
@@ -143,7 +143,7 @@ const SystemSettings = () => {
                                     <input type="text" name='last_name' className="normal-input bg-transparent" value={userProfile.last_name} onChange={handleUserProfile} />
                                 </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <h4 className="text-md font-light">other_names (Optional)</h4>
+                                    <h4 className="text-md font-light">Other Name (Optional)</h4>
                                     <input type="text" name='other_names' className="normal-input bg-transparent" value={userProfile.other_names} onChange={handleUserProfile} />
                                 </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
@@ -163,8 +163,9 @@ const SystemSettings = () => {
                     </div>
 
                 </div>
-                <span className="w-full flex justify-end absoute absolute bottom-[20px] right-0">
-                    <button className="mt-[10px] w-[170px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={updateSettings} disabled={loading}>
+                
+                <span className="w-full flex justify-end absoute absolute bottom-[10px] right-[10px]">
+                    <button className="mt-[10px] px-5 h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-500 flex items-center justify-center" onClick={updateSettings} disabled={loading}>
                             {loading ? (
                             <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

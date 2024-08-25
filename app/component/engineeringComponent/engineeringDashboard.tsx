@@ -13,6 +13,7 @@ import NotificationPage from '../notificationPage'
 import SystemSettings from '../setting'
 import DashboardNav from '../dashboardNav'
 import ProjectStatusPage from '../customerComponent/projectStatusPage'
+import ServiceTicketPage from '../customerComponent/serviceTicketPage'
 
 
 const EngineeringDashboard = () => {
@@ -39,6 +40,7 @@ const EngineeringDashboard = () => {
                     {active === "home" && <EngineeringDashboardPage /> }
                     {active === "taskManagement" && <TaskManagement /> }
                     {active === "project-status" && <ProjectStatusPage /> }
+                    {active === "service-ticket" && <ServiceTicketPage /> }
                     {active === "uploadDrawing" && <UploadDrawingPage /> }
                     {active === "reports" && <ReportPage /> }
                     {active === "notification" && <NotificationPage /> }

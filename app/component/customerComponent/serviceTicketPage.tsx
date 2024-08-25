@@ -30,6 +30,7 @@ const ServiceTicketPage = () => {
     const [ticket_box, setTicket_box] = useState<tickets_Props | null>(null);
     const [filtered_ticket_box, setFiltered_ticket_box] = useState<tickets_Props | null>(null);
     const [filters, setFilters] = useState({filter_input: '', status: ''})
+    const [role, setRole] = useState('')
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
         status: false
@@ -54,7 +55,14 @@ const ServiceTicketPage = () => {
     }
 
 
+
     useEffect(() => {
+        const user_role = localStorage.getItem('user-role')
+        if (user_role) {
+            setRole(user_role)
+        }else {
+            setRole('customer')
+        }
         get_all_tickets()
     }, [showModal])
 
@@ -268,7 +276,7 @@ const ServiceTicketPage = () => {
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Open', 'In Progress', 'Close', 'All' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                             <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_ticket}>Create Ticket</button>
+                            {role === "customer" && <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_ticket}>Create Ticket</button>}
                         </span>
                     </span>
                 </span>

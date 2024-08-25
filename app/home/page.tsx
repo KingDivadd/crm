@@ -36,7 +36,7 @@ const Dashboard = () => {
             {userRole === 'sales' && <SalesDashboard />}
             {userRole === 'operation' && <OpsDashboard />}
             {userRole === 'customer' && <CustomerDashboard />}
-            {userRole === 'designer' && <InstallerDashboard />}
+            {userRole === 'installer' && <InstallerDashboard />}
             {userRole === 'permit' && <PermitPortalDashboard />}
             {userRole === 'engineering' && <EngineeringDashboard />}
             {userRole === 'electrical' && <ElecricalDashbaord />}

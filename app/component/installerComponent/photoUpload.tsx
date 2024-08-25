@@ -50,25 +50,25 @@ const PhotoUpload = () => {
                 {alert.message && <Alert message={alert.message} type={alert.type} />} {/* Display alert */}
             </span>
 
-            <div className="w-full h-full flex flex-row items-start justify-start gap-[10px] pt-[20px]  ">
-                <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] h-full ">
-                    <p className="text-xl font-semibold">Upload Project Photos</p>
+            <div className="w-full flex items-start justify-start gap-[10px]  bg-white p-[10px] shadow-md rounded-[5px] " style={{height: 'calc(100vh - 70px )'}}>
+                <div className="w-1/2 flex flex-col items-start justify-start gap-[17.5px] h-full ">
+                    <p className="text-lg font-medium">Upload Project Photos</p>
 
                     <span className="w-full flex flex-col items-start justify-start gap-2 z-10">
-                        <h4 className="text-md font-light">Select Upload Stage</h4>
+                        <h4 className="text-sm">Select Upload Stage</h4>
                         <span className="h-[40px] w-full z-10">
                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'stage'} dropArray={['Before', 'During', 'After']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus} />
                         </span>
                     </span>
 
-                    <p className="text-lg ">Uploaded Photos</p>
-                    <div className="w-full flex flex-col items-start justify-start gap-[10px] uploaded-photos-cont overflow-y-auto pr-2">
+                    <p className="text-md ">Uploaded Photos</p>
+                    <div className="w-full flex flex-col items-start justify-start gap-[10px] h-full overflow-y-auto pr-2 ">
                         <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                             {[{ url: 'https://images.pexels.com/photos/585419/pexels-photo-585419.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1', title: 'Before site condition' }, { url: 'https://images.pexels.com/photos/534220/pexels-photo-534220.jpeg?auto=compress&cs=tinysrgb&w=600', title: 'During post setup' }].map((data, ind) => {
                                 const { url, title } = data
                                 return (
                                     <span key={ind} className="w-full flex flex-col items-start justify-start gap-3">
-                                        <p className="text-md">{ind + 1}. {title}</p>
+                                        <p className="text-sm">{ind + 1}. {title}</p>
                                         <span className="relative  h-[300px] w-full rounded-[5px] overflow-hidden ">
                                             <Image
                                                 src={url}
@@ -83,11 +83,11 @@ const PhotoUpload = () => {
                         </div>
                     </div>
                 </div>
-                <div className="w-1/2 flex flex-col items-start justify-start gap-[8px] h-full  ">
+                <div className="w-1/2 flex flex-col items-start justify-start gap-[8px] h-full   ">
                     <input type="text" className='normal-input' name='jobNumber' value={upload.jobNumber} onChange={handleChange} placeholder='Enter Job Number' />
 
-                    <div className="w-full flex flex-col justify-start items-start gap-3 uploaded-photos-cont-2 ">
-                        <span className="w-full h-full flex flex-col items-start justify-start gap-2">
+                    <div className="w-full h-full flex flex-col justify-start items-start gap-3   ">
+                        <span className="w-full h-full flex flex-col items-start justify-start gap-2  ">
                             <InstallerImageUploader id={'user-image'} title={"Upload Project Image"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718748903/u6wmwqvxzfinumomdfro.jpg'} disabled={!upload.jobNumber}
                                 handleUploadClick={handleUploadClick} />
                         </span>

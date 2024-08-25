@@ -11,6 +11,7 @@ import { RiMoneyDollarBoxFill } from "react-icons/ri";
 import { RiMoneyDollarCircleFill } from "react-icons/ri";
 import { BiSolidChart } from "react-icons/bi";
 import { BiLineChartDown } from "react-icons/bi";
+import { IoLogOutSharp } from 'react-icons/io5';
 
 
 
@@ -83,7 +84,7 @@ const AccountingSideBar = ({active, setActive}:SideBarNav) => {
                     
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
-                    <FiLogOut size={25} />
+                    <IoLogOutSharp size={25} />
                     <p className="text-lg">Logout</p>
                 </span>
             </div>

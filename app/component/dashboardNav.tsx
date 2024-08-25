@@ -95,9 +95,10 @@ const DashboardNav = () => {
                     {user_info.user.user_role == 'admin' && "Admin Porter"}
                     {user_info.user.user_role == 'sales' && "Sales Porter"}
                     {user_info.user.user_role == 'operation' && "Operation Porter"}
-                    {user_info.user.user_role == 'designer' && "Designer Porter"}
+                    {user_info.user.user_role == 'installer' && "Installer Porter"}
                     {user_info.user.user_role == 'customer' && "Customer Porter"}
                     {user_info.user.user_role == 'engineering' && "Engineering Porter"}
+                    {user_info.user.user_role == 'electrical' && "Electrical Porter"}
                     {user_info.user.user_role == 'permit' && "Permit Porter"}
                 </p>
                 
@@ -122,7 +123,7 @@ const DashboardNav = () => {
                             <BsBell size={23} className='cursor-pointer' onClick={handleCalendarToggle} />
                         </span>
                         {isCalendarOpen && (
-                            <div ref={calendarRef} className="absolute  w-[300px] bg-blue-700 top-[40px] right-0 flex flex-col items-start justify-start p-[10px] rounded-[3px] gap-[10px] z-20 ">
+                            <div ref={calendarRef} className="absolute max-h-[400px] w-[300px] bg-blue-700 top-[50px] right-0 flex flex-col items-start justify-start p-[10px] rounded-[3px] gap-[10px] z-20 overflow-y-auto">
                                 
                                 <p className="text-sm text-white font-semibold  ">Events</p>
                                 <div className="w-full flex flex-col justify-start items-start ">

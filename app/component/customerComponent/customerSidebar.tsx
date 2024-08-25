@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { RiHome3Fill } from "react-icons/ri";
 import { FiLogOut } from "react-icons/fi";
 import { FaTicketAlt, } from "react-icons/fa";
-import { IoSettingsSharp, IoTicketSharp } from "react-icons/io5";
+import { IoLogOutSharp, IoSettingsSharp, IoTicketSharp } from "react-icons/io5";
 import {useRouter} from 'next/navigation'
 import {SideBarNav} from '../../../types/index'
 import { MdNotifications, MdVerifiedUser, MdWork, } from 'react-icons/md';
@@ -65,7 +65,7 @@ const CustomerSideBar = ({active, setActive}: SideBarNav) => {
                     </span>
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
-                    <FiLogOut size={21} className='text-slate-800' />
+                    <IoLogOutSharp size={21} className='text-slate-800' />
                     <p className="text-[16px]">Logout</p>
                 </span>
             </div>

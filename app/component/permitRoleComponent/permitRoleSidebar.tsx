@@ -3,7 +3,7 @@ import React, {useState, useEffect} from 'react'
 import { RiHistoryFill, RiHome3Fill } from "react-icons/ri";
 import { FiLogOut } from "react-icons/fi";
 import { FaFileAlt, FaTasks, FaUserTie } from "react-icons/fa";
-import { IoStatsChartSharp } from "react-icons/io5";
+import { IoLogOutSharp, IoStatsChartSharp } from "react-icons/io5";
 import { RiNotificationBadgeFill } from "react-icons/ri";
 import { BiSolidNotepad } from "react-icons/bi";
 import { IoSettingsSharp } from "react-icons/io5";
@@ -77,7 +77,7 @@ const PermitRoleSidebar = ({active, setActive}: SideBarNav) => {
                     
                 </div>
                 <span onClick={()=>{router.push('/auth/login')}} className="sidebar-logout-navigation  pl-[10px] mb-[30px] ">
-                    <FiLogOut size={21} />
+                    <IoLogOutSharp size={21} />
                     {active !== "sales" && <p className="text-[15.5px] ">Logout</p>}
                 </span>
             </div>

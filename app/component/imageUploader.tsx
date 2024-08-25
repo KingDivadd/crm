@@ -336,7 +336,7 @@ export const InstallerImageUploader = ({ id, title, url, disabled, handleUploadC
     return (
         <div className="w-full flex flex-col justify-start items-start gap-2 h-full">
             <span className="w-full flex flex-col items-start justify-start gap-2">
-                <h4 className="text-sm font-light">{title}</h4>
+                <h4 className="text-sm ">{title}</h4>
                 <input
                     type="file"
                     name={`logo-${id}`}
