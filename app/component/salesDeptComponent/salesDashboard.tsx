@@ -14,8 +14,8 @@ import DashboardNav from '../dashboardNav'
 const SalesDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
-        const item = sessionStorage.getItem('salesSideNav')
-        if (item == null || item == "") {
+        const item = sessionStorage.getItem('side_nav')
+        if (item == null || item == "" || !['home', 'leads', 'sales-pipeline', 'jobs','reports', 'notification', 'settings' ] ) {
             setActive('dashboard')
         }else{
             setActive(item)
@@ -34,7 +34,7 @@ const SalesDashboard = () => {
                     {active === "leads" && <SalesLeadPage /> }
                     {active === "sales-pipeline" && <SalesPipeline /> }
                     {active === "jobs" && <SalesJobsPage /> }
-                    {active === "tasks" && <SalesTaskPage /> }
+                
                     {active === "reports" && <SalesReportPage /> }
                     {active === "notification" && <NotificationPage /> }
                     {active === "settings" && <SystemSettings /> }

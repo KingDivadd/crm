@@ -54,17 +54,21 @@ const UserManagement = () => {
         if (app_users && app_users.users) {
             if (value.trim() !== '') {
                 const new_app_users = app_users.users.filter((data: any) => {
-                const firstName = data.first_name?.toLowerCase() || '';
-                const lastName = data.last_name?.toLowerCase() || '';
-                const otherNames = data.other_names?.toLowerCase() || '';
-                const email = data.email?.toLowerCase() || '';
-        
-                return (
-                    firstName.includes(value) ||
-                    lastName.includes(value) ||
-                    otherNames.includes(value) ||
-                    email.includes(value)
-                );
+                    const user_ind = data.user_ind?.toLowerCase() || '';    
+                    const firstName = data.first_name?.toLowerCase() || '';
+                    const lastName = data.last_name?.toLowerCase() || '';
+                    const otherNames = data.other_names?.toLowerCase() || '';
+                    const email = data.email?.toLowerCase() || '';
+                    const user_role = data.user_role?.toLowerCase() || '';
+            
+                    return (
+                        user_ind.includes(value) ||
+                        firstName.includes(value) ||
+                        lastName.includes(value) ||
+                        otherNames.includes(value) ||
+                        user_role.includes(value) ||
+                        email.includes(value)
+                    );
                 });
         
                 setFiltered_users({ ...app_users, users: new_app_users });
@@ -220,7 +224,7 @@ const UserManagement = () => {
     }
 
     function delete_user(data:any) {
-        setSelectedUser(null)
+        setSelectedUser(data)
         setShowModal(true)
         setModalFor('delete')
     }
@@ -242,8 +246,8 @@ const UserManagement = () => {
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Active', 'Inactive', 'All']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            <span className="w-[250px] h-[40px] ">
-                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Enter name or email' id="" className='normal-input bg-gray-100 text-sm ' />
+                            <span className="w-[300px] h-[40px] ">
+                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='search by user id, name, email, role' id="" className='normal-input bg-gray-100 text-sm ' />
                             </span>
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance', 'All']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 

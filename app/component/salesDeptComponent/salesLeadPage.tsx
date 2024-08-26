@@ -9,6 +9,7 @@ import ViewLead from './salesViewLead';
 import { userArray } from '@/constants';
 import { get_auth_request } from '@/app/api/admin_api';
 import Lead_Management_Modal from "./salesLeadManagementModal"
+import { timestamp_to_readable_value } from '../helper';
 
 interface Leads_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -293,22 +294,24 @@ const SalesLeadPage = () => {
                     {(role == 'sales' || role == 'admin') ? 
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-sm font-normal w-[14.5%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Customer Name</p>
+                        <p className="text-sm font-normal w-[13.5%] px-2 ">Customer Address</p>
                         <p className="text-sm font-normal w-[13%] px-2 ">Phone Number</p>
                         <p className="text-sm font-normal w-[12.5%] px-2 ">Assigned to</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
+                        <p className="text-sm font-normal w-[9%] px-2 ">Disposition</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Updated On</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
                         <p className="text-sm font-normal w-[10%] px-2 "></p>
                     </span>:
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[10%] px-2 ">Lead Id</p>
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Gate Code</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[17.5%] px-2 ">Assigned to</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Address</p>
+                        <p className="text-sm font-normal w-[13%] px-2 ">Phone Number</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Assigned to</p>
+                        <p className="text-sm font-normal w-[9%] px-2 ">Disposition</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Updated On</p>
+                        <p className="text-sm font-normal w-[13.5%] px-2 ">Added By</p>
                     </span>}
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -320,29 +323,32 @@ const SalesLeadPage = () => {
                                 {lead_box?.leads.length ?
                                 <>
                                 { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind, gate_code} = data
+                                    const {customer_name, address, phone_number, lead_adder, updated_at, assigned_to, disposition, lead_ind, gate_code} = data
                                     return (
                                         <div key={ind}>
                                         {(role == 'sales' || role == 'admin') ? 
                                         <span className="recent-activity-table-list " >
                                             <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[14.5%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {customer_name} </p>
+                                            <p className="text-sm w-[13.5%] px-2 "> {address} </p>
                                             <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
                                             <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-green-600 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
+                                            <p className={disposition == "SOLD" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {timestamp_to_readable_value(Number(updated_at))} </p>
+                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
                                         
                                             <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
                                         </span>:
                                         <span className="recent-activity-table-list " >
-                                            <p className="text-sm w-[10%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[7.5%] px-2 "> {gate_code} </p>
+                                            <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
                                             <p className="text-sm w-[15%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[17.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {address} </p>
+                                            <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
+                                            <p className={disposition == "SOLD" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {timestamp_to_readable_value(Number(updated_at))} </p>
+                                            <p className="text-sm w-[13.5%] px-2 "> {lead_adder.last_name} {lead_adder.first_name} </p>
+                                            
                                         </span>}
                                         </div>
                                     )

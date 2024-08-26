@@ -4,6 +4,7 @@ import { CiSearch } from "react-icons/ci";
 import Image from "next/image"
 import {get_auth_request} from "../api/admin_api"
 import { get_current_time } from './helper';
+import { useRouter } from 'next/navigation';
 
 interface Nav_Props {
     user?:any;
@@ -11,11 +12,13 @@ interface Nav_Props {
 }
 
 const DashboardNav = () => {
+    const router = useRouter()
     const [user_info, setUser_info] = useState<Nav_Props | null>(null)
     const [alert, setAlert] = useState({message: '', type: ''})
     const [isCalendarOpen, setIsCalendarOpen] = useState(false);
     const [date_time, setDate_time] = useState('')
     const calendarRef = useRef(null);
+    
 
     function showAlert(message: string, type: string){
         setAlert({message: message, type: type})
@@ -46,19 +49,25 @@ const DashboardNav = () => {
 
     async function get_dashboard_data() {
 
-        try {            
+        try {        
+                
             const response = await get_auth_request(`auth/logged-in-user`)
             
     
             if (response.status == 200 || response.status == 201){
                 
                 setUser_info(response.data)      
-    
-                console.log('dashboard nav ', response.data)
-                
+
             }else{
-                console.log('something went wrong');
-                
+                if (response){
+                    if (response.response.status == 402) {
+                        setTimeout(() => {
+                            router.push('auth/login')
+                        }, 3000)
+                    }
+    
+                    showAlert(response.response.data.err, "error")
+                }
             }
             
         } catch (err:any) {

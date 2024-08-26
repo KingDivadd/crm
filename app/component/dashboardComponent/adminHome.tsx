@@ -9,7 +9,7 @@ import { GrServices } from "react-icons/gr";
 import { LuPencilRuler } from 'react-icons/lu';
 import { MdOutlineNoteAlt } from "react-icons/md";
 import { RiBarChartFill } from "react-icons/ri";
-import { admin_dashboard_request, get_auth_request } from '@/app/api/admin_api';
+import {  get_auth_request } from '@/app/api/admin_api';
 import { Admin_dashboard_props } from '@/types';
 import ShortCutModal from './shortCutModal';
 import { timestamp_to_readable_value } from '../helper';
@@ -46,15 +46,11 @@ const AdminHome = () => {
             }, 3000);
     }
 
-    async function get_admin_dashboard() {     
-        console.log('start fetching admin admin dashboad');
-         
+    async function get_admin_dashboard() {              
 
         const response = await get_auth_request('auth/admin-dashboard')
 
         if (response.status == 200 || response.status == 201){
-
-            console.log(response.data);
         
             setDash_box(response.data)
         
@@ -342,7 +338,7 @@ const AdminHome = () => {
 
                 {/* Recent Notification */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-md ">Recent Notification</p>
+                    <p className="text-md ">Recent Payment</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">

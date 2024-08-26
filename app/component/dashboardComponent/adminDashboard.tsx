@@ -18,7 +18,7 @@ const AdminDashboard = () => {
     const [active, setActive] = useState('')
 
     useEffect(() => {
-        const item = sessionStorage.getItem('sideNav')
+        const item = sessionStorage.getItem('side_nav')
         if (item == null){
             setActive('home')
             return;
@@ -32,8 +32,6 @@ const AdminDashboard = () => {
         console.log(item);
         
     }, [])
-
-
 
 
     return (

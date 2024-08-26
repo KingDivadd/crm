@@ -18,7 +18,7 @@ const SideBar = ({active, setActive}:SideBarNav) => {
     
 
     useEffect(() => {
-        const item = sessionStorage.getItem('sideNav')
+        const item = sessionStorage.getItem('side_nav')
         if (item == null || item == ""){
             setActive('home')
         }else {
@@ -28,7 +28,7 @@ const SideBar = ({active, setActive}:SideBarNav) => {
 
     function handleActive(item:any){
         setActive(item)
-        sessionStorage.setItem('sideNav', item)
+        sessionStorage.setItem('side_nav', item)
     }
 
     return (

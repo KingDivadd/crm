@@ -24,7 +24,7 @@ const SalesSideBar = ({active, setActive}: SideBarNav) => {
     
 
     useEffect(() => {
-        const item = sessionStorage.getItem('salesSideNav')
+        const item = sessionStorage.getItem('side_nav')
         if (item == null || item == ""){
             setActive('home')
         }else {
@@ -34,7 +34,7 @@ const SalesSideBar = ({active, setActive}: SideBarNav) => {
 
     function handleActive(item:any){
         setActive(item)
-        sessionStorage.setItem('salesSideNav', item)
+        sessionStorage.setItem('side_nav', item)
     }
 
     return (
@@ -63,10 +63,6 @@ const SalesSideBar = ({active, setActive}: SideBarNav) => {
                     <span className={active === "jobs"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('jobs')}}>
                         <GiSuitcase size={21} className='text-slate-800' />
                         <p className="text-[16px]">Jobs</p>
-                    </span>
-                    <span className={active === "tasks"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('tasks')}}>
-                        <BiSolidNotepad size={21} className='text-slate-800' />
-                        <p className="text-[16px]">Tasks</p>
                     </span>
                     <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
                         <BiSolidReport size={21} className='text-slate-800' />

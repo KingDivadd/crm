@@ -107,20 +107,3 @@ export const count_users_request = async (endpoint: string) => {
     }
 };
 
-export const admin_dashboard_request = async (endpoint: string, page_number: number, notification_page_number: number) => {
-    try {
-        const auth_id = localStorage.getItem('x-id-key')
-        const response = await axios.get(`${base_url}/${endpoint}/${page_number}/${notification_page_number}`, {
-            headers: {
-                "Content-Type": "application/json",
-                "x-id-key" : auth_id
-            }
-        });
-
-        const data = response;
-        return data;
-    } catch (err: any) {
-        return err;
-    }
-};
-

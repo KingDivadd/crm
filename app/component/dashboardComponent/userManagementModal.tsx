@@ -1,11 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react'
-import { FaCaretUp, FaCaretDown } from 'react-icons/fa6'
 import Alert from '../alert'
-import { IoIosWarning } from "react-icons/io";
-import { DropDownBlank, DropDownBlankTransparent } from '../dropDown'
-import ImageUploader, { FilesUpload, FlexibleImageUploader } from '../imageUploader'
-import MyDatePicker from '../datePicker'
+import { DropDownBlank } from '../dropDown'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, patch_auth_request, post_auth_request } from '@/app/api/admin_api'
 import { userResponsibilities } from '@/constants';
@@ -219,16 +215,16 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                 {/* below is to upload new permit */}
                                {modalFor == 'delete' && <div className="w-full flex flex-col items-start justify-start gap-[25px] ">
                                     <span className="w-full flex flex-row items-start justify-start border-b border-gray-300 h-[40px]">
-                                        <p className="text-md font-mediumfont-medium   ">{selectedUser.last_name} {selectedUser.first_name} </p>
+                                        <p className="text-md font-mediumfont-medium   ">{auth.last_name} {auth.first_name} </p>
                                     </span>
 
                                     <div className="w-full flex flex-col items-center justify-center gap-[34px]">
                                         <p className="text-md font-mediumfont-normal text-center  ">Are you sure you want to delete 
-                                            <strong> {selectedUser.last_name} {selectedUser.first_name}</strong> </p>
+                                            <strong> {auth.last_name} {auth.first_name}</strong> </p>
                                             
                                         <p className="text-sm   flex items-center justify-center gap-2 "> <CiWarning size={23} />   Please note action is not reaversible </p>
 
-                                            <button className=" w-[150px] h-[45px] text-white rounded-[5px] hover:bg-red-500 flex items-center justify-center" onClick={delete_user} disabled={loading}>
+                                            <button className=" w-[150px] h-[45px] text-white rounded-[5px] bg-blue-700 hover:bg-red-600 flex items-center justify-center" onClick={delete_user} disabled={loading}>
                                                 {loading ? (
                                                     <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -398,7 +394,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                             <p className="text-md font-medium  ">{selectedUser.user_ind}: {selectedUser.first_name} {selectedUser.last_name} </p>
 
                                             <span className="flex items-center justify-end gap-[5px] ">
-                                                {auth.user_role && <p className="text-md">Selected Role: <strong>{auth.user_role}</strong></p>}
+                                                {auth.user_role && <h4 className="text-md flex items-center gap-[10px] ">Selected Role: <p className='font-medium'>{auth.user_role}</p></h4>}
                                             </span>
                                         </span>
                                         <div className="w-full flex flex-row items-start justify-between bg-white  rounded-[5px] gap-[10px] ">
