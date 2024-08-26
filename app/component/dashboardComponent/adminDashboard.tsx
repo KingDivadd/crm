@@ -24,11 +24,11 @@ const AdminDashboard = () => {
             return;
         }
         setActive(item)
-        // if (item == null || item == "" || !['home', 'user-management', 'analytics', 'notifications', 'logs', 'system-settings'].includes(active)) {
-        //     setActive('home')
-        // }else{
-        //     setActive(item)
-        // }
+        if (item == null || item == "" || !['home', 'user-management', 'leads', 'job', 'project-status', 'notifications', 'taskManagement', 'system-settings'].includes(active)) {
+            setActive('home')
+        }else{
+            setActive(item)
+        }
         console.log(item);
         
     }, [])
