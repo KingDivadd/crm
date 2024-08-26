@@ -2,6 +2,7 @@
 import React, {useState, useEffect} from 'react'
 import { get_auth_request } from '../api/admin_api';
 import { timestamp_to_readable_value } from './helper';
+import NotificationModal from './notificationModal';
 
 
 
@@ -17,6 +18,9 @@ const NotificationPage = () => {
     const [notification_page, setNotification_page] = useState<Notificaiton_Props | null >(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [page_number, setPage_number] = useState(1)
+    const [showModal, setShowModal] = useState(false)
+    const [modalFor, setModalFor] = useState('')
+    const [selectedItem, setSelectedItem] = useState(null)
 
 
     function showAlert(message: string, type: string){
@@ -32,7 +36,7 @@ const NotificationPage = () => {
     }, [])
 
     async function get_notification(page_num:number) {
-        console.log(' start')        
+        console.log(' start', page_num)        
 
         const response = await get_auth_request(`auth/all-notifications/${page_num}`)
 
@@ -46,6 +50,82 @@ const NotificationPage = () => {
                 showAlert(response.response.data.err, "error")
             }
         }
+    }
+
+    async function app_users_action(item: any) {
+        let new_page_number = page_number;
+        let max_page_number = notification_page?.total_number_of_notifications_pages
+
+        if (item === 'prev') {
+        if (page_number > 1) {
+            new_page_number = page_number - 1;
+        }
+        } else if (item === 'next') {
+        if (max_page_number && page_number < max_page_number) {
+            new_page_number = page_number + 1;
+        }
+        } else {
+        new_page_number = item;
+        }
+
+        
+        setPage_number(new_page_number);
+        get_notification(new_page_number)
+    }
+
+    const render_page_numbers = () => {
+        const pages = [];
+        const max_page_number = notification_page?.total_number_of_notifications_pages || 1;
+        const max_displayed_pages = 3;
+
+        if (max_page_number <= max_displayed_pages) {
+        for (let i = 1; i <= max_page_number; i++) {
+            pages.push(
+            <p
+                key={i}
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                page_number === i ? 'bg-blue-700 text-white' : ''
+                }`}
+                onClick={() => app_users_action(i)}
+            >
+                {i}
+            </p>
+            );
+        }
+        } else {
+        let startPage = Math.max(1, page_number - 1);
+        let endPage = Math.min(page_number + 1, max_page_number);
+
+        if (page_number === 1) {
+            startPage = 1;
+            endPage = max_displayed_pages;
+        } else if (page_number === max_page_number) {
+            startPage = max_page_number - 2;
+            endPage = max_page_number;
+        }
+
+        for (let i = startPage; i <= endPage; i++) {
+            pages.push(
+            <p
+                key={i}
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                page_number === i ? 'bg-blue-700 text-white' : ''
+                }`}
+                onClick={() => app_users_action(i)}
+            >
+                {i}
+            </p>
+            );
+        }
+        }
+
+        return pages;
+    };
+
+    function show_item(data:any){
+        setShowModal(true)
+        setSelectedItem(data)
+        setModalFor('view')
     }
 
     return (
@@ -63,7 +143,7 @@ const NotificationPage = () => {
 
                     {notification_page ? 
                     
-                    <div className="w-full flex flex-col justify-start items-start" style={{height: 'calc(100vh - 110px)'}}>
+                    <div className="w-full flex flex-col justify-start items-start overflow-y-auto " style={{height: 'calc(100vh - 150px)'}}>
                         {
                             notification_page.notification.length ? 
                             <>
@@ -71,13 +151,13 @@ const NotificationPage = () => {
 
                                 const {created_at, subject, message, read, user, source, } = data
                                 return (
-                                    <span key={ind} className="recent-activity-table-list ">
+                                    <span key={ind} className="recent-activity-table-list " onClick={()=> show_item(data)} >
                                         <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
                                         <p className="text-sm w-[17.5%] px-2 ">{subject}</p>
                                         <p className="text-sm w-[27.5%] px-2 ">{message}</p>
                                         <p className={read ? "text-sm w-[15%] text-green-600 px-2 ":"text-sm w-[15%] px-2 text-red-600 "}>{read ? "read": "unread"}</p>
                                         <p className="text-sm w-[15%] px-2 ">{source.last_name} {source.first_name} </p>
-                                        <p className="text-sm w-[10%] px-2 "> action </p>
+                                        <p className="text-sm w-[10%] px-2 hover:text-blue-700 hover:underline "> view </p>
                                     </span>
                                 )
                             })}
@@ -88,11 +168,26 @@ const NotificationPage = () => {
                         }
                     </div> 
                     :
-                    <div className="w-full flex flex-col justify-center items-center" style={{height: 'calc(100vh - 110px)'}}>
+                    <div className="w-full flex flex-col justify-center items-center" style={{height: 'calc(100vh - 150px)'}}>
                         <p className="text-sm font-normal">Loading Data...</p>
                     </div>}
+
+                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                        <span className="flex flex-row items-center justify-start gap-3 h-full">
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
+                            <span className="w-auto h-full flex flex-row items-center justify-start">
+                            {render_page_numbers()}
+                            </span>
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
+                        </span>
+                        <span className="flex flex-row items-center justify-end gap-3 h-full">
+                            <p className="text-sm">Showing 1-15 of {notification_page?.total_number_of_notifications || 0}</p>
+                        </span>
+                    </span>
+
                 </div>
             </div>
+            {showModal && <NotificationModal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedItem={selectedItem} setModalFor={setModalFor} setSelectedItem={setSelectedItem} /> }
         </div>   
     )
 }

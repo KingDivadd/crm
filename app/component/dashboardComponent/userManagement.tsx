@@ -103,7 +103,7 @@ const UserManagement = () => {
 
     useEffect(() => {
         
-        get_all_users()
+        get_all_users(page_number)
 
     }, [showModal])
 
@@ -114,14 +114,10 @@ const UserManagement = () => {
             }, 3000);
     }
 
-    async function get_all_users() {
-
+    async function get_all_users(page_num:number) {
         
-        const response = await get_auth_request(`user/all-users/${page_number}`)
-
-        console.log('response ', response.response );
+        const response = await get_auth_request(`user/all-users/${page_num || 1}`)
         
-
         if (response.status == 200 || response.status == 201){
             
             setApp_users(response.data.data)      
@@ -155,9 +151,10 @@ const UserManagement = () => {
         } else {
         new_page_number = item;
         }
-
-
+        
         setPage_number(new_page_number);
+
+        get_all_users(new_page_number)
     }
 
     const render_page_numbers = () => {
