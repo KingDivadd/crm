@@ -8,7 +8,7 @@ import ImageUploader, {FlexibleImageUploader } from '../imageUploader'
 import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
-import {get_todays_date, convert_to_unix} from "../helper"
+import {get_todays_date, convert_to_unix, readable_day} from "../helper"
 
 
 interface Lead_Management_Props {
@@ -57,12 +57,12 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
     useEffect(() => {
 
-        const selected_date = convert_to_unix(clicked_appointment_date)
+        const selected_date = convert_to_unix(clicked_appointment_date) * 1000
 
         if (selected_date < get_todays_date()){
             showAlert("Please choose an appropriate date", "warning")
         }else{
-            setAuth({...auth, appointment_date: clicked_appointment_date})
+            setAuth({...auth, appointment_date: String(selected_date)})
             setShowCalender(false)
         }
         
@@ -231,7 +231,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
                     <div className={"h-auto w-[70%] mx-auto shadow-xl flex items-start "}>
                         {/* the container for the input fields */}
-                        <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
+                        <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[3px]  ">
                             <div className="w-full min-h-[250px] flex flex-col justify-start items-center p-[10px] ">
 
                                 {/* below is to upload new permit */}
@@ -250,7 +250,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             
                                         <p className="text-xs text-slate-900 flex items-center justify-center gap-2 "> <CiWarning size={20} />   Please note action is not reaversible </p>
 
-                                            <button className=" w-[150px] h-[45px] text-white bg-slate-600 rounded-[5px] hover:bg-red-500 flex items-center justify-center"  disabled={loading} onClick={delete_lead} >
+                                            <button className=" w-[150px] h-[45px] text-white bg-slate-600 rounded-[3px] hover:bg-red-500 flex items-center justify-center"  disabled={loading} onClick={delete_lead} >
                                                 {loading ? (
                                                     <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -330,7 +330,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 <div className="w-full flex flex-col items-end justify-end relative z-[15] ">
                                                     <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-sm" onClick={(e:any) => {e.preventDefault(); setShowCalender(!showCalender)}}>
 
-                                                        {auth.appointment_date ? auth.appointment_date : "Select Appointment Date"}
+                                                        { auth.appointment_date ? readable_day(Number(auth.appointment_date)) : "Select Appointment Date"}
                                                         <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
                                                             {showCalender ? <FaCaretUp /> : <FaCaretDown />}
                                                         </span>
@@ -347,7 +347,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 <span className="h-[40px] w-full ">
                                                     <input type="email" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-sm' />
                                                 </span>
-                                                <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[5px] ">
+                                                <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[3px] ">
                                                     <div className="w-full flex flex-col items-start justify-start">
                                                         {filtered_staff.map((data, ind)=>{
                                                             const {first_name, last_name, user_id, user_role } = data
@@ -374,7 +374,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                     </div>
                                                 </div>
 
-                                                <button className=" w-full h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_lead} >
+                                                <button className=" w-full h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_lead} >
                                             {loading ? (
                                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -454,7 +454,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 <div className="w-full flex flex-col items-end justify-end relative z-[5] ">
                                                     <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-sm" onClick={(e:any) => {e.preventDefault(); setShowCalender(!showCalender)}}>
 
-                                                        {auth.appointment_date ? auth.appointment_date : "Select Appointment Date"}
+                                                        {auth.appointment_date ? readable_day(Number(auth.appointment_date)) : "Select Appointment Date"}
                                                         <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
                                                             {showCalender ? <FaCaretUp /> : <FaCaretDown />}
                                                         </span>
@@ -471,7 +471,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 <span className="h-[40px] w-full ">
                                                     <input type="email" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-sm' />
                                                 </span>
-                                                <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[5px] ">
+                                                <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[3px] ">
                                                     <div className="w-full flex flex-col items-start justify-start">
                                                         {filtered_staff.map((data, ind)=>{
                                                             const {first_name, last_name, user_id, user_role } = data
@@ -498,7 +498,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                     </div>
                                                 </div>
 
-                                                <button className=" w-full h-[40px] text-white bg-amber-700 rounded-[5px] hover:bg-amber-600 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
+                                                <button className=" w-full h-[40px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
                                                 {loading ? (
                                                     <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

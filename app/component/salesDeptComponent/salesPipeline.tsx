@@ -8,6 +8,7 @@ import Alert from '../alert';
 import { userArray } from '@/constants';
 import { get_auth_request } from '@/app/api/admin_api';
 import Pipeline_Modal from './pipelineModal';
+import { useRouter } from 'next/navigation';
 
 interface Pipeline_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -16,16 +17,13 @@ interface Pipeline_Props {
     total_number_of_pipeline_pages?: number; // Now optional and can be undefined
     total_number_of_pipeline?: number; // Now optional and can be undefined
     pipeline: any;
+    total_lead?:number; total_lead_sold?:number; total_contract_amount?:number; total_lead_in_progress?:number;
 }
 
-interface Pipeline_Page_Props {
-    total_lead?: number, 
-    lead_sold?:number, 
-    total_contract_amount?:number, 
-    lead_in_progress?:any
-}
+
 
 const SalesPipelinePage = () => {
+    const router = useRouter()
     const [modalFor, setModalFor] = useState('')
     const [showModal, setShowModal] = useState(false)
     const [selectedPipeline, setSelectedPipeline] = useState(null)
@@ -34,7 +32,6 @@ const SalesPipelinePage = () => {
     const [pipeline_box, setpipeline_box] = useState<Pipeline_Props | null>(null);
     const [filtered_pipeline_box, setFiltered_pipeline_box] = useState<Pipeline_Props | null>(null);
     const [filters, setFilters] = useState({filter_input: '', status: '', stage: ''})
-    const [pipeline_page_info, setPipeline_page_info] = useState<Pipeline_Page_Props | null >(null)
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
         status: false, stage: false
@@ -60,8 +57,7 @@ const SalesPipelinePage = () => {
 
 
     useEffect(() => {
-        get_page_info()
-        get_all_pipeline()
+        get_pipeline_dashboard(page_number)
     }, [showModal])
 
     function showAlert(message: string, type: string){
@@ -71,38 +67,24 @@ const SalesPipelinePage = () => {
             }, 3000);
     }
 
-    async function get_page_info() {
-        
-
-        const response = await get_auth_request(`auth/sales-pipeline/${page_number}`)
-
-        if (response.status == 200 || response.status == 201){
-            
-            setPipeline_page_info(response.data)                  
-            console.log(response.data)                  
-
-        }else{            
-            if (response.response){
-                showAlert(response.response.data.err, "error")
-            }
-        }
-    }
-
-    async function get_all_pipeline() {
+    async function get_pipeline_dashboard(page_num:number) {
 
         
-        const response = await get_auth_request(`auth/all-pipeline/${page_number}`)
+        const response = await get_auth_request(`auth/pipeline-dashbpard/${page_num}`)
 
         if (response.status == 200 || response.status == 201){
             
             setpipeline_box(response.data)      
             
             setFiltered_pipeline_box(response.data)
-
-            console.log('pipeline ', response.data);
             
         }else{            
             if (response.response){
+                if (response.response.status == 402) {
+                    setTimeout(() => {
+                        router.push('/auth/login')
+                    }, 3000);
+                }
                 showAlert(response.response.data.err, "error")
             }
         }
@@ -141,9 +123,9 @@ const SalesPipelinePage = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
-
         setPage_number(new_page_number);
+
+        get_pipeline_dashboard(new_page_number)
     }
 
     const render_page_numbers = () => {
@@ -214,8 +196,6 @@ const SalesPipelinePage = () => {
                         assigned_to.includes(value) || pipeline_id.includes(value)
                     );
                 });
-
-                console.log(new_pipeline);
                 
                     
                 setFiltered_pipeline_box({...filtered_pipeline_box, pipeline: new_pipeline});
@@ -226,16 +206,12 @@ const SalesPipelinePage = () => {
     }
 
     async function handle_new_filter(item: string) {
-        if (pipeline_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',pipeline_box);
-            
+        if (pipeline_box && item.toLocaleLowerCase() == 'all') {            
             // If no filter is provided, reset to the original list
             setFiltered_pipeline_box(pipeline_box);
         
         } 
-        else if (item && pipeline_box) {
-            console.log(item);
-            
+        else if (item && pipeline_box) {            
             const new_pipeline = pipeline_box.pipeline.filter((data: any) => {
                 const status = data.status?.toLowerCase() || '';
                 const disposition = data.disposition?.toLowerCase() || '';
@@ -268,53 +244,9 @@ const SalesPipelinePage = () => {
                     {alert.message && <Alert message={alert.message} type={alert.type} />} 
                 </span>
 
-                <div className="w-full flex flex-row items-center justify-between gap-[10px] relative">
-                    <span className="absolute h-[125px] bg-blue-700 -top-[10px] -left-[10px] rounded-b-[3px] " style={{width: 'calc(100% + 20px)'}}></span>
 
-                    
-                    <span className="h-[100px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
 
-                        <span className="w-full flex flex-col items-start justify-between gap-[3px] px-[20px]">
-                            <p className="text-md">Total Lead</p>
-                            <p className="text-sm">{pipeline_page_info?.total_lead || 0}</p>
-                            <p className="text-sm">Last 30 days</p>
-                        </span>
-
-                    </span>
-
-                    <span className="h-[100px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
-
-                        <span className="w-full flex flex-col items-start justify-between gap-[3px] px-[20px]">
-                            <p className="text-md">Lead Sold</p>
-                            <p className="text-sm">{pipeline_page_info?.lead_sold || 0}</p>
-                            <p className="text-sm">Last 30 days</p>
-                        </span>
-
-                    </span>
-
-                    <span className="h-[100px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
-
-                        <span className="w-full flex flex-col items-start justify-between gap-[3px] px-[20px]">
-                            <p className="text-md">Contract Value</p>
-                            <p className="text-sm">${pipeline_page_info?.total_contract_amount?.toLocaleString() || 0}</p>
-                            <p className="text-sm">Last 30 days</p>
-                        </span>
-
-                    </span>
-
-                    <span className="h-[100px] flex relative items-center justify-center w-1/4 rounded-[4px] shadow-md bg-white ">
-
-                        <span className="w-full flex flex-col items-start justify-between gap-[3px] px-[20px]">
-                            <p className="text-md">Lead in progress</p>
-                            <p className="text-sm">{pipeline_page_info?.lead_in_progress?.length}</p>
-                            <p className="text-sm">Last 30 days</p>
-                        </span>
-
-                    </span>
-
-                </div>
-
-                <span className="w-full h-[40px] mt-[15px] flex flex-row items-center justify-between ">
+                <span className="w-full h-[40px] flex flex-row items-center justify-between ">
                     <span className="h-full flex flex-row items-center justify-start gap-2">
                         <p className="text-md font-semibold text-black">All Pipelines</p>
                         <p className="text-sm text-black">{(pipeline_box && pipeline_box?.total_number_of_pipeline) || 0 }</p>
@@ -340,9 +272,9 @@ const SalesPipelinePage = () => {
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[3px]">
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Id</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
+                        <p className="text-sm font-normal w-[9.5%] px-2 ">Pipeline Id</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
+                        <p className="text-sm font-normal w-[13%] px-2 ">Customer Name</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Appointment Date</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Assigned To</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Status</p>
@@ -360,18 +292,17 @@ const SalesPipelinePage = () => {
                                 <>
                                 { filtered_pipeline_box?.pipeline.map((data:any, ind:number)=>{
                                     const {lead, stage, disposition, status, contract_amount,pipeline_ind } = data
-                                    console.log('customer name ', lead, );
                                     
                                     return (
                                         <span key={ind} className="recent-activity-table-list " onClick={()=> view_pipeline(data)} >
-                                            <p className="text-sm w-[7.5%] px-2 ">{pipeline_ind} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {} </p>
-                                            <p className="text-sm w-[7.5%] px-2 ">{lead.lead_ind} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {lead.appointment_date} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {lead.assigned_to.first_name} {lead.assigned_to.last_name} </p>
+                                            <p className="text-sm w-[9.5%] px-2 ">{pipeline_ind} </p>
+                                            {lead ? <p className="text-sm w-[7.5%] px-2 ">{lead.lead_ind} </p> :<p className="text-sm w-[7.5%] px-2">nil</p>  }
+                                            {lead ? <p className="text-sm w-[13%] px-2 "> {lead.customer_name} </p> :<p className="text-sm w-[15%] px-2">nil</p>  }
+                                            {lead ? <p className="text-sm w-[15%] px-2 "> {lead.appointment_date} </p>: <p className="text-sm w-[15%] px-2">nil</p>  }
+                                            {lead ? <p className="text-sm w-[15%] px-2 "> {lead.assigned_to.first_name} {lead.assigned_to.last_name} </p>: <p className="text-sm w-[15%] px-2">nil</p>  }
                                             <p className="text-sm w-[15%] px-2 "> {status.replace(/_/g, ' ')} </p>
                                             {contract_amount != null ? <p className="text-sm w-[15%] px-2 "> {Number(contract_amount).toLocaleString()} </p> : <p className="text-sm w-[15%] px-2 "> 0 </p>  }
-                                            <p className={disposition == 'SOLD' ? "text-sm w-[10%] px-2 text-green-700": "text-sm w-[10%] px-2 text-amber-600"} >{disposition.replace(/_/g, ' ')}</p>
+                                            <p className={disposition == 'SOLD' ? "text-sm w-[10%] px-2 text-blue-700": "text-sm w-[10%] px-2 text-red-600"} >{disposition.replace(/_/g, ' ')}</p>
                                         
                                         </span>
                                     )

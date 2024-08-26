@@ -58,7 +58,7 @@ export const DropDownBlankTransparent = ({title, dropArray, handleDropMenu, hand
     return (
         <div className="relative flex h-auto items-center justify-start w-[60%] w-full">
             <span onClick={()=> {handleDropMenu(title)}} className="flex flex-row item-center jusitify-between w-full h-[40px] cursor-pointer rounded-[3px]">
-                <span className="flex flex-1 h-full items-center justify-start px-3 rounded-l-[3px] border border-gray-400 border-r-0 text-black text-[15.5px] ">{dropElements[title]}</span>
+                <span className="flex flex-1 h-full items-center justify-start px-3 rounded-l-[3px] border border-gray-400 border-r-0 text-black text-[13.5px] ">{dropElements[title]}</span>
                 <span className="flex flex-row w-[35px] h-full items-center justify-center  text-black rounded-r-[3px] border border-gray-400 border-l-0 text-[15.5px]">
                     {dropMenus[title] ? <FaCaretUp  /> : <FaCaretDown  />}
                 </span>

@@ -65,12 +65,9 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
     const handleSelectDropdown = (dropdown: any, title:any)=>{
         if (title == 'attached'){
             const value = dropdown.toLowerCase() == 'true' ? true : false
-            console.log(' hello ', title, ' : ', value);
-
             setAuth({...auth, [title]: value})
             setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
-        }else{
-
+        }else{            
             setAuth({...auth, [title]: dropdown.replace(/ /g, '_').toUpperCase()})
             setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
         }
@@ -88,7 +85,11 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
         const name = e.target.name
         const value = e.target.value
 
-        setAuth({...auth, [name]: value})
+        if (name == 'contract_amount') {
+            setAuth({...auth, [name]: Number(value.replace(/,/g,''))})
+        }else{
+            setAuth({...auth, [name]: value})
+        }
     }
 
     function handleCloseModal() {
@@ -115,7 +116,6 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
             get_all_leads()
         }else if (modalFor == 'edit'){
             get_all_leads()
-            console.log('seleted job ',selectedJob)
             const {
                 lead_id, contract_amount, contract_date, lead,
                 hoa_permit_status, hoa_permit_submit_date, hoa_permit_approval_date, hoa_permit_documents, 
@@ -132,14 +132,10 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                 engineering_permit_submit_date, engineering_permit_approval_date, engineering_permit_status, engineering_permit_documents, 
                 electrical_permit_submit_date, electrical_permit_approval_date, electrical_permit_status, electrical_permit_documents, 
                 general_permit_submit_date, generall_permit_approval_date, general_permit_status, general_permit_documents, 
-                cover_color, cover_size, trim_color, attached, structure_type, description, end_cap_style, permit_number 
+                cover_color, cover_size, trim_color: selectedJob.project[0].trim_color , attached: selectedJob.project[0].attached, structure_type, description, end_cap_style: selectedJob.project[0].end_cap_style , permit_number 
              })
-
-            // setDropElements({...dropElements,
-            //     hoa_permit_status: hoa_permit_status.replace(/_/g, ' '), engineering_permit_status: engineering_permit_status.replace(/_/g, ' '),
-            //     electrical_permit_status: electrical_permit_status.replace(/_/g, ' '), general_permit_status: general_permit_status.replace(/_/g, ' ')
-                
-            // }); 
+            
+            setDropElements({...dropElements, structure_type: selectedJob.project[0].structure_type, attached: selectedJob.project[0].attached ? 'True' : 'False' })
 
             setSelected_lead(lead.customer_name)
         }
@@ -154,7 +150,6 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                 setFiltered_leads(response.data.leads)
 
-                console.log('lead ', response.data.leads);
                 
                             
                 }else{       
@@ -169,7 +164,6 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
     async function create_job(e:any) {
         e.preventDefault()
-        console.log('auth', auth)
         if (!auth.contract_amount || !auth.contract_date || !auth.lead_id || !auth.structure_type ) {
             showAlert('Please fill required fields', 'error')
         }else{
@@ -206,12 +200,14 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
     async function update_job(e:any) {
         e.preventDefault()
-        if (!auth.contract_amount || !auth.contract_date || !auth.lead_id) {
+        if (role !== 'sales') {
+            showAlert('Unauthorized to update job', 'error')
+        }
+        else if (!auth.contract_amount || !auth.contract_date || !auth.lead_id) {
             showAlert('Please fill required fields', 'error')
         }else{
             try {
                 setLoading(true)
-                console.log('auth. ', auth)
                 const response = await patch_auth_request(`job/edit-job/${selectedJob.job_id}`, auth)
                 if (response.status == 200 || response.status == 201){
                                 
@@ -282,18 +278,18 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                 {modalFor == 'delete' && 
                                 
                                 <div className="w-full flex flex-col items-start justify-start gap-[25px] ">
-                                    <span className="w-full flex flex-row items-start justify-between border-b border-slate-200 h-[40px]">
-                                        <p className="text-md font-semibold  text-blue-700 ">Delete Job</p>
+                                    <span className="w-full flex items-center justify-between border-b border-slate-200 h-[50px] ">
+                                        <h4 className="text-md  flex items-center gap-[10px] ">Delete Job: <p className="text-sm font-semibold">{selectedJob.job_ind}</p> </h4>
 
                                         
                                     </span>
 
-                                    <div className="w-full flex flex-col items-center justify-center gap-[34px]">
-                                        <p className="text-md font-normal text-center  ">Are you sure you want to delete job  assigned to lead <strong className='text-blue-600'>{selectedJob.lead.customer_name} </strong> </p>
+                                    <div className="w-full flex flex-col items-center justify-center gap-[40px]">
+                                        <h4 className="text-md font-normal text-center  ">Are you sure you want to delete job <p className='font-medium'>{selectedJob.job_ind} </p> </h4>
                                             
-                                        <p className="text-xs text-red-500 flex items-center justify-center gap-2 "> <CiWarning size={20} />   Please note action is not reaversible </p>
+                                        <p className="text-xs flex items-center justify-center gap-2 "> <CiWarning size={20} />   Please note action is not reaversible </p>
 
-                                            <button className=" w-[150px] h-[45px] text-white bg-blue-600 rounded-[5px] hover:bg-red-500 flex items-center justify-center"  disabled={loading} onClick={delete_job} >
+                                            <button className=" w-[150px] h-[45px] text-white bg-blue-600 rounded-[3px] hover:bg-red-500 flex items-center justify-center"  disabled={loading} onClick={delete_job} >
                                                 {loading ? (
                                                     <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -517,7 +513,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Contract Amount</p>
                                                 <span className="h-[40px] w-full ">
-                                                    <input type="text" name='contract_amount' value={auth.contract_amount} onChange={handle_change} className='normal-input text-sm' />
+                                                    <input type="text" name='contract_amount' value={Number(auth.contract_amount).toLocaleString()} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
 

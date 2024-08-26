@@ -40,9 +40,9 @@ const SystemSettings = () => {
                 
                 setSetting_page(response.data)      
 
-                const {first_name, last_name, other_names, phone_number, email } = response.data.user
+                const {first_name, last_name, other_names, phone_number, email, avatar } = response.data.user
 
-                setUserProfile({...userProfile, first_name, last_name, phone_number, other_names, email })
+                setUserProfile({...userProfile, first_name, last_name, phone_number, other_names, email, avatar })
     
                 console.log( 'sales data 1',response.data);
                 
@@ -99,6 +99,12 @@ const SystemSettings = () => {
             }, 3000);
     }
 
+    const handleFileUpload = (fileUrl:string) => {
+        console.log('Received file URL from settings:', fileUrl);
+        setUserProfile({...userProfile, avatar: fileUrl})
+     
+    };
+
     return (
         <div className="w-full p-[10px] h-full ">
             <div className="w-full h-full relative flex flex-row items-start justify-start gap-3  bg-white p-[10px] rounded-[4px] shadow-md ">
@@ -119,7 +125,7 @@ const SystemSettings = () => {
                             </span>
                             <div className="w-full flex flex-col justify-start items-start gap-3">
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <ImageUploader id={'user-image'} title={"User Image"} url={'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192427/ugxr954jsbyd1utozwzy.jpg'} image={''} />
+                                    <ImageUploader id={'user-image'} title={"User Image"} url={userProfile.avatar || 'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192427/ugxr954jsbyd1utozwzy.jpg'} image={''}  onFileUpload={handleFileUpload} />
                                 </span>
                                 
                                 
@@ -165,7 +171,7 @@ const SystemSettings = () => {
                 </div>
                 
                 <span className="w-full flex justify-end absoute absolute bottom-[10px] right-[10px]">
-                    <button className="mt-[10px] px-5 h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-500 flex items-center justify-center" onClick={updateSettings} disabled={loading}>
+                    <button className="mt-[10px] min-w-[150px] px-5 h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-500 flex items-center justify-center" onClick={updateSettings} disabled={loading}>
                             {loading ? (
                             <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

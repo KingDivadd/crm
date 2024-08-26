@@ -90,6 +90,7 @@ const Login = () => {
                 if (response.status == 200 || response.status == 201){
 
                     localStorage.setItem('x-id-key' ,response.headers.get('x-id-key'));
+                    localStorage.setItem('key' ,response.data.user.user_id);
                     localStorage.setItem('user-role', response.data.user.user_role)
                     
                     showAlert(response.data.msg, "success")

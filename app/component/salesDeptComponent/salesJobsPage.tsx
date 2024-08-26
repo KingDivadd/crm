@@ -8,6 +8,7 @@ import Alert from '../alert';
 import { userArray } from '@/constants';
 import { get_auth_request } from '@/app/api/admin_api';
 import Job_Management_Modal from "./salesJobManagementModal"
+import { timestamp_to_readable_value } from '../helper';
 
 interface Jobs_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -57,7 +58,7 @@ const SalesJobPage = () => {
         if (user_role) {
             setRole(user_role)
         }
-        get_all_jobs()
+        get_all_jobs(page_number)
     }, [showModal])
 
     function showAlert(message: string, type: string){
@@ -67,18 +68,16 @@ const SalesJobPage = () => {
             }, 3000);
     }
 
-    async function get_all_jobs() {
+    async function get_all_jobs(page_num:number) {
 
         
-        const response = await get_auth_request(`auth/all-jobs/${page_number}`)
+        const response = await get_auth_request(`auth/all-jobs/${page_num}`)
 
         if (response.status == 200 || response.status == 201){
             
             setjob_box(response.data)      
             
-            setFiltered_job_box(response.data)
-
-            
+            setFiltered_job_box(response.data)            
 
         }else{
             
@@ -88,25 +87,6 @@ const SalesJobPage = () => {
         }
     }
 
-    async function filter_jobs(item:any) {
-
-        
-        const response = await get_auth_request(`/filter-jobs/${item}/${page_number}`)
-
-        if (response.status == 200 || response.status == 201){
-            
-            setjob_box(response.data)      
-            
-            setFiltered_job_box(response.data)
-
-            
-            showAlert(response.data.msg, "success")
-
-        }else{
-        
-        showAlert(response.response.data.err, "error")
-        }
-    }
 
     async function app_users_action(item: any) {
         let new_page_number = page_number;
@@ -124,8 +104,9 @@ const SalesJobPage = () => {
         new_page_number = item;
         }
 
-
         setPage_number(new_page_number);
+
+        get_all_jobs(new_page_number)
     }
 
     const render_page_numbers = () => {
@@ -185,18 +166,26 @@ const SalesJobPage = () => {
             if (value.trim() !== '') {
                 const new_jobs = job_box.jobs.filter((data: any) => {
                     const contract_amount = data.contract_amount || '';
-                    const lead_name = data.lead?.customer_name?.toLowerCase() || '';
+                    const contract_amount_two = Number(data.contract_amount).toLocaleString() || '';
+                    const lead_id = data.lead?.lead_ind?.toLowerCase() || '';
+                    const job_id = data.job_ind?.toLowerCase() || '';
+                    const assigned_to = data.lead?.assigned_to?.first_name.toLowerCase() || ''
+                    const assigned_to_last_name = data.lead?.assigned_to?.last_name.toLowerCase() || ''
 
                     
                     return (
                         String(contract_amount).includes(value) || 
-                        lead_name.includes(value) 
+                        contract_amount_two.includes(value) ||
+                        job_id.includes(value) ||
+                        assigned_to.includes(value) ||
+                        assigned_to_last_name.includes(value) ||
+                        lead_id.includes(value) 
                     );
                 });
                     
                 setFiltered_job_box({...filtered_job_box, jobs: new_jobs});
             } else {
-                setFiltered_job_box(job_box); // Reset to the original list
+                setFiltered_job_box(job_box); 
             }
         }
     }
@@ -204,7 +193,6 @@ const SalesJobPage = () => {
     async function handle_new_filter(item: string) {
         if (job_box && item.toLocaleLowerCase() == 'all') {
             
-            // If no filter is provided, reset to the original list
             setFiltered_job_box(job_box);
         
         } 
@@ -214,7 +202,6 @@ const SalesJobPage = () => {
                 const permit_status = data.permit_status?.toLowerCase() || '';
                 const active_status = data.active_status ? 'active' : 'inactive';
     
-                // Check if the filter item matches either the user_role or active_status
                 return (
                     permit_status === item.toLowerCase()
                 );
@@ -222,7 +209,6 @@ const SalesJobPage = () => {
     
             setFiltered_job_box({ ...job_box, jobs: new_jobs });
         } else {
-            // If no filter is provided, reset to the original list
             setFiltered_job_box(job_box);
         }
     }
@@ -253,30 +239,30 @@ const SalesJobPage = () => {
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-2">
-                        <p className="text-md font-semibold text-black">All jobs</p>
+                        <p className="text-md font-semibold text-black">All Jobs</p>
                         <p className="text-sm text-black">{(job_box && job_box?.total_number_of_jobs) || 0 }</p>
                     </span>
 
                     <span className=" flex flex-row items-center justif-start gap-[10px] h-[40px] ">
                         <span className="w-[300px] h-[40px] ">
-                            <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by lead name or contract amount' id="" className='normal-input bg-gray-100 text-sm ' />
+                            <input type="text" name="filter-input" onChange={handleFilter} placeholder='search for job...' id="" className='normal-input bg-gray-100 text-sm ' />
                         </span>
 
-                        <span className="h-[40px] min-w-[175px]">
+                        {/* <span className="h-[40px] min-w-[175px]">
                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'hoa_permit_status'} dropArray={['PENDING', 'SENT', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                        </span>
+                        </span> */}
 {/* 
                         <span className="h-[40px] min-w-[175px]">
                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'general_permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                         </span> */}
 
-                        <span className="h-[40px] min-w-[175px]">
+                        {/* <span className="h-[40px] min-w-[175px]">
                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'engineering_permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                         </span>
 
                         <span className="h-[40px] min-w-[175px]">
                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'electrical_permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                        </span>
+                        </span> */}
                         
                         {role == 'sales' && 
                         <button className="h-full px-5 text-sm bg-blue-700 hover:bg-blue-600 rounded-[3px] text-white" onClick={add_job}>Create Job</button>
@@ -289,28 +275,29 @@ const SalesJobPage = () => {
                 </span>
 
                 
-                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
+                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[3px]">
                     {(role == 'sales' || role == 'admin') ? 
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Job Id</p>
-                        <p className="text-sm font-normal w-[13.5%] px-2 ">Lead Name</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Contract Amt</p>
-                        <p className="text-sm font-normal w-[11.5%] px-2 ">Contract Date</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Hoa Status</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Permit Status</p>
-                        <p className="text-sm font-normal w-[13.5%] px-2 ">Engineering Status</p>
-                        <p className="text-sm font-normal w-[11%] px-2 ">Electrical Status</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
+                        <p className="text-sm font-normal w-[11.5%] px-2 ">Contract Amt</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Contract Date</p>
+                        <p className="text-sm font-normal w-[13.5%] px-2 ">Assigned To</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Created At</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Last Updated</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
                         <p className="text-sm font-normal w-[10%] px-2 "></p>
                     </span>:
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Job Id</p>
-                        <p className="text-sm font-normal w-[13.5%] px-2 ">Lead Name</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
                         <p className="text-sm font-normal w-[11.5%] px-2 ">Contract Amt</p>
-                        <p className="text-sm font-normal w-[13%] px-2 ">Contract Date</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Hoa Status</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Permit Status</p>
-                        <p className="text-sm font-normal w-[13.5%] px-2 ">Engineering Status</p>
-                        <p className="text-sm font-normal w-[13%] px-2 ">Electrical Status</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Contract Date</p>
+                        <p className="text-sm font-normal w-[13.5%] px-2 ">Assigned To</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Created At</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Last Updated</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
+                        <p className="text-sm font-normal w-[10%] px-2 "></p>
                     </span>}
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -324,32 +311,36 @@ const SalesJobPage = () => {
                                 { filtered_job_box?.jobs.map((data:any, ind:number)=>{
 
                                     
-                                    const {job_ind, lead, contract_amount, contract_date, hoa_permit_status, electrical_permit_status, general_permit_status, engineering_permit_status } = data
+                                    const {job_ind, lead, contract_amount, contract_date, hoa_permit_status, electrical_permit_status, general_permit_status, engineering_permit_status, created_at, updated_at } = data
                                     return (
                                         <>
                                         {(role == 'sales' || role == 'admin') ? 
-                                        <span key={ind} className="recent-activity-table-list " onClick={()=> edit_job(data)} >
+                                        <span key={ind} className="recent-activity-table-list group" >
                                             <p className="text-sm w-[7.5%] px-2 ">{job_ind} </p>
-                                            <p className="text-sm w-[13.5%] px-2 "> {lead.customer_name} </p>
-                                            <p className="text-sm w-[10%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
-                                            <p className="text-sm w-[11.5%] px-2 "> {contract_date} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {hoa_permit_status ? hoa_permit_status.replace(/_/g, ' ') : '-'} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {general_permit_status ? general_permit_status.replace(/_/g, ' ') : '-'} </p>
-                                            <p className="text-sm w-[13.5%] px-2 ">{engineering_permit_status ? engineering_permit_status.replace(/_/g, ' ') : '-' }</p>
-                                            <p className="text-sm w-[11.5%] px-2 ">{electrical_permit_status ? electrical_permit_status.replace(/_/g, ' ') : '-' }</p>
+                                            <p className="text-sm w-[7.5%] px-2 ">{lead.lead_ind} </p>
+                                            <p className="text-sm w-[11.5%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {contract_date} </p>
+                                            <p className="text-sm w-[13.5%] px-2 "> {lead.assigned_to.first_name} {lead.assigned_to.last_name} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {timestamp_to_readable_value(Number(created_at))} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {timestamp_to_readable_value(Number(updated_at))} </p>
+                                        
+                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
                                         
                                             <p className="text-sm w-[10.0%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Delete</p>
                                         </span>
                                         :
                                         <span key={ind} className="recent-activity-table-list " onClick={()=> edit_job(data)} >
                                             <p className="text-sm w-[7.5%] px-2 ">{job_ind} </p>
-                                            <p className="text-sm w-[13.5%] px-2 "> {lead.customer_name} </p>
+                                            <p className="text-sm w-[7.5%] px-2 ">{lead.lead_ind} </p>
                                             <p className="text-sm w-[11.5%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
-                                            <p className="text-sm w-[13%] px-2 "> {contract_date} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {hoa_permit_status ? hoa_permit_status.replace(/_/g, ' ') : '-'} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {general_permit_status ? general_permit_status.replace(/_/g, ' ') : '-'} </p>
-                                            <p className="text-sm w-[13.5%] px-2 ">{engineering_permit_status ? engineering_permit_status.replace(/_/g, ' ') : '-' }</p>
-                                            <p className="text-sm w-[13%] px-2 ">{electrical_permit_status ? electrical_permit_status.replace(/_/g, ' ') : '-' }</p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {contract_date} </p>
+                                            <p className="text-sm w-[13.5%] px-2 "> {lead.assigned_to.first_name} {lead.assigned_to.last_name} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {timestamp_to_readable_value(Number(created_at))} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {timestamp_to_readable_value(Number(updated_at))} </p>
+                                        
+                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
+                                        
+                                            <p className="text-sm w-[10.0%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Delete</p>
                                         
                                         </span>}
                                         </>
@@ -373,7 +364,7 @@ const SalesJobPage = () => {
                     
                     </div>
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">

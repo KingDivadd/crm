@@ -7,6 +7,7 @@ import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
 import Alert from '../alert';
 import { get_auth_request } from '../../api/admin_api';
 import Task_Management_Modal from "./opsTasksModal"
+import { timestamp_to_readable_value } from '../helper';
 
 interface Tasks_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -279,8 +280,8 @@ const OpsTaskPage = () => {
                 </span>
 
                 
-                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[3px]">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Task ID</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
                         <p className="text-sm font-normal w-[20%] px-2 ">Desription</p>
@@ -311,7 +312,7 @@ const OpsTaskPage = () => {
                                             <p className="text-sm w-[12.5%] px-2 "> {task_assigned_to.last_name}  {task_assigned_to.first_name} </p>
                                             <p className="text-sm w-[10%] px-2 "> {start_date} </p>
                                             <p className="text-sm w-[10%] px-2 "> {due_date} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {completion_date || 'nil'} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {timestamp_to_readable_value(Number(completion_date)) || 'nil'} </p>
                                             <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer"  ><MdEdit size={16} /> Edit</p>
 
                                         </span>
@@ -335,7 +336,7 @@ const OpsTaskPage = () => {
                     
                     </div>
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">

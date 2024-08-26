@@ -191,7 +191,7 @@ const SalesReportPage = () => {
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     {/* <p className="text-xl font-semibold">Sales Performance</p> */}
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md ">
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px] shadow-md ">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
                             <p className="text-sm w-[10%] px-2  ">User Id</p>
                             <p className="text-sm w-[20%] px-2  ">Sales Person</p>
@@ -203,7 +203,7 @@ const SalesReportPage = () => {
 
                         {report_dashboard ? 
                         
-                        <div className="w-full flex flex-col justify-start items-start" style={{height: 'calc(100vh - 300px)'}}>
+                        <div className="w-full flex flex-col justify-start items-start" style={{height: 'calc(100vh - 295px)'}}>
                             {report_dashboard?.sales_persons.map((data:any, ind:any)=>{
                                 const {first_name, last_name, user_id, user_ind} = data
 
