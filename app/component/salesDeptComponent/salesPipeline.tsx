@@ -101,7 +101,6 @@ const SalesPipelinePage = () => {
 
             console.log('pipeline ', response.data);
             
-
         }else{            
             if (response.response){
                 showAlert(response.response.data.err, "error")
@@ -361,10 +360,12 @@ const SalesPipelinePage = () => {
                                 <>
                                 { filtered_pipeline_box?.pipeline.map((data:any, ind:number)=>{
                                     const {lead, stage, disposition, status, contract_amount,pipeline_ind } = data
+                                    console.log('customer name ', lead, );
+                                    
                                     return (
                                         <span key={ind} className="recent-activity-table-list " onClick={()=> view_pipeline(data)} >
                                             <p className="text-sm w-[7.5%] px-2 ">{pipeline_ind} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {lead.customer_name} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {} </p>
                                             <p className="text-sm w-[7.5%] px-2 ">{lead.lead_ind} </p>
                                             <p className="text-sm w-[15%] px-2 "> {lead.appointment_date} </p>
                                             <p className="text-sm w-[15%] px-2 "> {lead.assigned_to.first_name} {lead.assigned_to.last_name} </p>
