@@ -269,12 +269,12 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
                                 {modalFor == 'add' && 
                                 <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
-                                    <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
+                                    <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px]  ">
                                         <p className="text-md font-semibold  text-slate-800 ">New Lead </p>
 
-                                        {/* <span className="h-[35px] min-w-[150px] z-5">
+                                        <span className="h-[35px] min-w-[150px] z-[10] ">
                                             <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                        </span> */}
+                                        </span>
                                     </span>
 
                                     <form  action="" className="w-full flex items-start justify-between gap-[15px]">
@@ -327,7 +327,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             <span className="w-full flex flex-col items-start justify-start gap-[10px] ">
 
                                                 <h4 className="text-sm ">Appointment Date</h4>
-                                                <div className="w-full flex flex-col items-end justify-end relative z-[15] ">
+                                                <div className="w-full flex flex-col items-end justify-end relative z-[5] ">
                                                     <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-sm" onClick={(e:any) => {e.preventDefault(); setShowCalender(!showCalender)}}>
 
                                                         { auth.appointment_date ? readable_day(Number(auth.appointment_date)) : "Select Appointment Date"}

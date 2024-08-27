@@ -62,6 +62,7 @@ const AdminSystemSettings = () => {
 
         const response = await get_auth_request('settings/settings-info')
 
+        console.log('admin settings ', response.data);
         if (response.status == 200 || response.status == 201){
 
             console.log(response.data);
@@ -192,7 +193,7 @@ const AdminSystemSettings = () => {
 
     return (
         <div className="w-full p-[10px] ">
-            <div className="w-full relative flex flex-row items-start justify-start gap-3  ">
+            <div className="w-full relative flex flex-row items-start justify-start gap-3 p-[10px] bg-white rounded-[3px] shadow-md ">
                 <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} {/* Display alert */}
                 </span>
@@ -369,7 +370,7 @@ const AdminSystemSettings = () => {
                     </div>
 
                 </div>
-                <span className="flex justify-end absoute absolute bottom-[10px] right-0">
+                <span className="flex justify-end absoute absolute bottom-[10px] right-[10px]">
                     <button className="mt-[10px] w-[170px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center text-sm" onClick={updateSettings} disabled={loading}>
                             {loading ? (
                             <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
