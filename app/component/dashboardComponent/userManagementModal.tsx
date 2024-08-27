@@ -143,6 +143,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                 if (response.status === 200 || response.status === 201) {
                     showAlert(response.data.msg, "success");
                     setTimeout(() => {
+                        setShowModal(!showModal)
                     }, 2000);
                 } else {
                     if (response.response.status == 402) {

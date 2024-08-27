@@ -14,8 +14,8 @@ import { IoIosClose } from 'react-icons/io'
 const AdminSystemSettings = () => {
     const [editCompanyInfo, setEditCompanyInfo] = useState(true)
     const [editUserProfile, setEditUserProfile] = useState(true)
-    const [userProfile, setUserProfile] = useState({first_name: '', last_name: '', user_name: '', phone_number: '', avatar: 'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192427/ugxr954jsbyd1utozwzy.jpg', password: ''})
-    const [companyInfo, setCompanyInfo] = useState({name: '', address: '', email: '', phone: '', company_phone: [], number_of_admin: 0, logo: 'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192409/qbit5t3yzq06kptro4xp.jpg'})
+    const [userProfile, setUserProfile] = useState({first_name: '', last_name: '', user_name: '', phone_number: '', avatar: '', password: ''})
+    const [companyInfo, setCompanyInfo] = useState({name: '', address: '', email: '', phone: '', company_phone: [], number_of_admin: 0, logo: ''})
     const [paypalInfo, setPaypalInfo] = useState({clientId: '', secretKey: '', mode: '' })
     const [stripeInfo, setStripeInfo] = useState({publishableKey: '', secretKey: '', webhookSecret: '' })
     const [loading, setLoading] = useState(false)
@@ -181,7 +181,14 @@ const AdminSystemSettings = () => {
 
     }, [image])
 
+    const handleFileUpload = (fileUrl:string) => {
+        setUserProfile({...userProfile, avatar: fileUrl})
+     
+    };
 
+    const handleCompanyFileUpload = (fileUrl:string) => {
+        setCompanyInfo({...companyInfo, logo:fileUrl})
+    };
 
     return (
         <div className="w-full p-[10px] ">
@@ -203,7 +210,7 @@ const AdminSystemSettings = () => {
                             {editCompanyInfo && 
                             <div className="w-full flex flex-col justify-start items-start gap-3">
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <ImageUploader id={'company-logo'} title={"Company Logo"} url={companyInfo.logo} image={image} />
+                                    <ImageUploader id={'company-logo'} title={"Company Image"} url={companyInfo.logo || 'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192409/qbit5t3yzq06kptro4xp.jpg'} image={''}  onFileUpload={handleCompanyFileUpload} />
                                 </span>
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
                                     <h4 className="text-sm ">Company Name</h4>
@@ -330,7 +337,7 @@ const AdminSystemSettings = () => {
                                 {editUserProfile && 
                                 <div className="w-full flex flex-col justify-start items-start gap-3">
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
-                                        <ImageUploader id={'user-image'} title={"User Image"} url={userProfile.avatar} image={image} />
+                                    <ImageUploader id={'user-image'} title={"User Image"} url={userProfile.avatar || 'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192427/ugxr954jsbyd1utozwzy.jpg'} image={''}  onFileUpload={handleFileUpload} />
                                     </span>
                                     <span className="w-full flex flex-col items-start justify-start gap-2">
                                         <h4 className="text-sm ">First Name</h4>
