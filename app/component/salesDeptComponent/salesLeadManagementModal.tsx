@@ -132,7 +132,17 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
         e.preventDefault()
         console.log('auth', auth)
         if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.email || !auth.city || !auth.state || !auth.zip || !auth.assigned_to || !auth.appointment_date) {
-            if (!auth.customer_first_name || !auth.customer_last_name){showAlert('Please enter client name', 'error')}
+            if (!auth.customer_first_name || !auth.customer_last_name){showAlert('Please enter client name', 'error')};
+            
+            if (!auth.phone_number) { showAlert("Please enter client's phone number", 'error') }
+
+            if (!auth.email) {showAlert("Please enter client email", 'error')}
+
+            if (!auth.city) {showAlert("Please enter client city", 'error')}
+
+            if (!auth.state) {showAlert("Please enter client city", 'error')}
+
+            
             showAlert('Please fill required fields', 'error')
         }else{
             try {
@@ -162,7 +172,18 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
     async function update_lead(e:any) {
         e.preventDefault()
-        if (!auth.customer_first_name || !auth.phone_number || !auth.email || !auth.assigned_to || !auth.appointment_date || !auth.disposition) {
+        if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.email || !auth.city || !auth.state || !auth.zip || !auth.assigned_to || !auth.appointment_date) {
+            if (!auth.customer_first_name || !auth.customer_last_name){showAlert('Please enter client name', 'error')};
+            
+            if (!auth.phone_number) { showAlert("Please enter client's phone number", 'error') }
+
+            if (!auth.email) {showAlert("Please enter client email", 'error')}
+
+            if (!auth.city) {showAlert("Please enter client city", 'error')}
+
+            if (!auth.state) {showAlert("Please enter client city", 'error')}
+
+            
             showAlert('Please fill required fields', 'error')
         }else{
             try {
