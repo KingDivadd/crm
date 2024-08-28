@@ -101,15 +101,15 @@ const DashboardNav = () => {
                 {user_info?.user && 
                 
                 <p className="text-md font-medium text-white whitespace-nowrap">
-                    {user_info.user.user_role == 'admin' && "Admin Porter"}
-                    {user_info.user.user_role == 'sales' && "Sales Porter"}
-                    {user_info.user.user_role == 'operation' && "Operation Porter"}
-                    {user_info.user.user_role == 'installer' && "Installer Porter"}
-                    {user_info.user.user_role == 'customer' && "Customer Porter"}
-                    {user_info.user.user_role == 'engineering' && "Engineering Porter"}
-                    {user_info.user.user_role == 'electrical' && "Electrical Porter"}
-                    {user_info.user.user_role == 'accounting' && "Accounting Porter"}
-                    {user_info.user.user_role == 'permit' && "Permit Porter"}
+                    {user_info.user.user_role == 'admin' && "Admin Portal"}
+                    {user_info.user.user_role == 'sales' && "Sales Portal"}
+                    {user_info.user.user_role == 'operation' && "Operation Portal"}
+                    {user_info.user.user_role == 'installer' && "Installer Portal"}
+                    {user_info.user.user_role == 'customer' && "Customer Portal"}
+                    {user_info.user.user_role == 'engineering' && "Engineering Portal"}
+                    {user_info.user.user_role == 'electrical' && "Electrical Portal"}
+                    {user_info.user.user_role == 'accounting' && "Accounting Portal"}
+                    {user_info.user.user_role == 'permit' && "Permit Portal"}
                 </p>
                 
                 }
