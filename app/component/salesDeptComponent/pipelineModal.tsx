@@ -1,6 +1,7 @@
 'use client'
 import React, { useState, useEffect } from 'react'
 import Alert from '../alert'
+import { timestamp_to_readable_value } from '../helper';
 
 
 interface Pipeline_Props {
@@ -120,7 +121,7 @@ const Pipeline_Modal = ({ showModal, setShowModal, selectedPipeline, setSelected
 
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
                                                 <p className="text-sm font-normal w-[35%]">Appointment Date</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.appointment_date}</p>    
+                                                <p className="text-sm font-medium w-[65%] text-start">{timestamp_to_readable_value(Number(selectedPipeline.lead.appointment_date))}</p>    
                                             </span>
 
                                             <span className="w-full flex items-center justify-start gap-[10px] ">

@@ -1,7 +1,6 @@
 'use client'
 import React, {useState, useEffect} from 'react'
 import ElectricalSidebar from './sideBar'
-import ElectricalNav from './navBar'
 import ElectricalDashboardPage from './elecricalDashboardPage'
 import TaskNotificationPage from './taskNotification'
 import InvoicePage from './invoices'
