@@ -17,7 +17,7 @@ const EngineeringDashboard = () => {
     useEffect(() => {
         const item = sessionStorage.getItem('sideNav')
         if (item == null || item == "") {
-            setActive('dashboard')
+            setActive('home')
         }else{
             setActive(item)
         }
