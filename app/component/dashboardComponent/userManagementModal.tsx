@@ -210,7 +210,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                 <div className={modalFor == 'delete' ?  "w-full h-screen pt-[150px] rounded-lg overflow-hidden shadow-xl transform transition-all":  "w-full h-screen pt-[55px] rounded-lg overflow-hidden shadow-xl transform transition-all"} role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
                     <div className={"h-auto w-[70%] mx-auto shadow-xl flex items-start "}>
                         {/* the container for the input fields */}
-                        <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
+                        <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[3px]  rounded-[3px]  ">
                             <div className="w-full min-h-[250px] flex flex-col justify-start items-center p-[20px] ">
 
                                 {/* below is to upload new permit */}
@@ -225,7 +225,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                             
                                         <p className="text-sm   flex items-center justify-center gap-2 "> <CiWarning size={23} />   Please note action is not reaversible </p>
 
-                                            <button className=" w-[150px] h-[45px] text-white rounded-[5px] bg-blue-700 hover:bg-red-600 flex items-center justify-center" onClick={delete_user} disabled={loading}>
+                                            <button className=" w-[150px] h-[45px] text-white rounded-[3px] bg-blue-700 hover:bg-red-600 flex items-center justify-center" onClick={delete_user} disabled={loading}>
                                                 {loading ? (
                                                     <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                         <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -248,11 +248,11 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                         <span className="w-full flex flex-row items-start justify-between border-b border-gray-300 h-[40px]">
                                             <p className="text-md font-medium    ">Add User </p>
 
-                                            <span className="flex items-center justify-end gap-[5px] ">
-                                                {auth.user_role && <h4 className="text-md flex items-center gap-[5px]">Selected Role: <p className='font-medium'>{auth.user_role}</p></h4>}
+                                            <span className="flex items-center justify-end gap-[3px] ">
+                                                {auth.user_role && <h4 className="text-md flex items-center gap-[3px]">Selected Role: <p className='font-medium'>{auth.user_role}</p></h4>}
                                             </span>
                                         </span>
-                                        <div className="w-full flex flex-row items-start justify-between bg-white  rounded-[5px] gap-[10px] ">
+                                        <div className="w-full flex flex-row items-start justify-between bg-white  rounded-[3px] gap-[10px] ">
                                             {/* left side for inputs */}
                                             <div className="w-1/2 flex flex-col items-start justify-start gap-4">
                                                 <p className="text-[17px] font-medium">User Information</p>
@@ -286,7 +286,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                                     <span className="w-full flex flex-col items-start justify-start gap-2">
                                                         <h4 className="text-sm font-light">Select Role</h4>
                                                         <span className="w-full">
-                                                            <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Installer', 'Engineering', 'Permit', 'Electrical', 'Accounting']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                            <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Operation', 'Customer', 'Installer', 'Engineering', 'Permit', 'Electrical', 'Accounting']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                                         </span>
                                                         <h4 className="text-sm font-medium mt-[8px]">Description</h4>
                                                         {/* now list the basic features of these user_roles */}
@@ -376,7 +376,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                         </div>
 
                                         <div className="w-full flex items-center justify-end">
-                                            <button className=" min-w-[150px] px-5 h-[40px] text-white bg-blue-700 rounded-[5px] hover:bg-blue-600 flex items-center justify-center" onClick={add_new_user} disabled={loading}>
+                                            <button className=" min-w-[150px] px-5 h-[40px] text-white bg-blue-700 rounded-[3px] hover:bg-blue-600 flex items-center justify-center" onClick={add_new_user} disabled={loading}>
                                                 {loading ? (
                                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -394,11 +394,11 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                         <span className="w-full flex flex-row items-start justify-between border-b border-gray-300 h-[40px]">
                                             <p className="text-md font-medium  ">{selectedUser.user_ind}: {selectedUser.first_name} {selectedUser.last_name} </p>
 
-                                            <span className="flex items-center justify-end gap-[5px] ">
+                                            <span className="flex items-center justify-end gap-[3px] ">
                                                 {auth.user_role && <h4 className="text-md flex items-center gap-[10px] ">Selected Role: <p className='font-medium'>{auth.user_role}</p></h4>}
                                             </span>
                                         </span>
-                                        <div className="w-full flex flex-row items-start justify-between bg-white  rounded-[5px] gap-[10px] ">
+                                        <div className="w-full flex flex-row items-start justify-between bg-white  rounded-[3px] gap-[10px] ">
                                             {/* left side for inputs */}
                                             <div className="w-1/2 flex flex-col items-start justify-start gap-4">
                                                 <p className="text-[17px] font-medium">User Information</p>
@@ -522,7 +522,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                         </div>
 
                                         <div className="w-full flex items-center justify-end">
-                                            <button className=" min-w-[150px] px-5 h-[40px] text-white bg-amber-700 rounded-[5px] hover:bg-amber-600 flex items-center justify-center" onClick={update_user} disabled={loading}>
+                                            <button className=" min-w-[150px] px-5 h-[40px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center" onClick={update_user} disabled={loading}>
                                                 {loading ? (
                                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
