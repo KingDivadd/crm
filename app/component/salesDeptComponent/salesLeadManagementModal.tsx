@@ -27,7 +27,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
     const [approve_loading, setApprove_loading] = useState(false)
     const [all_staff, setAll_staff] = useState([])
     const [filtered_staff, setFiltered_staff] = useState([])
-    const [auth, setAuth] = useState({customer_name: '', address: '', email: '', phone_number: '', assigned_to: '', assigned_name: '', appointment_date: '', disposition: '', gate_code: ''})
+    const [auth, setAuth] = useState({customer_first_name: '', customer_last_name: '', city: '', state: '', zip: '', email: '', phone_number: '', assigned_to: '', assigned_name: '', appointment_date: '', disposition: '', gate_code: ''})
     const [showCalender, setShowCalender] = useState(false)
     const [clicked_appointment_date, setClicked_appointment_date] = useState('')
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
@@ -103,9 +103,9 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
             get_all_staff()
         }else if (modalFor == 'edit'){
             get_all_staff()
-            const {customer_name, address, phone_number, email, assigned_to, appointment_date, disposition, gate_code, lead_ind} = selectedLead
+            const {customer_first_name, customer_last_name, city, state, zip, phone_number, email, assigned_to, appointment_date, disposition, gate_code, lead_ind} = selectedLead
             
-            setAuth({...auth,  customer_name, address, phone_number, email,  assigned_name: `${assigned_to.last_name} ${assigned_to.first_name}`, assigned_to: assigned_to.user_id , appointment_date, disposition, gate_code })
+            setAuth({...auth,  customer_first_name, customer_last_name, phone_number, email, city, state, zip, assigned_name: `${assigned_to.last_name} ${assigned_to.first_name}`, assigned_to: assigned_to.user_id , appointment_date, disposition, gate_code })
         }
     }, [])
 
@@ -131,13 +131,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
     async function create_lead(e:any) {
         e.preventDefault()
         console.log('auth', auth)
-        if (!auth.customer_name || !auth.phone_number || !auth.email || !auth.assigned_to || !auth.appointment_date) {
+        if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.email || !auth.city || !auth.state || !auth.zip || !auth.assigned_to || !auth.appointment_date) {
+            if (!auth.customer_first_name || !auth.customer_last_name){showAlert('Please enter client name', 'error')}
             showAlert('Please fill required fields', 'error')
         }else{
             try {
                 setLoading(true)
                 
-                const response = await post_auth_request(`lead/create-lead`, { customer_name: auth.customer_name, address: auth.address , phone_number: auth.phone_number, email: auth.email, assigned_to_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: 'NOT_SOLD', gate_code: auth.gate_code })
+                const response = await post_auth_request(`lead/create-lead`, { customer_first_name: auth.customer_first_name, customer_last_name: auth.customer_last_name, zip: Number(auth.zip), state: auth.state, city: auth.city , phone_number: auth.phone_number, email: auth.email, assigned_to_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: 'NOT_SOLD', gate_code: auth.gate_code })
                 if (response.status == 200 || response.status == 201){
                                 
                     showAlert(response.data.msg, "success")
@@ -161,14 +162,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
     async function update_lead(e:any) {
         e.preventDefault()
-        if (!auth.customer_name || !auth.phone_number || !auth.email || !auth.assigned_to || !auth.appointment_date || !auth.disposition) {
+        if (!auth.customer_first_name || !auth.phone_number || !auth.email || !auth.assigned_to || !auth.appointment_date || !auth.disposition) {
             showAlert('Please fill required fields', 'error')
         }else{
             try {
                 setLoading(true)
                 
                 const response = await patch_auth_request(`lead/edit-lead/${selectedLead.lead_id}`, 
-                    { customer_name: auth.customer_name, address: auth.address , phone_number: auth.phone_number, email: auth.email, assigned_to_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: auth.disposition.toUpperCase().replace(/ /g, '_'), gate_code: auth.gate_code })
+                    { customer_first_name: auth.customer_first_name, customer_last_name: auth.customer_last_name, zip: Number(auth.zip), state: auth.state, city: auth.city , phone_number: auth.phone_number, email: auth.email, assigned_to_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: auth.disposition.toUpperCase().replace(/ /g, '_'), gate_code: auth.gate_code })
                 if (response.status == 200 || response.status == 201){
                                 
                     showAlert(response.data.msg, "success")
@@ -229,7 +230,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                 </div>
                 <div className={ modalFor == 'delete' ? "w-full h-screen pt-[150px] rounded-lg overflow-hidden shadow-xl transform transition-all": "w-full h-screen pt-[25px] rounded-lg overflow-hidden shadow-xl transform transition-all" } role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
 
-                    <div className={"h-auto w-[70%] mx-auto shadow-xl flex items-start "}>
+                    <div className={"h-auto w-[80%] mx-auto shadow-xl flex items-start "}>
                         {/* the container for the input fields */}
                         <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[3px]  ">
                             <div className="w-full min-h-[250px] flex flex-col justify-start items-center p-[10px] ">
@@ -245,7 +246,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                     </span>
 
                                     <div className="w-full flex flex-col items-center justify-center gap-[34px]">
-                                        <p className="text-md font-normal text-center text-slate-900 ">Are you sure you want to delete lead <strong>{selectedLead.customer_name}</strong>
+                                        <p className="text-md font-normal text-center text-slate-900 ">Are you sure you want to delete lead <strong>{selectedLead.customer_first_name}</strong>
                                             <strong> {selectedLead.name}</strong> assigned to <strong>{selectedLead.assigned_to.last_name} {selectedLead.assigned_to.first_name} </strong> </p>
                                             
                                         <p className="text-xs text-slate-900 flex items-center justify-center gap-2 "> <CiWarning size={20} />   Please note action is not reaversible </p>
@@ -279,17 +280,44 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
                                     <form  action="" className="w-full flex items-start justify-between gap-[15px]">
                                         <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900 flex items-center gap-2">Customer Name <p className="font-light">(first name and last name)</p> </p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='customer_name' value={auth.customer_name} onChange={handle_change} className='normal-input text-sm' />
+                                            <span className="w-full flex items-center justify-between gap-[10px] ">
+
+                                                <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-sm text-slate-900 flex items-center gap-2">Customer First name  </p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='customer_first_name' value={auth.customer_first_name} onChange={handle_change} className='normal-input text-sm' />
+                                                    </span>
+                                                </span>
+
+                                                <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-sm text-slate-900 flex items-center gap-2">Customer Last name</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='customer_last_name' value={auth.customer_last_name} onChange={handle_change} className='normal-input text-sm' />
+                                                    </span>
                                                 </span>
                                             </span>
 
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Customer Address</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='address' value={auth.address} onChange={handle_change} className='normal-input text-sm' />
+                                            <span className="w-full flex items-center justify-between gap-[10px] ">
+
+                                                <span className="w-[37.5%] flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-sm text-slate-900">Customer City</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='city' value={auth.city} onChange={handle_change} className='normal-input text-sm' />
+                                                    </span>
+                                                </span>
+
+                                                <span className="w-[37.5%] flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-sm text-slate-900">Customer State</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='state' value={auth.state} onChange={handle_change} className='normal-input text-sm' />
+                                                    </span>
+                                                </span>
+
+                                                <span className="w-[25%] flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-sm text-slate-900">Zip Code</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="number" name='zip' value={auth.zip} onChange={handle_change} className='normal-input text-sm' />
+                                                    </span>
                                                 </span>
                                             </span>
                                             
@@ -403,17 +431,44 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
                                     <form  action="" className="w-full flex items-start justify-between gap-[15px]">
                                         <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Customer Name.</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='customer_name' value={auth.customer_name} onChange={handle_change} className='normal-input text-sm' />
+                                            <span className="w-full flex items-center justify-between gap-[10px] ">
+
+                                                <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-sm text-slate-900 flex items-center gap-2">Customer First name  </p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='customer_first_name' value={auth.customer_first_name} onChange={handle_change} className='normal-input text-sm' />
+                                                    </span>
+                                                </span>
+
+                                                <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-sm text-slate-900 flex items-center gap-2">Customer Last name</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='customer_last_name' value={auth.customer_last_name} onChange={handle_change} className='normal-input text-sm' />
+                                                    </span>
                                                 </span>
                                             </span>
 
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Customer Address</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='address' value={auth.address} onChange={handle_change} className='normal-input text-sm' />
+                                            <span className="w-full flex items-center justify-between gap-[10px] ">
+
+                                                <span className="w-[37.5%] flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-sm text-slate-900">Customer City</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='city' value={auth.city} onChange={handle_change} className='normal-input text-sm' />
+                                                    </span>
+                                                </span>
+
+                                                <span className="w-[37.5%] flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-sm text-slate-900">Customer State</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='state' value={auth.state} onChange={handle_change} className='normal-input text-sm' />
+                                                    </span>
+                                                </span>
+
+                                                <span className="w-[25%] flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-sm text-slate-900">Zip Code</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="number" name='zip' value={auth.zip} onChange={handle_change} className='normal-input text-sm' />
+                                                    </span>
                                                 </span>
                                             </span>
                                             

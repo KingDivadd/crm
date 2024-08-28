@@ -187,7 +187,7 @@ const SalesPipelinePage = () => {
                     const pipeline_id = data.pipeline_ind.toLowerCase() || '';
                     const assigned_to = data.lead.assigned_to.first_name.toLowerCase() || data.lead.assigned_to.first_name.toLowerCase() || '';
                     const contract_amount = data.contract_amount || '';
-                    const lead_name = data.lead?.customer_name?.toLowerCase() || '';
+                    const lead_name = data.lead?.customer_first_name?.toLowerCase() || data.lead?.customer_first_name?.toLowerCase() || '';
 
                     
                     return (
@@ -297,7 +297,7 @@ const SalesPipelinePage = () => {
                                         <span key={ind} className="recent-activity-table-list " onClick={()=> view_pipeline(data)} >
                                             <p className="text-sm w-[9.5%] px-2 ">{pipeline_ind} </p>
                                             {lead ? <p className="text-sm w-[7.5%] px-2 ">{lead.lead_ind} </p> :<p className="text-sm w-[7.5%] px-2">nil</p>  }
-                                            {lead ? <p className="text-sm w-[13%] px-2 "> {lead.customer_name} </p> :<p className="text-sm w-[15%] px-2">nil</p>  }
+                                            {lead ? <p className="text-sm w-[13%] px-2 "> {lead.customer_first_name} {lead.customer_last_name} </p> :<p className="text-sm w-[15%] px-2">nil</p>  }
                                             {lead ? <p className="text-sm w-[15%] px-2 "> {lead.appointment_date} </p>: <p className="text-sm w-[15%] px-2">nil</p>  }
                                             {lead ? <p className="text-sm w-[15%] px-2 "> {lead.assigned_to.first_name} {lead.assigned_to.last_name} </p>: <p className="text-sm w-[15%] px-2">nil</p>  }
                                             <p className="text-sm w-[15%] px-2 "> {status.replace(/_/g, ' ')} </p>

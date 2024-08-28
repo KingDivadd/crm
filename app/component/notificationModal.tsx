@@ -84,17 +84,6 @@ const NotificationModal = ({ showModal, setShowModal, selectedItem, setSelectedI
         setShowModal(false)
     }
 
-    function filter_user(e: React.ChangeEvent<HTMLInputElement>) {
-
-        const value = e.target.value
-            
-        const filtered_items = all_leads.filter((data: { customer_name: string,  lead_ind: string }) =>
-            data.customer_name.toLowerCase().includes(value.toLowerCase()) ||
-            data.lead_ind.toLowerCase().includes(value.toLowerCase())
-        );
-    
-        setFiltered_leads(value === '' ? all_leads : filtered_items);
-    }
     
     useEffect(() => {
         console.log('selected notification ', selectedItem)

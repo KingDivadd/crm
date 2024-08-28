@@ -85,10 +85,7 @@ const Login = () => {
 
             try {
                 
-                const response = await post_request('auth/login', auth)
-
-                console.log(response.response);
-                
+                const response = await post_request('auth/login', auth)                
 
                 if (response.status == 200 || response.status == 201){
 

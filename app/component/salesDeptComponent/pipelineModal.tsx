@@ -81,12 +81,12 @@ const Pipeline_Modal = ({ showModal, setShowModal, selectedPipeline, setSelected
 
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
                                                 <p className="text-sm font-normal w-[35%]">Customer Name</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.customer_name}</p>    
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.customer_first_name} {selectedPipeline.lead.customer_last_name}</p>    
                                             </span>
 
                                             <span className="w-full flex items-center justify-start gap-[10px] ">
                                                 <p className="text-sm font-normal w-[35%]">Address</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.address}</p>    
+                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.state}, {selectedPipeline.lead.city}</p>    
                                             </span>
                                             
                                              <span className="w-full flex items-center justify-start gap-[10px] ">

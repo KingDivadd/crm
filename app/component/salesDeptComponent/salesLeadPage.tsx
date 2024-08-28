@@ -193,7 +193,8 @@ const SalesLeadPage = () => {
         if (lead_box && lead_box.leads) {
             if (value.trim() !== '') {
                 const filtered_leads = lead_box.leads.filter((data: any) => {
-                    const customer_name = data.customer_name?.toLowerCase() || '';
+                    const customer_first_name = data.customer_first_name?.toLowerCase() || '';
+                    const customer_last_name = data.customer_last_name?.toLowerCase() || '';
                     const first_name = data.assigned_to?.first_name?.toLowerCase() || '';
                     const last_name = data.assigned_to?.last_name?.toLowerCase() || '';
                     const other_names = data.assigned_to?.other_names?.toLowerCase() || '';
@@ -203,13 +204,14 @@ const SalesLeadPage = () => {
                         first_name.includes(value) ||
                         last_name.includes(value) ||
                         other_names.includes(value) ||
-                        customer_name.includes(value) || 
+                        customer_last_name.includes(value) || 
+                        customer_first_name.includes(value) || 
                         phone_number.includes(value)
                     );
                 });
                 
     
-                setFiltered_lead_box({...filtered_lead_box, leads:filter_leads});
+                setFiltered_lead_box({...filtered_lead_box, leads:filtered_leads});
             } else {
                 setFiltered_lead_box(lead_box); // Reset to the original list
             }
@@ -295,8 +297,8 @@ const SalesLeadPage = () => {
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
                         <p className="text-sm font-normal w-[12.5%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[13.5%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[13%] px-2 ">Phone Number</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Address</p>
+                        <p className="text-sm font-normal w-[11.5%] px-2 ">Phone Number</p>
                         <p className="text-sm font-normal w-[12.5%] px-2 ">Assigned to</p>
                         <p className="text-sm font-normal w-[9%] px-2 ">Disposition</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Updated On</p>
@@ -323,15 +325,15 @@ const SalesLeadPage = () => {
                                 {lead_box?.leads.length ?
                                 <>
                                 { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                    const {customer_name, address, phone_number, lead_adder, updated_at, assigned_to, disposition, lead_ind, gate_code} = data
+                                    const {customer_last_name, customer_first_name, state, city, zip, phone_number, lead_adder, updated_at, assigned_to, disposition, lead_ind, gate_code} = data
                                     return (
                                         <div key={ind}>
                                         {(role == 'sales' || role == 'admin') ? 
                                         <span className="recent-activity-table-list " >
                                             <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[13.5%] px-2 "> {address} </p>
-                                            <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {customer_first_name} {customer_last_name} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {state}, {city} </p>
+                                            <p className="text-sm w-[11.5%] px-2 "> {phone_number} </p>
                                             <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
                                             <p className={disposition == "SOLD" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
                                             <p className="text-sm w-[15%] px-2 "> {timestamp_to_readable_value(Number(updated_at))} </p>
@@ -341,8 +343,8 @@ const SalesLeadPage = () => {
                                         </span>:
                                         <span className="recent-activity-table-list " >
                                             <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {address} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {customer_first_name} {customer_last_name}  </p>
+                                            <p className="text-sm w-[15%] px-2 "> {state}, {city} </p>
                                             <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
                                             <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
                                             <p className={disposition == "SOLD" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>

@@ -192,7 +192,8 @@ const ExpensesPage = () => {
         if (lead_box && lead_box.leads) {
             if (value.trim() !== '') {
                 const filtered_leads = lead_box.leads.filter((data: any) => {
-                    const customer_name = data.customer_name?.toLowerCase() || '';
+                    const customer_first_name = data.customer_first_name?.toLowerCase() || '';
+                    const customer_last_name = data.customer_last_name?.toLowerCase() || '';
                     const first_name = data.assigned_to?.first_name?.toLowerCase() || '';
                     const last_name = data.assigned_to?.last_name?.toLowerCase() || '';
                     const other_names = data.assigned_to?.other_names?.toLowerCase() || '';
@@ -202,7 +203,8 @@ const ExpensesPage = () => {
                         first_name.includes(value) ||
                         last_name.includes(value) ||
                         other_names.includes(value) ||
-                        customer_name.includes(value) || 
+                        customer_first_name.includes(value) || 
+                        customer_last_name.includes(value) || 
                         phone_number.includes(value)
                     );
                 });
@@ -326,7 +328,7 @@ const ExpensesPage = () => {
                                 {lead_box?.leads.length ?
                                 <>
                                 { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind, gate_code} = data
+                                    const {customer_name, city, zip, state, phone_number, email, user_role, assigned_to, disposition, lead_ind, gate_code} = data
                                     return (
                                         <div key={ind}>
                                         {(role == 'accounting' || role == 'admin') ? 
@@ -334,7 +336,7 @@ const ExpensesPage = () => {
                                             <p className="text-sm w-[10%] px-2 "> {lead_ind} </p>
                                             <p className="text-sm w-[12%] px-2 "> {customer_name} </p>
                                             <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
+                                            <p className="text-sm w-[25%] px-2 "> {state}, {city} </p>
                                             <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
                                             <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
                                         
@@ -347,7 +349,7 @@ const ExpensesPage = () => {
                                             <p className="text-sm w-[10%] px-2 "> {lead_ind} </p>
                                             <p className="text-sm w-[7.5%] px-2 "> {gate_code} </p>
                                             <p className="text-sm w-[15%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
+                                            <p className="text-sm w-[25%] px-2 "> {state}, {city} </p>
                                             <p className="text-sm w-[15%] px-2 "> {phone_number} </p>
                                             <p className="text-sm w-[17.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
                                             <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
