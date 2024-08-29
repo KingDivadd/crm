@@ -9,6 +9,7 @@ import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
 import {get_todays_date, convert_to_unix, readable_day} from "../helper"
+import { IoCheckmark } from 'react-icons/io5';
 
 
 interface Lead_Management_Props {
@@ -30,7 +31,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
     const [approve_loading, setApprove_loading] = useState(false)
     const [all_staff, setAll_staff] = useState< {staffs:any} |  null>(null)
     const [filtered_staff, setFiltered_staff] = useState< {staffs:any} |  null>(null)
-    const [auth, setAuth] = useState({customer_first_name: '', customer_last_name: '', city: '', state: '', zip: '', email: '', phone_number: '', assigned_to: '', assigned_name: '', appointment_date: '', disposition: '', gate_code: ''})
+    const [auth, setAuth] = useState({customer_first_name: '', customer_last_name: '', city: '', state: '', zip: '', address: '', email: '', phone_number: '', assigned_to: '', assigned_name: '', appointment_date: '', disposition: '', gate_code: ''})
     const [showCalender, setShowCalender] = useState(false)
     const [clicked_appointment_date, setClicked_appointment_date] = useState('')
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
@@ -108,9 +109,9 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
             get_all_staff()
         }else if (modalFor == 'edit'){
             get_all_staff()
-            const {customer_first_name, customer_last_name, city, state, zip, phone_number, email, assigned_to, appointment_date, disposition, gate_code, lead_ind} = selectedLead
+            const {customer_first_name, customer_last_name, address, city, state, zip, phone_number, email, assigned_to, appointment_date, disposition, gate_code, lead_ind} = selectedLead
             
-            setAuth({...auth,  customer_first_name, customer_last_name, phone_number, email, city, state, zip, assigned_name: `${assigned_to.last_name} ${assigned_to.first_name}`, assigned_to: assigned_to.user_id , appointment_date, disposition, gate_code })
+            setAuth({...auth,  customer_first_name, customer_last_name, phone_number, address, email, city, state, zip, assigned_name: `${assigned_to.last_name} ${assigned_to.first_name}`, assigned_to: assigned_to.user_id , appointment_date, disposition, gate_code })
         }
     }, [])
 
@@ -301,8 +302,13 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px]  ">
                                         <p className="text-md font-semibold  text-slate-800 ">New Lead </p>
 
-                                        <span className="h-[35px] min-w-[150px] z-[10] ">
-                                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                        <span className="flex items-center justify-end gap-[10px] ">
+
+                                            {auth.assigned_to && <span className="h-[35px] gap-[10px] flex items-center"><p className="text-sm">Selected Staff:</p> <p className="text-sm font-medium">{auth.assigned_name}</p> </span>}
+
+                                            <span className="h-[35px] min-w-[150px] z-[10] ">
+                                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                            </span>
                                         </span>
                                     </span>
 
@@ -348,6 +354,13 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                     </span>
                                                 </span>
                                             </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900 flex items-center gap-2">Address</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name="address" value={auth.address} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
                                             
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900 flex items-center gap-2">Phone <p className="font-light">(Please enter a valid phone number)</p> </p>
@@ -355,7 +368,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                     <input type="text" name="phone_number" value={auth.phone_number} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
-                                            
+                                                                                        
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900 flex items-center gap-2">Email <p className="font-light">(Please enter a valid email)</p> </p>
                                                 <span className="h-[40px] w-full ">
@@ -370,12 +383,12 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 </span>
                                             </span>
 
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                            {/* <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Assigned to</p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name='assigned_name' disabled value={auth.assigned_name} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
-                                            </span>
+                                            </span> */}
                                             
                                         </div>
 
@@ -413,7 +426,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                         {filtered_staff?.staffs.map((data:any, ind:number)=>{
                                                             const {first_name, last_name, user_id, user_role } = data
                                                             return(
-                                                                <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-300 px-[10px] gap-[10px] rounded-[3px] ">
+                                                                <span key={ind} className="w-full h-[35px] flex items-center justify-between hover:bg-slate-300 px-[10px] gap-[10px] rounded-[3px] ">
 
                                                                     <span className="h-[35px] flex items-center justify-start gap-[10px] w-full cursor-pointer " onClick={()=> setAuth({...auth, assigned_name: `${last_name} ${first_name}`, assigned_to:  user_id })} >
 
@@ -423,9 +436,11 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
                                                                         <p className=" text-start text-sm text-slate-900 " > {first_name} </p>
 
+
                                                                     </span>
                                                                         
                                                                     <p key={ind} className=" text-start text-sm text-slate-900 text-end " > {user_role} </p>
+                                                                    <span className="w-[40px] h-full flex justify-end items-center"> {auth.assigned_to == user_id && <IoCheckmark size={18} />} </span>
 
 
                                                                 </span>
@@ -468,8 +483,13 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
                                         <p className="text-md font-semibold  text-slate-800 ">Edit Lead: <strong>{selectedLead.lead_ind}</strong> </p>
 
-                                        <span className="h-[35px] min-w-[150px] z-[10]">
-                                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                        <span className="flex items-center justify-end gap-[10px] ">
+
+                                            {auth.assigned_to && <span className="h-[35px] gap-[10px] flex items-center"><p className="text-sm">Selected Staff:</p> <p className="text-sm font-medium">{auth.assigned_name}</p> </span>}
+
+                                            <span className="h-[35px] min-w-[150px] z-[10] ">
+                                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                            </span>
                                         </span>
                                     </span>
 
@@ -515,6 +535,13 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                     </span>
                                                 </span>
                                             </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-sm text-slate-900 flex items-center gap-2">Address</p>
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name="address" value={auth.address} onChange={handle_change} className='normal-input text-sm' />
+                                                </span>
+                                            </span>
                                             
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900 flex items-center gap-2">Phone <p className="font-light">(Please enter a valid phone number)</p> </p>
@@ -522,7 +549,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                     <input type="text" name="phone_number" value={auth.phone_number} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
-                                            
+                                                                                        
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900 flex items-center gap-2">Email <p className="font-light">(Please enter a valid email)</p> </p>
                                                 <span className="h-[40px] w-full ">
@@ -537,12 +564,12 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 </span>
                                             </span>
 
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                            {/* <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Assigned to</p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name='assigned_name' disabled value={auth.assigned_name} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
-                                            </span>
+                                            </span> */}
                                             
                                         </div>
 
@@ -553,7 +580,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 <div className="w-full flex flex-col items-end justify-end relative z-[5] ">
                                                     <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-sm" onClick={(e:any) => {e.preventDefault(); setShowCalender(!showCalender)}}>
 
-                                                        {auth.appointment_date ? readable_day(Number(auth.appointment_date)) : "Select Appointment Date"}
+                                                        { auth.appointment_date ? readable_day(Number(auth.appointment_date)) : "Select Appointment Date"}
                                                         <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
                                                             {showCalender ? <FaCaretUp /> : <FaCaretDown />}
                                                         </span>
@@ -567,11 +594,10 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Select Staff</p>
-
                                                 <span className="h-[40px] w-full ">
                                                     <input type="email" name='assigned_to' placeholder='Enter sales personnel name to filter' onChange={filter_user} className='normal-input text-sm' />
                                                 </span>
-
+                                                
                                                 {filtered_staff?.staffs !== null ?
                                                 
                                                 <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[3px] ">
@@ -581,7 +607,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                         {filtered_staff?.staffs.map((data:any, ind:number)=>{
                                                             const {first_name, last_name, user_id, user_role } = data
                                                             return(
-                                                                <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-300 px-[10px] gap-[10px] rounded-[3px] ">
+                                                                <span key={ind} className="w-full h-[35px] flex items-center justify-between hover:bg-slate-300 px-[10px] gap-[10px] rounded-[3px] ">
 
                                                                     <span className="h-[35px] flex items-center justify-start gap-[10px] w-full cursor-pointer " onClick={()=> setAuth({...auth, assigned_name: `${last_name} ${first_name}`, assigned_to:  user_id })} >
 
@@ -591,9 +617,11 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
                                                                         <p className=" text-start text-sm text-slate-900 " > {first_name} </p>
 
+
                                                                     </span>
                                                                         
                                                                     <p key={ind} className=" text-start text-sm text-slate-900 text-end " > {user_role} </p>
+                                                                    <span className="w-[40px] h-full flex justify-end items-center"> {auth.assigned_to == user_id && <IoCheckmark size={18} />} </span>
 
 
                                                                 </span>
@@ -614,22 +642,22 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 </div>
                                                 }
 
-                                                <button className=" w-full h-[40px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
-                                                {loading ? (
-                                                    <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                    </svg>
-                                                ) : 'Update Lead'}
+                                                <button className=" w-full h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_lead} >
+                                            {loading ? (
+                                                <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                </svg>
+                                            ) : 'Create Lead'}
 
-                                            </button>
+                                        </button>
                                             </span>
                                         </div>
                                         
                                     </form>
 
 
-                            </div>
+                                </div>
                                 }
 
                             </div>
