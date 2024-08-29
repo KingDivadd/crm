@@ -136,24 +136,26 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
     async function create_lead(e:any) {
         e.preventDefault()
-        if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.email || !auth.city || !auth.state || !auth.assigned_to || !auth.appointment_date) {
+        if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.city || !auth.state || !auth.assigned_to) {
             if (!auth.customer_first_name || !auth.customer_last_name){showAlert('Please enter client name', 'error')};
             
             if (!auth.phone_number) { showAlert("Please enter client's phone number", 'error') }
 
-            if (!auth.email) {showAlert("Please enter client email", 'error')}
-
             if (!auth.city) {showAlert("Please enter client city", 'error')}
 
-            if (!auth.state) {showAlert("Please enter client city", 'error')}
+            if (!auth.state) {showAlert("Please enter client state", 'error')}
 
+            if (!auth.assigned_to) {showAlert("Please select a sales personnel", 'error')}
             
             showAlert('Please fill required fields', 'error')
-        }else{
+        }else if (auth.disposition == 'SOLD' && !auth.email){
+            showAlert("Email is required when lead is sold", 'error')
+        }
+        else{
             try {
                 setLoading(true)
                 
-                const response = await post_auth_request(`lead/create-lead`, { customer_first_name: auth.customer_first_name, customer_last_name: auth.customer_last_name, zip: Number(auth.zip), state: auth.state, city: auth.city , phone_number: auth.phone_number, email: auth.email, assigned_to_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: 'NOT_SOLD', gate_code: auth.gate_code })
+                const response = await post_auth_request(`lead/create-lead`, { customer_first_name: auth.customer_first_name, customer_last_name: auth.customer_last_name, zip: Number(auth.zip), state: auth.state, city: auth.city , phone_number: auth.phone_number, email: auth.email, assigned_to_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: auth.disposition.toUpperCase() || 'NOT_SOLD', gate_code: auth.gate_code })
                 if (response.status == 200 || response.status == 201){
                                 
                     showAlert(response.data.msg, "success")

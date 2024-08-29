@@ -9,7 +9,7 @@ import ViewLead from './salesViewLead';
 import { userArray } from '@/constants';
 import { get_auth_request } from '@/app/api/admin_api';
 import Lead_Management_Modal from "./salesLeadManagementModal"
-import { timestamp_to_readable_value } from '../helper';
+import { readable_day } from '../helper';
 
 interface Leads_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -72,6 +72,8 @@ const SalesLeadPage = () => {
     }
 
     async function get_all_leads() {
+
+        console.log('started fetching');
         
         const response = await get_auth_request(`auth/all-leads/${page_number}`)
 
@@ -80,14 +82,20 @@ const SalesLeadPage = () => {
             setLead_box(response.data)      
             
             setFiltered_lead_box(response.data)
+
+            console.log('master ', response.data);
             
 
-        }else{        
+        }else{
+        console.log(response);
+        
         showAlert(response.response.data.err, "error")
         }
     }
 
     async function filter_leads(item:any) {
+
+        console.log('started fetching');
         
         const response = await get_auth_request(`/filter-leads/${item}/${page_number}`)
 
@@ -96,10 +104,14 @@ const SalesLeadPage = () => {
             setLead_box(response.data)      
             
             setFiltered_lead_box(response.data)
+
+            console.log(response.data);
             
             showAlert(response.data.msg, "success")
 
-        }else{        
+        }else{
+        console.log(response);
+        
         showAlert(response.response.data.err, "error")
         }
     }
@@ -119,6 +131,8 @@ const SalesLeadPage = () => {
         } else {
         new_page_number = item;
         }
+
+        console.log('new page number ', new_page_number);
 
         setPage_number(new_page_number);
     }
@@ -205,12 +219,16 @@ const SalesLeadPage = () => {
     }
 
     async function handle_new_filter(item: string) {
-        if (lead_box && item.toLocaleLowerCase() == 'all') {            
+        if (lead_box && item.toLocaleLowerCase() == 'all') {
+            console.log('Disposition : all ',lead_box);
+            
             // If no filter is provided, reset to the original list
             setFiltered_lead_box(lead_box);
         
         } 
-        else if (item && lead_box) {            
+        else if (item && lead_box) {
+            console.log(item);
+            
             const new_leads = lead_box.leads.filter((data: any) => {
                 const disposition = data.disposition?.toLowerCase() || '';
                 const active_status = data.active_status ? 'active' : 'inactive';
@@ -281,9 +299,9 @@ const SalesLeadPage = () => {
                         <p className="text-sm font-normal w-[12.5%] px-2 ">Customer Name</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Customer Address</p>
                         <p className="text-sm font-normal w-[11.5%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Assigned to</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Assigned to</p>
                         <p className="text-sm font-normal w-[9%] px-2 ">Disposition</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Updated On</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Updated On</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
                         <p className="text-sm font-normal w-[10%] px-2 "></p>
                     </span>:
@@ -292,9 +310,9 @@ const SalesLeadPage = () => {
                         <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Customer Address</p>
                         <p className="text-sm font-normal w-[13%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Assigned to</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Assigned to</p>
                         <p className="text-sm font-normal w-[9%] px-2 ">Disposition</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Updated On</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Updated On</p>
                         <p className="text-sm font-normal w-[13.5%] px-2 ">Added By</p>
                     </span>}
 
@@ -316,9 +334,9 @@ const SalesLeadPage = () => {
                                             <p className="text-sm w-[12.5%] px-2 "> {customer_first_name} {customer_last_name} </p>
                                             <p className="text-sm w-[15%] px-2 "> {state}, {city} </p>
                                             <p className="text-sm w-[11.5%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
                                             <p className={disposition == "SOLD" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {timestamp_to_readable_value(Number(updated_at))} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
                                             <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
                                         
                                             <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
@@ -328,9 +346,9 @@ const SalesLeadPage = () => {
                                             <p className="text-sm w-[15%] px-2 "> {customer_first_name} {customer_last_name}  </p>
                                             <p className="text-sm w-[15%] px-2 "> {state}, {city} </p>
                                             <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
                                             <p className={disposition == "SOLD" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {timestamp_to_readable_value(Number(updated_at))} </p>
+                                            <p className="text-sm w-[12.5%] px-2 ">{(Number(updated_at))} </p>
                                             <p className="text-sm w-[13.5%] px-2 "> {lead_adder.last_name} {lead_adder.first_name} </p>
                                             
                                         </span>}
