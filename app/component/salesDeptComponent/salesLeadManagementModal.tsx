@@ -311,14 +311,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             <span className="w-full flex items-center justify-between gap-[10px] ">
 
                                                 <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                    <p className="text-sm text-slate-900 flex items-center gap-2">Customer First name  </p>
+                                                    <p className="text-sm text-slate-900 flex items-center gap-2">First name  </p>
                                                     <span className="h-[40px] w-full ">
                                                         <input type="text" name='customer_first_name' value={auth.customer_first_name} onChange={handle_change} className='normal-input text-sm' />
                                                     </span>
                                                 </span>
 
                                                 <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                    <p className="text-sm text-slate-900 flex items-center gap-2">Customer Last name</p>
+                                                    <p className="text-sm text-slate-900 flex items-center gap-2">Last name</p>
                                                     <span className="h-[40px] w-full ">
                                                         <input type="text" name='customer_last_name' value={auth.customer_last_name} onChange={handle_change} className='normal-input text-sm' />
                                                     </span>
@@ -328,14 +328,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             <span className="w-full flex items-center justify-between gap-[10px] ">
 
                                                 <span className="w-[37.5%] flex flex-col items-self justify-self gap-[10px] ">
-                                                    <p className="text-sm text-slate-900">Customer City</p>
+                                                    <p className="text-sm text-slate-900">City</p>
                                                     <span className="h-[40px] w-full ">
                                                         <input type="text" name='city' value={auth.city} onChange={handle_change} className='normal-input text-sm' />
                                                     </span>
                                                 </span>
 
                                                 <span className="w-[37.5%] flex flex-col items-self justify-self gap-[10px] ">
-                                                    <p className="text-sm text-slate-900">Customer State</p>
+                                                    <p className="text-sm text-slate-900">State</p>
                                                     <span className="h-[40px] w-full ">
                                                         <input type="text" name='state' value={auth.state} onChange={handle_change} className='normal-input text-sm' />
                                                     </span>
@@ -350,14 +350,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             </span>
                                             
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Phone <p className="font-light">(Please enter a valid phone number)</p> </p>
+                                                <p className="text-sm text-slate-900 flex items-center gap-2">Phone <p className="font-light">(Please enter a valid phone number)</p> </p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name="phone_number" value={auth.phone_number} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
                                             
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Email <p className="font-light">(Please enter a valid email)</p> </p>
+                                                <p className="text-sm text-slate-900 flex items-center gap-2">Email <p className="font-light">(Please enter a valid email)</p> </p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name="email" value={auth.email} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
@@ -478,14 +478,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             <span className="w-full flex items-center justify-between gap-[10px] ">
 
                                                 <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                    <p className="text-sm text-slate-900 flex items-center gap-2">Customer First name  </p>
+                                                    <p className="text-sm text-slate-900 flex items-center gap-2">First name  </p>
                                                     <span className="h-[40px] w-full ">
                                                         <input type="text" name='customer_first_name' value={auth.customer_first_name} onChange={handle_change} className='normal-input text-sm' />
                                                     </span>
                                                 </span>
 
                                                 <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                    <p className="text-sm text-slate-900 flex items-center gap-2">Customer Last name</p>
+                                                    <p className="text-sm text-slate-900 flex items-center gap-2">Last name</p>
                                                     <span className="h-[40px] w-full ">
                                                         <input type="text" name='customer_last_name' value={auth.customer_last_name} onChange={handle_change} className='normal-input text-sm' />
                                                     </span>
@@ -495,14 +495,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             <span className="w-full flex items-center justify-between gap-[10px] ">
 
                                                 <span className="w-[37.5%] flex flex-col items-self justify-self gap-[10px] ">
-                                                    <p className="text-sm text-slate-900">Customer City</p>
+                                                    <p className="text-sm text-slate-900">City</p>
                                                     <span className="h-[40px] w-full ">
                                                         <input type="text" name='city' value={auth.city} onChange={handle_change} className='normal-input text-sm' />
                                                     </span>
                                                 </span>
 
                                                 <span className="w-[37.5%] flex flex-col items-self justify-self gap-[10px] ">
-                                                    <p className="text-sm text-slate-900">Customer State</p>
+                                                    <p className="text-sm text-slate-900">State</p>
                                                     <span className="h-[40px] w-full ">
                                                         <input type="text" name='state' value={auth.state} onChange={handle_change} className='normal-input text-sm' />
                                                     </span>
@@ -517,14 +517,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             </span>
                                             
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Phone <p className="font-light">(Please enter a valid phone number)</p> </p>
+                                                <p className="text-sm text-slate-900 flex items-center gap-2">Phone <p className="font-light">(Please enter a valid phone number)</p> </p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name="phone_number" value={auth.phone_number} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
                                             
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Email <p className="font-light">(Please enter a valid email)</p> </p>
+                                                <p className="text-sm text-slate-900 flex items-center gap-2">Email <p className="font-light">(Please enter a valid email)</p> </p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="text" name="email" value={auth.email} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
