@@ -136,7 +136,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
     async function create_lead(e:any) {
         e.preventDefault()
-        if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.email || !auth.city || !auth.state || !auth.zip || !auth.assigned_to || !auth.appointment_date) {
+        if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.email || !auth.city || !auth.state || !auth.assigned_to || !auth.appointment_date) {
             if (!auth.customer_first_name || !auth.customer_last_name){showAlert('Please enter client name', 'error')};
             
             if (!auth.phone_number) { showAlert("Please enter client's phone number", 'error') }
