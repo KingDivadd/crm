@@ -1,19 +1,6 @@
 'use client'
 import React, {useState, useEffect} from 'react'
-import { IoList } from "react-icons/io5";
-import { GrProjects } from "react-icons/gr";
-import { RiInstallFill } from "react-icons/ri";
-import { FaChartSimple } from "react-icons/fa6";
-import { HiMiniQueueList } from "react-icons/hi2";
 import { useRouter } from 'next/navigation';
-import { GiChart } from "react-icons/gi";
-import { BsBriefcase } from "react-icons/bs";
-import { GiLightningSpanner } from "react-icons/gi";
-import { FaMoneyBillAlt } from "react-icons/fa";
-import { GrServices } from "react-icons/gr";
-import { LuPencilRuler } from 'react-icons/lu';
-import { MdOutlineNoteAlt } from "react-icons/md";
-import { RiBarChartFill } from "react-icons/ri";
 import { get_auth_request } from '@/app/api/admin_api';
 import Alert from '../alert';
 import { timestamp_to_readable_value } from '../helper';
@@ -130,13 +117,13 @@ const SalesDashboardPage = () => {
                             {dash_box?.recent_lead.length ? <>
                             {dash_box?.recent_lead.reverse().map((data:any, ind:any)=>{
 
-                                const {customer_name, created_at, address, phone_number, email, gate_code, assigned_to, disposition, lead_ind} = data   
+                                const {customer_first_name, customer_last_name, created_at, state, city, zip, phone_number, email, gate_code, assigned_to, disposition, lead_ind} = data   
                                 
                                 return (
                                     <span key={ind} className="recent-activity-table-list ">
                                         <p className="text-sm w-[7.5%] px-2 ">{lead_ind}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{customer_name}</p>
-                                        <p className="text-sm w-[17.5%] px-2 ">{address}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{customer_first_name} {customer_last_name}</p>
+                                        <p className="text-sm w-[17.5%] px-2 ">{state}, {city}</p>
                                         <p className="text-sm w-[15%] px-2 ">{phone_number}</p>
                                         <p className="text-sm w-[10%] px-2 ">{gate_code}</p>
                                         <p className="text-sm w-[15%] px-2 flex items-center justify-between ">{assigned_to.last_name} {assigned_to.first_name}</p>

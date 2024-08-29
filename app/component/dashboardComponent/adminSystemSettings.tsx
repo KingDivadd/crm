@@ -9,9 +9,11 @@ import Image from "next/image";
 import ImageUploader from '../imageUploader'
 import { get_auth_request, patch_auth_request } from '@/app/api/admin_api'
 import { IoIosClose } from 'react-icons/io'
+import { useRouter } from 'next/navigation'
 
 
 const AdminSystemSettings = () => {
+    const router = useRouter()
     const [editCompanyInfo, setEditCompanyInfo] = useState(true)
     const [editUserProfile, setEditUserProfile] = useState(true)
     const [userProfile, setUserProfile] = useState({first_name: '', last_name: '', user_name: '', phone_number: '', avatar: '', password: ''})
@@ -65,7 +67,6 @@ const AdminSystemSettings = () => {
         console.log('admin settings ', response.data);
         if (response.status == 200 || response.status == 201){
 
-            console.log(response.data);
 
             const {company_address, company_email, company_logo, company_name, company_phone, number_of_admin, organization_size} = response.data.company
 
@@ -78,6 +79,12 @@ const AdminSystemSettings = () => {
             showAlert(response.data.msg, "success")
         }else{
             if (response){
+                if (response.response.status == 402) {
+                    setTimeout(() => {
+                        router.push('auth/login')
+                    }, 3000)
+                }
+
                 showAlert(response.response.data.err, "error")
             }
         }

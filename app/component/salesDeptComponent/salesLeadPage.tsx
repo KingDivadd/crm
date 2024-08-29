@@ -72,8 +72,6 @@ const SalesLeadPage = () => {
     }
 
     async function get_all_leads() {
-
-        console.log('started fetching');
         
         const response = await get_auth_request(`auth/all-leads/${page_number}`)
 
@@ -82,20 +80,14 @@ const SalesLeadPage = () => {
             setLead_box(response.data)      
             
             setFiltered_lead_box(response.data)
-
-            console.log('master ', response.data);
             
 
-        }else{
-        console.log(response);
-        
+        }else{        
         showAlert(response.response.data.err, "error")
         }
     }
 
     async function filter_leads(item:any) {
-
-        console.log('started fetching');
         
         const response = await get_auth_request(`/filter-leads/${item}/${page_number}`)
 
@@ -104,14 +96,10 @@ const SalesLeadPage = () => {
             setLead_box(response.data)      
             
             setFiltered_lead_box(response.data)
-
-            console.log(response.data);
             
             showAlert(response.data.msg, "success")
 
-        }else{
-        console.log(response);
-        
+        }else{        
         showAlert(response.response.data.err, "error")
         }
     }
@@ -131,8 +119,6 @@ const SalesLeadPage = () => {
         } else {
         new_page_number = item;
         }
-
-        console.log('new page number ', new_page_number);
 
         setPage_number(new_page_number);
     }
@@ -219,16 +205,12 @@ const SalesLeadPage = () => {
     }
 
     async function handle_new_filter(item: string) {
-        if (lead_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',lead_box);
-            
+        if (lead_box && item.toLocaleLowerCase() == 'all') {            
             // If no filter is provided, reset to the original list
             setFiltered_lead_box(lead_box);
         
         } 
-        else if (item && lead_box) {
-            console.log(item);
-            
+        else if (item && lead_box) {            
             const new_leads = lead_box.leads.filter((data: any) => {
                 const disposition = data.disposition?.toLowerCase() || '';
                 const active_status = data.active_status ? 'active' : 'inactive';

@@ -25,8 +25,9 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
     const [approve_loading, setApprove_loading] = useState(false)
-    const [all_leads, setAll_leads] = useState([])
-    const [filtered_leads, setFiltered_leads] = useState([])
+    const [all_leads, setAll_leads] = useState<{leads: any[]}|null>(null)
+    const [filtered_leads, setFiltered_leads] = useState<{ leads: any[] } | null>(null);
+
     const [show_all_lead, setShow_all_lead] = useState(false)
     const [selected_lead, setSelected_lead] = useState('')
     const [role, setRole] = useState('')
@@ -97,16 +98,19 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
     }
 
     function filter_user(e: React.ChangeEvent<HTMLInputElement>) {
-
-        const value = e.target.value
-            
-        const filtered_items = all_leads.filter((data: { customer_name: string,  lead_ind: string }) =>
+        const value = e.target.value;
+    
+        const filtered_items = all_leads?.leads?.filter((data: { customer_name: string, lead_ind: string }) =>
             data.customer_name.toLowerCase().includes(value.toLowerCase()) ||
             data.lead_ind.toLowerCase().includes(value.toLowerCase())
-        );
+        ) ?? []; // Ensure filtered_items is an array, even if undefined
     
-        setFiltered_leads(value === '' ? all_leads : filtered_items);
+        setFiltered_leads({
+            ...filtered_leads,
+            leads: value === '' ? (all_leads?.leads ?? []) : filtered_items // Ensure leads is always an array
+        });
     }
+    
     
     useEffect(() => {
         const user_role = localStorage.getItem('user-role')
@@ -146,9 +150,9 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
             const response = await get_auth_request(`user/leads`)
             if (response.status == 200 || response.status == 201){
 
-                setAll_leads(response.data.leads)
+                setAll_leads(response.data)
 
-                setFiltered_leads(response.data.leads)
+                setFiltered_leads(response.data)
 
                 
                             
@@ -157,22 +161,27 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                 showAlert(response.response.data.err, "error")
                 
             }
-        } catch (err) {
-            showAlert('Error occured ', 'error')
+        } catch (err) {            
+            showAlert('Unable to fetch all leads, refresh page ', 'error')
         }
     }
 
     async function create_job(e:any) {
+        console.log('auth ', auth);
+        
         e.preventDefault()
         if (!auth.contract_amount || !auth.contract_date || !auth.lead_id || !auth.structure_type ) {
             showAlert('Please fill required fields', 'error')
         }else{
             try {
                 setLoading(true)
+
+                console.log('fire');
+                
                 
                 const response = await post_auth_request(`job/create-job`, 
                     {
-                        lead_id: auth.lead_id, contract_amount: Number(auth.contract_amount.replace(/,/g,'')), contract_date: auth.contract_date, cover_size:auth.cover_size,
+                        lead_id: auth.lead_id, contract_amount: Number(auth.contract_amount), contract_date: auth.contract_date, cover_size:auth.cover_size,
                         cover_color: auth.cover_color, attached: auth.attached, structure_type: auth.structure_type.toUpperCase().replace(/ /g, '_'), description: auth.description,
                         end_cap_style: auth.end_cap_style, trim_color: auth.trim_color
                     }
@@ -192,7 +201,9 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                     setLoading(false)
                 }
             } catch (err) {
-                showAlert('Error occured ', 'error')
+                console.log('error : ',err);
+                
+                showAlert('Unable to create job, refresh page', 'error')
                 setLoading(false)
             }
         }
@@ -224,7 +235,9 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                     setLoading(false)
                 }
             } catch (err) {
-                showAlert('Error occured ', 'error')
+                console.log(err);
+                
+                showAlert('Unable to update job, refresh page. ', 'error')
                 setLoading(false)
             }
         }
@@ -329,17 +342,19 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                                 <div className="w-full h-[315px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-white shadow-md rounded-[5px] ">
                                                         <div className="w-full flex flex-col items-start justify-start">
-                                                            {filtered_leads.map((data, ind)=>{
-                                                                const {customer_name, customer_contract_date, hoa_permit_status, lead_id, lead_ind } = data
+                                                            {filtered_leads?.leads.map((data, ind)=>{
+                                                                const {customer_first_name, customer_last_name, customer_contract_date, hoa_permit_status, lead_id, lead_ind } = data
                                                                 return(
-                                                                    <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-100 px-[10px] gap-[10px] rounded-[3px] " onClick={()=> {setSelected_lead(customer_name); setAuth({...auth, lead_id: lead_id}); setShow_all_lead(!show_all_lead) }}>
+                                                                    <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-100 px-[10px] gap-[10px] rounded-[3px] " onClick={()=> {setSelected_lead(`${customer_first_name} ${customer_last_name}`); setAuth({...auth, lead_id: lead_id}); setShow_all_lead(!show_all_lead) }}>
 
                                                                         <span className="h-[35px] flex items-center justify-start gap-[10px] w-full cursor-pointer "  >
 
                                                                             <p className="text-start text-sm text-slate-900 " >{lead_ind} </p>
 
 
-                                                                            <p className=" text-start text-sm text-slate-900 font-semibold " > {customer_name} </p>
+                                                                            <p className=" text-start text-sm text-slate-900 font-semibold " > {customer_first_name} </p>
+
+                                                                            <p className=" text-start text-sm text-slate-900 font-semibold " > {customer_last_name} </p>
 
                                                                         </span>
                                                                             
@@ -364,7 +379,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Contract Amount</p>
                                                 <span className="h-[40px] w-full ">
-                                                    <input type="text" name='contract_amount' value={Number(auth.contract_amount.replace(/,/g,'')).toLocaleString()} onChange={handle_change} className='normal-input text-sm' />
+                                                    <input type="text" name='contract_amount' value={Number(auth.contract_amount).toLocaleString()} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
 
@@ -478,7 +493,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                                 <div className="w-full h-[315px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-white shadow-md rounded-[5px] ">
                                                         <div className="w-full flex flex-col items-start justify-start">
-                                                            {filtered_leads.map((data, ind)=>{
+                                                            {filtered_leads?.leads.map((data, ind)=>{
                                                                 const {customer_name, customer_contract_date, hoa_permit_status, lead_id, lead_ind } = data
                                                                 return(
                                                                     <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-100 px-[10px] gap-[10px] rounded-[3px] " onClick={()=> {setSelected_lead(customer_name); setAuth({...auth, lead_id: lead_id}); setShow_all_lead(!show_all_lead) }}>

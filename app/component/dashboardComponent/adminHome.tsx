@@ -154,13 +154,16 @@ const AdminHome = () => {
                             {dash_box?.recent_lead.length ? <>
                             {dash_box?.recent_lead.map((data:any, ind:any)=>{
 
-                                const {customer_name, created_at, address, phone_number, email, gate_code, assigned_to, disposition, lead_ind} = data   
+                                const {customer_first_name, customer_last_name, created_at, state, city, phone_number, email, gate_code, assigned_to, disposition, lead_ind} = data   
+
+                                console.log(' mandaend ', ind, customer_first_name, customer_last_name);
+                                
                                 
                                 return (
                                     <span key={ind} className="recent-activity-table-list ">
                                         <p className="text-sm w-[7.5%] px-2 ">{lead_ind}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{customer_name}</p>
-                                        <p className="text-sm w-[17.5%] px-2 ">{address}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{customer_first_name} {customer_last_name}</p>
+                                        <p className="text-sm w-[17.5%] px-2 ">{state}, {city}</p>
                                         <p className="text-sm w-[15%] px-2 ">{phone_number}</p>
                                         <p className="text-sm w-[10%] px-2 ">{gate_code}</p>
                                         <p className="text-sm w-[15%] px-2 flex items-center justify-between ">{assigned_to.last_name} {assigned_to.first_name}</p>
@@ -229,7 +232,7 @@ const AdminHome = () => {
                                         <p className="text-sm w-[10%] px-2 ">{project_ind}</p>
                                         <p className="text-sm w-[7.5%] px-2 ">{job.job_ind}</p>
                                         <p className="text-sm w-[7.5%] px-2 ">{job.lead.lead_ind}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{job.lead.customer_name}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{job.lead.customer_first_name} {job.lead.customer_last_name}</p>
                                         <p className="text-sm w-[15%] px-2 ">{contract_amount.toLocaleString()}</p>
                                         <p className={status.toLowerCase() == "pending" ? "text-sm w-[15%] px-2 text-red-600 " : status.toLowerCase() == 'in_progress' ? "text-sm w-[15%] px-2 text-amber-600 " : "text-sm w-[15%] px-2 text-green-500 " }>{status.toLowerCase().replace(/_/g, ' ')}</p>
                                         <p className="text-sm w-[15%] px-2 flex items-center justify-between gap-[10px] ">{job.lead.assigned_to.first_name} {job.lead.assigned_to.last_name} </p>

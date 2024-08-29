@@ -21,12 +21,15 @@ interface Lead_Management_Props {
 
 }
 
+interface StaffProps {
+    staffs?: any;
+}
 const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelectedLead, modalFor}: Lead_Management_Props) => {
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
     const [approve_loading, setApprove_loading] = useState(false)
-    const [all_staff, setAll_staff] = useState([])
-    const [filtered_staff, setFiltered_staff] = useState([])
+    const [all_staff, setAll_staff] = useState< {staffs:any} |  null>(null)
+    const [filtered_staff, setFiltered_staff] = useState< {staffs:any} |  null>(null)
     const [auth, setAuth] = useState({customer_first_name: '', customer_last_name: '', city: '', state: '', zip: '', email: '', phone_number: '', assigned_to: '', assigned_name: '', appointment_date: '', disposition: '', gate_code: ''})
     const [showCalender, setShowCalender] = useState(false)
     const [clicked_appointment_date, setClicked_appointment_date] = useState('')
@@ -90,12 +93,14 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
         const value = e.target.value
             
-        const filtered_items = all_staff.filter((data: { first_name: string, last_name: string }) =>
+        const filtered_items = all_staff?.staffs.filter((data: { first_name: string, last_name: string }) =>
             data.first_name.toLowerCase().includes(value.toLowerCase()) ||
             data.last_name.toLowerCase().includes(value.toLowerCase())
         );
-    
-        setFiltered_staff(value === '' ? all_staff : filtered_items);
+
+        setFiltered_staff({...filtered_staff, staffs: filtered_items})
+        
+        // setFiltered_staff(value === '' ? all_staff?.staffs : filtered_items);
     }
     
     useEffect(() => {
@@ -114,9 +119,10 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
             const response = await get_auth_request(`user/all-sales-staff`)
             if (response.status == 200 || response.status == 201){
 
-                setAll_staff(response.data.staffs)
 
-                setFiltered_staff(response.data.staffs)
+                setAll_staff(response.data)
+
+                setFiltered_staff(response.data)
                             
                 }else{       
                                 
@@ -130,7 +136,6 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
     async function create_lead(e:any) {
         e.preventDefault()
-        console.log('auth', auth)
         if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.email || !auth.city || !auth.state || !auth.zip || !auth.assigned_to || !auth.appointment_date) {
             if (!auth.customer_first_name || !auth.customer_last_name){showAlert('Please enter client name', 'error')};
             
@@ -366,7 +371,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Assigned to</p>
                                                 <span className="h-[40px] w-full ">
-                                                    <input type="text" name='assigned_name' value={auth.assigned_name} onChange={handle_change} className='normal-input text-sm' />
+                                                    <input type="text" name='assigned_name' disabled value={auth.assigned_name} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
                                             
@@ -394,11 +399,16 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Select Staff</p>
                                                 <span className="h-[40px] w-full ">
-                                                    <input type="email" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-sm' />
+                                                    <input type="email" name='assigned_to' placeholder='Enter sales personnel name to filter' onChange={filter_user} className='normal-input text-sm' />
                                                 </span>
+                                                
+                                                {filtered_staff?.staffs !== null ?
+                                                
                                                 <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[3px] ">
                                                     <div className="w-full flex flex-col items-start justify-start">
-                                                        {filtered_staff.map((data, ind)=>{
+                                                        {filtered_staff?.staffs.length ? 
+                                                        <>
+                                                        {filtered_staff?.staffs.map((data:any, ind:number)=>{
                                                             const {first_name, last_name, user_id, user_role } = data
                                                             return(
                                                                 <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-300 px-[10px] gap-[10px] rounded-[3px] ">
@@ -419,9 +429,20 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                                 </span>
                                                             )
                                                         })}
+                                                        </>
+                                                        :
+                                                        <div className="w-full h-[300px] flex flex-col justify-center items-center">
+                                                            <p className="text-sm ">No Sales Personnel yet</p>
+                                                        </div>
+                                                        }
 
                                                     </div>
                                                 </div>
+                                                :
+                                                <div className="w-full h-[300px] flex items-center justify-center text-sm">
+                                                    Loading Sales Personnels...
+                                                </div>
+                                                }
 
                                                 <button className=" w-full h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_lead} >
                                             {loading ? (
@@ -517,7 +538,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Assigned to</p>
                                                 <span className="h-[40px] w-full ">
-                                                    <input type="text" name='assigned_name' value={auth.assigned_name} onChange={handle_change} className='normal-input text-sm' />
+                                                    <input type="text" name='assigned_name' disabled value={auth.assigned_name} onChange={handle_change} className='normal-input text-sm' />
                                                 </span>
                                             </span>
                                             
@@ -544,12 +565,18 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                 <p className="text-sm text-slate-900">Select Staff</p>
+
                                                 <span className="h-[40px] w-full ">
-                                                    <input type="email" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-sm' />
+                                                    <input type="email" name='assigned_to' placeholder='Enter sales personnel name to filter' onChange={filter_user} className='normal-input text-sm' />
                                                 </span>
+
+                                                {filtered_staff?.staffs !== null ?
+                                                
                                                 <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[3px] ">
                                                     <div className="w-full flex flex-col items-start justify-start">
-                                                        {filtered_staff.map((data, ind)=>{
+                                                        {filtered_staff?.staffs.length ? 
+                                                        <>
+                                                        {filtered_staff?.staffs.map((data:any, ind:number)=>{
                                                             const {first_name, last_name, user_id, user_role } = data
                                                             return(
                                                                 <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-300 px-[10px] gap-[10px] rounded-[3px] ">
@@ -570,9 +597,20 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                                 </span>
                                                             )
                                                         })}
+                                                        </>
+                                                        :
+                                                        <div className="w-full h-[300px] flex flex-col justify-center items-center">
+                                                            <p className="text-sm ">No Sales Personnel yet</p>
+                                                        </div>
+                                                        }
 
                                                     </div>
                                                 </div>
+                                                :
+                                                <div className="w-full h-[300px] flex items-center justify-center text-sm">
+                                                    Loading Sales Personnels...
+                                                </div>
+                                                }
 
                                                 <button className=" w-full h-[40px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
                                                 {loading ? (

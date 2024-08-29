@@ -9,6 +9,7 @@ import { userArray } from '@/constants';
 import { get_auth_request } from '@/app/api/admin_api';
 import Pipeline_Modal from './pipelineModal';
 import { useRouter } from 'next/navigation';
+import { timestamp_to_readable_value } from '../helper';
 
 interface Pipeline_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -272,7 +273,7 @@ const SalesPipelinePage = () => {
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[3px]">
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[9.5%] px-2 ">Pipeline Id</p>
+                        <p className="text-sm font-normal w-[9.5%] px-2 ">Pipeline Id..</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
                         <p className="text-sm font-normal w-[13%] px-2 ">Customer Name</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Appointment Date</p>
@@ -298,10 +299,10 @@ const SalesPipelinePage = () => {
                                             <p className="text-sm w-[9.5%] px-2 ">{pipeline_ind} </p>
                                             {lead ? <p className="text-sm w-[7.5%] px-2 ">{lead.lead_ind} </p> :<p className="text-sm w-[7.5%] px-2">nil</p>  }
                                             {lead ? <p className="text-sm w-[13%] px-2 "> {lead.customer_first_name} {lead.customer_last_name} </p> :<p className="text-sm w-[15%] px-2">nil</p>  }
-                                            {lead ? <p className="text-sm w-[15%] px-2 "> {lead.appointment_date} </p>: <p className="text-sm w-[15%] px-2">nil</p>  }
+                                            {lead ? <p className="text-sm w-[15%] px-2 "> {timestamp_to_readable_value(Number(lead.appointment_date))} </p>: <p className="text-sm w-[15%] px-2">nil</p>  }
                                             {lead ? <p className="text-sm w-[15%] px-2 "> {lead.assigned_to.first_name} {lead.assigned_to.last_name} </p>: <p className="text-sm w-[15%] px-2">nil</p>  }
                                             <p className="text-sm w-[15%] px-2 "> {status.replace(/_/g, ' ')} </p>
-                                            {contract_amount != null ? <p className="text-sm w-[15%] px-2 "> {Number(contract_amount).toLocaleString()} </p> : <p className="text-sm w-[15%] px-2 "> 0 </p>  }
+                                            {contract_amount != null ? <p className="text-sm w-[15%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p> : <p className="text-sm w-[15%] px-2 "> 0 </p>  }
                                             <p className={disposition == 'SOLD' ? "text-sm w-[10%] px-2 text-blue-700": "text-sm w-[10%] px-2 text-red-600"} >{disposition.replace(/_/g, ' ')}</p>
                                         
                                         </span>
