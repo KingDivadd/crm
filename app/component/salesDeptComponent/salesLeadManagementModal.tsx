@@ -642,7 +642,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 </div>
                                                 }
 
-                                                <button className=" w-full h-[40px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
+                                                <button className=" w-full h-[40px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
                                                     {loading ? (
                                                         <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
