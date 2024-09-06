@@ -92,7 +92,7 @@ export const delete_auth_request = async (endpoint: string) => {
 };
 
 
-export const count_users_request = async (endpoint: string) => {
+export const count_users = async (endpoint: string) => {
     try {
         const response = await axios.get(`${base_url}/${endpoint}`, {
             headers: {

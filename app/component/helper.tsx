@@ -79,6 +79,7 @@ export function readable_day(timestamp:number) {
     
     return formattedDate;
   }
+  
 
   export function get_current_time() {
     const now = new Date();

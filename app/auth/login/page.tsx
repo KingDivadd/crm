@@ -7,7 +7,7 @@ import { IoEye } from "react-icons/io5";
 import { IoMdEyeOff } from "react-icons/io";
 import Alert from "../../component/alert"
 import { authentication } from '@/constants';
-import {  count_users_request, post_request } from '@/app/api/admin_api';
+import {  count_users, post_request } from '@/app/api/admin_api';
 
 
 const Login = () => {
@@ -20,16 +20,17 @@ const Login = () => {
     const [users, setUsers] = useState(0)
 
     useEffect(()=>{
-        count_users()
+        count_users_func()
     }, [])
     
-    async function count_users() {
+    async function count_users_func() {
         
-        const response = await count_users_request('user/test-db-connection')
+        const response = await count_users("app/count-user")
 
         if (response.status == 200 || response.status == 201){
             
-            setUsers(response.data.number_of_users)
+            setUsers(response.data.number_of_user)
+
         }else if (response.code == "ERR_NETWORK"){
 
             showAlert(response.message, "error")
@@ -85,7 +86,7 @@ const Login = () => {
 
             try {
                 
-                const response = await post_request('auth/login', auth)                
+                const response = await post_request('app/login', auth)                
 
                 if (response.status == 200 || response.status == 201){
 
@@ -96,7 +97,12 @@ const Login = () => {
                     showAlert(response.data.msg, "success")
                     setAuth({email: '', password: ''})
                     setLoading(false)
-                    router.push('/home')
+                    if (!response.data.user.company_id){
+                        localStorage.setItem('signup_stage', 'add-company')
+                        router.push('/auth/signup')
+                    }else{
+                        router.push('/home')
+                    }
                 }else if (response.response && response.response.status == 402){
                     sessionStorage.setItem('email', auth.email)
                     router.push('/auth/verifyotp')
@@ -155,7 +161,7 @@ const Login = () => {
                                     </span>
                                 </span>
                             </span>
-                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={handleSubmit} disabled={loading}>
+                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center text-sm" onClick={handleSubmit} disabled={loading}>
                                 {loading ? (
                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -166,12 +172,12 @@ const Login = () => {
                         </form>
 
                         <span className="w-[80%] flex flex-row items-center justify-between h-[40px] mx-auto">
-                            { users == 0 && <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/signup') }}>Don't have an account, Signup</p>}
-                            {
-                                users > 0 && <p></p>
-                            }
+                            { users == 0 ? <p className="text-sm text-blue-600 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/signup') }}>Don't have an account, Signup</p>
+                            :
+                            <p></p>
+                        }
 
-                            <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/forgetpassword') }}>Forget Password</p>
+                            <p className="text-sm text-blue-600 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/forgetpassword') }}>Forget Password</p>
                         </span>
                     </div>
                 </div>

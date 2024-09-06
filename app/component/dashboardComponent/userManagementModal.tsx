@@ -138,7 +138,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
             const { active_status, email, ...new_auth } = auth;
     
             try {
-                const response = await patch_auth_request(`user/admin-update-user-data/${selectedUser.user_id}`, new_auth);
+                const response = await patch_auth_request(`user/update-user-data/${selectedUser.user_id}`, new_auth);
     
                 if (response.status === 200 || response.status === 201) {
                     showAlert(response.data.msg, "success");

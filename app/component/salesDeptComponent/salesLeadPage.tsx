@@ -348,7 +348,7 @@ const SalesLeadPage = () => {
                                             <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
                                             <p className="text-sm w-[15%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
                                             <p className={disposition == "SOLD" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-sm w-[12.5%] px-2 ">{(Number(updated_at))} </p>
+                                            <p className="text-sm w-[12.5%] px-2 ">{readable_day(Number(updated_at))} </p>
                                             <p className="text-sm w-[13.5%] px-2 "> {lead_adder.last_name} {lead_adder.first_name} </p>
                                             
                                         </span>}

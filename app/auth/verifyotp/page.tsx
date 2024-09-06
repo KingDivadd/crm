@@ -48,7 +48,7 @@ const ForgetPassword = () => {
         }else {
             setLoading(true);
 
-            const response = await post_request('auth/verify-otp', auth)
+            const response = await post_request('app/verify-user-otp', auth)
 
             if (response.status == 201 || response.status == 200){
                 showAlert(response.data.msg, "success")
@@ -70,14 +70,13 @@ const ForgetPassword = () => {
                 setLoading(false)
                 return;
             }
-          
         }
 
         }   
 
         async function resend_otp() {
         
-            const response = await post_request('auth/generate-otp', {email: String(sessionStorage.getItem('email'))})
+            const response = await post_request('app/generate-user-otp', {email: String(sessionStorage.getItem('email'))})
     
             if (response.status == 201){
                 showAlert(response.data.msg, "success")
@@ -121,21 +120,21 @@ const ForgetPassword = () => {
                                 </span>
                             </span>
                             
-                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={verify_otp} disabled={loading}>
+                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center text-sm" onClick={verify_otp} disabled={loading}>
                                 {loading ? (
                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
                                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                                 </svg>
-                                ) : 'Verify Otp'}
+                                ) : 'verify code'}
                             </button>
                         </form>
 
                         <span className="w-[80%] flex flex-row items-center justify-between h-[40px] mx-auto"> 
 
-                            <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/login') }}>Back to Login</p>
+                            <p className="text-sm text-blue-600 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/login') }}>Back to Login</p>
                         
-                            <p className="text-sm text-blue-400 hover:text-amber-600 cursor-pointer mt-[10px]" onClick={resend_otp}>Resend Otp</p>
+                            <p className="text-sm text-blue-600 hover:text-amber-600 cursor-pointer mt-[10px]" onClick={resend_otp}>Resend Otp</p>
                         </span>
                     </div>
                 </div>

@@ -54,7 +54,7 @@ const RecoverPassword = () => {
             }else {
                 setLoading(true); 
                 try {
-                    const response = await patch_auth_request('auth/forget-password', {email: sessionStorage.getItem('email'), new_password: auth.newPassword})
+                    const response = await patch_auth_request('app/reset-password', {email: sessionStorage.getItem('email'), new_password: auth.newPassword})
     
                     if (response.status == 201 || response.status == 200){
                         showAlert(response.data.msg, "success")
@@ -129,7 +129,7 @@ const RecoverPassword = () => {
                                 </span>
                             </span>
                             
-                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={handleSubmit} disabled={loading}>
+                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center text-sm" onClick={handleSubmit} disabled={loading}>
                                 {loading ? (
                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

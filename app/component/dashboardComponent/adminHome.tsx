@@ -14,9 +14,6 @@ import { Admin_dashboard_props } from '@/types';
 import ShortCutModal from './shortCutModal';
 import { timestamp_to_readable_value } from '../helper';
 
-interface Sales_Dashboard_Props {
-    total_lead?: number, converted_lead?:number, total_job?:number, total_task?:number, recent_lead?:any, recent_tasks?:any, recent_notifications?:any
-}
 
 interface Admin_Dashboard_Props {
     total_lead?:number, total_sale?:number, total_installation?:number, total_project?: number, recent_task?:any, recent_lead?:any, recent_project?:any, recent_payment?:any

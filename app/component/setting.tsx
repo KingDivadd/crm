@@ -102,7 +102,6 @@ const SystemSettings = () => {
     const handleFileUpload = (fileUrl:string) => {
         console.log('Received file URL from settings:', fileUrl);
         setUserProfile({...userProfile, avatar: fileUrl})
-     
     };
 
     return (

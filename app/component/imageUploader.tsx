@@ -648,3 +648,81 @@ const ImageUploader = ({ id, title, url, image, onFileUpload }: ImageUploaderPro
     );
 };
 export default ImageUploader
+
+export const CompanyImageUploader = ({ id, title, url, image, onFileUpload }: ImageUploaderProps) => {
+    const [imagePreview, setImagePreview] = useState('');
+    const [imageFile, setImageFile] = useState(null);
+
+    useEffect(() => {
+        if (url){
+            setImagePreview(url);
+        }
+    }, [url]);
+
+    const handleImageChange = async (e:any) => {
+        const file = e.target.files[0];
+        if (file && file.type.startsWith('image/')) {
+            setImageFile(file);
+            const previewUrl = URL.createObjectURL(file);
+            setImagePreview(previewUrl);
+
+            // Upload the image to Cloudinary
+            const formData = new FormData();
+            formData.append('file', file);
+            formData.append('upload_preset', 'crm_images'); // Replace with your Cloudinary upload preset
+
+            try {
+                console.log('Prev image ',image);
+                
+                const response = await axios.post('https://api.cloudinary.com/v1_1/iroegbu-cloud-1/image/upload', formData);
+                const imageUrl = response.data.secure_url;
+                image = response.data.secure_url
+                console.log('Image URL:', imageUrl, 'image ', image);
+                
+                // Invoke the callback to send the URL back to the parent component
+                if (onFileUpload) {
+                    onFileUpload(imageUrl);
+                }
+            } catch (error) {
+                console.error('Error uploading image:', error);
+            }
+        } else {
+            setImagePreview('');
+            setImageFile(null);
+            alert('Please select a valid image file.');
+        }
+    };
+
+    return (
+        <div className="w-full flex flex-col justify-start items-start gap-2">
+            <span className="w-full flex flex-col items-start justify-start gap-[10px]">
+                <h4 className="text-sm font-light">{title}</h4>
+                <input 
+                    type="file" 
+                    name={`logo-${id}`} 
+                    accept="image/*" 
+                    onChange={handleImageChange}
+                    id={`fileInput-${id}`}
+                    style={{ display: 'none' }} // Hide the default file input
+                />
+                <button 
+                    type="button" 
+                    className="h-[45px] rounded-[5px] text-white bg-blue-600 w-full text-sm" 
+                    onClick={() => document.getElementById(`fileInput-${id}`)?.click()}
+                >
+                    Select Image
+                </button>
+            </span>
+            {imagePreview && (
+                <span className="relative w-full h-[430px] rounded-[5px] overflow-hidden">
+                    <Image 
+                        src={imagePreview} 
+                        alt="Logo" 
+                        layout="fill" 
+                        objectFit="cover" 
+                    />
+                </span>
+            )}
+        </div>
+    );
+};

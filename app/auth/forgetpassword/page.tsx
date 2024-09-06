@@ -38,7 +38,7 @@ const ForgetPassword = () => {
         }else {
             setLoading(true);
 
-            const response = await post_request('auth/generate-otp', {email: auth.email})
+            const response = await post_request('app/generate-user-otp', {email: auth.email})
 
             console.log(response);
             
@@ -115,7 +115,7 @@ const ForgetPassword = () => {
                                 <input value={auth.email} onChange={handleChange} type="email" className={inputError.emailError? 'signup-input-error':'signup-input'} />
                             </span>
                             
-                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center" onClick={genOtp} disabled={loading}>
+                            <button className="mt-[10px] w-full h-[50px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-500 flex items-center justify-center text-sm" onClick={genOtp} disabled={loading}>
                                 {loading ? (
                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -126,9 +126,9 @@ const ForgetPassword = () => {
                         </form>
 
                         <span className="w-[80%] flex flex-row items-center justify-between h-[40px] mx-auto"> 
-                            <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/signup') }}>Don't have an account, Signup</p>
+                            <p className="text-sm text-blue-600 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/signup') }}>Don't have an account, Signup</p>
 
-                            <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/login') }}>Back to Login</p>
+                            <p className="text-sm text-blue-600 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/login') }}>Back to Login</p>
                         
                         </span>
                     </div>

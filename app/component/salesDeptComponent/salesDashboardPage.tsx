@@ -93,7 +93,6 @@ const SalesDashboardPage = () => {
                             <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
-                    
                                     
                 </div>
 
