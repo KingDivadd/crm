@@ -72,46 +72,16 @@ const SalesLeadPage = () => {
     }
 
     async function get_all_leads() {
-
-        console.log('started fetching');
         
-        const response = await get_auth_request(`auth/all-leads/${page_number}`)
+        const response = await get_auth_request(`app/all-paginated-leads/${page_number}`)
 
         if (response.status == 200 || response.status == 201){
             
             setLead_box(response.data)      
             
-            setFiltered_lead_box(response.data)
+            setFiltered_lead_box(response.data)            
 
-            console.log('master ', response.data);
-            
-
-        }else{
-        console.log(response);
-        
-        showAlert(response.response.data.err, "error")
-        }
-    }
-
-    async function filter_leads(item:any) {
-
-        console.log('started fetching');
-        
-        const response = await get_auth_request(`/filter-leads/${item}/${page_number}`)
-
-        if (response.status == 200 || response.status == 201){
-            
-            setLead_box(response.data)      
-            
-            setFiltered_lead_box(response.data)
-
-            console.log(response.data);
-            
-            showAlert(response.data.msg, "success")
-
-        }else{
-        console.log(response);
-        
+        }else{        
         showAlert(response.response.data.err, "error")
         }
     }
@@ -132,8 +102,6 @@ const SalesLeadPage = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
-
         setPage_number(new_page_number);
     }
 
@@ -147,7 +115,7 @@ const SalesLeadPage = () => {
             pages.push(
             <p
                 key={i}
-                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                className={`text-[15.5px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
                 page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
@@ -172,7 +140,7 @@ const SalesLeadPage = () => {
             pages.push(
             <p
                 key={i}
-                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                className={`text-[15.5px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
                 page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
@@ -193,17 +161,21 @@ const SalesLeadPage = () => {
         if (lead_box && lead_box.leads) {
             if (value.trim() !== '') {
                 const filtered_leads = lead_box.leads.filter((data: any) => {
+                    const lead_ind = data.lead_ind?.toLowerCase() || '';
+                    const lead_designer = data.lead_designer?.first_name.toLowerCase() || data.lead_designer?.last_name.toLowerCase() || '';
                     const customer_first_name = data.customer_first_name?.toLowerCase() || '';
                     const customer_last_name = data.customer_last_name?.toLowerCase() || '';
-                    const first_name = data.assigned_to?.first_name?.toLowerCase() || '';
-                    const last_name = data.assigned_to?.last_name?.toLowerCase() || '';
-                    const other_names = data.assigned_to?.other_names?.toLowerCase() || '';
-                    const phone_number = data.phone_number || ''
+                    const first_name = data.lead_designer?.first_name?.toLowerCase() || '';
+                    const last_name = data.lead_designer?.last_name?.toLowerCase() || '';
+                    const other_names = data.lead_designer?.other_names?.toLowerCase() || '';
+                    const phone_number = data.customer_phone || ''
                     
                     return (
+                        lead_ind.includes(value) ||
                         first_name.includes(value) ||
                         last_name.includes(value) ||
                         other_names.includes(value) ||
+                        lead_designer.includes(value) ||
                         customer_last_name.includes(value) || 
                         customer_first_name.includes(value) || 
                         phone_number.includes(value)
@@ -219,16 +191,12 @@ const SalesLeadPage = () => {
     }
 
     async function handle_new_filter(item: string) {
-        if (lead_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',lead_box);
-            
+        if (lead_box && item.toLocaleLowerCase() == 'all') {            
             // If no filter is provided, reset to the original list
             setFiltered_lead_box(lead_box);
         
         } 
-        else if (item && lead_box) {
-            console.log(item);
-            
+        else if (item && lead_box) {            
             const new_leads = lead_box.leads.filter((data: any) => {
                 const disposition = data.disposition?.toLowerCase() || '';
                 const active_status = data.active_status ? 'active' : 'inactive';
@@ -273,17 +241,17 @@ const SalesLeadPage = () => {
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         <p className="text-lg font-semibold text-black">All Leads</p>
-                        <p className="text-sm text-black">{(lead_box && lead_box?.total_number_of_leads) || 0 }</p>
+                        <p className="text-[15.5px] text-black">{(lead_box && lead_box?.total_number_of_leads) || 0 }</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
                             <span className="w-[300px] h-[40px] ">
-                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 text-sm ' />
+                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 text-[15.5px] ' />
                             </span>
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            {(role == 'sales' || role == 'admin') && <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>}
+                            {(role == 'sales' || role == 'admin' || role == "super_admin") && <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-[15.5px]" onClick={add_lead}>Add Lead</button>}
                         </span>
 
                         
@@ -293,27 +261,27 @@ const SalesLeadPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    {(role == 'sales' || role == 'admin') ? 
+                    {(role == 'sales' || role == 'admin' || role == 'super_admin' ) ? 
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[11.5%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Assigned to</p>
-                        <p className="text-sm font-normal w-[9%] px-2 ">Disposition</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Updated On</p>
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
-                        <p className="text-sm font-normal w-[10%] px-2 "></p>
+                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
+                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Lead Name</p>
+                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Address</p>
+                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Phone </p>
+                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Designer</p>
+                        <p className="text-[15.5px] font-normal w-[9%] px-2 ">Disposition</p>
+                        <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Updated On</p>
+                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Action</p>
+                        <p className="text-[15.5px] font-normal w-[9%] px-2 "></p>
                     </span>:
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[13%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Assigned to</p>
-                        <p className="text-sm font-normal w-[9%] px-2 ">Disposition</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Updated On</p>
-                        <p className="text-sm font-normal w-[13.5%] px-2 ">Added By</p>
+                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
+                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Lead Name</p>
+                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Address</p>
+                        <p className="text-[15.5px] font-normal w-[13%] px-2 ">Phone </p>
+                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Designer</p>
+                        <p className="text-[15.5px] font-normal w-[9%] px-2 ">Disposition</p>
+                        <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Updated On</p>
+                        <p className="text-[15.5px] font-normal w-[13.5%] px-2 ">Added By</p>
                     </span>}
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -325,31 +293,31 @@ const SalesLeadPage = () => {
                                 {lead_box?.leads.length ?
                                 <>
                                 { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                    const {customer_last_name, customer_first_name, state, city, zip, phone_number, lead_adder, updated_at, assigned_to, disposition, lead_ind, gate_code} = data
+                                    const {customer_last_name, customer_first_name, customer_state, customer_city, customer_zip, customer_phone, lead_adder, updated_at, lead_designer, disposition, lead_ind, gate_code} = data
                                     return (
                                         <div key={ind}>
-                                        {(role == 'sales' || role == 'admin') ? 
+                                        {(role == 'sales' || role == 'admin' || role == 'super_admin' ) ? 
                                         <span className="recent-activity-table-list " >
-                                            <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {customer_first_name} {customer_last_name} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {state}, {city} </p>
-                                            <p className="text-sm w-[11.5%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className={disposition == "SOLD" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
-                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
+                                            <p className="text-[15.5px] w-[7.5%] px-2 "> {lead_ind} </p>
+                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_first_name} {customer_last_name} </p>
+                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_state}, {customer_city} </p>
+                                            <p className="text-[15.5px] w-[10%] px-2 "> {customer_phone} </p>
+                                            <p className="text-[15.5px] w-[15%] px-2 "> {lead_designer.last_name} {lead_designer.first_name} </p>
+                                            <p className={disposition == "sold" ? "text-[15.5px] w-[9%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-[15.5px] w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
+                                            <p className="text-[15.5px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
                                         
-                                            <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                            <p className="text-[15.5px] w-[9%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
                                         </span>:
                                         <span className="recent-activity-table-list " >
-                                            <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {customer_first_name} {customer_last_name}  </p>
-                                            <p className="text-sm w-[15%] px-2 "> {state}, {city} </p>
-                                            <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className={disposition == "SOLD" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-sm w-[12.5%] px-2 ">{readable_day(Number(updated_at))} </p>
-                                            <p className="text-sm w-[13.5%] px-2 "> {lead_adder.last_name} {lead_adder.first_name} </p>
+                                            <p className="text-[15.5px] w-[7.5%] px-2 "> {lead_ind} </p>
+                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_first_name} {customer_last_name}  </p>
+                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_state}, {customer_city} </p>
+                                            <p className="text-[15.5px] w-[13%] px-2 "> {customer_phone} </p>
+                                            <p className="text-[15.5px] w-[15%] px-2 "> {lead_designer.last_name} {lead_designer.first_name} </p>
+                                            <p className={disposition == "SOLD" ? "text-[15.5px] w-[9%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-[15.5px] w-[12.5%] px-2 ">{readable_day(Number(updated_at))} </p>
+                                            <p className="text-[15.5px] w-[13.5%] px-2 "> {lead_adder.last_name} {lead_adder.first_name} </p>
                                             
                                         </span>}
                                         </div>
@@ -366,7 +334,7 @@ const SalesLeadPage = () => {
                         :
 
                             <div className="w-full h-full flex items-center justify-center">
-                                <p className="text-sm font-normal">Loading Data...</p>
+                                <p className="text-[15.5px] font-normal">Loading Data...</p>
                             </div>
                         
                         }
@@ -375,14 +343,14 @@ const SalesLeadPage = () => {
                     
                     <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
-                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
+                            <p className="text-[15.5px] cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">
                             {render_page_numbers()}
                             </span>
-                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
+                            <p className="text-[15.5px] cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-sm">Showing 1-15 of {(lead_box && lead_box?.total_number_of_leads) || 0}</p>
+                            <p className="text-[15.5px]">Showing 1-15 of {(lead_box && lead_box?.total_number_of_leads) || 0}</p>
                         </span>
                     </span>
                 </div>

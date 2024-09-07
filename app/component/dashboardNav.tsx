@@ -28,7 +28,7 @@ const DashboardNav = () => {
     }
 
     useEffect(() => {
-        get_dashboard_data()
+        
         const gotten_time = get_current_time()
         if (gotten_time) {
             setDate_time(gotten_time)
@@ -43,20 +43,21 @@ const DashboardNav = () => {
     }, [])
 
     useEffect(() => {
-        
+        get_dashboard_data()
     }, [])
     
 
     async function get_dashboard_data() {
 
         try {        
-                
-            const response = await get_auth_request(`auth/logged-in-user`)
             
-    
+            const response = await get_auth_request(`app/logged-in-user`)
+            
+            
             if (response.status == 200 || response.status == 201){
                 
                 setUser_info(response.data)      
+                
 
             }else{
                 if (response){
@@ -100,8 +101,9 @@ const DashboardNav = () => {
             <span className="w-[70%] h-full flex  flex-row items-center justify-start gap-5 px-[10px]">
                 {user_info?.user && 
                 
-                <p className="text-md font-medium text-white whitespace-nowrap">
-                    {user_info.user.user_role == 'admin' && "Admin Portal"}
+                <p className="text-sm font-medium text-white whitespace-nowrap">
+                    {user_info.user.user_role == 'admin'  && "Admin Portal"}
+                    {user_info.user.user_role == 'super_admin'  && "Admin Portal"}
                     {user_info.user.user_role == 'sales' && "Sales Portal"}
                     {user_info.user.user_role == 'operation' && "Operation Portal"}
                     {user_info.user.user_role == 'installer' && "Installer Portal"}
@@ -115,13 +117,13 @@ const DashboardNav = () => {
                 }
 
                 <span className="w-full h-full flex items-center  nav-search-input relative ">
-                    <input placeholder='Search for leads or jobs' type="text" name="" id="" className='pr-[50px] nav-input pr-[50px] text-sm' /> 
+                    <input placeholder='Search for leads or jobs' type="text" name="" id="" className='pr-[50px] nav-input pr-[50px] text-[15.5px] ' /> 
                     <span className="w-[40px] h-[35px] flex items-center justify-center text-black absolute right-0 top-[7.5px] border-l border-gray-200 corsor-pointer">
                         <CiSearch size={22} className='font-bold' />
                     </span>
                 </span>
 
-                <p className="text-sm text-white whitespace-nowrap">{date_time}</p>
+                <p className="text-[16px] text-white whitespace-nowrap">{date_time}</p>
 
             </span>
 
@@ -150,7 +152,7 @@ const DashboardNav = () => {
                     </div>
                 </span>
 
-                        {user_info?.user && <p className='text-sm text-white text-end'>{user_info?.user.first_name} {user_info?.user.last_name} </p>}
+                        {user_info?.user && <p className='text-[16px] text-white text-end'>{user_info?.user.first_name} {user_info?.user.last_name} </p>}
                 
                 {user_info && user_info.user && <div className="relative w-[35px] h-[35px] rounded-[100%] overflow-hidden p-[7.5px] bg-blue-200">
                     <Image

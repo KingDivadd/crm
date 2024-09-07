@@ -141,8 +141,8 @@ const RecoverPassword = () => {
 
                         <span className="w-[80%] flex flex-row items-center justify-between h-[40px] mx-auto"> 
 
-                            <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/login') }}></p>
-                            <p className="text-sm text-blue-400 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/login') }}>Back to Login</p>
+                            <p className="text-sm text-blue-600 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/login') }}></p>
+                            <p className="text-sm text-blue-600 hover:text-amber-600 hover:underline cursor-pointer mt-[10px]" onClick={() => { router.push('/auth/login') }}>Back to Login</p>
                         
                         </span>
                     </div>

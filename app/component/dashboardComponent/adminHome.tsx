@@ -16,7 +16,8 @@ import { timestamp_to_readable_value } from '../helper';
 
 
 interface Admin_Dashboard_Props {
-    total_lead?:number, total_sale?:number, total_installation?:number, total_project?: number, recent_task?:any, recent_lead?:any, recent_project?:any, recent_payment?:any
+    recent_invoice?:any, recent_job?:any, recent_lead?:any, recent_payment?:any,
+    total_installations?:number, total_job?:number, total_lead?:number, total_revenue_generated?:number,
 }
 
 const AdminHome = () => {
@@ -29,10 +30,10 @@ const AdminHome = () => {
 
     useEffect(() => {
 
-      get_admin_dashboard()
+        get_admin_dashboard()
 
         // simulateDashboardData()
-   
+
     }, [])
     
 
@@ -45,27 +46,33 @@ const AdminHome = () => {
 
     async function get_admin_dashboard() {              
 
-        const response = await get_auth_request('auth/admin-dashboard')
-
-        if (response.status == 200 || response.status == 201){
-        
-            setDash_box(response.data)
-        
-            showAlert(response.data.msg, "success")
-
-        }else{
-            if (response){
-                if (response.response.status == 402) {
-                    setTimeout(() => {
-                        router.push('auth/login')
-                    }, 3000)
+        try {
+            
+            const response = await get_auth_request('app/admin-dashboard')
+    
+            if (response.status == 200 || response.status == 201){
+            
+                setDash_box(response.data)
+    
+                console.log('response ', response.data)
+            
+                showAlert(response.data.msg, "success")
+    
+            }else{
+                if (response && response.response){
+                    if (response.response.status == 402) {
+                        setTimeout(() => {
+                            router.push('auth/login')
+                        }, 3000)
+                    }
+    
+                    showAlert(response.response.data.err, "error")
                 }
-
-                showAlert(response.response.data.err, "error")
             }
+        } catch (err:any) {
+            showAlert("Something went wrong, kindly refresh page", "error")
         }
-          
-      }
+    }
 
     function simulateDashboardData() {
         const simulatedData: Admin_dashboard_props = {
@@ -107,8 +114,8 @@ const AdminHome = () => {
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
-                            <p className="text-md ">Total Sales</p>
-                            <p className="text-sm ">{dash_box?.total_sale || 0}</p>
+                            <p className="text-md ">Total Job</p>
+                            <p className="text-sm ">{dash_box?.total_job || 0}</p>
                             <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>
@@ -116,15 +123,15 @@ const AdminHome = () => {
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] bg-white w-1/4  shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
                             <p className="text-md ">Total Installations</p>
-                            <p className="text-sm ">{dash_box?.total_installation || 0}</p>
+                            <p className="text-sm ">{dash_box?.total_installations || 0}</p>
                             <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>  
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
-                            <p className="text-md ">Total Projects</p>
-                            <p className="text-sm ">{dash_box?.total_project || 0}</p>
+                            <p className="text-md ">Revenue Generated</p>
+                            <p className="text-sm ">{dash_box?.total_revenue_generated || 0}</p>
                             <p className="text-sm font-light ">Last 30 days</p>
                         </div>
                     </span>                  
@@ -151,7 +158,7 @@ const AdminHome = () => {
                             {dash_box?.recent_lead.length ? <>
                             {dash_box?.recent_lead.map((data:any, ind:any)=>{
 
-                                const {customer_first_name, customer_last_name, created_at, state, city, phone_number, email, gate_code, assigned_to, disposition, lead_ind} = data   
+                                const {customer_first_name, customer_last_name, created_at, state, city, phone_number, email, gate_code, lead_designer, disposition, lead_ind} = data   
 
                                 console.log(' mandaend ', ind, customer_first_name, customer_last_name);
                                 
@@ -163,9 +170,9 @@ const AdminHome = () => {
                                         <p className="text-sm w-[17.5%] px-2 ">{state}, {city}</p>
                                         <p className="text-sm w-[15%] px-2 ">{phone_number}</p>
                                         <p className="text-sm w-[10%] px-2 ">{gate_code}</p>
-                                        <p className="text-sm w-[15%] px-2 flex items-center justify-between ">{assigned_to.last_name} {assigned_to.first_name}</p>
+                                        <p className="text-sm w-[15%] px-2 flex items-center justify-between ">{lead_designer.last_name} {lead_designer.first_name}</p>
                                         <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
-                                        <p className={disposition == 'SOLD' ? "text-sm w-[10%] px-2 text-blue-600 ":"text-sm w-[10%] px-2 text-red-600 "}>{disposition.replace(/_/g, ' ').toLowerCase()}</p>
+                                        <p className={disposition == 'sold' ? "text-sm w-[10%] px-2 text-blue-600 ":"text-sm w-[10%] px-2 text-red-600 "}>{disposition.replace(/_/g, ' ').toLowerCase()}</p>
                                     </span>
                                 )
                             })}
@@ -200,9 +207,9 @@ const AdminHome = () => {
                     </div>
                 </div>
 
-                {/* Recent Project */}
+                {/* Recent Job */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-md ">Recent Project</p>
+                    <p className="text-md ">Recent Job</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
@@ -219,8 +226,8 @@ const AdminHome = () => {
                         
                         {dash_box != null ? 
                         <div className="w-full h-[300px] flex flex-col justify-start items-start">
-                            {dash_box?.recent_project.length ? <>
-                            {dash_box?.recent_project.map((data:any, ind:any)=>{
+                            {dash_box?.recent_job.length ? <>
+                            {dash_box?.recent_job.map((data:any, ind:any)=>{
 
                                 const {project_ind, job, contract_amount, status, updated_at} = data   
                                 
@@ -262,53 +269,53 @@ const AdminHome = () => {
                                 <p className="text-sm cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm  ">Showing 1-15 of {dash_box?.recent_project.length}</p>
+                                <p className="text-sm  ">Showing 1-15 of {dash_box?.recent_job.length}</p>
                             </span>
                         </span>
                     </div>
                 </div>
-                
-                {/* Recent Task */}
+
+                {/* Recent Invoice */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
-                    <p className="text-md ">Recent Task</p>
+                    <p className="text-md ">Recent Invoice</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                            <p className="text-sm font-normal w-[7.5%] px-2 ">Task Id</p>
-                            <p className="text-sm font-normal w-[22.5%] px-2 ">Description</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Assigned To</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">invoice Id</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Job Id</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Amount</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
+                            <p className="text-sm font-normal w-[25%] px-2 ">Customer email</p>
+
                             <p className="text-sm font-normal w-[10%] px-2 ">Status</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Created On</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Due Date</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Last Updated</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Date</p>
                         </span>
                         
                         {dash_box != null ? 
                         <div className="w-full h-[300px] flex flex-col justify-start items-start">
-                            {dash_box?.recent_task.length ? <>
-                            {dash_box?.recent_task.map((data:any, ind:any)=>{
+                            {dash_box?.recent_invoice.length ? <>
+                            {dash_box?.recent_invoice.map((data:any, ind:any)=>{
 
-                                const {task_ind, description, job, status, created_at, task_assigned_to, updated_at, due_date} = data   
+                                const {payment_ind, job, created_at, amount, status } = data   
                                 
                                 return (
                                     <span key={ind} className="recent-activity-table-list ">
-                                        <p className="text-sm w-[7.5%] px-2 ">{task_ind}</p>
-                                        <p className="text-sm w-[22.5%] px-2 ">{description}</p>
-                                        <p className="text-sm w-[15%] px-2 flex items-center justify-between gap-[10px] ">
-                                            {task_assigned_to.last_name} {task_assigned_to.first_name}</p>
+                                        <p className="text-sm w-[10%] px-2 ">{payment_ind}</p>
+                                        <p className="text-sm w-[10%] px-2 ">{job.job_ind}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{amount.toLocaleString()}</p>
+                                        <p className="text-sm w-[15%] px-2 ">{job.customer.first_name} {job.customer.last_name}</p>
+                                        <p className="text-sm w-[25%] px-2 ">{job.customer.email}</p>
                                         <p className={status.toLowerCase() == "pending" ? 
-                                            "text-sm w-[10%] px-2 text-red-600 " : status.toLowerCase() == 'in_progress' ? 
-                                            "text-sm w-[10%] px-2 text-amber-600 " : "text-sm w-[10%] px-2 text-green-500 " }>{status.toLowerCase().replace(/_/g, ' ')}</p>
+                                            "text-sm w-[10%] px-2 text-amber-600 " : status.toLowerCase() == 'completed' ? 
+                                            "text-sm w-[10%] px-2 text-green-500 " : "text-sm w-[10%] px-2 text-red-600 " }>{status.toLowerCase().replace(/_/g, ' ')}</p>
                                         <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{due_date}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(updated_at))}</p>
                                     </span>
                                 )
                             })}
                             </>
                             :
                             <div className="w-full h-[300px] flex flex-col justify-center items-center">
-                                <p className="text-sm ">No Task yet</p>
+                                <p className="text-sm ">No Invoice yet</p>
                             </div>
                             }
 
@@ -330,13 +337,13 @@ const AdminHome = () => {
                                 <p className="text-sm cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm  ">Showing 1-15 of {dash_box?.recent_task.length}</p>
+                                <p className="text-sm  ">Showing 1-15 of {dash_box?.recent_invoice.length}</p>
                             </span>
                         </span>
                     </div>
                 </div>
 
-                {/* Recent Notification */}
+                {/* Recent Payment */}
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-md ">Recent Payment</p>
 

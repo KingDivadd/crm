@@ -19,17 +19,15 @@ const AdminDashboard = () => {
 
     useEffect(() => {
         const item = sessionStorage.getItem('side_nav')
-        if (item == null){
-            setActive('home')
-            return;
-        }
-        setActive(item)
-        if (item == null || item == "" || !['home', 'user-management', 'leads', 'job', 'project-status', 'notifications', 'taskManagement', 'system-settings'].includes(active)) {
-            setActive('home')
-        }else{
-            setActive(item)
-        }
-        console.log(item);
+        setActive( item || 'home')
+        
+        // if (item == null || item == "" || !['home', 'user-management', 'leads', 'job', 'project-status', 'notifications', 'taskManagement', 'system-settings'].includes(active)) {
+        //     setActive('home')
+        //     console.log(' nav ', item)
+        // }else{
+        //     console.log(' else nav ', item)
+        //     setActive(item)
+        // }
         
     }, [])
 

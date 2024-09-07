@@ -10,6 +10,7 @@ import { User_Management_Props } from '@/types';
 import DeleteModal from './userManagementModal';
 import UserManagementModal from './userManagementModal';
 import { useRouter } from 'next/navigation';
+import { readable_day } from '../helper';
 
 
 const UserManagement = () => {
@@ -118,26 +119,32 @@ const UserManagement = () => {
             }, 3000);
     }
 
-    async function get_all_users(page_num:number) {
+    async function get_all_users(page_num:number) {        
         
-        const response = await get_auth_request(`user/all-users/${page_num || 1}`)
-        
-        if (response.status == 200 || response.status == 201){
+        try {
+            const response = await get_auth_request(`app/all-paginated-users/${page_num || 1}`)
             
-            setApp_users(response.data.data)      
-            
-            setFiltered_users(response.data.data)
+            if (response.status == 200 || response.status == 201){
+                
+                setApp_users(response.data)      
+                
+                setFiltered_users(response.data)
 
-            
-            showAlert(response.data.msg, "success")
-        }else{
-            if (response.response.status == 402) {
-                setTimeout(() => {
-                    router.push('auth/login')
-                }, 3000)
+                console.log('response ', response.data)
+                    
+                showAlert(response.data.msg, "success")
+            }else{
+                if (response.response.status == 402) {
+                    setTimeout(() => {
+                        router.push('auth/login')
+                    }, 3000)
+                }
+                showAlert(response.response.data.err, "error")
             }
-            showAlert(response.response.data.err, "error")
-          }
+        } catch (err:any) {
+            showAlert("Something went wrong, kindly refresh page", "error")
+        }
+        
     }
 
     async function app_users_action(item: any) {
@@ -171,7 +178,7 @@ const UserManagement = () => {
             pages.push(
             <p
                 key={i}
-                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                className={`text-[15px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
                 page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
@@ -196,7 +203,7 @@ const UserManagement = () => {
             pages.push(
             <p
                 key={i}
-                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                className={`text-[15px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
                 page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
@@ -233,13 +240,13 @@ const UserManagement = () => {
         <div className="w-full h-full p-[10px] pb-[10px] ">
             
             <div className="relative w-full h-full flex flex-col items-start justify-start gap-[10px] ">
-                <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
+                {/* <span className="w-1/2 flex items-center justify-end absolute top-[10px] right-[10px] ">
                     {alert.message && <Alert message={alert.message} type={alert.type} />} 
-                </span>
+                </span> */}
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         <p className="text-md font-semibold text-black">All Users</p>
-                        <p className="text-sm text-black">{app_users?.total_number_of_users}</p>
+                        <p className="text-[15px] text-black">{app_users?.total_number_of_users}</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
@@ -247,14 +254,14 @@ const UserManagement = () => {
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Active', 'Inactive', 'All']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
                             <span className="w-[300px] h-[40px] ">
-                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='search by user id, name, email, role' id="" className='normal-input bg-gray-100 text-sm ' />
+                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='search by user id, name, email, role' id="" className='normal-input bg-gray-100 text-[15px] ' />
                             </span>
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Technician', 'Finance', 'All']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
                         </span>
 
-                        <button className="h-[40px] px-4 bg-blue-700 hover:bg-blue-800 text-white rounded-[3px] flex items-center justify-center  text-sm" onClick={add_user}>Add New User</button>
+                        <button className="h-[40px] px-4 bg-blue-700 hover:bg-blue-800 text-white rounded-[3px] flex items-center justify-center  text-[15px]" onClick={add_user}>Add New User</button>
 
                     </span>
                 </span>
@@ -263,14 +270,15 @@ const UserManagement = () => {
 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">User Id</p>
-                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">Last Name</p>
-                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">First Name</p>
-                        <p className="text-sm font-normal w-[30%] px-[10px] text-white ">Email</p>
-                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">Role</p>
-                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">Status</p>
-                        <p className="text-sm font-normal w-[10%] px-[10px] text-white ">Action</p>
-                        <p className="text-sm font-normal w-[10%] px-[10px] text-white "></p>
+                        <p className="text-[15px] font-normal w-[7.5%] px-[10px] text-white ">User Id</p>
+                        <p className="text-[15px] font-normal w-[9%] px-[10px] text-white ">Last Name</p>
+                        <p className="text-[15px] font-normal w-[9%] px-[10px] text-white ">First Name</p>
+                        <p className="text-[15px] font-normal w-[26.5%] px-[10px] text-white ">Email</p>
+                        <p className="text-[15px] font-normal w-[10%] px-[10px] text-white ">Role</p>
+                        <p className="text-[15px] font-normal w-[12.5%] px-[10px] text-white ">Added By</p>
+                        <p className="text-[15px] font-normal w-[10.5%] px-[10px] text-white ">Added On</p>
+                        <p className="text-[15px] font-normal w-[7.5%] px-[10px] text-white ">Action</p>
+                        <p className="text-[15px] font-normal w-[9%] px-[10px] text-white "></p>
                     </span>
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                         
@@ -278,18 +286,22 @@ const UserManagement = () => {
                         
                             <div className='h-auto w-full flex flex-col justify-start '>
                             { filtered_users?.users.map((data:any, ind:number)=>{
-                                const {last_name, first_name, email, user_role, active_status, user_ind} = data
+                                const {last_name, first_name, email, user_role, active_status, user_ind, created_at, added_by} = data
                                 return (
                                     <span key={ind} className="recent-activity-table-list " >
-                                        <p className="text-sm w-[10%] px-[10px] "> {user_ind} </p>
-                                        <p className="text-sm w-[10%] px-[10px] "> {last_name} </p>
-                                        <p className="text-sm w-[10%] px-[10px] "> {first_name} </p>
-                                        <p className="text-sm w-[30%] px-[10px] "> {email} </p>
-                                        <p className="text-sm w-[10%] px-[10px] "> {user_role} </p>
-                                        <p className={active_status ? "text-sm text-green-500 w-[10%] px-[10px] ": "text-sm text-red-500 w-[10%] px-[10px] "}>{active_status ? "Active" : "Inactive"}</p>
-                                        <p className="text-sm w-[10%] px-[10px] flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-amber-600" onClick={()=>{edit_user(data)}} ><MdEdit size={16} /> Edit</p>
+                                        <p className="text-[15px] w-[7.5%] px-[10px] "> {user_ind} </p>
+                                        <p className="text-[15px] w-[9%] px-[10px] "> {last_name} </p>
+                                        <p className="text-[15px] w-[9%] px-[10px] "> {first_name} </p>
+                                        <p className="text-[15px] w-[26.5%] px-[10px] "> {email} </p>
+                                        <p className="text-[15px] w-[10%] px-[10px] "> {user_role} </p>
+
+                                        <p className="text-[15px] w-[12.5%] px-[10px] flex items-center gap-[10px] "> {added_by.first_name} {added_by.last_name} </p>
+
+                                        <p className="text-[15px] w-[10.5%] px-[10px] "> {readable_day(Number(created_at))} </p>
+
+                                        <p className="text-[15px] w-[7.5%] px-[10px] flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-amber-600" onClick={()=>{edit_user(data)}} ><MdEdit size={16} /> Edit</p>
                                         
-                                        <p className="text-sm w-[10%] px-[10px] flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-red-400"  onClick={()=>delete_user(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                        <p className="text-[15px] w-[9%] px-[10px] flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-red-400"  onClick={()=>delete_user(data)} ><MdDeleteForever size={18} /> Delete</p>
                                     </span>
                                 )
                             })}
@@ -298,21 +310,21 @@ const UserManagement = () => {
                         :
 
                             <div className="w-full h-full flex items-center justify-center">
-                                <p className="text-md font-normal">Loading Data...</p>
+                                <p className="text-[15px] font-normal">Loading Data...</p>
                             </div>
                         
                         }
                     </div>
                     <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
-                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
+                            <p className="text-[15px] cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">
                             {render_page_numbers()}
                             </span>
-                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
+                            <p className="text-[15px] cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-sm">Showing 1-15 of {app_users?.total_number_of_users || 0}</p>
+                            <p className="text-[15px]">Showing 1-15 of {app_users?.total_number_of_users || 0}</p>
                         </span>
                     </span>
                 </div>
