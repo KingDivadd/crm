@@ -4,7 +4,7 @@ import { FaCaretUp, FaCaretDown } from 'react-icons/fa6'
 import Alert from '../alert'
 import { IoIosWarning } from "react-icons/io";
 import { DropDownBlankTransparent } from '../dropDown'
-import ImageUploader, {TaskFilesUploadTwo, FlexibleImageUploader } from '../imageUploader'
+import ImageUploader, {FileUploader, FlexibleImageUploader } from '../imageUploader'
 import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
@@ -288,7 +288,7 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
     }
 
     const handleFileUpload = (fileUrl:string) => {
-        console.log('Received file URL from TaskFilesUploadTwo:', fileUrl);
+        console.log('Received file URL from FileUploader:', fileUrl);
         const store = auth.attachment
         store.push(fileUrl)
         setAuth({...auth, attachment: store})
@@ -629,7 +629,7 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
 
                                             <span className="h-[279px] w-full">
 
-                                                <TaskFilesUploadTwo id='task_file_upload' image='' title='Select Document' url='' onFileUpload={handleFileUpload}   />
+                                                <FileUploader id='task_file_upload'  title='Select Document' url='' onFileUpload={handleFileUpload}   />
                                             </span>
 
                                             <button className="w-full h-[40px] text-white bg-amber-700 rounded-[5px] hover:bg-amber-600 flex items-center justify-center text-sm "  disabled={loadingtwo} onClick={update_task} >
