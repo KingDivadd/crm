@@ -133,12 +133,21 @@ export interface SelectDateProps {
     setClickedDate: (clickedDate: string)=> void;
 }
 
+
 export interface ImageUploaderProps {
     title: string;
     url: string;
     id: string;
     image: string;
     onFileUpload?: (fileUrl: string) => void;
+}
+
+export interface FileUploaderProps {
+    title: string;
+    url: string;
+    id: string;    
+    type?: string;
+    onFileUpload?: (fileUrl: string, url_for: string) => void;
 }
 
 export interface ProjectImageUploaderProps {

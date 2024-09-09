@@ -6,10 +6,9 @@ import { MdDeleteForever } from "react-icons/md";
 import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
 import Alert from '../alert';
 import ViewLead from './salesViewLead';
-import { userArray } from '@/constants';
-import { get_auth_request } from '@/app/api/admin_api';
 import Lead_Management_Modal from "./salesLeadManagementModal"
 import { readable_day } from '../helper';
+import { get_auth_request } from '../../api/admin_api';
 
 interface Leads_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -20,7 +19,7 @@ interface Leads_Props {
     leads: any;
 }  
 
-const SalesLeadPage = () => {
+const PipelinePage = () => {
     const [modalFor, setModalFor] = useState('')
     const [showModal, setShowModal] = useState(false)
     const [selectedLead, setSelectedLead] = useState(null)
@@ -61,7 +60,7 @@ const SalesLeadPage = () => {
         }else{
             setRole('sales')
         }
-        get_all_leads()
+        get_all_leads(page_number)
     }, [showModal])
 
     function showAlert(message: string, type: string){
@@ -71,9 +70,9 @@ const SalesLeadPage = () => {
             }, 3000);
     }
 
-    async function get_all_leads() {
+    async function get_all_leads(page_num: number) {
         
-        const response = await get_auth_request(`app/all-paginated-leads/${page_number}`)
+        const response = await get_auth_request(`app/all-paginated-staff-pipeline/${page_num}`)
 
         if (response.status == 200 || response.status == 201){
             
@@ -103,6 +102,7 @@ const SalesLeadPage = () => {
         }
 
         setPage_number(new_page_number);
+        get_all_leads(new_page_number)
     }
 
     const render_page_numbers = () => {
@@ -258,7 +258,7 @@ const SalesLeadPage = () => {
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            {(role == 'sales' || role == 'admin' || role == "super_admin") && <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-[15.5px]" onClick={add_lead}>Add Lead</button>}
+                            
                         </span>
 
                         
@@ -369,4 +369,4 @@ const SalesLeadPage = () => {
     )
 }
 
-export default SalesLeadPage
+export default PipelinePage

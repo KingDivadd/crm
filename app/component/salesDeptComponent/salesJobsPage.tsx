@@ -8,7 +8,7 @@ import Alert from '../alert';
 import { userArray } from '@/constants';
 import { get_auth_request } from '@/app/api/admin_api';
 import Job_Management_Modal from "./salesJobManagementModal"
-import { timestamp_to_readable_value } from '../helper';
+import { readable_day } from '../helper';
 
 interface Jobs_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -78,6 +78,8 @@ const SalesJobPage = () => {
             setjob_box(response.data)      
             
             setFiltered_job_box(response.data)            
+
+            console.log('job respnse : ',response.data)
 
         }else{
             
@@ -231,6 +233,12 @@ const SalesJobPage = () => {
         setModalFor('delete')
     }
 
+    function view_job(job:any){
+        setShowModal(true)
+        setSelectedJob(job)
+        setModalFor('view')
+    }
+
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
             <div className="relative w-full h-full flex flex-col items-start justify-start gap-[10px] ">
@@ -280,24 +288,31 @@ const SalesJobPage = () => {
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Job Id</p>
                         <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-[15.5px] font-normal w-[11.5%] px-2 ">Contract Amt</p>
+                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Contract Amt</p>
                         <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Contract Date</p>
-                        <p className="text-[15.5px] font-normal w-[13.5%] px-2 ">Assigned To</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Created At</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Last Updated</p>
-                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Action</p>
-                        <p className="text-[15.5px] font-normal w-[10%] px-2 "></p>
+                        <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Added By</p>
+                        <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Designer</p>
+                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Created At</p>
+                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Updated</p>
+                        <span className="w-[17.5%] px-2 flex items-center justify-start gap-[2px]">
+                            <p className="text-[15.5px] font-normal ">Action</p>
+                        
+                        </span>
+
                     </span>:
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Job Id</p>
                         <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-[15.5px] font-normal w-[11.5%] px-2 ">Contract Amt</p>
+                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Contract Amt</p>
                         <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Contract Date</p>
-                        <p className="text-[15.5px] font-normal w-[13.5%] px-2 ">Assigned To</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Created At</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Last Updated</p>
-                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Action</p>
-                        <p className="text-[15.5px] font-normal w-[10%] px-2 "></p>
+                        <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Added By</p>
+                        <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Designer</p>
+                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Created At</p>
+                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Updated</p>
+                        <span className="w-[17.5%] px-2 flex items-center justify-start gap-[2px]">
+                            <p className="text-[15.5px] font-normal ">Action</p>
+                        
+                        </span>
                     </span>}
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -311,37 +326,48 @@ const SalesJobPage = () => {
                                 { filtered_job_box?.jobs.map((data:any, ind:number)=>{
 
                                     
-                                    const {job_ind, lead, contract_amount, contract_date, hoa_permit_status, electrical_permit_status, general_permit_status, engineering_permit_status, created_at, updated_at } = data
+                                    const {job_ind, lead, contract_amount, contract_date, created_at, updated_at, job_adder } = data
                                     return (
                                         <>
                                         {(role == 'sales' || role == 'admin' || role == 'super_admin') ? 
                                         <span key={ind} className="recent-activity-table-list group" >
                                             <p className="text-[15.5px] w-[7.5%] px-2 ">{job_ind} </p>
                                             <p className="text-[15.5px] w-[7.5%] px-2 ">{lead.lead_ind} </p>
-                                            <p className="text-[15.5px] w-[11.5%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
-                                            <p className="text-[15.5px] w-[12.5%] px-2 "> {contract_date} </p>
-                                            <p className="text-[15.5px] w-[13.5%] px-2 "> {lead.assigned_to.first_name} {lead.assigned_to.last_name} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {timestamp_to_readable_value(Number(created_at))} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {timestamp_to_readable_value(Number(updated_at))} </p>
-                                        
-                                            <p className="text-[15.5px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
-                                        
-                                            <p className="text-[15.5px] w-[10.0%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                            <p className="text-[15.5px] w-[10%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
+                                            <p className="text-[15.5px] w-[12.5%] px-2 "> { readable_day(Number(contract_date)) } </p>
+                                            <p className="text-[15.5px] w-[12.5%] px-2 "> {job_adder.first_name} {job_adder.last_name} </p>
+                                            <p className="text-[15.5px] w-[12.5%] px-2 "> {lead.lead_designer.first_name} {lead.lead_designer.last_name} </p>
+                                            <p className="text-[15.5px] w-[10%] px-2 "> {readable_day(Number(created_at))} </p>
+                                            <p className="text-[15.5px] w-[10%] px-2 "> {readable_day(Number(updated_at))} </p>
+
+                                            <span className="w-[17.5%] px-2 flex items-center justify-between gap-[2px]">
+                                            
+                                                <p className="text-[15.5px] flex flex-row items-center justify-start gap-2 hover:underline text-blue-600 cursor-pointer" onClick={()=>view_job(data)} > view</p>
+                                            
+                                                <p className="text-[15.5px] flex flex-row items-center justify-start gap-2  hover:underline text-amber-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
+                                            
+                                                <p className="text-[15.5px] flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Del</p>
+                                            </span>
+
                                         </span>
                                         :
-                                        <span key={ind} className="recent-activity-table-list " onClick={()=> edit_job(data)} >
+                                        <span key={ind} className="recent-activity-table-list group" >
                                             <p className="text-[15.5px] w-[7.5%] px-2 ">{job_ind} </p>
                                             <p className="text-[15.5px] w-[7.5%] px-2 ">{lead.lead_ind} </p>
-                                            <p className="text-[15.5px] w-[11.5%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
-                                            <p className="text-[15.5px] w-[12.5%] px-2 "> {contract_date} </p>
-                                            <p className="text-[15.5px] w-[13.5%] px-2 "> {lead.assigned_to.first_name} {lead.assigned_to.last_name} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {timestamp_to_readable_value(Number(created_at))} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {timestamp_to_readable_value(Number(updated_at))} </p>
-                                        
-                                            <p className="text-[15.5px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
-                                        
-                                            <p className="text-[15.5px] w-[10.0%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Delete</p>
-                                        
+                                            <p className="text-[15.5px] w-[10%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
+                                            <p className="text-[15.5px] w-[12.5%] px-2 "> { readable_day(Number(contract_date)) } </p>
+                                            <p className="text-[15.5px] w-[12.5%] px-2 "> {job_adder.first_name} {job_adder.last_name} </p>
+                                            <p className="text-[15.5px] w-[12.5%] px-2 "> {lead.lead_designer.first_name} {lead.lead_designer.last_name} </p>
+                                            <p className="text-[15.5px] w-[10%] px-2 "> {readable_day(Number(created_at))} </p>
+                                            <p className="text-[15.5px] w-[10%] px-2 "> {readable_day(Number(updated_at))} </p>
+
+                                            <span className="w-[17.5%] px-2 flex items-center justify-between gap-[2px]">
+                                            
+                                                <p className="text-[15.5px] flex flex-row items-center justify-start gap-2 hover:underline text-blue-600 cursor-pointer" onClick={()=>view_job(data)} > view</p>
+                                            
+                                                <p className="text-[15.5px] flex flex-row items-center justify-start gap-2  hover:underline text-amber-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
+                                            </span>
+
                                         </span>}
                                         </>
                                     )

@@ -4,12 +4,12 @@ import SalesSideBar from './salesSideBar'
 import SalesDashboardPage from './salesDashboardPage'
 import SalesLeadPage from './salesLeadPage'
 import SalesJobsPage from './salesJobsPage'
-import SalesPipeline from './salesPipeline'
 import SalesTaskPage from './salesTaskPage'
 import SalesReportPage from './salesReportPage'
 import NotificationPage from '../notificationPage'
 import SystemSettings from '../setting'
 import DashboardNav from '../dashboardNav'
+import PipelinePage from './pipelinePage'
 
 const SalesDashboard = () => {
     const [active, setActive] = useState('')
@@ -32,7 +32,7 @@ const SalesDashboard = () => {
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "dashboard" && <SalesDashboardPage /> }
                     {active === "leads" && <SalesLeadPage /> }
-                    {active === "sales-pipeline" && <SalesPipeline /> }
+                    {active === "pipeline" && <PipelinePage /> }
                     {active === "jobs" && <SalesJobsPage /> }
                 
                     {active === "reports" && <SalesReportPage /> }

@@ -101,11 +101,12 @@ const DashboardNav = () => {
             <span className="w-[70%] h-full flex  flex-row items-center justify-start gap-5 px-[10px]">
                 {user_info?.user && 
                 
-                <p className="text-sm font-medium text-white whitespace-nowrap">
+                <p className="text-[16px] font-medium text-white whitespace-nowrap">
                     {user_info.user.user_role == 'admin'  && "Admin Portal"}
                     {user_info.user.user_role == 'super_admin'  && "Admin Portal"}
                     {user_info.user.user_role == 'sales' && "Sales Portal"}
                     {user_info.user.user_role == 'operation' && "Operation Portal"}
+                    {user_info.user.user_role == 'designer' && "Designer Portal"}
                     {user_info.user.user_role == 'installer' && "Installer Portal"}
                     {user_info.user.user_role == 'customer' && "Customer Portal"}
                     {user_info.user.user_role == 'engineering' && "Engineering Portal"}
@@ -117,13 +118,13 @@ const DashboardNav = () => {
                 }
 
                 <span className="w-full h-full flex items-center  nav-search-input relative ">
-                    <input placeholder='Search for leads or jobs' type="text" name="" id="" className='pr-[50px] nav-input pr-[50px] text-[15.5px] ' /> 
+                    <input placeholder='Search for leads or jobs' type="text" name="" id="" className='pr-[50px] nav-input h-[35px] text-[15.5px] ' /> 
                     <span className="w-[40px] h-[35px] flex items-center justify-center text-black absolute right-0 top-[7.5px] border-l border-gray-200 corsor-pointer">
                         <CiSearch size={22} className='font-bold' />
                     </span>
                 </span>
 
-                <p className="text-[16px] text-white whitespace-nowrap">{date_time}</p>
+                <p className="text-[15.5px] text-white whitespace-nowrap">{date_time}</p>
 
             </span>
 

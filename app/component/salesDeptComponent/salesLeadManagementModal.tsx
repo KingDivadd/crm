@@ -2,15 +2,15 @@
 import React, { useState, useEffect } from 'react'
 import { FaCaretUp, FaCaretDown } from 'react-icons/fa6'
 import Alert from '../alert'
-import { IoIosWarning } from "react-icons/io";
 import { DropDownBlankTransparent } from '../dropDown'
-import ImageUploader, {FlexibleImageUploader } from '../imageUploader'
+import {FileUploader, FileViewer } from '../imageUploader'
 import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
 import {get_todays_date, convert_to_unix, readable_day} from "../helper"
 import { IoCheckmark } from 'react-icons/io5';
-
+import Image from "next/image"
+import { FaDownload } from "react-icons/fa6";
 
 interface Lead_Management_Props {
     showModal: boolean;
@@ -25,15 +25,16 @@ interface Lead_Management_Props {
 interface StaffProps {
     staffs?: any;
 }
-const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelectedLead, modalFor}: Lead_Management_Props) => {
+const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelectedLead, modalFor, setModalFor}: Lead_Management_Props) => {
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
     const [approve_loading, setApprove_loading] = useState(false)
     const [all_staff, setAll_staff] = useState< {staffs:any} |  null>(null)
     const [filtered_staff, setFiltered_staff] = useState< {staffs:any} |  null>(null)
-    const [auth, setAuth] = useState({customer_first_name: '', customer_last_name: '', city: '', state: '', zip: '', address: '', email: '', phone_number: '', assigned_to: '', assigned_name: '', appointment_date: '', disposition: '', gate_code: ''})
+    const [auth, setAuth] = useState({customer_first_name: '', customer_last_name: '', city: '', state: '', zip: '', address: '', email: '', phone_number: '', assigned_to: '', assigned_name: '', appointment_date: '', disposition: '', gate_code: '', desired_structure: '', contract_document: []})
     const [showCalender, setShowCalender] = useState(false)
     const [clicked_appointment_date, setClicked_appointment_date] = useState('')
+    const [user_role, setuser_role] = useState('')
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
         disposition: false
     });
@@ -57,7 +58,16 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
-
+    useEffect(()=>{
+        const role = localStorage.getItem('user-role')
+        if (role) {
+            setuser_role(role)
+        }
+        const item = sessionStorage.getItem('lead_modal')
+        if (item) {
+            setModalFor(item)
+        }
+    })
 
     useEffect(() => {
 
@@ -109,11 +119,13 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
             get_all_staff()
         }else if (modalFor == 'edit'){
             get_all_staff()
-            const {customer_first_name, customer_last_name, customer_address, customer_city, customer_state, customer_zip, customer_phone, customer_email, lead_designer, appointment_date, disposition, gate_code, lead_ind} = selectedLead
+            const {customer_first_name, customer_last_name, customer_address, customer_city, customer_state, customer_zip, customer_phone, customer_email, lead_designer, appointment_date, disposition, gate_code, lead_ind, contract_document, desired_structure } = selectedLead
             
             console.log('damn ', selectedLead.customer_address)
 
-            setAuth({...auth,  customer_first_name, customer_last_name, phone_number: customer_phone, address: selectedLead.customer_address, email: customer_email, city: customer_city, state: customer_state, zip: customer_zip, assigned_name: `${lead_designer.last_name} ${lead_designer.first_name}`, assigned_to: lead_designer.user_id , appointment_date, disposition, gate_code })
+            setAuth({...auth,  customer_first_name, customer_last_name, phone_number: customer_phone, address: selectedLead.customer_address, email: customer_email, city: customer_city, state: customer_state, zip: customer_zip, assigned_name: `${lead_designer.last_name} ${lead_designer.first_name}`, assigned_to: lead_designer.user_id , appointment_date, disposition, gate_code, desired_structure: desired_structure || '', contract_document })
+
+
         }
     }, [])
 
@@ -189,6 +201,8 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
     async function update_lead(e:any) {
         e.preventDefault()
+
+        console.log(' upload contraact file ', auth)
         if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.city || !auth.state || !auth.zip || !auth.assigned_to || !auth.appointment_date) {
             if (!auth.customer_first_name || !auth.customer_last_name){showAlert('Please enter client name', 'error')};
             
@@ -202,12 +216,15 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
             if (!auth.appointment_date) {showAlert("Please select an appointment date", 'error')}
             
+        }else if( auth.disposition.toLowerCase() === 'sold' && (!auth.desired_structure || !auth.contract_document.length)){
+            setModalFor("upload_lead_file")
         }else{
             try {
                 setLoading(true)
                 
                 const response = await patch_auth_request(`app/edit-lead/${selectedLead.lead_id}`, 
                     { 
+                        desired_structure: auth.desired_structure, contract_document: auth.contract_document,
                         customer_first_name: auth.customer_first_name, customer_last_name: auth.customer_last_name, customer_zip: Number(auth.zip), customer_state: auth.state, customer_city: auth.city , customer_address: auth.address, customer_phone: auth.phone_number, customer_email: auth.email, lead_designer_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: auth.disposition.toLowerCase().replace(/ /g, '_') || 'not_sold', gate_code: auth.gate_code })
                 if (response.status == 200 || response.status == 201){
                                 
@@ -227,6 +244,42 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                 showAlert('Error occured ', 'error')
                 setLoading(false)
             }
+        }
+    }
+
+    async function designer_update_lead(e:any){
+        e.preventDefault()
+        const box = {desired_structure: auth.desired_structure, contract_document: auth.contract_document}
+
+        if(!auth.desired_structure || !auth.contract_document.length){
+            if (!auth.desired_structure) { showAlert("Please provide the desired structure ", "warning"); }
+            if (!auth.contract_document.length) { showAlert("Please select the contract document ", "warning"); }
+        }else{
+            try {
+                setLoading(true)
+
+                console.log('box : ', box)
+                
+                const response = await patch_auth_request(`app/upload-lead-contract-document/${selectedLead.lead_id}`, box)
+                if (response.status == 200 || response.status == 201){
+                                
+                    showAlert(response.data.msg, "success")
+                    
+                    setShowModal(false)
+                    
+                    setLoading(false)
+
+                    }else{       
+
+                    showAlert(response.response.data.err, "error")
+                    
+                    setLoading(false)
+                }
+            } catch (err) {
+                showAlert('Error occured ', 'error')
+                setLoading(false)
+            }
+
         }
     }
 
@@ -257,6 +310,17 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
         }
     
     }
+
+    function upload_lead_document() {
+        setModalFor('upload_lead_file')
+    }
+
+    const handleFileUpload = (fileUrl:string) => {
+        console.log('Received file URL from settings:', fileUrl);
+        const box:any = auth.contract_document
+        box.push(fileUrl)
+        setAuth({...auth, contract_document: box})
+    };
 
     return (
         <div className="fixed z-30 inset-0 overflow-y-auto" id="modal">
@@ -310,9 +374,11 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px]  ">
                                         <p className="text-md font-semibold  text-slate-800 ">New Lead </p>
 
-                                        <span className="flex items-center justify-end gap-[10px] ">
+                                        <span className="flex items-center justify-end gap-[20px] ">
 
                                             {auth.assigned_to && <span className="h-[35px] gap-[10px] flex items-center"><p className="text-[15px]">Selected Staff:</p> <p className="text-[15px] font-medium">{auth.assigned_name}</p> </span>}
+
+                                            <span className="h-[35px] gap-[10px] flex items-center"><p className="text-[15px]">Disposition:</p> <p className="text-[15px] font-medium">{auth.disposition.replace(/_/g, ' ') || "Not Sold"}</p> </span>
 
                                             <span className="h-[35px] min-w-[150px] z-[10] ">
                                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
@@ -448,6 +514,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                                     </span>
                                                                         
                                                                     <p key={ind} className=" text-start text-[15px] text-slate-900 text-end " > {user_role} </p>
+                                                                    
                                                                     <span className="w-[40px] h-full flex justify-end items-center"> {auth.assigned_to == user_id && <IoCheckmark size={18} />} </span>
 
 
@@ -494,6 +561,8 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                         <span className="flex items-center justify-end gap-[10px]  ">
 
                                             {auth.assigned_to && <span className="h-[35px] gap-[10px] flex items-center"><p className="text-[15px]">Selected Staff:</p> <p className="text-[15px] font-medium">{auth.assigned_name}</p> </span>}
+
+                                            <span className="h-[35px] gap-[10px] flex items-center"><p className="text-[15px]">Disposition:</p> <p className="text-[15px] font-medium">{auth.disposition.replace(/_/g, ' ') || "Not Sold"}</p> </span>
 
                                             <span className="h-[40px] min-w-[150px] z-[10]  ">
                                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
@@ -586,6 +655,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
                                                 <h4 className="text-[15px] ">Appointment Date</h4>
                                                 <div className="w-full flex flex-col items-end justify-end relative z-[5] ">
+
                                                     <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalender(!showCalender)}}>
 
                                                         { auth.appointment_date ? readable_day(Number(auth.appointment_date)) : "Select Appointment Date"}
@@ -650,16 +720,108 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 </div>
                                                 }
 
-                                                <button className=" w-full h-[40px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center text-[15px] "  disabled={loading} onClick={update_lead} >
+                                                <span className="w-full flex items-center gap-[20px] ">
+                                                    <button className="h-[40px] w-1/2 flex items-center justify-center rounded-[3px] text-white bg-blue-600 hover:bg-blue-700 text-[15px] " onClick={()=>{setModalFor('upload_lead_file')}}>
+                                                        Upload Lead Files
+                                                    </button>
+
+                                                    <button className=" w-1/2 h-[40px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center text-[15px] "  disabled={loading} onClick={update_lead} >
+                                                        {loading ? (
+                                                            <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                            </svg>
+                                                        ) : 'Update Lead'}
+                                                    </button>
+
+                                                </span>
+                                                
+                                            </span>
+                                        </div>
+                                        
+                                    </form>
+
+
+                                </div>
+                                }
+
+                                {modalFor == 'upload_lead_file' && 
+                                <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] ">
+                                    <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
+                                        <p className="text-md font-semibold  text-slate-800 ">Lead: <strong>{selectedLead.lead_ind}</strong> </p>
+
+                                        <p className="text-[15px] font-semibold  text-slate-800 ">Upload Lead Information and Pictures</p>
+
+                                    </span>
+
+                                    <form  action="" className="w-full flex items-start justify-between gap-[15px] ">
+                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[10px] ">
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-[15px] text-slate-900 ">Desired Structure.  </p>
+                                                
+                                                <span className="h-[40px] w-full ">
+                                                    <input type="text" name='desired_structure' value={auth.desired_structure} onChange={handle_change} className='normal-input text-[15px]' />
+                                                </span>
+                                            </span>
+
+                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                <p className="text-[15px] text-slate-900 ">Contract Documents / Images </p>
+                                                
+                                                <div className="w-full h-[400px] overflow-y-auto flex flex-col items-center justify-start gap-[20px] ">
+                                                    
+                                                    { auth.contract_document.map((data:any, ind:number)=>{
+                                                        return(
+                                                            <span key={ind} className="w-full flex flex-col items-start justify-start gap-2">
+                                                                <FileViewer id={'user-image'} title={"Contract Documents"} url={data} onFileUpload={handleFileUpload} />
+                                                            </span>
+                                                        )
+                                                    })}
+
+
+                                                </div>
+                                            </span>
+
+
+                                        </div>
+
+                                        <div className="w-1/2 h-full flex flex-col item-start justify-between gap-[20px] ">
+                                            <div className="w-full flex flex-col justify-start items-start gap-3">
+                                                <span className="w-full flex flex-col items-center justify-start gap-2">
+                                                    <FileUploader id={'user-image'} title={"Contract Documents"} url={ "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
+                                                </span>
+                                            </div>
+
+                                            {user_role !== 'designer' ? 
+                                            
+                                            <span className="w-full flex items-center justif-between gap-[20px] ">
+                                                <button className="h-[40px] w-1/2 flex items-center justify-center rounded-[3px] text-white bg-blue-600 hover:bg-blue-700 text-[15px] " onClick={()=> {setModalFor('edit')}}>
+                                                        Back to lead Information
+                                                </button>
+
+                                                <button className=" w-1/2 h-[40px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center text-[15px] "  disabled={loading} onClick={update_lead} >
                                                     {loading ? (
                                                         <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
                                                             <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
                                                         </svg>
-                                                    ) : 'Update Lead'}
+                                                    ) : 'submit'}
 
-                                            </button>
-                                            </span>
+                                                </button>
+                                            </span> :
+                                            
+                                            <span className="w-full flex items-center justif-between gap-[20px] ">
+
+                                                <button className=" w-full h-[40px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center text-[15px] "  disabled={loading} onClick={designer_update_lead} >
+                                                    {loading ? (
+                                                        <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                        </svg>
+                                                    ) : 'submit'}
+
+                                                </button>
+                                            </span>}
                                         </div>
                                         
                                     </form>

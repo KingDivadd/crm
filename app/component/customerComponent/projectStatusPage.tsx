@@ -8,6 +8,7 @@ import Alert from '../alert';
 import { userArray } from '@/constants';
 import { get_auth_request } from '@/app/api/admin_api';
 import Project_Management_Modal from './projectManagementModal';
+import { readable_day } from '../helper';
 
 interface Projects_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -59,7 +60,7 @@ const CustomerProjectPage = () => {
         }else{
             setRole('project')
         }
-        get_all_projects()
+        get_all_projects(page_number)
     }, [showModal])
 
     function showAlert(message: string, type: string){
@@ -69,9 +70,9 @@ const CustomerProjectPage = () => {
             }, 3000);
     }
 
-    async function get_all_projects() {
+    async function get_all_projects(page_num:number) {
         
-        const response = await get_auth_request(`auth/all-projects/${page_number}`)
+        const response = await get_auth_request(`app/all-paginated-project/${page_num || 1}`)
 
         if (response.status == 200 || response.status == 201){
             
@@ -79,7 +80,7 @@ const CustomerProjectPage = () => {
             
             setFiltered_project_box(response.data)
 
-            
+            console.log('response ', response.data)
 
         }else{
         
@@ -87,25 +88,6 @@ const CustomerProjectPage = () => {
         }
     }
 
-    async function filter_projects(item:any) {
-
-        
-        const response = await get_auth_request(`/filter-projects/${item}/${page_number}`)
-
-        if (response.status == 200 || response.status == 201){
-            
-            setProject_box(response.data)      
-            
-            setFiltered_project_box(response.data)
-
-            
-            showAlert(response.data.msg, "success")
-
-        }else{
-        
-        showAlert(response.response.data.err, "error")
-        }
-    }
 
     async function app_users_action(item: any) {
         let new_page_number = page_number;
@@ -273,9 +255,7 @@ const CustomerProjectPage = () => {
                             <span className="w-[350px] h-[40px] ">
                                 <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by project id, contract amount ' id="" className='normal-input bg-gray-100 text-sm ' />
                             </span>
-                            <span className="h-[40px] min-w-[150px]">
-                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Pending', 'In Progress', 'Completed', 'On Hold', 'Cancelled', 'All' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                            </span>
+                            
 
                         </span>
 
@@ -288,14 +268,17 @@ const CustomerProjectPage = () => {
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[10%] px-2 ">Project Id</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Contract Date</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Contract Amount</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Project Status</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Added By</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Attached Status</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Structure Type</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Action</p>
+                        <p className="text-sm font-normal w-[9%] px-2 ">Project Id</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Contract Amt</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Contract Date</p>
+                        <p className="text-sm font-normal w-[9%] px-2 ">Cover Color</p>
+                        <p className="text-sm font-normal w-[8.5%] px-2 ">Cover Size</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">End Cap Style</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Trim Color</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Structure Type</p>
+                        <p className="text-sm font-normal w-[13.5%] px-2 ">Last Updated</p>
+
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
                     </span>
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                         
@@ -306,19 +289,22 @@ const CustomerProjectPage = () => {
                                 {project_box?.projects.length ?
                                 <>
                                 { filtered_project_box?.projects.map((data:any, ind:number)=>{
-                                    const {project_ind, contract_amount, contract_date,status, project_adder, attached, structure_type } = data
+                                    const {project_ind, job, cover_color, cover_size, end_cap_style, trim_color, attached, structure_type, updated_at,  } = data
                                     return (
                                         <div key={ind}>
                                         
                                         <span className="recent-activity-table-list " onClick={()=> view_project(data)} >
-                                            <p className="text-sm w-[10%] px-2 "> {project_ind} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {contract_date} </p>
-                                            <p className="text-sm w-[12.5%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {status.replace(/_/g, ' ')} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {project_adder.last_name}  {project_adder.first_name} </p>
-                                            <p className={attached ? "text-sm w-[15%] px-2 text-blue-700 ": "text-sm w-[15%] px-2 text-amber-600 "}>{attached ? "Attached" : "Not Attached"} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {structure_type.replace(/_/g, ' ')} </p>
-                                            <p className="text-sm w-[10%] px-2 hover:underline text-blue-700"> view </p>
+                                            <p className="text-sm w-[9%] px-2 "> {project_ind} </p>
+                                            <p className="text-sm w-[10%] px-2 ">$ {Number(job.contract_amount).toLocaleString()} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {readable_day(Number(job.contract_date))} </p>
+                                            <p className="text-sm w-[9%] px-2 "> {cover_color} </p>
+                                            <p className="text-sm w-[8.5%] px-2 "> {cover_size} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {end_cap_style} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {trim_color} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {structure_type.toUpperCase()} </p>
+                                            <p className="text-sm w-[13.5%] px-2 "> {readable_day(Number(updated_at))} </p>
+                                            
+                                            <p className="text-sm w-[7.5%] px-2 hover:underline text-blue-700"> view </p>
                                         </span>
                                         
                                         </div>

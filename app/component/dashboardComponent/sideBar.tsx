@@ -11,6 +11,8 @@ import { SideBarNav } from '@/types';
 import {useRouter} from 'next/navigation'
 import { MdNotifications, MdWork } from "react-icons/md";
 import { GiSuitcase } from 'react-icons/gi';
+import { HiMiniLink } from 'react-icons/hi2';
+import { PiLinkSimpleBold } from 'react-icons/pi';
 
 
 const SideBar = ({active, setActive}:SideBarNav) => {
@@ -52,6 +54,10 @@ const SideBar = ({active, setActive}:SideBarNav) => {
                     <span className={active === "project-status"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('project-status')}}>
                         <MdWork size={22} /> 
                         <p className="text-[15.5px]">All Projects</p>
+                    </span>
+                    <span className={active === "pipeline"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('pipeline')}}>
+                        <PiLinkSimpleBold  size={22} /> 
+                        <p className="text-[15.5px]">Pipeline</p>
                     </span>
                     <span className={active === "taskManagement"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('taskManagement')}}>
                         <FaFileAlt size={21} /> 

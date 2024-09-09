@@ -8,7 +8,7 @@ import ImageUploader, {FlexibleImageUploader } from '../imageUploader'
 import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
-import {get_todays_date, convert_to_unix} from "../helper"
+import {get_todays_date, convert_to_unix, readable_day} from "../helper"
 
 
 interface Project_Management_Props {
@@ -111,27 +111,6 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
             
             const {project_ind, contract_amount, contract_date,status, project_adder, attached, structure_type } = selectedProject
 
-            const info = [
-                {title: 'Lead Id', value: selectedProject.job.lead.lead_ind},
-                {title: 'Client Name', value: selectedProject.job.lead.customer_name},{title: 'Address', value: selectedProject.job.lead.address}, 
-                {title: 'Client Email', value: selectedProject.job.lead.email}, {title: 'Client Phone', value: selectedProject.job.lead.phone_number}, 
-                {title: "Gate Code", value: selectedProject.job.lead.gate_code},  
-            ]
-
-            const info_two = [
-                {title: 'Project Id', value: selectedProject.project_ind},  {title: 'Contract Amount', value: `$ ${selectedProject.contract_amount.toLocaleString()}`},
-                {title: 'Contract Date', value: selectedProject.contract_date, }, {title: 'Attached', value: selectedProject.attached},
-                {title: 'Strutute Type', value: selectedProject.contract_date, }, 
-            ]
-
-            const info_three = [
-                {title: '', value: selectedProject.project_ind},  {title: 'Contract Amount', value: `$ ${selectedProject.contract_amount}`},
-                {title: 'Contract Date', value: selectedProject.contract_date, }
-            ]
-
-            setProject_data(info)
-            setProject_data_two(info_two)
-            setProject_data_two(info_three)
             
             // setAuth({...auth,  project_ind, contract_amount, contract_date,status, project_adder, attached, structure_type })
         }
@@ -139,7 +118,7 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
 
     async function get_all_staff() {
         try {
-            const response = await get_auth_request(`user/all-sales-staff`)
+            const response = await get_auth_request(`app/all-sales-user`)
             if (response.status == 200 || response.status == 201){
 
                 setAll_staff(response.data.staffs)
@@ -255,9 +234,9 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                 <div className="fixed inset-0 transition-opacity" aria-hidden="true">
                     <div className="absolute inset-0 bg-gray-500 opacity-35"></div>
                 </div>
-                <div className={ modalFor == 'delete' ? "w-full h-screen pt-[150px] rounded-lg overflow-hidden shadow-xl transform transition-all": "w-full h-screen pt-[25px] rounded-lg overflow-hidden shadow-xl transform transition-all" } role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
+                <div className="w-full h-screen flex items-center justify-center justify-center rounded-lg overflow-hidden shadow-xl transform transition-all" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
 
-                    <div className={"h-auto w-[75%] mx-auto shadow-xl flex items-start "}>
+                    <div className={"h-auto w-auto mx-auto shadow-xl flex items-start "}>
                         {/* the container for the input fields */}
                         <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
                             <div className="w-full min-h-[250px] flex flex-col justify-start items-center p-[10px] ">
@@ -265,7 +244,7 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                                 {/* below is to upload new permit */}
                                 {modalFor == 'delete' && 
                                 
-                                <div className="w-full flex flex-col items-start justify-start gap-[25px] ">
+                                <div className="w-[70vw] flex flex-col items-start justify-start gap-[25px] ">
                                     <span className="w-full flex flex-row items-start justify-between border-b border-slate-200 h-[40px]">
                                         <p className="text-md font-semibold  text-slate-900 ">{selectedProject.name} </p>
 
@@ -296,7 +275,7 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                                 </div>}
 
                                 {modalFor == 'add' && 
-                                <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
+                                <div className="w-[75vw] flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
                                         <p className="text-md font-semibold  text-slate-800 ">New project </p>
 
@@ -420,17 +399,15 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                                 }
 
                                 {modalFor == 'edit' && 
-                                <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] ">
-                                    <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
+                                <div className="w-[77.5vw] flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] ">
+                                    <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[45px] ">
                                         <p className="text-md font-semibold  text-slate-800 ">Project Id: <strong>{selectedProject.project_ind}</strong> </p>
-
-                                        <p className="text-md font-semibold  text-slate-800 ">Status: <strong>{selectedProject.status.replace(/_/g, ' ')}</strong> </p>
 
                                         
                                     </span>
 
                                     <form  action="" className="w-full flex items-start justify-between gap-[15px]">
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[15px] ">
+                                        <div className="w-1/2 h-[75vh] flex flex-col items-start justify-start gap-[15px] overflow-y-auto">
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">Lead Id</p>
                                                 <p className="text-sm w-[55%] font-medium ">{selectedProject.job.lead.lead_ind}</p>
@@ -440,41 +417,49 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                                                 <p className="text-sm w-[55%] font-medium ">{selectedProject.job.job_ind}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm w-[45%] ">Added By</p>
+                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.job_adder.first_name} {selectedProject.job.job_adder.last_name}</p>
+                                            </span>
+                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">Client Name</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.lead.customer_name}</p>
+                                                <p className="text-sm w-[55%] font-medium flex items-center gap-[5px] ">{selectedProject.job.lead.customer_first_name} {selectedProject.job.lead.customer_last_name}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">Client Address</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.lead.address}</p>
+                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.lead.customer_address}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">Client Email</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.lead.email}</p>
+                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.lead.customer_email}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">Client Phone</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.lead.phone_number}</p>
+                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.job.lead.customer_phone}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">Contract Amount</p>
-                                                <p className="text-sm w-[55%] font-medium ">$ {selectedProject.contract_amount.toLocaleString()}</p>
+                                                <p className="text-sm w-[55%] font-medium ">$ {selectedProject.job.contract_amount.toLocaleString()}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">Contract Date</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.contract_date}</p>
+                                                <p className="text-sm w-[55%] font-medium ">{readable_day(Number(selectedProject.job.contract_date))}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">Attached</p>
-                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.contract_date.attached ? 'True': 'False'}</p>
+                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.attached ? 'True': 'False'}</p>
+                                            </span>
+                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm w-[45%] ">Free Standing</p>
+                                                <p className="text-sm w-[55%] font-medium ">{selectedProject.attached == 'freestanding' ? 'True': 'False'}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">Struture Type</p>
                                                 <p className="text-sm w-[55%] font-medium ">{selectedProject.structure_type}</p>
                                             </span>
-                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                            {/* <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">Description</p>
                                                 <p className="text-sm w-[55%] font-medium ">{selectedProject.description || '-'}</p>
-                                            </span>
+                                            </span> */}
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[45%] ">End Cap Style</p>
                                                 <p className="text-sm w-[55%] font-medium ">{selectedProject.end_cap_style || '-'}</p>
@@ -491,32 +476,42 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                                                 <p className="text-sm w-[45%] ">Trim Color</p>
                                                 <p className="text-sm w-[55%] font-medium ">{selectedProject.trim_color || '-'}</p>
                                             </span>
-                                           
                                             
                                         </div>
 
-                                        <div className="w-1/2 flex flex-col item-start justify-start gap-[15px]">
-                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[50%] ">Added By</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.project_adder.first_name} {selectedProject.project_adder.last_name}</p>
-                                            </span>
+                                        <div className="w-1/2 h-[75vh] flex flex-col item-start justify-start gap-[15px] overflow-y-auto">
+
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[50%] ">General Permit Status</p>
                                                 {selectedProject.job.general_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedProject.job.general_permit_status.replace(/_/g, ' ')}</p>:
                                                 <p className="text-sm w-[50%] font-medium ">-</p>}
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[50%] ">Genral Permit Number</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.general_permit_number || '-'}</p>
-                                            </span>
-                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[50%] ">General Permit Submit Date</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.general_permit_submit_date || '-'}</p>
+                                                <p className="text-sm w-[50%] font-medium ">{ selectedProject.job.general_permit_submit_date != 0 ? readable_day(Number(selectedProject.job.general_permit_submit_date)) : '-'}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[50%] ">General Permit Approval Date</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.general_permit_approval_date || '-'}</p>
+                                                <p className="text-sm w-[50%] font-medium ">{ selectedProject.job.general_permit_approval_date != 0 ? readable_day(Number(selectedProject.job.general_permit_approval_date)) : '-'}</p>
                                             </span>
+                                            
+                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm w-[50%] ">General Permit Number</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.general_permit_number || '-'}</p>
+                                            </span>
+                                            <span className="w-full flex flex-col items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm text-start ">General Permit Documents</p>
+                                                <span className="w-full flex flex-col items-start justify-start gap-[5px] ">
+                                                    {
+                                                        selectedProject.job.general_permit_document.map((data:string, ind:number)=>{
+                                                            return(
+                                                                <p key={ind} className="text-sm text-blue-600 font-medium">{data}</p>
+                                                            )
+                                                        })
+                                                    }
+                                                </span>
+                                            </span>
+                                            
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[50%] ">Hoa Permit Status</p>
                                                 {selectedProject.job.hoa_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedProject.job.hoa_permit_status.replace(/_/g, ' ')}</p>:
@@ -524,11 +519,27 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[50%] ">Hoa Permit Submit Date</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.hoa_permit_submit_date || '-'}</p>
+                                                <p className="text-sm w-[50%] font-medium ">{ selectedProject.job.hoa_permit_submit_date != 0 ? readable_day(Number(selectedProject.job.hoa_permit_submit_date)) : '-'}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[50%] ">Hoa Approval Date</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.hoa_permit_approval_date || '-'}</p>
+                                                <p className="text-sm w-[50%] font-medium ">{ selectedProject.job.hoa_permit_approval_date != 0 ? readable_day(Number(selectedProject.job.hoa_permit_approval_date)) : '-'}</p>
+                                            </span>
+                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm w-[50%] ">Hoa Permit Number</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.hoa_permit_number || '-'}</p>
+                                            </span>
+                                            <span className="w-full flex flex-col items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm text-start ">Hoa Permit Documents</p>
+                                                <span className="w-full flex flex-col items-start justify-start gap-[5px] ">
+                                                    {
+                                                        selectedProject.job.hoa_permit_document.map((data:string, ind:number)=>{
+                                                            return(
+                                                                <p key={ind} className="text-sm text-blue-600 font-medium">{data}</p>
+                                                            )
+                                                        })
+                                                    }
+                                                </span>
                                             </span>
                                             
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
@@ -538,33 +549,36 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[50%] ">Engineering Permit Submit Date</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.engineering_permit_submit_date || '-'}</p>
+                                                <p className="text-sm w-[50%] font-medium ">{ selectedProject.job.engineering_permit_submit_date != 0 ? readable_day(Number(selectedProject.job.engineering_permit_submit_date)) : '-'}</p>
                                             </span>
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[50%] ">Engineering Permit Approval Date</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.engineering_permit_approval_date || '-'}</p>
+                                                <p className="text-sm w-[50%] font-medium ">{ selectedProject.job.engineering_permit_approval_date != 0 ? readable_day(Number(selectedProject.job.engineering_permit_approval_date)) : '-'}</p>
+                                            </span>
+                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm w-[50%] ">Engineering Permit Number</p>
+                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.engineering_permit_number || '-'}</p>
+                                            </span>
+                                            <span className="w-full flex flex-col items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm text-start ">Engineering Permit Documents</p>
+                                                <span className="w-full flex flex-col items-start justify-start gap-[5px] ">
+                                                    {
+                                                        selectedProject.job.engineering_permit_document.map((data:string, ind:number)=>{
+                                                            return(
+                                                                <p key={ind} className="text-sm text-blue-600 font-medium">{data}</p>
+                                                            )
+                                                        })
+                                                    }
+                                                </span>
                                             </span>
                                             
-                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[50%] ">Electrical Permit Status</p>
-                                                {selectedProject.job.electrical_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedProject.job.electrical_permit_status.replace(/_/g, ' ')}</p>:
-                                                <p className="text-sm w-[50%] font-medium ">-</p>}
-                                            </span>
-                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[50%] ">Electrical Permit Submit Date</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.electrical_permit_submit_date || '-'}</p>
-                                            </span>
-                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[50%] ">Electrical Permit Approval Date</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.electrical_permit_approval_date || '-'}</p>
-                                            </span>
                                             
                                         </div>
                                         
                                     </form>
 
 
-                            </div>
+                                </div>
                                 }
 
                             </div>

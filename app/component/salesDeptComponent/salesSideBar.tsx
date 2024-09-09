@@ -16,6 +16,8 @@ import { BiSolidReport } from "react-icons/bi";
 import {SideBarNav} from '../../../types/index'
 import { GiSuitcase } from "react-icons/gi";
 import { RiHome8Fill } from "react-icons/ri";
+import { HiMiniLink } from "react-icons/hi2";
+
 
 
 
@@ -56,9 +58,9 @@ const SalesSideBar = ({active, setActive}: SideBarNav) => {
                         <FaUserTag size={21} className='text-slate-800' /> 
                         <p className="text-[16px]">Leads</p>
                     </span>
-                    <span className={active === "sales-pipeline"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('sales-pipeline')}}>
-                        <IoStatsChartSharp size={21} className='text-slate-800' />
-                        <p className="text-[16px]">Sales Pipeline</p>
+                    <span className={active === "pipeline"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('pipeline')}}>
+                        <HiMiniLink size={21} className='text-slate-800' />
+                        <p className="text-[16px]">Pipeline</p>
                     </span>
                     <span className={active === "jobs"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('jobs')}}>
                         <GiSuitcase size={21} className='text-slate-800' />
