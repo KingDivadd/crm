@@ -5,7 +5,6 @@ import { DeleteTaskProps } from "../../../types/index"
 import Alert from '../alert'
 import { IoIosWarning } from "react-icons/io";
 import { DropDownBlankTransparent } from '../dropDown'
-import ImageUploader, { FilesUpload, FlexibleImageUploader } from '../imageUploader'
 import MyDatePicker from '../datePicker'
 
 const PojectModalPage = ({ showModal, setShowModal, selectedItem, setSelectedItem, show, setShow }: DeleteTaskProps) => {
