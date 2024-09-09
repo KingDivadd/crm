@@ -5,7 +5,7 @@ import { AdminShortcutProps,  } from "../../../types/index"
 import Alert from '../alert'
 import { IoIosWarning } from "react-icons/io";
 import { DropDownBlankTransparent } from '../dropDown'
-import ImageUploader, { FilesUpload, FlexibleImageUploader } from '../imageUploader'
+import ImageUploader, { FlexibleImageUploader } from '../imageUploader'
 import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request } from '@/app/api/admin_api'
