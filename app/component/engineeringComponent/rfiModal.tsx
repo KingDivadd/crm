@@ -5,7 +5,7 @@ import { DeleteTaskProps } from "../../../types/index"
 import Alert from '../alert'
 import { IoIosWarning } from "react-icons/io";
 import { DropDownBlankTransparent } from '../dropDown'
-import ImageUploader, { FilesUpload } from '../imageUploader'
+import ImageUploader, { FileUploader } from '../imageUploader'
 import MyDatePicker from '../datePicker'
 
 const RfiModal = ({ showModal, setShowModal, selectedItem, setSelectedItem, show, setShow }: DeleteTaskProps) => {
@@ -193,7 +193,7 @@ const RfiModal = ({ showModal, setShowModal, selectedItem, setSelectedItem, show
                                             </span>
 
                                             <span className="w-full h-[320px] ">
-                                                <FilesUpload id='files' title='Attachemnt' url='' key={12} image={''} />
+                                                <FileUploader id='files' title='Attachemnt' url='' key={12}  />
                                             </span>
 
 
@@ -300,7 +300,7 @@ const RfiModal = ({ showModal, setShowModal, selectedItem, setSelectedItem, show
                                                         </div>
 
                                                         <span className="w-full h-[340px] flex flex-col items-start justify-start gap-2">
-                                                            <FilesUpload id={'user-image'} title={"Choose a file"} url={''} image={''} />
+                                                            <FileUploader id={'user-image'} title={"Choose a file"} url={''} />
                                                         </span>
 
                                                     </div>

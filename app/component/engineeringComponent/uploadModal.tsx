@@ -5,7 +5,7 @@ import { DeleteTaskProps } from "../../../types/index"
 import Alert from '../alert'
 import { IoIosWarning } from "react-icons/io";
 import { DropDownBlankTransparent } from '../dropDown'
-import ImageUploader, { FilesUpload, FlexibleImageUploader } from '../imageUploader'
+import ImageUploader, { FlexibleImageUploader } from '../imageUploader'
 import MyDatePicker from '../datePicker'
 
 const UploadDrawingModal = ({ showModal, setShowModal, selectedItem, setSelectedItem, show, setShow }: DeleteTaskProps) => {
@@ -132,7 +132,7 @@ const UploadDrawingModal = ({ showModal, setShowModal, selectedItem, setSelected
                                             </span>
 
                                             <span className="w-full h-[340px] flex flex-col items-start justify-start gap-2">
-                                                <FilesUpload id={'user-image'} title={"Choose a file"} url={''} image={''} />
+                                                <ImageUploader id={'user-image'} title={"Choose a file"} url={''} image={''} />
                                             </span>
 
 
