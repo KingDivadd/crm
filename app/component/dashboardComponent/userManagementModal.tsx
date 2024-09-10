@@ -290,7 +290,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                                     <span className="w-full flex flex-col items-start justify-start gap-2">
                                                         <h4 className="text-[15.5px] font-light">Select Role</h4>
                                                         <span className="w-full">
-                                                            <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Installer', 'Engineering', 'Permit', 'Electrical', 'Accounting']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                            <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Designer', 'Customer', 'Installer', 'Engineering', 'Permit', 'Electrical', 'Accounting']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                                         </span>
                                                         <h4 className="text-[15.5px] font-medium mt-[8px]">Description</h4>
                                                         {/* now list the basic features of these user_roles */}
@@ -436,7 +436,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                                     <span className="w-full flex flex-col items-start justify-start gap-2">
                                                         <h4 className="text-[15.5px] font-light">Select Role</h4>
                                                         <span className="w-full">
-                                                            <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Operation', 'Designer', 'Customer', 'Installer', 'Engineering', 'Permit', 'Electrical', 'Accounting']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                            <DropDownBlank handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Designer', 'Customer', 'Installer', 'Engineering', 'Permit', 'Electrical', 'Accounting']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                                         </span>
                                                         <h4 className="text-[15.5px] font-medium mt-[8px]">Description</h4>
                                                         {/* now list the basic features of these user_roles */}
