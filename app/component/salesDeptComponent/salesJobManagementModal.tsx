@@ -25,7 +25,6 @@ interface Job_Management_Props {
 const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelectedJob, modalFor}: Job_Management_Props) => {
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
-    const [approve_loading, setApprove_loading] = useState(false)
     const [all_leads, setAll_leads] = useState<{leads: any[]}|null>(null)
     const [filtered_leads, setFiltered_leads] = useState<{ leads: any[] } | null>(null);
 
@@ -118,6 +117,11 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
     
     useEffect(() => {
         const user_role = localStorage.getItem('user-role')
+
+        if(user_role == 'permit'){
+            setRole('permit')
+            setRoll_next('permit')
+        }
         
         setRole(user_role || 'sales')
         if (modalFor == 'add'){
@@ -133,8 +137,6 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                 general_permit_status, general_permit_submit_date, general_permit_approval_date, general_permit_number, general_permit_cost, general_permit_document,
 
             } = selectedJob
-
-            console.log(`${lead.customer_first_name} ${lead.customer_last_name}`, 'lead : ', lead)
             
             const proj = project[0]
             
@@ -148,16 +150,19 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                 general_permit_status, general_permit_submit_date, general_permit_approval_date, general_permit_number, general_permit_cost, general_permit_document,
             })
 
-            setTimeout(() => {
-                setDropElements({...dropElements, hoa_permit_status, general_permit_status, engineering_permit_status})
-                setSelected_lead(`${lead.customer_first_name} ${lead.customer_last_name}`)
-            }, 100);
+            if (user_role !== 'permit'){
+
+                setTimeout(() => {
+                    setDropElements({...dropElements, hoa_permit_status, general_permit_status, engineering_permit_status})
+                    setSelected_lead(`${lead.customer_first_name} ${lead.customer_last_name}`)
+                }, 100);
 
             
-            setDropElements({...dropElements, structure_type: selectedJob.project[0].structure_type, attached: selectedJob.project[0].attached ? 'True' : 'False' })
+                setDropElements({...dropElements, structure_type: selectedJob.project[0].structure_type, attached: selectedJob.project[0].attached ? 'True' : 'False' })
 
-            setSelected_lead(lead.customer_name)
-        }
+                setSelected_lead(lead.customer_name)
+                }
+            }
     }, [])
 
     async function get_all_leads() {
@@ -259,7 +264,9 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                 
                     showAlert(response.data.msg, "success")
                     
-                    setShowModal(false)
+                    setTimeout(() => {
+                        setShowModal(false)
+                    }, 1000);
                     
                     setLoading(false)
 
@@ -395,7 +402,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
                                         <p className="text-md font-semibold  text-slate-800 ">New Job </p>
 
-                                        <div className="relative flex items-start justify-center z-[25] ">
+                                        {role !== 'permit' && <div className="relative flex items-start justify-center z-[25] ">
                                             <div className="flex items-center justify-center gap-5">
                                                 {selected_lead && <span className="flex items-center justify-start gap-2">
                                                     <p className="text-[15px]">Lead name:</p>
@@ -459,7 +466,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                                 }
 
                                             </div>}
-                                        </div> 
+                                        </div>} 
 
                                     </span>
 
@@ -791,7 +798,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                         <p className="text-white w-1/3 ">.</p>
 
-                                        <button className="w-1/3 h-[40px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-[15px]" onClick={()=> setRoll_next('first')} >Back</button>
+                                        {role == 'permit' ? <p></p> : <button className="w-1/3 h-[40px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-[15px]" onClick={()=> setRoll_next('first')} >Back</button>}
                                         
 
                                         <button className=" w-1/3 h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-[15px] "  disabled={loading} onClick={create_job} >
@@ -813,7 +820,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px]  ">
                                         <p className="text-md flex items-center gap-[10px] ">Edit Job: <p className="text-md font-medium">{selectedJob.job_ind}</p> </p>
 
-                                        <div className="relative flex items-start justify-center z-[25] ">
+                                        {role !== 'permit' && <div className="relative flex items-start justify-center z-[25] ">
                                             <div className="flex items-center justify-center gap-5">
                                                 {selected_lead && <span className="flex items-center justify-start gap-2">
                                                     <p className="text-[15px]">Lead name:</p>
@@ -859,13 +866,13 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                                 </div>
 
                                             </div>}
-                                        </div> 
+                                        </div> }
 
                                     </span>
 
                                 {roll_next == "first" ? 
                                 
-                                <form  action="" className="w-full h-[63.5vh] flex items-start justify-between gap-[20px]">
+                                <form action="" className="w-full h-[63.5vh] flex items-start justify-between gap-[20px]">
                                     <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
 
                                         <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
@@ -1191,7 +1198,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                     <p className="text-white w-1/3 ">.</p>
 
-                                    <button className="w-1/3 h-[40px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-[15px]"  onClick={()=> setRoll_next('first')}>Back</button>
+                                    {role == "permit" ? <p className="text-white">.</p> : <button className="w-1/3 h-[40px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-[15px]"  onClick={()=> setRoll_next('first')}>Back</button>}
                                     
 
                                     <button className=" w-1/3 h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-[15px] "  disabled={loading} onClick={update_job} >
@@ -1288,7 +1295,11 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                                     {
                                                         selectedJob.general_permit_document.map((data:string, ind:number)=>{
                                                             return(
-                                                                <p key={ind} className="text-sm text-blue-600 font-medium">{data}</p>
+                                                                <span key={ind} className="w-full flex items-center gap-[10px] pl-[20px] ">
+                                                                    {ind + 1}.
+                                                                
+                                                                    <a href={data} className="text-sm text-blue-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer" >{data}</a>
+                                                                </span>
                                                             )
                                                         })
                                                     }
@@ -1314,11 +1325,15 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                             </span>
                                             <span className="w-full flex flex-col items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm text-start ">Hoa Permit Documents</p>
-                                                <span className="w-full flex flex-col items-start justify-start gap-[5px] ">
+                                                <span className="w-full  flex flex-col items-start justify-start gap-[5px] ">
                                                     {
                                                         selectedJob.hoa_permit_document.map((data:string, ind:number)=>{
                                                             return(
-                                                                <p key={ind} className="text-sm text-blue-600 font-medium">{data}</p>
+                                                                <span key={ind} className="w-full flex items-center gap-[10px] pl-[20px] ">
+                                                                    {ind + 1}.
+                                                                
+                                                                    <a href={data} className="text-sm text-blue-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer" >{data}</a>
+                                                                </span>
                                                             )
                                                         })
                                                     }
@@ -1348,7 +1363,11 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                                     {
                                                         selectedJob.engineering_permit_document.map((data:string, ind:number)=>{
                                                             return(
-                                                                <p key={ind} className="text-sm text-blue-600 font-medium">{data}</p>
+                                                                <span key={ind} className="w-full flex items-center gap-[10px] pl-[20px] ">
+                                                                    {ind + 1}.
+                                                                
+                                                                    <a href={data} className="text-sm text-blue-600 hover:underline font-medium" target="_blank" rel="noopener noreferrer" >{data}</a>
+                                                                </span>
                                                             )
                                                         })
                                                     }

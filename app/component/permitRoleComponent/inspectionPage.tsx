@@ -73,7 +73,7 @@ const InspectionPage = () => {
 
         console.log('started fetching');
         
-        const response = await get_auth_request(`auth/all-leads/${page_number}`)
+        const response = await get_auth_request(`app/all-paginated-leads/${page_number}`)
 
         if (response.status == 200 || response.status == 201){
             

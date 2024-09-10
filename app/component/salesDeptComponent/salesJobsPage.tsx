@@ -255,22 +255,6 @@ const SalesJobPage = () => {
                         <span className="w-[300px] h-[40px] ">
                             <input type="text" name="filter-input" onChange={handleFilter} placeholder='search for job...' id="" className='normal-input bg-gray-100 text-[15.5px] ' />
                         </span>
-
-                        {/* <span className="h-[40px] min-w-[175px]">
-                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'hoa_permit_status'} dropArray={['PENDING', 'SENT', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                        </span> */}
-{/* 
-                        <span className="h-[40px] min-w-[175px]">
-                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'general_permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                        </span> */}
-
-                        {/* <span className="h-[40px] min-w-[175px]">
-                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'engineering_permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                        </span>
-
-                        <span className="h-[40px] min-w-[175px]">
-                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'electrical_permit_status'} dropArray={['SUBMITTED', 'APPROVED', 'REJECTED', 'NOT REQUIRED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                        </span> */}
                         
                         {(role == 'sales' || role == 'admin' || role == 'super_admin' ) && 
                         <button className="h-full px-5 text-[15.5px] bg-blue-700 hover:bg-blue-600 rounded-[3px] text-white" onClick={add_job}>Create Job</button>

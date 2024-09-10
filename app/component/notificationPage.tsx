@@ -36,17 +36,18 @@ const NotificationPage = () => {
         if (item){
             setAuth_id(item)
         }
-      get_notification(page_number)
+        get_notification(page_number)
     
     }, [showModal])
 
     async function get_notification(page_num:number) {
 
-        const response = await get_auth_request(`auth/all-notifications/${page_num}`)
+        const response = await get_auth_request(`app/all-notifications/${page_num}`)
 
         if (response.status == 200 || response.status == 201){
             
-            setNotification_page(response.data)                  
+            setNotification_page(response.data);           
+
 
         }else{            
             if (response.response){
@@ -152,16 +153,16 @@ const NotificationPage = () => {
                             <>
                             {notification_page.notification.map((data:any, ind:any)=>{
 
-                                const {created_at, subject, message, read, read_by, user, source, } = data
+                                const {created_at, subject, message, read, read_by, user, source, notification_source } = data
                                 
                                 return (
                                     <span key={ind} className="recent-activity-table-list " onClick={()=> show_item(data)} >
                                         <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
                                         <p className="text-sm w-[20.5%] px-2 ">{subject}</p>
                                         <p className="text-sm w-[34.5%] px-2 ">{message}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{source.last_name} {source.first_name} </p>
+                                        <p className="text-sm w-[15%] px-2 ">{notification_source.first_name} {notification_source.last_name} </p>
                                         <p className={(read && read_by.includes(auth_id)) ? "text-sm w-[7.5%] text-green-600 px-2 ":"text-sm w-[7.5%] px-2 text-red-600 "}>{(read && read_by.includes(auth_id)) ? "read": "unread"}</p>
-                                        <p className="text-sm w-[7.5%] px-2 hover:text-blue-700 hover:underline "> view </p>
+                                        <p className="text-sm w-[7.5%] px-2 text-blue-600 hover:underline  "> view </p>
                                     </span>
                                 )
                             })}

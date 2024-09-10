@@ -35,7 +35,7 @@ const SalesDashboard = () => {
                     {active === "pipeline" && <PipelinePage /> }
                     {active === "jobs" && <SalesJobsPage /> }
                 
-                    {active === "reports" && <SalesReportPage /> }
+                    {/* {active === "reports" && <SalesReportPage /> } */}
                     {active === "notification" && <NotificationPage /> }
                     {active === "settings" && <SystemSettings /> }
                     

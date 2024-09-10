@@ -17,6 +17,7 @@ import { RiUserLocationFill } from "react-icons/ri";
 import { MdAssignmentTurnedIn, MdCheckCircleOutline, MdLiveHelp, MdNotifications, MdWork } from "react-icons/md";
 import { RiLuggageCartFill } from "react-icons/ri";
 import { GiSuitcase } from 'react-icons/gi';
+import { FcApproval } from 'react-icons/fc';
 
 
 
@@ -54,13 +55,13 @@ const PermitRoleSidebar = ({active, setActive}: SideBarNav) => {
                         {active !== "sales" && <p className="text-[15.5px]">Home</p>}
                     </span>
                     <span className={active === "all-permit"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('all-permit')}}>
-                        <FaFileAlt size={21} /> 
+                        <FcApproval size={21} className={"text-slate-800"} /> 
                         <p className="text-[15.5px]">All Permit</p>
                     </span>
-                    <span className={active === "taskManagement"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('taskManagement')}}>
+                    {/* <span className={active === "taskManagement"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('taskManagement')}}>
                         <FaFileAlt size={21} /> 
                         <p className="text-[15.5px]">Task Management</p>
-                    </span>
+                    </span> */}
                     <span className={active === "inspection"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('inspection')}}>
                         <MdAssignmentTurnedIn size={21} /> 
                         <p className="text-[15.5px]"> Inspection Page</p>

@@ -59,10 +59,11 @@ const SideBar = ({active, setActive}:SideBarNav) => {
                         <PiLinkSimpleBold  size={22} /> 
                         <p className="text-[15.5px]">Pipeline</p>
                     </span>
-                    <span className={active === "taskManagement"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('taskManagement')}}>
+                    
+                    {/* <span className={active === "taskManagement"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('taskManagement')}}>
                         <FaFileAlt size={21} /> 
                         <p className="text-[15.5px]">Task Management</p>
-                    </span>
+                    </span> */}
 
                     <span className={active === "notifications"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notifications')}}>
                         <MdNotifications size={21} />

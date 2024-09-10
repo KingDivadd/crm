@@ -28,7 +28,7 @@ const SalesDashboardPage = () => {
     async function get_sales_dashboard_data() {
 
         try {
-            const response = await get_auth_request(`sales/sales-main-dashboard`)
+            const response = await get_auth_request(`app/sales-main-dashboard`)
             
     
             if (response.status == 200 || response.status == 201){

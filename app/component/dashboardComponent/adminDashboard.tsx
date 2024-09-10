@@ -22,13 +22,13 @@ const AdminDashboard = () => {
         const item = sessionStorage.getItem('side_nav')
         setActive( item || 'home')
         
-        // if (item == null || item == "" || !['home', 'user-management', 'leads', 'job', 'project-status', 'notifications', 'taskManagement', 'system-settings'].includes(active)) {
-        //     setActive('home')
-        //     console.log(' nav ', item)
-        // }else{
-        //     console.log(' else nav ', item)
-        //     setActive(item)
-        // }
+        if (item == null || item == "" || !['home', 'user-management', 'leads', 'job', 'project-status', 'notifications', 'taskManagement', 'system-settings'].includes(active)) {
+            setActive('home')
+            console.log(' nav ', item)
+        }else{
+            console.log(' else nav ', item)
+            setActive(item)
+        }
         
     }, [])
 
@@ -49,9 +49,7 @@ const AdminDashboard = () => {
                     {active === "pipeline" && <PipelinePage /> }
                     
                     {active === "notifications" && <NotificationPage /> }
-                    {/* {active === "logs" && <AdminLogsPage /> } */}
                     {active === "system-settings" && <AdminSystemSettings /> }
-                    {active === "taskManagement" && <TaskManagement /> }
                 </div>
             </div>
         </div>

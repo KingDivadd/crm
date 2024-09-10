@@ -9,6 +9,7 @@ import ViewLead from './salesViewLead';
 import Lead_Management_Modal from "./salesLeadManagementModal"
 import { readable_day } from '../helper';
 import { get_auth_request } from '../../api/admin_api';
+import Pipeline_Modal from './pipelineModal';
 
 interface Leads_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
@@ -22,7 +23,7 @@ interface Leads_Props {
 const PipelinePage = () => {
     const [modalFor, setModalFor] = useState('')
     const [showModal, setShowModal] = useState(false)
-    const [selectedLead, setSelectedLead] = useState(null)
+    const [selectedPipeline, setSelectedPipeline] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [page_number, setPage_number] = useState(1)
     const [lead_box, setLead_box] = useState<Leads_Props | null>(null);
@@ -78,7 +79,10 @@ const PipelinePage = () => {
             
             setLead_box(response.data)      
             
-            setFiltered_lead_box(response.data)            
+            setFiltered_lead_box(response.data)      
+
+            console.log('piple resopnse ',response.data)      
+
 
         }else{        
         showAlert(response.response.data.err, "error")
@@ -216,27 +220,27 @@ const PipelinePage = () => {
     
     function add_lead(){
         setShowModal(true)
-        setSelectedLead(null)
+        setSelectedPipeline(null)
         setModalFor('add')
     }
 
     function edit_lead(lead:any){
         setShowModal(true)
-        setSelectedLead(lead)
+        setSelectedPipeline(lead)
         setModalFor('edit')
     }
 
     function upload_lead_doc(lead:any){
         sessionStorage.setItem('lead_modal', 'upload_lead_file')
         setShowModal(true)
-        setSelectedLead(lead)
+        setSelectedPipeline(lead)
         setModalFor('edit')
     }
 
-    function delete_lead(lead:any){
+    function view_pipeline(lead:any){
         setShowModal(true)
-        setSelectedLead(lead)
-        setModalFor('delete')
+        setSelectedPipeline(lead)
+        setModalFor('view')
     }
 
     return (
@@ -271,14 +275,15 @@ const PipelinePage = () => {
                     {(role == 'sales' || role == 'admin' || role == 'super_admin' ) ? 
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Lead Name</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Address</p>
-                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Phone </p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Designer</p>
-                        <p className="text-[15.5px] font-normal w-[9%] px-2 ">Disposition</p>
-                        <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Updated On</p>
-                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Action</p>
-                        <p className="text-[15.5px] font-normal w-[9%] px-2 "></p>
+                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Job Id</p>
+                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Job Number</p>
+                        <p className="text-[15.5px] font-normal w-[8.5%] px-2 ">Project Id</p>
+                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Disposition</p>
+                        <p className="text-[15.5px] font-normal w-[14%] px-2 ">Lead Name </p>
+                        <p className="text-[15.5px] font-normal w-[14%] px-2 ">Designer</p>
+                        <p className="text-[15.5px] font-normal w-[14%] px-2 ">Added By</p>
+                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Contract Amt</p>
+                        <p className="text-[15.5px] font-normal w-[4.5%] px-2 "></p>
                     </span>:
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
@@ -301,32 +306,35 @@ const PipelinePage = () => {
                                 {lead_box?.leads.length ?
                                 <>
                                 { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                    const {customer_last_name, customer_first_name, customer_state, customer_city, customer_zip, customer_phone, lead_adder, updated_at, lead_designer, disposition, lead_ind, gate_code, contract_document} = data
+                                    const {lead_ind, job, customer_last_name, customer_first_name, customer_state, customer_city, customer_zip, customer_phone, lead_adder, updated_at, lead_designer, disposition, gate_code, contract_document} = data
                                     return (
                                         <div key={ind}>
                                         {(role == 'sales' || role == 'admin' || role == 'super_admin' ) ? 
                                         <span className="recent-activity-table-list " >
                                             <p className="text-[15.5px] w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_first_name} {customer_last_name} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_state}, {customer_city} </p>
-                                            <p className="text-[15.5px] w-[10%] px-2 "> {customer_phone} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {lead_designer.last_name} {lead_designer.first_name} </p>
-                                            <p className={disposition == "sold" ? "text-[15.5px] w-[9%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-[15.5px] w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
-                                            <p className="text-[15.5px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
-                                        
-                                            <p className="text-[15.5px] w-[9%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                            <p className="text-[15.5px] w-[7.5%] px-2 "> {job.length ? job[0].job_ind : "-"} </p>
+                                            <p className="text-[15.5px] w-[10%] px-2 "> {job.length ? job[0].job_number : "-"} </p>
+                                            <p className="text-[15.5px] w-[8.5%] px-2 "> {job.project ? job.project[0].project_ind : "-"} </p>
+                                            <p className={disposition == "sold" ? "text-[15.5px] w-[10%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-[15.5px] w-[14%] px-2 "> {customer_first_name} {customer_last_name} </p>
+                                            <p className="text-[15.5px] w-[14%] px-2 "> {lead_designer.first_name} {lead_designer.last_name} </p>
+                                            <p className="text-[15.5px] w-[14%] px-2 "> {lead_adder.first_name} {lead_adder.last_name} </p>
+                                            <p className="text-[15.5px] w-[10%] px-2 "> {job.length ? Number(job[0].contract_amount).toLocaleString() : "-"} </p>
+                                            
+                                            <p className="text-[15.5px] w-[4.5%] px-2 flex flex-row items-center justify-start gap-2 text-blue-600 hover:underline cursor-pointer" onClick={()=> {view_pipeline(data)} } >view</p>
                                         </span>:
                                         <span className="recent-activity-table-list " >
                                             <p className="text-[15.5px] w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_first_name} {customer_last_name}  </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_state}, {customer_city} </p>
-                                            <p className="text-[15.5px] w-[10%] px-2 "> {customer_phone} </p>
-                                            <p className={contract_document.length ? "text-[15.5px] w-[10.5%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[10.5%] px-2 "}> {contract_document.length ? "true": "false"} </p>
-                                            <p className={disposition == "sold" ? "text-[15.5px] w-[9%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-[15.5px] w-[12.5%] px-2 ">{readable_day(Number(updated_at))} </p>
-                                            <p className="text-[15.5px] w-[11.5%] px-2 "> {lead_adder.last_name} {lead_adder.first_name} </p>
-                                            <p className="text-[15.5px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{upload_lead_doc(data)}} ><MdEdit size={16} /> Edit</p>
+                                            <p className="text-[15.5px] w-[7.5%] px-2 "> {job.length ? job[0].job_ind : "-"} </p>
+                                            <p className="text-[15.5px] w-[10%] px-2 "> {job.length ? job[0].job_number : "-"} </p>
+                                            <p className="text-[15.5px] w-[8.5%] px-2 "> {job.project ? job.project[0].project_ind : "-"} </p>
+                                            <p className={disposition == "sold" ? "text-[15.5px] w-[10%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-[15.5px] w-[14%] px-2 "> {customer_first_name} {customer_last_name} </p>
+                                            <p className="text-[15.5px] w-[14%] px-2 "> {lead_designer.first_name} {lead_designer.last_name} </p>
+                                            <p className="text-[15.5px] w-[14%] px-2 "> {lead_adder.first_name} {lead_adder.last_name} </p>
+                                            <p className="text-[15.5px] w-[10%] px-2 "> {job.length ? Number(job[0].contract_amount).toLocaleString() : "-"} </p>
+                                            
+                                            <p className="text-[15.5px] w-[4.5%] px-2 flex flex-row items-center justify-start gap-2 text-blue-600 hover:underline cursor-pointer" onClick={()=> {view_pipeline(data)} } >view</p>
                                         </span>}
                                         </div>
                                     )
@@ -364,7 +372,7 @@ const PipelinePage = () => {
                 </div>
 
             </div>
-            {showModal && <Lead_Management_Modal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedLead={selectedLead} setModalFor={setModalFor} setSelectedLead={setSelectedLead} /> }
+            {showModal && <Pipeline_Modal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedPipeline={selectedPipeline} setModalFor={setModalFor} setSelectedPipeline={setSelectedPipeline} /> }
         </div>
     )
 }

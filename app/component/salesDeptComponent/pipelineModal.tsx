@@ -35,7 +35,6 @@ const Pipeline_Modal = ({ showModal, setShowModal, selectedPipeline, setSelected
         if (modalFor == 'add'){
         }else if (modalFor == 'view'){     
             console.log('selected pipeline ', selectedPipeline);
-                   
         }
     }, [])
 
@@ -49,7 +48,7 @@ const Pipeline_Modal = ({ showModal, setShowModal, selectedPipeline, setSelected
                 <div className="fixed inset-0 transition-opacity" aria-hidden="true">
                     <div className="absolute inset-0 bg-gray-500 opacity-35"></div>
                 </div>
-                <div className={ modalFor == 'delete' ? "w-full h-screen pt-[150px] rounded-lg overflow-hidden shadow-xl transform transition-all": "w-full h-screen pt-[85px] rounded-lg overflow-hidden shadow-xl transform transition-all" } role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
+                <div className="w-full h-screen flex items-center rounded-lg overflow-hidden shadow-xl transform transition-all" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
 
                     <div className={"h-auto w-[85%] mx-auto shadow-xl flex items-start "}>
                         {/* the container for the input fields */}
@@ -63,193 +62,126 @@ const Pipeline_Modal = ({ showModal, setShowModal, selectedPipeline, setSelected
                                         
                                     </div>
 
-                                    <div className="w-full h-full flex items-start justify-start gap-[15px]">
-                                        <div className="w-1/2 h-full flex flex-col items-start justify-start gap-[10px] ">
+                                    <div className="w-full flex items-start justify-start gap-[15px] h-[50vh] overflow-y-auto ">
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Job Id</p>    
-                                                {selectedPipeline.job ?
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.job_ind}</p>   :
-                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
-                                            </span>
+                                        <div className="w-full flex flex-col items-center justify-start gap-[60px]">
+                                            {/* the first row 1. Lead created 2. Lead sold, 3. Job & Project Created */}
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Lead Id</p>    
-                                                {selectedPipeline.lead ?
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.lead_ind}</p>    :
-                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
-                                            </span>
+                                            <div className="w-auto h-[80px] flex items-center justify-center gap-[100px]">
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Customer Name</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.customer_first_name} {selectedPipeline.lead.customer_last_name}</p>    
-                                            </span>
+                                                <span className="active-pipeline-box-flow-1">
+                                                    <p className="text-[15px] text-blue-600 ">Lead Created</p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Address</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.state}, {selectedPipeline.lead.city}</p>    
-                                            </span>
-                                            
-                                             <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Phone Number</p>    
-                                                {selectedPipeline.lead.phone_number ? 
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.phone_number}</p>    :
-                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
-                                            </span>
+                                                <span className="pipeline-box-flow-1">
+                                                    <p className="text-[15px] ">Lead Sold</p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Email</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.email}</p>    
-                                            </span>
+                                                <span className={false ? "active-pipeline-box-flow-2": "pipeline-box-flow-2"}>
+                                                    <p className="text-[15px] ">Job Created</p>
+                                                </span>
+                                                
+                                            </div>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Contract Amount</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">${Number(selectedPipeline.contract_amount).toLocaleString()}</p>    
-                                            </span>
+                                            <div className="w-auto h-[80px] flex items-center justify-center gap-[100px]">
 
-                                             <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Gate Code</p>    
-                                                {selectedPipeline.lead.gate_code ? 
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.gate_code}</p>    :
-                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
-                                            </span>
+                                                <span className={false ? "active-pipeline-box-flow-1": "pipeline-box-flow-1"}>
+                                                    <p className="text-[15px] ">Contract Stigned</p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Assigned to </p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.lead.assigned_to.first_name} {selectedPipeline.lead.assigned_to.last_name} ({selectedPipeline.lead.assigned_to.user_role}) </p>    
-                                            </span>
+                                                <span className={false ? "active-pipeline-box-flow-2": "pipeline-box-flow-2"}>
+                                                    <p className="text-[15px] ">Job & Project Details Finalized </p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Appointment Date</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{timestamp_to_readable_value(Number(selectedPipeline.lead.appointment_date))}</p>    
-                                            </span>
+                                            </div>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Disposition</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.disposition.replace(/_/g, ' ')}</p>    
-                                            </span>
+                                            <div className="w-auto h-[80px] flex items-center justify-center gap-[100px]">
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Status</p>    
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.status.replace(/_/g, ' ')}</p>    
-                                            </span>
+                                                <span className="h-full w-[275px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">General Permit Required</p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Contract Date </p>    
-                                                {selectedPipeline.job ?
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.contract_date}</p>  :
-                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
-                                            </span>
+                                                <span className="h-full w-[275px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Engineering Permit Required </p>
+                                                </span>
 
-                                             <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Cover Size </p>    
-                                                {selectedPipeline.job ?
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.cover_size}</p>    :
-                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}   
-                                            </span>
+                                                <span className="h-full w-[275px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Hoa Permit Required </p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[35%]">Cover Color </p>    
-                                                {selectedPipeline.job ? 
-                                                <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.cover_color}</p>    :
-                                                <p className="text-sm font-medium w-[65%] text-start">-</p>}    
-                                            </span>
+                                            </div>
 
-                                        </div>
+                                            <div className="w-auto h-[80px] flex items-center justify-center gap-[100px]">
 
-                                        <div className="w-1/2 h-full flex flex-col items-start justify-start gap-[10px] ">
+                                                <span className="h-full w-[250px] border border-gray-400 rounded-[3px] flex flex-col items-center justify-center gap-[5px] ">
+                                                    <p className="text-[15px] ">General Permit </p>
+                                                    <p className="text-[15px] ">(Approved) </p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">Hoa Status </p>    
-                                                {selectedPipeline.job ? 
-                                                <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.hoa_permit_status.replace(/_/g,' ') || '' }</p>    :
-                                                <p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                                <span className="h-full w-[250px] border border-gray-400 rounded-[3px] flex flex-col items-center justify-center gap-[5px] ">
+                                                    <p className="text-[15px] ">Engineering Permit </p>
+                                                    <p className="text-[15px] "> (Approved) </p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">Hoa Permit Submit Date </p>    
-                                                {(selectedPipeline.job && selectedPipeline.job.hoa_permit_submit_date ) 
-                                                ? <p className="text-sm font-medium w-[65%] text-start">{selectedPipeline.job.hoa_permit_submit_date}</p>    :
-                                                <p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                                <span className="h-full w-[250px] border border-gray-400 rounded-[3px] flex flex-col items-center justify-center gap-[5px] ">
+                                                    <p className="text-[15px] ">HOA Permit </p>
+                                                    <p className="text-[15px] "> (Approved) </p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">Hoa Permit Approval Date </p>    
-                                                {(selectedPipeline.job && selectedPipeline.job.hoa_permit_approval_date ) ? 
-                                                <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.hoa_permit_approval_date}</p>    :
-                                                <p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                            </div>
 
-                                             <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">General Permit Status </p>    
-                                                {selectedPipeline.job ? <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.general_permit_status}</p>    :
-                                                <p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                            <div className="w-auto h-[80px] flex items-center justify-center gap-[100px]">
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">General Permit Submit Date </p>    
-                                                {(selectedPipeline.job && selectedPipeline.job.general_permit_submit_date ) ?
-                                                <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.general_permit_submit_date}</p>    :
-                                                <p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                                <span className="h-full w-[275px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Materials Ordered</p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">General Permit Approval Date </p>    
-                                                {(selectedPipeline.job && selectedPipeline.job.general_permit_approval_date ) ? 
-                                                <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.general_permit_approval_date}</p>    :
-                                                <p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                                <span className="h-full w-[275px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Installation Scheduled</p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">Engineering Permit Status </p>    
-                                                {selectedPipeline.job ? 
-                                                <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.engineering_permit_status.replace(/_/g,' ')}</p>    
-                                                :<p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                                <span className="h-full w-[275px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Job Begins </p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">Engineering Permit Submit Date </p>    
-                                                {(selectedPipeline.job && selectedPipeline.job.engineering_permit_submit_date ) ?
-                                                <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.engineering_permit_submit_date}</p>   :
-                                                <p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                            </div>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">Engineering Permit Approval Date </p>    
-                                                {(selectedPipeline.job && selectedPipeline.job.engineering_permit_approval_date ) ?
-                                                <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.engineering_permit_approval_date}</p>    :
-                                                <p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                            <div className="w-auto h-[80px] flex items-center justify-center gap-[100px]">
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">Electrical Permit Status </p>    
-                                                {selectedPipeline.job ? 
-                                                <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.electrical_permit_status.replace(/_/g,' ')}</p>    
-                                                :<p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                                <span className="h-full w-[250px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Installation Progress </p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">Electrical Permit Sent Date </p>    
-                                                {(selectedPipeline.job && selectedPipeline.job.electrical_permit_submit_date ) ?
-                                                <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.electrical_permit_submit_date}</p>   :
-                                                <p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                                <span className="h-full w-[250px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Electrical Work</p>
+                                                </span>
 
-                                            <span className="w-full flex items-center justify-start gap-[10px] ">
-                                                <p className="text-sm font-normal w-[50%]">Electrical Permit Approval Date </p>    
-                                                {(selectedPipeline.job && selectedPipeline.job.general_permit_approval_date ) ?
-                                                <p className="text-sm font-medium w-[50%] text-start">{selectedPipeline.job.general_permit_approval_date}</p>    :
-                                                <p className="text-sm font-medium w-[50%] text-start">-</p>}    
-                                            </span>
+                                                <span className="h-full w-[250px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Final Inspection</p>
+                                                </span>
 
+                                            </div>
+
+                                            <div className="w-auto h-[80px] flex items-center justify-center gap-[100px]">
+
+                                                <span className="h-full w-[275px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Job Completed </p>
+                                                </span>
+
+                                                <span className="h-full w-[275px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Invoicing</p>
+                                                </span>
+
+                                                <span className="h-full w-[275px] border border-gray-400 rounded-[3px] flex items-center justify-center ">
+                                                    <p className="text-[15px] ">Payment & Finalization</p>
+                                                </span>
+
+                                            </div>
 
                                         </div>
 
                                     </div>
                                         
-
-
-
                             </div>
                                 }
 

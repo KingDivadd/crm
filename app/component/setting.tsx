@@ -33,7 +33,7 @@ const SystemSettings = () => {
     async function get_dashboard_data() {
 
         try {            
-            const response = await get_auth_request(`auth/settings-info`)
+            const response = await get_auth_request(`app/settings-info`)
             
     
             if (response.status == 200 || response.status == 201){
@@ -62,8 +62,10 @@ const SystemSettings = () => {
 
         try {
             setLoading(true)     
-                   
-            const response = await patch_auth_request(`auth/update-settings-info`, userProfile)
+
+            const response = await patch_auth_request(`app/update-settings-info`, userProfile)
+
+            console.log('response ', response)
 
             if (response.status == 200 || response.status == 201){
                 
@@ -124,7 +126,7 @@ const SystemSettings = () => {
                             </span>
                             <div className="w-full flex flex-col justify-start items-start gap-3">
                                 <span className="w-full flex flex-col items-start justify-start gap-2">
-                                    <ImageUploader id={'user-image'} title={"User Image"} url={userProfile.avatar || 'https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718192427/ugxr954jsbyd1utozwzy.jpg'} image={''}  onFileUpload={handleFileUpload} />
+                                    <ImageUploader id={'user-image'} title={"User Image"} url={userProfile.avatar || 'https://upload.wikimedia.org/wikipedia/commons/thumb/2/2c/Default_pfp.svg/2048px-Default_pfp.svg.png'} image={''}  onFileUpload={handleFileUpload} />
                                 </span>
                                 
                                 

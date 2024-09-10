@@ -7,24 +7,24 @@ import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
 import Alert from '../alert';
 import { userArray } from '@/constants';
 import { get_auth_request } from '@/app/api/admin_api';
+import { readable_day } from '../helper';
+import Job_Management_Modal from '../salesDeptComponent/salesJobManagementModal';
 
-interface Leads_Props {
-    forEach?(arg0: (data: any, ind: number) => void): unknown;
-    filter?(arg0: (user: any) => any): unknown;
-    map?(arg0: (data: any) => void): unknown;
-    total_number_of_leads_pages?: number; // Now optional and can be undefined
-    total_number_of_leads?: number; // Now optional and can be undefined
-    leads: any;
+interface Jobs_Props {
+
+    total_number_of_pages?: number; // Now optional and can be undefined
+    total_number_of_jobs?: number; // Now optional and can be undefined
+    jobs: any;
 }  
 
 const AllPermitPage = () => {
     const [modalFor, setModalFor] = useState('')
     const [showModal, setShowModal] = useState(false)
-    const [selectedLead, setSelectedLead] = useState(null)
+    const [selectedJob, setSelectedJob] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [page_number, setPage_number] = useState(1)
-    const [lead_box, setLead_box] = useState<Leads_Props | null>(null);
-    const [filtered_lead_box, setFiltered_lead_box] = useState<Leads_Props | null>(null);
+    const [job_box, setJob_box] = useState<Jobs_Props | null>(null);
+    const [filtered_job_box, setFiltered_job_box] = useState<Jobs_Props | null>(null);
     const [filters, setFilters] = useState({filter_input: '', disposition: ''})
     const [role, setRole] = useState('')
 
@@ -58,7 +58,7 @@ const AllPermitPage = () => {
         }else{
             setRole('sales')
         }
-        get_all_leads()
+        get_all_jobs(page_number)
     }, [showModal])
 
     function showAlert(message: string, type: string){
@@ -68,17 +68,17 @@ const AllPermitPage = () => {
             }, 3000);
     }
 
-    async function get_all_leads() {
+    async function get_all_jobs(pg_number:number) {
 
         console.log('started fetching');
         
-        const response = await get_auth_request(`auth/all-leads/${page_number}`)
+        const response = await get_auth_request(`app/all-paginated-job-permits/${pg_number}`)
 
         if (response.status == 200 || response.status == 201){
             
-            setLead_box(response.data)      
+            setJob_box(response.data)      
             
-            setFiltered_lead_box(response.data)
+            setFiltered_job_box(response.data)
 
             console.log('master ', response.data);
             
@@ -90,32 +90,10 @@ const AllPermitPage = () => {
         }
     }
 
-    async function filter_leads(item:any) {
-
-        console.log('started fetching');
-        
-        const response = await get_auth_request(`/filter-leads/${item}/${page_number}`)
-
-        if (response.status == 200 || response.status == 201){
-            
-            setLead_box(response.data)      
-            
-            setFiltered_lead_box(response.data)
-
-            console.log(response.data);
-            
-            showAlert(response.data.msg, "success")
-
-        }else{
-        console.log(response);
-        
-        showAlert(response.response.data.err, "error")
-        }
-    }
 
     async function app_users_action(item: any) {
         let new_page_number = page_number;
-        let max_page_number = lead_box?.total_number_of_leads_pages
+        let max_page_number = job_box?.total_number_of_pages
 
         if (item === 'prev') {
         if (page_number > 1) {
@@ -129,14 +107,13 @@ const AllPermitPage = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
-
         setPage_number(new_page_number);
+        get_all_jobs(new_page_number)
     }
 
     const render_page_numbers = () => {
         const pages = [];
-        const max_page_number = lead_box?.total_number_of_leads_pages || 1;
+        const max_page_number = job_box?.total_number_of_pages || 1;
         const max_displayed_pages = 3;
 
         if (max_page_number <= max_displayed_pages) {
@@ -187,9 +164,9 @@ const AllPermitPage = () => {
         const value = e.target.value.toLowerCase();
         setFilters({ ...filters, filter_input: value });
     
-        if (lead_box && lead_box.leads) {
+        if (job_box && job_box.jobs) {
             if (value.trim() !== '') {
-                const filtered_leads = lead_box.leads.filter((data: any) => {
+                const filtered_jobs = job_box.jobs.filter((data: any) => {
                     const customer_name = data.customer_name?.toLowerCase() || '';
                     const first_name = data.assigned_to?.first_name?.toLowerCase() || '';
                     const last_name = data.assigned_to?.last_name?.toLowerCase() || '';
@@ -206,25 +183,25 @@ const AllPermitPage = () => {
                 });
                 
     
-                setFiltered_lead_box({...filtered_lead_box, leads:filter_leads});
+                setFiltered_job_box({...filtered_job_box, jobs:filtered_jobs });
             } else {
-                setFiltered_lead_box(lead_box); // Reset to the original list
+                setFiltered_job_box(job_box); // Reset to the original list
             }
         }
     }
 
     async function handle_new_filter(item: string) {
-        if (lead_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',lead_box);
+        if (job_box && item.toLocaleLowerCase() == 'all') {
+            console.log('Disposition : all ',job_box);
             
             // If no filter is provided, reset to the original list
-            setFiltered_lead_box(lead_box);
+            setFiltered_job_box(job_box);
         
         } 
-        else if (item && lead_box) {
+        else if (item && job_box) {
             console.log(item);
             
-            const new_leads = lead_box.leads.filter((data: any) => {
+            const new_jobs = job_box.jobs.filter((data: any) => {
                 const disposition = data.disposition?.toLowerCase() || '';
                 const active_status = data.active_status ? 'active' : 'inactive';
     
@@ -234,29 +211,17 @@ const AllPermitPage = () => {
                 );
             });
     
-            setFiltered_lead_box({ ...lead_box, leads: new_leads });
+            setFiltered_job_box({ ...job_box, jobs: new_jobs });
         } else {
             // If no filter is provided, reset to the original list
-            setFiltered_lead_box(lead_box);
+            setFiltered_job_box(job_box);
         }
     }
     
-    function add_lead(){
+    function edit_job(job:any){
         setShowModal(true)
-        setSelectedLead(null)
-        setModalFor('add')
-    }
-
-    function edit_lead(lead:any){
-        setShowModal(true)
-        setSelectedLead(lead)
+        setSelectedJob(job)
         setModalFor('edit')
-    }
-
-    function delete_lead(lead:any){
-        setShowModal(true)
-        setSelectedLead(lead)
-        setModalFor('delete')
     }
 
     return (
@@ -267,8 +232,8 @@ const AllPermitPage = () => {
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
-                        <p className="text-lg font-semibold text-black">All Leads</p>
-                        <p className="text-sm text-black">{(lead_box && lead_box?.total_number_of_leads) || 0 }</p>
+                        <p className="text-lg font-semibold text-black">All Jobs & Projects</p>
+                        <p className="text-sm text-black">{(job_box && job_box?.total_number_of_jobs) || 0 }</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
@@ -278,7 +243,7 @@ const AllPermitPage = () => {
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>
+                            
                         </span>
 
                         
@@ -288,67 +253,58 @@ const AllPermitPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    {(role == 'sales' || role == 'admin') ? 
+                    
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-sm font-normal w-[14.5%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[13%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Assigned to</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
-                        <p className="text-sm font-normal w-[10%] px-2 "></p>
-                    </span>:
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[10%] px-2 ">Lead Id</p>
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Gate Code</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[17.5%] px-2 ">Assigned to</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
-                    </span>}
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Job Id</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Project Id</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Gen Permit Status</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Approval Date</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Eng Permit Status</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Approval Date</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Hoa Permit Status</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Approval Date</p>
+                    </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                         
-                        {filtered_lead_box !== null ?
+                        {filtered_job_box !== null ?
                         
                             <div className='h-full w-full flex flex-col justify-start '>
 
-                                {lead_box?.leads.length ?
+                                {job_box?.jobs.length ?
                                 <>
-                                { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind, gate_code} = data
+                                { filtered_job_box?.jobs.map((data:any, ind:number)=>{
+                                    const {
+                                        job_ind, job_id, project, permit, general_permit_status, general_permit_approval_date, engineering_permit_status, engineering_permit_approval_date, hoa_permit_status, hoa_permit_approval_date 
+
+                                    } = data
                                     return (
-                                        <div key={ind}>
-                                        {(role == 'sales' || role == 'admin') ? 
-                                        <span className="recent-activity-table-list " >
-                                            <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[14.5%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
-                                            <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-green-600 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
-                                        
-                                            <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
-                                        </span>:
-                                        <span className="recent-activity-table-list " >
-                                            <p className="text-sm w-[10%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[7.5%] px-2 "> {gate_code} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[17.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                        </span>}
+                                        <div key={ind} onClick={()=>{edit_job(data)}} >
+                                    
+                                            <span className="recent-activity-table-list "  >
+                                                <p className="text-sm w-[7.5%] px-2 "> {job_ind} </p>
+                                                <p className="text-sm w-[10%] px-2 "> {project[0].project_ind} </p>
+                                                <p className="text-sm w-[15%] px-2 "> {general_permit_status} </p>
+                                                <p className="text-sm w-[12.5%] px-2 ">
+                                                { general_permit_approval_date != 0 ? readable_day(Number(general_permit_approval_date)) : '-'}
+                                                </p>
+                                                <p className="text-sm w-[15%] px-2 "> {engineering_permit_status} </p>
+                                                <p className="text-sm w-[12.5%] px-2 "> 
+                                                { engineering_permit_approval_date != 0 ? readable_day(Number(engineering_permit_approval_date)) : '-'}
+                                                </p>
+                                                <p className="text-sm w-[15%] px-2 "> {hoa_permit_status} </p>
+                                                <p className="text-sm w-[12.5%] px-2 ">
+                                                { hoa_permit_approval_date != 0 ? readable_day(Number(hoa_permit_approval_date)) : '-'}
+                                                </p>
+                                                
+                                            </span>
                                         </div>
                                     )
                                 })}
                                 </>
                                 :
                                 <div className="w-full h-[100%] flex items-center justify-center">
-                                    <p className="text-normal"> No Leads yet </p>
+                                    <p className="text-normal"> No jobs yet </p>
                                 </div>}
 
                             </div>
@@ -372,13 +328,13 @@ const AllPermitPage = () => {
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-sm">Showing 1-15 of {(lead_box && lead_box?.total_number_of_leads) || 0}</p>
+                            <p className="text-sm">Showing 1-15 of {(job_box && job_box?.total_number_of_jobs) || 0}</p>
                         </span>
                     </span>
                 </div>
 
             </div>
-            {/* {showModal && <Lead_Management_Modal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedLead={selectedLead} setModalFor={setModalFor} setSelectedLead={setSelectedLead} /> } */}
+            {showModal && <Job_Management_Modal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedJob={selectedJob} setModalFor={setModalFor} setSelectedJob={setSelectedJob} /> }
         </div>
     )
 }

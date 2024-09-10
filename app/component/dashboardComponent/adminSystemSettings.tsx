@@ -191,7 +191,6 @@ const AdminSystemSettings = () => {
 
     const handleFileUpload = (fileUrl:string) => {
         setUserProfile({...userProfile, avatar: fileUrl})
-     
     };
 
     const handleCompanyFileUpload = (fileUrl:string) => {

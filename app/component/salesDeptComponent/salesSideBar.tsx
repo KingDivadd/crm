@@ -58,18 +58,18 @@ const SalesSideBar = ({active, setActive}: SideBarNav) => {
                         <FaUserTag size={21} className='text-slate-800' /> 
                         <p className="text-[16px]">Leads</p>
                     </span>
-                    <span className={active === "pipeline"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('pipeline')}}>
-                        <HiMiniLink size={21} className='text-slate-800' />
-                        <p className="text-[16px]">Pipeline</p>
-                    </span>
                     <span className={active === "jobs"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('jobs')}}>
                         <GiSuitcase size={21} className='text-slate-800' />
                         <p className="text-[16px]">Jobs</p>
                     </span>
-                    <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
+                    <span className={active === "pipeline"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('pipeline')}}>
+                        <HiMiniLink size={21} className='text-slate-800' />
+                        <p className="text-[16px]">Pipeline</p>
+                    </span>
+                    {/* <span className={active === "reports"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('reports')}}>
                         <BiSolidReport size={21} className='text-slate-800' />
                         <p className="text-[16px]">Reports</p>
-                    </span>
+                    </span> */}
                     <span className={active === "notification"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notification')}}>
                         <RiNotificationBadgeFill size={21} className='text-slate-800' />
                         <p className="text-[16px]">Notification</p>
