@@ -131,7 +131,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
     async function get_all_staff() {
         try {
-            const response = await get_auth_request(`app/all-designers`)
+            const response = await get_auth_request(`app/all-lead-staffs`)
 
             if (response.status == 200 || response.status == 201){
 
@@ -524,7 +524,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                         </>
                                                         :
                                                         <div className="w-full h-[300px] flex flex-col justify-center items-center">
-                                                            <p className="text-[15px] ">No Designer yet</p>
+                                                            <p className="text-[15px] ">No Sales Personnel Registered yet</p>
                                                         </div>
                                                         }
 
@@ -708,7 +708,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                         </>
                                                         :
                                                         <div className="w-full h-[310px] flex flex-col justify-center items-center">
-                                                            <p className="text-[15px] ">No Designer yet</p>
+                                                            <p className="text-[15px] ">No Sales Personnel Registered yet</p>
                                                         </div>
                                                         }
 

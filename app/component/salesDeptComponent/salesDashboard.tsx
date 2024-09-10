@@ -32,8 +32,8 @@ const SalesDashboard = () => {
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "dashboard" && <SalesDashboardPage /> }
                     {active === "leads" && <SalesLeadPage /> }
-                    {active === "pipeline" && <PipelinePage /> }
                     {active === "jobs" && <SalesJobsPage /> }
+                    {active === "pipeline" && <PipelinePage /> }
                 
                     {/* {active === "reports" && <SalesReportPage /> } */}
                     {active === "notification" && <NotificationPage /> }
