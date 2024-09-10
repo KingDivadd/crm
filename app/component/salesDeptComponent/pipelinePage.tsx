@@ -119,7 +119,7 @@ const PipelinePage = () => {
             pages.push(
             <p
                 key={i}
-                className={`text-[15.5px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                className={`text-[15px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
                 page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
@@ -144,7 +144,7 @@ const PipelinePage = () => {
             pages.push(
             <p
                 key={i}
-                className={`text-[15.5px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                className={`text-[15px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
                 page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
@@ -252,7 +252,7 @@ const PipelinePage = () => {
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         <p className="text-lg font-semibold text-black">All Leads</p>
-                        <p className="text-[15.5px] text-black">{(lead_box && lead_box?.total_number_of_leads) || 0 }</p>
+                        <p className="text-[15px] text-black">{(lead_box && lead_box?.total_number_of_leads) || 0 }</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
@@ -274,27 +274,27 @@ const PipelinePage = () => {
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     {(role == 'sales' || role == 'admin' || role == 'super_admin' ) ? 
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Job Id</p>
-                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Job Number</p>
-                        <p className="text-[15.5px] font-normal w-[8.5%] px-2 ">Project Id</p>
-                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Disposition</p>
-                        <p className="text-[15.5px] font-normal w-[14%] px-2 ">Lead Name </p>
-                        <p className="text-[15.5px] font-normal w-[14%] px-2 ">Designer</p>
-                        <p className="text-[15.5px] font-normal w-[14%] px-2 ">Added By</p>
-                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Contract Amt</p>
-                        <p className="text-[15.5px] font-normal w-[4.5%] px-2 "></p>
+                        <p className="text-[15px] font-normal w-[7.5%] px-2 ">Lead Id</p>
+                        <p className="text-[15px] font-normal w-[7.5%] px-2 ">Job Id</p>
+                        <p className="text-[15px] font-normal w-[10%] px-2 ">Job Number</p>
+                        <p className="text-[15px] font-normal w-[8.5%] px-2 ">Project Id</p>
+                        <p className="text-[15px] font-normal w-[10%] px-2 ">Disposition</p>
+                        <p className="text-[15px] font-normal w-[14%] px-2 ">Lead Name </p>
+                        <p className="text-[15px] font-normal w-[14%] px-2 ">Designer</p>
+                        <p className="text-[15px] font-normal w-[14%] px-2 ">Added By</p>
+                        <p className="text-[15px] font-normal w-[10%] px-2 ">Contract Amt</p>
+                        <p className="text-[15px] font-normal w-[4.5%] px-2 "></p>
                     </span>:
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Lead Name</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Address</p>
-                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Phone </p>
-                        <p className="text-[15.5px] font-normal w-[10.5%] px-2 ">Uploads</p>
-                        <p className="text-[15.5px] font-normal w-[9%] px-2 ">Disposition</p>
-                        <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Updated On</p>
-                        <p className="text-[15.5px] font-normal w-[11.5%] px-2 ">Added By</p>
-                        <p className="text-[15.5px] font-normal w-[9%] px-2 ">Action</p>
+                        <p className="text-[15px] font-normal w-[7.5%] px-2 ">Lead Id</p>
+                        <p className="text-[15px] font-normal w-[15%] px-2 ">Lead Name</p>
+                        <p className="text-[15px] font-normal w-[15%] px-2 ">Address</p>
+                        <p className="text-[15px] font-normal w-[10%] px-2 ">Phone </p>
+                        <p className="text-[15px] font-normal w-[10.5%] px-2 ">Uploads</p>
+                        <p className="text-[15px] font-normal w-[9%] px-2 ">Disposition</p>
+                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Updated On</p>
+                        <p className="text-[15px] font-normal w-[11.5%] px-2 ">Added By</p>
+                        <p className="text-[15px] font-normal w-[9%] px-2 ">Action</p>
                     </span>}
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -311,30 +311,30 @@ const PipelinePage = () => {
                                         <div key={ind}>
                                         {(role == 'sales' || role == 'admin' || role == 'super_admin' ) ? 
                                         <span className="recent-activity-table-list " >
-                                            <p className="text-[15.5px] w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-[15.5px] w-[7.5%] px-2 "> {job.length ? job[0].job_ind : "-"} </p>
-                                            <p className="text-[15.5px] w-[10%] px-2 "> {job.length ? job[0].job_number : "-"} </p>
-                                            <p className="text-[15.5px] w-[8.5%] px-2 "> {job.project ? job.project[0].project_ind : "-"} </p>
-                                            <p className={disposition == "sold" ? "text-[15.5px] w-[10%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-[15.5px] w-[14%] px-2 "> {customer_first_name} {customer_last_name} </p>
-                                            <p className="text-[15.5px] w-[14%] px-2 "> {lead_designer.first_name} {lead_designer.last_name} </p>
-                                            <p className="text-[15.5px] w-[14%] px-2 "> {lead_adder.first_name} {lead_adder.last_name} </p>
-                                            <p className="text-[15.5px] w-[10%] px-2 "> {job.length ? Number(job[0].contract_amount).toLocaleString() : "-"} </p>
+                                            <p className="text-[15px] w-[7.5%] px-2 "> {lead_ind} </p>
+                                            <p className="text-[15px] w-[7.5%] px-2 "> {job.length ? job[0].job_ind : "-"} </p>
+                                            <p className="text-[15px] w-[10%] px-2 "> {job.length ? job[0].job_number : "-"} </p>
+                                            <p className="text-[15px] w-[8.5%] px-2 "> {job.project ? job.project[0].project_ind : "-"} </p>
+                                            <p className={disposition == "sold" ? "text-[15px] w-[10%] px-2 text-green-600": "text-red-600 text-[15px] w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-[15px] w-[14%] px-2 "> {customer_first_name} {customer_last_name} </p>
+                                            <p className="text-[15px] w-[14%] px-2 "> {lead_designer.first_name} {lead_designer.last_name} </p>
+                                            <p className="text-[15px] w-[14%] px-2 "> {lead_adder.first_name} {lead_adder.last_name} </p>
+                                            <p className="text-[15px] w-[10%] px-2 "> {job.length ? Number(job[0].contract_amount).toLocaleString() : "-"} </p>
                                             
-                                            <p className="text-[15.5px] w-[4.5%] px-2 flex flex-row items-center justify-start gap-2 text-blue-600 hover:underline cursor-pointer" onClick={()=> {view_pipeline(data)} } >view</p>
+                                            <p className="text-[15px] w-[4.5%] px-2 flex flex-row items-center justify-start gap-2 text-blue-600 hover:underline cursor-pointer" onClick={()=> {view_pipeline(data)} } >view</p>
                                         </span>:
                                         <span className="recent-activity-table-list " >
-                                            <p className="text-[15.5px] w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-[15.5px] w-[7.5%] px-2 "> {job.length ? job[0].job_ind : "-"} </p>
-                                            <p className="text-[15.5px] w-[10%] px-2 "> {job.length ? job[0].job_number : "-"} </p>
-                                            <p className="text-[15.5px] w-[8.5%] px-2 "> {job.project ? job.project[0].project_ind : "-"} </p>
-                                            <p className={disposition == "sold" ? "text-[15.5px] w-[10%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-[15.5px] w-[14%] px-2 "> {customer_first_name} {customer_last_name} </p>
-                                            <p className="text-[15.5px] w-[14%] px-2 "> {lead_designer.first_name} {lead_designer.last_name} </p>
-                                            <p className="text-[15.5px] w-[14%] px-2 "> {lead_adder.first_name} {lead_adder.last_name} </p>
-                                            <p className="text-[15.5px] w-[10%] px-2 "> {job.length ? Number(job[0].contract_amount).toLocaleString() : "-"} </p>
+                                            <p className="text-[15px] w-[7.5%] px-2 "> {lead_ind} </p>
+                                            <p className="text-[15px] w-[7.5%] px-2 "> {job.length ? job[0].job_ind : "-"} </p>
+                                            <p className="text-[15px] w-[10%] px-2 "> {job.length ? job[0].job_number : "-"} </p>
+                                            <p className="text-[15px] w-[8.5%] px-2 "> {job.project ? job.project[0].project_ind : "-"} </p>
+                                            <p className={disposition == "sold" ? "text-[15px] w-[10%] px-2 text-green-600": "text-red-600 text-[15px] w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-[15px] w-[14%] px-2 "> {customer_first_name} {customer_last_name} </p>
+                                            <p className="text-[15px] w-[14%] px-2 "> {lead_designer.first_name} {lead_designer.last_name} </p>
+                                            <p className="text-[15px] w-[14%] px-2 "> {lead_adder.first_name} {lead_adder.last_name} </p>
+                                            <p className="text-[15px] w-[10%] px-2 "> {job.length ? Number(job[0].contract_amount).toLocaleString() : "-"} </p>
                                             
-                                            <p className="text-[15.5px] w-[4.5%] px-2 flex flex-row items-center justify-start gap-2 text-blue-600 hover:underline cursor-pointer" onClick={()=> {view_pipeline(data)} } >view</p>
+                                            <p className="text-[15px] w-[4.5%] px-2 flex flex-row items-center justify-start gap-2 text-blue-600 hover:underline cursor-pointer" onClick={()=> {view_pipeline(data)} } >view</p>
                                         </span>}
                                         </div>
                                     )
@@ -350,7 +350,7 @@ const PipelinePage = () => {
                         :
 
                             <div className="w-full h-full flex items-center justify-center">
-                                <p className="text-[15.5px] font-normal">Loading Data...</p>
+                                <p className="text-[15px] font-normal">Loading Data...</p>
                             </div>
                         
                         }
@@ -359,14 +359,14 @@ const PipelinePage = () => {
                     
                     <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
-                            <p className="text-[15.5px] cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
+                            <p className="text-[15px] cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">
                             {render_page_numbers()}
                             </span>
-                            <p className="text-[15.5px] cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
+                            <p className="text-[15px] cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-[15.5px]">Showing 1-15 of {(lead_box && lead_box?.total_number_of_leads) || 0}</p>
+                            <p className="text-[15px]">Showing 1-15 of {(lead_box && lead_box?.total_number_of_leads) || 0}</p>
                         </span>
                     </span>
                 </div>
