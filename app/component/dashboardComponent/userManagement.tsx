@@ -293,7 +293,7 @@ const UserManagement = () => {
                                         <p className="text-[15px] w-[9%] px-[10px] "> {last_name} </p>
                                         <p className="text-[15px] w-[9%] px-[10px] "> {first_name} </p>
                                         <p className="text-[15px] w-[26.5%] px-[10px] "> {email} </p>
-                                        <p className="text-[15px] w-[10%] px-[10px] "> {user_role} </p>
+                                        <p className="text-[15px] w-[10%] px-[10px] "> {user_role.replace(/_/g, ' ')} </p>
 
                                         <p className="text-[15px] w-[12.5%] px-[10px] flex items-center gap-[10px] "> { added_by ? added_by.first_name : "-"} {added_by ? added_by.last_name : "-"} </p>
 
