@@ -65,32 +65,32 @@ const SalesDashboardPage = () => {
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] w-1/4 group bg-white shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
                             <p className="text-md">Total Lead</p>
-                            <p className="text-sm ">{dash_box?.total_lead?.toLocaleString() || 0}</p>
-                            <p className="text-sm font-light ">Last 30 days</p>
+                            <p className="text-[15px] ">{dash_box?.total_lead?.toLocaleString() || 0}</p>
+                            <p className="text-[15px] font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
                             <p className="text-md ">Converted Lead</p>
-                            <p className="text-sm ">{dash_box?.converted_lead?.toLocaleString() || 0}</p>
-                            <p className="text-sm font-light ">Last 30 days</p>
+                            <p className="text-[15px] ">{dash_box?.converted_lead?.toLocaleString() || 0}</p>
+                            <p className="text-[15px] font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
                             <p className="text-md ">Total Job</p>
-                            <p className="text-sm ">{dash_box?.total_job?.toLocaleString() || 0}</p>
-                            <p className="text-sm font-light ">Last 30 days</p>
+                            <p className="text-[15px] ">{dash_box?.total_job?.toLocaleString() || 0}</p>
+                            <p className="text-[15px] font-light ">Last 30 days</p>
                         </div>
                     </span>
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px] bg-white w-1/4  shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
                             <p className="text-md ">Total Tasks</p>
-                            <p className="text-sm ">{dash_box?.total_task?.toLocaleString() || 0}</p>
-                            <p className="text-sm font-light ">Last 30 days</p>
+                            <p className="text-[15px] ">{dash_box?.total_task?.toLocaleString() || 0}</p>
+                            <p className="text-[15px] font-light ">Last 30 days</p>
                         </div>
                     </span>
                                     
@@ -101,14 +101,14 @@ const SalesDashboardPage = () => {
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                            <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
-                            <p className="text-sm font-normal w-[17.5%] px-2 ">Customer Address</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
-                            <p className="text-sm font-normal w-[10%] px-2 ">Gate Code</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Assigned to</p>
-                            <p className="text-sm font-normal w-[15%] px-2 "> Assigned On</p>
-                            <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
+                            <p className="text-[15px] font-normal w-[7.5%] px-2 ">Lead Id</p>
+                            <p className="text-[15px] font-normal w-[15%] px-2 ">Customer Name</p>
+                            <p className="text-[15px] font-normal w-[17.5%] px-2 ">Customer Address</p>
+                            <p className="text-[15px] font-normal w-[15%] px-2 ">Phone Number</p>
+                            <p className="text-[15px] font-normal w-[10%] px-2 ">Gate Code</p>
+                            <p className="text-[15px] font-normal w-[15%] px-2 ">Assigned to</p>
+                            <p className="text-[15px] font-normal w-[15%] px-2 "> Assigned On</p>
+                            <p className="text-[15px] font-normal w-[10%] px-2 ">Disposition</p>
                         </span>
                         
                         {dash_box != null ? 
@@ -120,43 +120,43 @@ const SalesDashboardPage = () => {
                                 
                                 return (
                                     <span key={ind} className="recent-activity-table-list ">
-                                        <p className="text-sm w-[7.5%] px-2 ">{lead_ind}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{customer_first_name} {customer_last_name}</p>
-                                        <p className="text-sm w-[17.5%] px-2 ">{state}, {city}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{phone_number}</p>
-                                        <p className="text-sm w-[10%] px-2 ">{gate_code}</p>
-                                        <p className="text-sm w-[15%] px-2 flex items-center justify-between ">{assigned_to.last_name} {assigned_to.first_name}</p>
-                                        <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
-                                        <p className={disposition == 'SOLD' ? "text-sm w-[10%] px-2 text-blue-600 ":"text-sm w-[10%] px-2 text-red-600 "}>{disposition.replace(/_/g, ' ').toLowerCase()}</p>
+                                        <p className="text-[15px] w-[7.5%] px-2 ">{lead_ind}</p>
+                                        <p className="text-[15px] w-[15%] px-2 ">{customer_first_name} {customer_last_name}</p>
+                                        <p className="text-[15px] w-[17.5%] px-2 ">{state}, {city}</p>
+                                        <p className="text-[15px] w-[15%] px-2 ">{phone_number}</p>
+                                        <p className="text-[15px] w-[10%] px-2 ">{gate_code}</p>
+                                        <p className="text-[15px] w-[15%] px-2 flex items-center justify-between ">{assigned_to.last_name} {assigned_to.first_name}</p>
+                                        <p className="text-[15px] w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
+                                        <p className={disposition == 'SOLD' ? "text-[15px] w-[10%] px-2 text-blue-600 ":"text-[15px] w-[10%] px-2 text-red-600 "}>{disposition.replace(/_/g, ' ').toLowerCase()}</p>
                                     </span>
                                 )
                             })}
                             </>
                             :
                             <div className="w-full h-[300px] flex flex-col justify-center items-center">
-                                <p className="text-sm ">No Lead yet</p>
+                                <p className="text-[15px] ">No Lead yet</p>
                             </div>
                             }
 
                         </div>
                         :
                         <div className="w-full h-[300px] flex items-center justify-center">
-                            <p className="text-sm font-normal">Loading Data...</p>
+                            <p className="text-[15px] font-normal">Loading Data...</p>
                         </div>
                         }
                         
 
                         <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer ">Prev</p>
+                                <p className="text-[15px] cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
+                                    <p className="text-[15px] font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
 
                                 </span>
-                                <p className="text-sm cursor-pointer ">Next</p>
+                                <p className="text-[15px] cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm  ">Showing 1-15 of {dash_box?.recent_lead.length}</p>
+                                <p className="text-[15px]  ">Showing 1-15 of {dash_box?.recent_lead.length}</p>
                             </span>
                         </span>
                     </div>
@@ -167,11 +167,11 @@ const SalesDashboardPage = () => {
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
                         <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
-                            <p className="text-sm w-[16.5%] px-2  ">Date / Time</p>
-                            <p className="text-sm w-[20%] px-2  ">Subject</p>
-                            <p className="text-sm w-[32.5%] px-2  ">Details</p>
-                            <p className="text-sm w-[13.5%] px-2  ">Status</p>
-                            <p className="text-sm w-[17.5%] px-2  ">Source</p>
+                            <p className="text-[15px] w-[16.5%] px-2  ">Date / Time</p>
+                            <p className="text-[15px] w-[20%] px-2  ">Subject</p>
+                            <p className="text-[15px] w-[32.5%] px-2  ">Details</p>
+                            <p className="text-[15px] w-[13.5%] px-2  ">Status</p>
+                            <p className="text-[15px] w-[17.5%] px-2  ">Source</p>
                         </span>
                         
                         
@@ -185,39 +185,39 @@ const SalesDashboardPage = () => {
                                 
                                 return (
                                     <span key={ind} className="recent-activity-table-list ">
-                                        <p className="text-sm w-[16.5%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
-                                        <p className="text-sm w-[20%] px-2 ">{subject}</p>
-                                        <p className="text-sm w-[32.5%] px-2 ">{message}</p>
-                                        <p className={read ? "text-sm w-[13.5%] text-green-600 px-2 ":"text-sm w-[15%] px-2 text-red-600 "}>{read ? "read": "unread"}</p>
-                                        <p className="text-sm w-[17.5%] px-2 ">{source.last_name} {source.first_name} </p>
+                                        <p className="text-[15px] w-[16.5%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
+                                        <p className="text-[15px] w-[20%] px-2 ">{subject}</p>
+                                        <p className="text-[15px] w-[32.5%] px-2 ">{message}</p>
+                                        <p className={read ? "text-[15px] w-[13.5%] text-green-600 px-2 ":"text-[15px] w-[15%] px-2 text-red-600 "}>{read ? "read": "unread"}</p>
+                                        <p className="text-[15px] w-[17.5%] px-2 ">{source.last_name} {source.first_name} </p>
                                     </span>
                                 )
                             })}
                             </> 
                             :
                             <div className="w-full h-[300px] flex flex-col justify-center items-center">
-                                <p className="text-sm ">No Notifications yet</p>
+                                <p className="text-[15px] ">No Notifications yet</p>
                             </div>
                             }
                         </div>
                         :
                         <div className="w-full h-[300px] flex items-center justify-center">
-                            <p className="text-sm font-normal">Loading Data...</p>
+                            <p className="text-[15px] font-normal">Loading Data...</p>
                         </div>
                         }
                        
 
                         <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
-                                <p className="text-sm cursor-pointer ">Prev</p>
+                                <p className="text-[15px] cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
-                                    <p className="text-sm font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
+                                    <p className="text-[15px] font-light bg-blue-700 text-white h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ">1</p>
 
                                 </span>
-                                <p className="text-sm cursor-pointer ">Next</p>
+                                <p className="text-[15px] cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm  ">Showing 1-15 of {dash_box?.recent_notifications.length}</p>
+                                <p className="text-[15px]  ">Showing 1-15 of {dash_box?.recent_notifications.length}</p>
                             </span>
                         </span>
                     </div>
