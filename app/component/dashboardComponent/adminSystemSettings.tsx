@@ -62,7 +62,7 @@ const AdminSystemSettings = () => {
 
     async function get_settings_info() {      
 
-        const response = await get_auth_request('settings/settings-info')
+        const response = await get_auth_request('app/settings-info')
 
         console.log('admin settings ', response.data);
         if (response.status == 200 || response.status == 201){
@@ -135,7 +135,7 @@ const AdminSystemSettings = () => {
                 company_name: companyInfo.name, company_address: companyInfo.address, company_email: companyInfo.email, 
                 number_of_admin: companyInfo.number_of_admin, company_logo: companyInfo.logo, company_phone: companyInfo.company_phone }
         
-            const response = await patch_auth_request('settings/update-settings-info', payload)
+            const response = await patch_auth_request('app/update-settings-info', payload)
     
             if (response.status == 200 || response.status == 201){
 

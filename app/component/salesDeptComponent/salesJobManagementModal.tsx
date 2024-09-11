@@ -88,7 +88,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
         const name = e.target.name
         const value = e.target.value
 
-        if (name == 'contract_amount') {
+        if (name == 'contract_amount' || name == 'hoa_permit_cost' || name == 'engineering_permit_cost' || name == 'general_permit_cost') {
             setAuth({...auth, [name]: Number(value.replace(/,/g,''))})
         }else{
             setAuth({...auth, [name]: value})
@@ -145,12 +145,28 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                 attached:proj.attached,  structure_type:proj.structure_type, cover_size:proj.cover_size , 
                 end_cap_style: proj.end_cap_style, cover_color: proj.cover_color, trim_color: proj.trim_color, description,
                 
-                hoa_permit_status, hoa_permit_submit_date, hoa_permit_approval_date, hoa_permit_number, hoa_permit_cost, hoa_permit_document,
-                engineering_permit_status, engineering_permit_submit_date, engineering_permit_approval_date, engineering_permit_number, engineering_permit_cost, engineering_permit_document,
-                general_permit_status, general_permit_submit_date, general_permit_approval_date, general_permit_number, general_permit_cost, general_permit_document,
-            })
+                hoa_permit_status, hoa_permit_submit_date, hoa_permit_approval_date, hoa_permit_number, 
+                hoa_permit_cost: hoa_permit_cost || 0, hoa_permit_document,
 
-            if (user_role !== 'permit'){
+                engineering_permit_status, engineering_permit_submit_date, engineering_permit_approval_date, 
+                engineering_permit_number, engineering_permit_cost: engineering_permit_cost || 0, engineering_permit_document,
+
+                general_permit_status, general_permit_submit_date, general_permit_approval_date, 
+                general_permit_number, general_permit_cost: general_permit_cost || 0, general_permit_document,
+            })
+            
+            setTimeout(() => {
+                setDropElements({...dropElements, 
+                    hoa_permit_status: hoa_permit_status.replace(/_/g, " "),             
+                    general_permit_status:general_permit_status.replace(/_/g, " "), 
+                    engineering_permit_status:engineering_permit_status.replace(/_/g, " ")
+                })
+                
+            }, 100);
+
+            console.log('selected JOb ', selectedJob)
+
+            if (user_role !== 'permit'){    
 
                 setTimeout(() => {
                     setDropElements({...dropElements, hoa_permit_status, general_permit_status, engineering_permit_status})
@@ -259,6 +275,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
         }else{
             try {
                 setLoading(true)
+                console.log('job update ', auth)
                 const response = await patch_auth_request(`app/edit-job/${selectedJob.job_id}`, auth)
                 if (response.status == 200 || response.status == 201){
                                 
@@ -402,7 +419,8 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
                                         <p className="text-md font-semibold  text-slate-800 ">New Job </p>
 
-                                        {role !== 'permit' && <div className="relative flex items-start justify-center z-[25] ">
+                                        {role !== 'permit' && 
+                                        <div className="relative flex items-start justify-center z-[25] ">
                                             <div className="flex items-center justify-center gap-5">
                                                 {selected_lead && <span className="flex items-center justify-start gap-2">
                                                     <p className="text-[15px]">Lead name:</p>
@@ -818,7 +836,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                 {modalFor == 'edit' && 
                                 <div className="w-[80vw] h-[87.5vh] flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px]  ">
-                                        <p className="text-md flex items-center gap-[10px] ">Edit Job: <p className="text-md font-medium">{selectedJob.job_ind}</p> </p>
+                                        <span className="text-md flex items-center gap-[10px] ">Edit Job: <p className="text-md font-medium">{selectedJob.job_ind}</p> </span>
 
                                         {role !== 'permit' && <div className="relative flex items-start justify-center z-[25] ">
                                             <div className="flex items-center justify-center gap-5">
@@ -1045,7 +1063,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                         <div className="w-full flex flex-col justify-start items-start gap-3">
                                             <span className="w-full flex flex-col items-center justify-start gap-2">
-                                                <FileUploader id={'hoa'} title={"Hoa Permit Docuement"} type={'hoa'} url={ "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
+                                                <FileUploader id={'hoa'} title={"Hoa Permit Docuement"} type={'hoa'} url={selectedJob.hoa_permit_document[0] || "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
                                             </span>
                                         </div>
                                     
@@ -1114,7 +1132,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                         <div className="w-full flex flex-col justify-start items-start gap-3">
                                             <span className="w-full flex flex-col items-center justify-start gap-2">
-                                                <FileUploader id={'engineering'} title={"Engineering Permit Docuement"} type={'engineering'} url={ "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
+                                                <FileUploader id={'engineering'} title={"Engineering Permit Docuement"} type={'engineering'} url={ selectedJob.engineering_permit_document[0] || "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
                                             </span>
                                         </div>
                                     
@@ -1184,7 +1202,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                         <div className="w-full flex flex-col justify-start items-start gap-3">
                                             <span className="w-full flex flex-col items-center justify-start gap-2">
-                                                <FileUploader id={'general'} title={"General Permit Docuement"} type={'general'} url={ "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
+                                                <FileUploader id={'general'} title={"General Permit Docuement"} type={'general'} url={selectedJob.general_permit_document[0] || "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
                                             </span>
                                         </div>
                                     

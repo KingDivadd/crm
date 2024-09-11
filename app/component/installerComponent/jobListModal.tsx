@@ -4,38 +4,42 @@ import { FaCaretUp, FaCaretDown } from 'react-icons/fa6'
 import Alert from '../alert'
 import { IoIosWarning } from "react-icons/io";
 import { DropDownBlankTransparent } from '../dropDown'
-import ImageUploader, {FlexibleImageUploader } from '../imageUploader'
-import MyDatePicker from '../datePicker'
+import ImageUploader, {FileUploader, FlexibleImageUploader } from '../imageUploader'
+import MyDatePicker, { InstallDatePicker } from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
-import {get_todays_date, convert_to_unix} from "../helper"
+import {get_todays_date, convert_to_unix, readable_day} from "../helper"
+import { auth } from 'googleapis/build/src/apis/abusiveexperiencereport';
 
 
 interface Lead_Management_Props {
     showModal: boolean;
     setShowModal: (showModal:boolean ) => void;
-    selectedLead: any;
-    setSelectedLead: (selectedLead: any) => void;
+    selectedProject: any;
+    setSelectedProject: (selectedProject: any) => void;
     modalFor: string;
     setModalFor: (modalFor: string) => void;
 
 }
 
-const JobListModal = ({ showModal, setShowModal, selectedLead, setSelectedLead, modalFor}: Lead_Management_Props) => {
+const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedProject, modalFor}: Lead_Management_Props) => {
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
-    const [approve_loading, setApprove_loading] = useState(false)
-    const [all_staff, setAll_staff] = useState([])
-    const [filtered_staff, setFiltered_staff] = useState([])
-    const [auth, setAuth] = useState({customer_name: '', address: '', email: '', phone_number: '', assigned_to: '', assigned_name: '', appointment_date: '', disposition: '', gate_code: ''})
-    const [showCalender, setShowCalender] = useState(false)
-    const [clicked_appointment_date, setClicked_appointment_date] = useState('')
+    const [install, setInstall] = useState({
+        footing_date: 0, footing_crew: '', footing_bill_sheet: '', demo_date: 0, demo_crew: '', demo_bill_sheet: '', 
+        set_post_date: 0, set_post_crew: '', set_post_bill_sheet: '', install_date: 0, install_crew: '', install_bill_sheet: '', 
+        electrical_date: 0, electrical_crew: '', electrical_bill_sheet: '', inspection_date: 0, inspection_status: '', project_sign_off: 'pending'
+    })
+    
+
+    const [showCalenders, setShowCalenders] = useState({footing_date: false, set_post_date: false, demo_date: false, install_date: false, electrical_date: false, inspection_date: false,  })
+
+    
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
-        disposition: false
+        inspection_status: false, project_sign_off: false
     });
     const [dropElements, setDropElements] = useState({
-        disposition: 'Disposition'
-
+        inspection_status: 'Inspection Status', project_sign_off: " Project Sign Off"
     })
 
     const handleDropMenu = (dropdown: any) => {
@@ -44,29 +48,14 @@ const JobListModal = ({ showModal, setShowModal, selectedLead, setSelectedLead, 
             return acc;
         }, {} as { [key: string]: boolean });
         setDropMenus(updatedDropMenus);
-        setDropElements({...dropElements, [dropdown]: 'Disposition'});
+        setDropElements({...dropElements, [dropdown]: 'Select'});
 
     };
 
     const handleSelectDropdown = (dropdown: any, title:any)=>{
-        setAuth({...auth, disposition: dropdown})
+        setInstall({...install, [title]: dropdown.toLowerCase().replace(/ /g, '_') })
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
-
-
-
-    useEffect(() => {
-
-        const selected_date = convert_to_unix(clicked_appointment_date)
-
-        if (selected_date < get_todays_date()){
-            showAlert("Please choose an appropriate date", "warning")
-        }else{
-            setAuth({...auth, appointment_date: clicked_appointment_date})
-            setShowCalender(false)
-        }
-        
-    }, [clicked_appointment_date])
 
     function showAlert(message: string, type: string){
         setAlert({message: message, type: type})
@@ -79,68 +68,32 @@ const JobListModal = ({ showModal, setShowModal, selectedLead, setSelectedLead, 
         const name = e.target.name
         const value = e.target.value
 
-        setAuth({...auth, [name]: value})
+        setInstall({...install, [name]: value})
     }
 
     function handleCloseModal() {
         setShowModal(false)
     }
 
-    function filter_user(e: React.ChangeEvent<HTMLInputElement>) {
-
-        const value = e.target.value
-            
-        const filtered_items = all_staff.filter((data: { first_name: string, last_name: string }) =>
-            data.first_name.toLowerCase().includes(value.toLowerCase()) ||
-            data.last_name.toLowerCase().includes(value.toLowerCase())
-        );
-    
-        setFiltered_staff(value === '' ? all_staff : filtered_items);
-    }
-    
-    useEffect(() => {
-        if (modalFor == 'add'){
-            get_all_staff()
-        }else if (modalFor == 'edit'){
-            get_all_staff()
-            const {customer_name, address, phone_number, email, assigned_to, appointment_date, disposition, gate_code, lead_ind} = selectedLead
-            
-            setAuth({...auth,  customer_name, address, phone_number, email,  assigned_name: `${assigned_to.last_name} ${assigned_to.first_name}`, assigned_to: assigned_to.user_id , appointment_date, disposition, gate_code })
-        }
-    }, [])
-
-    async function get_all_staff() {
-        try {
-            const response = await get_auth_request(`user/all-sales-staff`)
-            if (response.status == 200 || response.status == 201){
-
-                setAll_staff(response.data.staffs)
-
-                setFiltered_staff(response.data.staffs)
-                            
-                }else{       
-                                
-                showAlert(response.response.data.err, "error")
-                
-            }
-        } catch (err) {
-            showAlert('Error occured ', 'error')
-        }
-    }
-
-    async function create_lead(e:any) {
+    async function add_install(e:any) {
         e.preventDefault()
-        console.log('auth', auth)
-        if (!auth.customer_name || !auth.phone_number || !auth.email || !auth.assigned_to || !auth.appointment_date) {
-            showAlert('Please fill required fields', 'error')
-        }else{
+        if (false) {
+            // nothing to check for
+            
+        }
+        else{
             try {
                 setLoading(true)
-                
-                const response = await post_auth_request(`lead/create-lead`, { customer_name: auth.customer_name, address: auth.address , phone_number: auth.phone_number, email: auth.email, assigned_to_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: 'NOT_SOLD', gate_code: auth.gate_code })
+
+                console.log('install data ', install)
+
+                const response = await post_auth_request(`app/add-project-install/${selectedProject.project_id}`, auth)
+
                 if (response.status == 200 || response.status == 201){
                                 
                     showAlert(response.data.msg, "success")
+
+                    console.log( 'install response ', response.data)
                     
                     setShowModal(false)
                     
@@ -153,70 +106,46 @@ const JobListModal = ({ showModal, setShowModal, selectedLead, setSelectedLead, 
                     setLoading(false)
                 }
             } catch (err) {
-                showAlert('Error occured ', 'error')
+                
+                showAlert('Unable to create job, refresh page', 'error')
                 setLoading(false)
             }
         }
     }
 
-    async function update_lead(e:any) {
-        e.preventDefault()
-        if (!auth.customer_name || !auth.phone_number || !auth.email || !auth.assigned_to || !auth.appointment_date || !auth.disposition) {
-            showAlert('Please fill required fields', 'error')
-        }else{
-            try {
-                setLoading(true)
-                
-                const response = await patch_auth_request(`lead/edit-lead/${selectedLead.lead_id}`, 
-                    { customer_name: auth.customer_name, address: auth.address , phone_number: auth.phone_number, email: auth.email, assigned_to_id: auth.assigned_to, appointment_date: auth.appointment_date, disposition: auth.disposition.toUpperCase().replace(/ /g, '_'), gate_code: auth.gate_code })
-                if (response.status == 200 || response.status == 201){
-                                
-                    showAlert(response.data.msg, "success")
-                    
-                    setShowModal(false)
-                    
-                    setLoading(false)
 
-                    }else{       
+    useEffect(() => {
+        const {customer_name, address, phone_number, email, assigned_to, appointment_date, disposition, gate_code, lead_ind} = selectedProject
+        
+    }, [])
 
-                    showAlert(response.response.data.err, "error")
-                    
-                    setLoading(false)
-                }
-            } catch (err) {
-                showAlert('Error occured ', 'error')
-                setLoading(false)
-            }
-        }
+
+    type InstallDates = {
+        footing_date: string;
+        set_post_date: string;
+        demo_date: string;
+        install_date: string;
+        electrical_date: string;
+        inspection_date: string;
     }
 
-    async function delete_lead(e:any) {
-        e.preventDefault()
-        try {
-            setLoading(true)
-            
-            const response = await delete_auth_request(`lead/delete-lead/${selectedLead.lead_id}`)
-            if (response.status == 200 || response.status == 201){
-                            
-                showAlert(response.data.msg, "success")
-                
-                setShowModal(false)
-                
-                setLoading(false)
+    const handleDateChange = (field: keyof InstallDates, newDate: string) => {
+        
+        // setClicked_permit_date((prevState) => ({
+        //     ...prevState,
+        //     [field]: newDate,  
+        // }));
+        
+        setShowCalenders({...showCalenders, [field]: false })
 
-                }else{       
+        setInstall({...install, [field]: Number(convert_to_unix(newDate) * 1000 )})
+    };
 
-                showAlert(response.response.data.err, "error")
-
-                setLoading(false)
-
-            }
-        } catch (err) {
-            showAlert('Error occured ', 'error')
-            setLoading(false)
-        }
-    
-    }
+    const handleFileUpload = (fileUrl:string, type: string) => {
+        console.log('selected file ', type, " : ", fileUrl)
+        setInstall({...install, [type]: fileUrl})
+        
+    };
 
     return (
         <div className="fixed z-30 inset-0 overflow-y-auto" id="modal">
@@ -227,291 +156,298 @@ const JobListModal = ({ showModal, setShowModal, selectedLead, setSelectedLead, 
                 <div className="fixed inset-0 transition-opacity" aria-hidden="true">
                     <div className="absolute inset-0 bg-gray-500 opacity-35"></div>
                 </div>
-                <div className={ modalFor == 'delete' ? "w-full h-screen pt-[150px] rounded-lg overflow-hidden shadow-xl transform transition-all": "w-full h-screen pt-[25px] rounded-lg overflow-hidden shadow-xl transform transition-all" } role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
+                <div className={"w-full h-screen flex items-center justify-center rounded-lg overflow-hidden shadow-xl transform transition-all"} role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
 
-                    <div className={"h-auto w-[70%] mx-auto shadow-xl flex items-start "}>
+                    <div className={"h-auto w-auto mx-auto shadow-xl flex items-start "}>
                         {/* the container for the input fields */}
-                        <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
+                        <div onClick={(e) => e.stopPropagation()} className="w-auto flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
                             <div className="w-full min-h-[250px] flex flex-col justify-start items-center p-[10px] ">
 
-                                {/* below is to upload new permit */}
-                                {modalFor == 'delete' && 
-                                
-                                <div className="w-full flex flex-col items-start justify-start gap-[25px] ">
-                                    <span className="w-full flex flex-row items-start justify-between border-b border-slate-200 h-[40px]">
-                                        <p className="text-md font-semibold  text-slate-900 ">{selectedLead.name} </p>
-
-                                        
-                                    </span>
-
-                                    <div className="w-full flex flex-col items-center justify-center gap-[34px]">
-                                        <p className="text-md font-normal text-center text-slate-900 ">Are you sure you want to delete lead <strong>{selectedLead.customer_name}</strong>
-                                            <strong> {selectedLead.name}</strong> assigned to <strong>{selectedLead.assigned_to.last_name} {selectedLead.assigned_to.first_name} </strong> </p>
-                                            
-                                        <p className="text-xs flex items-center justify-center gap-2 text-red-600 "> <CiWarning size={20} />   Please note action is not reaversible </p>
-
-                                            <button className=" w-[150px] h-[45px] text-white bg-blue-700 rounded-[5px] hover:bg-red-600 flex items-center justify-center"  disabled={loading} onClick={delete_lead} >
-                                                {loading ? (
-                                                    <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                    </svg>
-                                                ) : 'Delete'}
-
-                                            </button>
-
-                                    </div>
-
-                                    <span className="w-full flex items-center justify-center">
-                                    </span>
-
-                                </div>}
-
-                                {modalFor == 'add' && 
-                                <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
-                                    <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
-                                        <p className="text-md font-semibold  text-slate-800 ">New Lead </p>
-
-                                        {/* <span className="h-[35px] min-w-[150px] z-5">
-                                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                        </span> */}
-                                    </span>
-
-                                    <form  action="" className="w-full flex items-start justify-between gap-[15px]">
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                            <p className="text-sm text-slate-900 flex items-center gap-2">Customer Name <p className="font-light">(first name and last name)</p> </p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='customer_name' value={auth.customer_name} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Customer Address</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='address' value={auth.address} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
-                                            
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Phone <p className="font-light">(Please enter a valid phone number)</p> </p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name="phone_number" value={auth.phone_number} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
-                                            
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Email <p className="font-light">(Please enter a valid email)</p> </p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name="email" value={auth.email} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
-                                            
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Gate Code</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='gate_code' value={auth.gate_code} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Assigned to</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='assigned_name' value={auth.assigned_name} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
-                                            
-                                        </div>
-
-                                        <div className="w-1/2 flex flex-col item-start justify-start gap-[20px]">
-                                            <span className="w-full flex flex-col items-start justify-start gap-[10px] ">
-
-                                                <h4 className="text-sm ">Appointment Date</h4>
-                                                <div className="w-full flex flex-col items-end justify-end relative z-[15] ">
-                                                    <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-sm" onClick={(e:any) => {e.preventDefault(); setShowCalender(!showCalender)}}>
-
-                                                        {auth.appointment_date ? auth.appointment_date : "Select Appointment Date"}
-                                                        <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
-                                                            {showCalender ? <FaCaretUp /> : <FaCaretDown />}
-                                                        </span>
-                                                    </button>
-                                                    {showCalender && <div className="absolute top-[45px] left-0 min-h-[290px] w-full  pt-[1px] flex flex-row items-start justify-center w-full ">
-                                                        <MyDatePicker clickedDate={clicked_appointment_date} setClickedDate={setClicked_appointment_date} />
-                                                    </div>}
-                                                </div>
-
-                                            </span>
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Select Staff</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="email" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-sm' />
-                                                </span>
-                                                <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[5px] ">
-                                                    <div className="w-full flex flex-col items-start justify-start">
-                                                        {filtered_staff.map((data, ind)=>{
-                                                            const {first_name, last_name, user_id, user_role } = data
-                                                            return(
-                                                                <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-300 px-[10px] gap-[10px] rounded-[3px] ">
-
-                                                                    <span className="h-[35px] flex items-center justify-start gap-[10px] w-full cursor-pointer " onClick={()=> setAuth({...auth, assigned_name: `${last_name} ${first_name}`, assigned_to:  user_id })} >
-
-                                                                        <p className="text-start text-sm text-slate-900 " >{ind + 1}. </p>
-
-                                                                        <p className="text-start text-sm text-slate-900 " >{last_name} </p>
-
-                                                                        <p className=" text-start text-sm text-slate-900 " > {first_name} </p>
-
-                                                                    </span>
-                                                                        
-                                                                    <p key={ind} className=" text-start text-sm text-slate-900 text-end " > {user_role} </p>
-
-
-                                                                </span>
-                                                            )
-                                                        })}
-
-                                                    </div>
-                                                </div>
-
-                                                <button className=" w-full h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_lead} >
-                                            {loading ? (
-                                                <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                </svg>
-                                            ) : 'Create Lead'}
-
-                                        </button>
-                                            </span>
-                                        </div>
-                                        
-                                    </form>
-
-                                </div>
-                                }
 
                                 {modalFor == 'edit' && 
-                                <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] ">
-                                    <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] ">
-                                        <p className="text-md font-semibold  text-slate-800 ">Edit Lead: <strong>{selectedLead.lead_ind}</strong> </p>
+                                <div className="w-[80vw] flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] py-[10px] ">
+                                    <div className="w-full flex flex-row items-center justify-between border-b border-slate-200 pb-[10px] ">
+                                        <p className="text-md font-semibold  text-slate-800 ">Project Id <strong>{selectedProject.project_ind}</strong> </p>
 
-                                        <span className="h-[35px] min-w-[150px] z-[10]">
-                                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                        </span>
-                                    </span>
+                                        
+                                        <div className="span flex items-center justify-end gap-[20px] ">
+                                            
+                                            <span className="w-full flex items-center justify-end gap-[15px] z-[20]">
+                                                <p className="text-[15px]">Project Sign Off</p>
+                                                <span className="h-[40px] min-w-[150px] z-[15]">
+                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'project_sign_off'} dropArray={['Pending', "In Progress", "Completed", "Closed" ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                </span>
+                                            </span>
+                                        </div>
+                                        
+                                    </div>
 
-                                    <form  action="" className="w-full flex items-start justify-between gap-[15px]">
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Customer Name.</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='customer_name' value={auth.customer_name} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
+                                    <form  action="" className="w-full  flex items-start justify-between gap-[20px]">
+                                        <div className="w-1/3 flex flex-col items-start justify-start gap-[20px] ">
+                                            <div className="w-full flex flex-col items-start justify-start gap-[15px] ">
+                                                <p className="text-[15px] w-[50%] font-medium ">Basic Information</p>
 
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Customer Address</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='address' value={auth.address} onChange={handle_change} className='normal-input text-sm' />
+                                                <span className="w-full flex items-start gap-[10px]">
+                                                    <p className="text-[15px] w-[50%] ">Job Id</p>
+                                                    <p className="text-[15px] w-[50%] font-medium ">{selectedProject.job.job_ind}</p>
                                                 </span>
-                                            </span>
-                                            
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Phone <p className="font-light">(Please enter a valid phone number)</p> </p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name="phone_number" value={auth.phone_number} onChange={handle_change} className='normal-input text-sm' />
+                                                <span className="w-full flex items-start gap-[10px]">
+                                                    <p className="text-[15px] w-[50%] ">Job Number</p>
+                                                    <p className="text-[15px] w-[50%] font-medium ">{selectedProject.job.job_number}</p>
                                                 </span>
-                                            </span>
-                                            
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900 flex items-center gap-2">Customer Email <p className="font-light">(Please enter a valid email)</p> </p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name="email" value={auth.email} onChange={handle_change} className='normal-input text-sm' />
+                                                <span className="w-full flex items-start gap-[10px]">
+                                                    <p className="text-[15px] w-[50%] ">Customer Name</p>
+                                                    <p className="text-[15px] w-[50%] font-medium ">{selectedProject.job.lead.customer_first_name} {selectedProject.job.lead.customer_last_name}</p>
                                                 </span>
-                                            </span>
-                                            
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Gate Code</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='gate_code' value={auth.gate_code} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
+                                            </div>
 
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Assigned to</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='assigned_name' value={auth.assigned_name} onChange={handle_change} className='normal-input text-sm' />
+                                            <div className="w-full flex flex-col items-start justify-between gap-[15px] ">
+                                                <p className="text-[15px] font-medium">Inspection Information</p>
+
+                                                <span className="w-full flex  items-center justify-start gap-[10px] z-[25] ">
+
+                                                    <h4 className="text-[15px] w-[200px] whitespace-nowrap ">Inspection Date</h4>
+                                                    <div className="w-full flex flex-col items-end justify-end relative ">
+                                                        <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, inspection_date: !showCalenders.inspection_date }) }}>
+
+                                                            { install.inspection_date != 0  ? readable_day(Number(install.inspection_date)) : "Select Date"}
+                                                            <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
+                                                                {showCalenders.inspection_date ? <FaCaretUp /> : <FaCaretDown />}
+                                                            </span>
+                                                        </button>
+                                                        {showCalenders.inspection_date && <div className="absolute top-[45px] left-0 min-h-[290px] w-full  pt-[1px] flex flex-row items-start justify-center w-full ">
+                                                            <InstallDatePicker clickedDate={'inspection_date'} setClickedDate={handleDateChange}  title='inspection_date'  />
+                                                        </div>}
+                                                    </div>
+
                                                 </span>
-                                            </span>
-                                            
+
+                                                <span className="w-full flex items-center justify-between gap-[10px] z-[20]">
+                                                    <p className="text-[15px] w-[200px] whitespace-nowrap ">Inspection Status</p>
+                                                    <span className="h-[40px]  w-full z-[10]">
+                                                        <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'inspection_status'} dropArray={['Pass','Fail', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                                    </span>
+                                                </span>
+                                            </div>
                                         </div>
 
-                                        <div className="w-1/2 flex flex-col item-start justify-start gap-[20px]">
-                                            <span className="w-full flex flex-col items-start justify-start gap-[10px] ">
+                                        <div className="w-1/3 flex flex-col items-start justify-start gap-[20px] h-[63.5vh] overflow-y-auto ">
 
-                                                <h4 className="text-sm ">Appointment Date</h4>
-                                                <div className="w-full flex flex-col items-end justify-end relative z-[5] ">
-                                                    <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-sm" onClick={(e:any) => {e.preventDefault(); setShowCalender(!showCalender)}}>
+                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] ">
 
-                                                        {auth.appointment_date ? auth.appointment_date : "Select Appointment Date"}
-                                                        <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
-                                                            {showCalender ? <FaCaretUp /> : <FaCaretDown />}
-                                                        </span>
-                                                    </button>
-                                                    {showCalender && <div className="absolute top-[45px] left-0 min-h-[290px] w-full  pt-[1px] flex flex-row items-start justify-center w-full ">
-                                                        <MyDatePicker clickedDate={clicked_appointment_date} setClickedDate={setClicked_appointment_date} />
-                                                    </div>}
-                                                </div>
+                                                <p className="text-[15px] w-[50%] font-medium ">Footing Information</p>
 
-                                            </span>
+                                                <span className="w-full flex flex-col items-start justify-start gap-[10px] z-[10] ">
 
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Select Staff</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="email" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-sm' />
-                                                </span>
-                                                <div className="w-full h-[300px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-slate-100 rounded-[5px] ">
-                                                    <div className="w-full flex flex-col items-start justify-start">
-                                                        {filtered_staff.map((data, ind)=>{
-                                                            const {first_name, last_name, user_id, user_role } = data
-                                                            return(
-                                                                <span key={ind} className="w-full flex items-center justify-between hover:bg-slate-300 px-[10px] gap-[10px] rounded-[3px] ">
+                                                    <h4 className="text-[15px] ">Footing Date</h4>
 
-                                                                    <span className="h-[35px] flex items-center justify-start gap-[10px] w-full cursor-pointer " onClick={()=> setAuth({...auth, assigned_name: `${last_name} ${first_name}`, assigned_to:  user_id })} >
+                                                    <div className="w-full flex flex-col items-end justify-end relative ">
+                                                        <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, footing_date: !showCalenders.footing_date }) }}>
 
-                                                                        <p className="text-start text-sm text-slate-900 " >{ind + 1}. </p>
-
-                                                                        <p className="text-start text-sm text-slate-900 " >{last_name} </p>
-
-                                                                        <p className=" text-start text-sm text-slate-900 " > {first_name} </p>
-
-                                                                    </span>
-                                                                        
-                                                                    <p key={ind} className=" text-start text-sm text-slate-900 text-end " > {user_role} </p>
-
-
-                                                                </span>
-                                                            )
-                                                        })}
-
+                                                            { install.footing_date != 0  ? readable_day(Number(install.footing_date)) : "Select Date"}
+                                                            <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
+                                                                {showCalenders.footing_date ? <FaCaretUp /> : <FaCaretDown />}
+                                                            </span>
+                                                        </button>
+                                                        {showCalenders.footing_date && <div className="absolute top-[45px] left-0 min-h-[290px] w-full  pt-[1px] flex flex-row items-start justify-center w-full ">
+                                                            <InstallDatePicker clickedDate={'footing_date'} setClickedDate={handleDateChange}  title='footing_date'  />
+                                                        </div>}
                                                     </div>
+
+                                                </span>
+
+                                                <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-[15px]">Footing Crew</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='footing_crew' value={install.footing_crew} onChange={handle_change} className='normal-input text-[15px]' />
+                                                    </span>
+                                                </span>
+
+                                                <div className="w-full flex flex-col justify-start items-start gap-3">
+                                                    <span className="w-full flex flex-col items-center justify-start gap-2">
+                                                        <FileUploader id={'footing'} title={"Footing Bill Sheet"} type={'footing_bill_sheet'} url={install.footing_bill_sheet || "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
+                                                    </span>
                                                 </div>
 
-                                                <button className=" w-full h-[40px] text-white bg-amber-700 rounded-[5px] hover:bg-amber-600 flex items-center justify-center text-sm "  disabled={loading} onClick={update_lead} >
-                                                {loading ? (
-                                                    <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                    </svg>
-                                                ) : 'Update Lead'}
+                                            </div>
 
-                                            </button>
-                                            </span>
+                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] ">
+
+                                                <p className="text-[15px] w-[50%] font-medium ">Set Post Information</p>
+
+                                                <span className="w-full flex flex-col items-start justify-start gap-[10px] z-[10] ">
+
+                                                    <h4 className="text-[15px] ">Set Post Date</h4>
+
+                                                    <div className="w-full flex flex-col items-end justify-end relative ">
+                                                        <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, set_post_date: !showCalenders.set_post_date }) }}>
+
+                                                            { install.set_post_date != 0  ? readable_day(Number(install.set_post_date)) : "Select Date"}
+                                                            <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
+                                                                {showCalenders.set_post_date ? <FaCaretUp /> : <FaCaretDown />}
+                                                            </span>
+                                                        </button>
+                                                        {showCalenders.set_post_date && <div className="absolute top-[45px] left-0 min-h-[290px] w-full  pt-[1px] flex flex-row items-start justify-center w-full ">
+                                                            <InstallDatePicker clickedDate={'set_post_date'} setClickedDate={handleDateChange}  title='set_post_date'  />
+                                                        </div>}
+                                                    </div>
+
+                                                </span>
+
+                                                <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-[15px]">Set Post Crew</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='set_post_crew' value={install.set_post_crew} onChange={handle_change} className='normal-input text-[15px]' />
+                                                    </span>
+                                                </span>
+
+                                                <div className="w-full flex flex-col justify-start items-start gap-3">
+                                                    <span className="w-full flex flex-col items-center justify-start gap-2">
+                                                        <FileUploader id={'set_post'} title={"Set Post Bill Sheet"} type={'footing_bill_sheet'} url={install.set_post_bill_sheet || "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
+                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] ">
+
+                                                <p className="text-[15px] w-[50%] font-medium ">Demo Information</p>
+
+                                                <span className="w-full flex flex-col items-start justify-start gap-[10px] z-[10] ">
+
+                                                    <h4 className="text-[15px] ">Footing Date</h4>
+
+                                                    <div className="w-full flex flex-col items-end justify-end relative ">
+                                                        <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, demo_date: !showCalenders.demo_date }) }}>
+
+                                                            { install.demo_date != 0  ? readable_day(Number(install.demo_date)) : "Select Date"}
+                                                            <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
+                                                                {showCalenders.demo_date ? <FaCaretUp /> : <FaCaretDown />}
+                                                            </span>
+                                                        </button>
+
+                                                        {showCalenders.demo_date && <div className="absolute top-[45px] left-0 min-h-[290px] w-full  pt-[1px] flex flex-row items-start justify-center w-full ">
+                                                            <InstallDatePicker clickedDate={'demo_date'} setClickedDate={handleDateChange}  title='demo_date'  />
+                                                        </div>}
+                                                    </div>
+
+                                                </span>
+
+                                                <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-[15px]">Demo Crew</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='demo_crew' value={install.demo_crew} onChange={handle_change} className='normal-input text-[15px]' />
+                                                    </span>
+                                                </span>
+
+                                                <div className="w-full flex flex-col justify-start items-start gap-3">
+                                                    <span className="w-full flex flex-col items-center justify-start gap-2">
+                                                        <FileUploader id={'demo_date'} title={"Demo Bill Sheet"} type={'footing_bill_sheet'} url={install.demo_bill_sheet || "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                            
+
+                                        </div>
+
+                                        <div className="w-1/3 flex flex-col items-start justify-start gap-[20px] h-[63.5vh] overflow-y-auto ">
+                                            
+                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] ">
+
+                                                <p className="text-[15px] w-[50%] font-medium ">Install Information</p>
+
+                                                <span className="w-full flex flex-col items-start justify-start gap-[10px] z-[10] ">
+
+                                                    <h4 className="text-[15px] ">Install Date</h4>
+
+                                                    <div className="w-full flex flex-col items-end justify-end relative ">
+                                                        <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, install_date: !showCalenders.install_date }) }}>
+
+                                                            { install.install_date != 0  ? readable_day(Number(install.install_date)) : "Select Date"}
+                                                            <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
+                                                                {showCalenders.install_date ? <FaCaretUp /> : <FaCaretDown />}
+                                                            </span>
+                                                        </button>
+                                                        {showCalenders.install_date && <div className="absolute top-[45px] left-0 min-h-[290px] w-full  pt-[1px] flex flex-row items-start justify-center w-full ">
+                                                            <InstallDatePicker clickedDate={'install_date'} setClickedDate={handleDateChange}  title='install_date'  />
+                                                        </div>}
+                                                    </div>
+
+                                                </span>
+
+                                                <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-[15px]">Install Crew</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='install_crew' value={install.install_crew} onChange={handle_change} className='normal-input text-[15px]' />
+                                                    </span>
+                                                </span>
+
+                                                <div className="w-full flex flex-col justify-start items-start gap-3">
+                                                    <span className="w-full flex flex-col items-center justify-start gap-2">
+                                                        <FileUploader id={'install'} title={"Install Bill Sheet"} type={'install_bill_sheet'} url={install.install_bill_sheet || "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
+                                                    </span>
+                                                </div>
+
+                                            </div>
+                                            
+                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] ">
+
+                                                <p className="text-[15px] w-[50%] font-medium ">Electrical Information</p>
+
+                                                <span className="w-full flex flex-col items-start justify-start gap-[10px] z-[10] ">
+
+                                                    <h4 className="text-[15px] ">Electrical Date</h4>
+
+                                                    <div className="w-full flex flex-col items-end justify-end relative ">
+                                                        <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, electrical_date: !showCalenders.electrical_date }) }}>
+
+                                                            { install.electrical_date != 0  ? readable_day(Number(install.electrical_date)) : "Select Date"}
+                                                            <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
+                                                                {showCalenders.electrical_date ? <FaCaretUp /> : <FaCaretDown />}
+                                                            </span>
+                                                        </button>
+                                                        {showCalenders.electrical_date && <div className="absolute top-[45px] left-0 min-h-[290px] w-full  pt-[1px] flex flex-row items-start justify-center w-full ">
+                                                            <InstallDatePicker clickedDate={'electrical_date'} setClickedDate={handleDateChange}  title='electrical_date'  />
+                                                        </div>}
+                                                    </div>
+
+                                                </span>
+
+                                                <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
+                                                    <p className="text-[15px]">Electrical Crew</p>
+                                                    <span className="h-[40px] w-full ">
+                                                        <input type="text" name='electrical_crew' value={install.electrical_crew} onChange={handle_change} className='normal-input text-[15px]' />
+                                                    </span>
+                                                </span>
+
+                                                <div className="w-full flex flex-col justify-start items-start gap-3">
+                                                    <span className="w-full flex flex-col items-center justify-start gap-2">
+                                                        <FileUploader id={'electrical'} title={"Electrical Bill Sheet"} type={'electrical_bill_sheet'} url={install.electrical_bill_sheet || "https://images.pexels.com/photos/261679/pexels-photo-261679.jpeg"} onFileUpload={handleFileUpload} />
+                                                    </span>
+                                                </div>
+
+                                            </div>
+
                                         </div>
                                         
                                     </form>
 
+                                    <div className="w-full flex items-center justify-end border-t border-gray-300 gap-[20px] ">
+                                        <p className="text-white w-1/3">.</p>
+                                        <p className="text-white w-1/3">.</p>
+
+                                        <button className=" w-1/3 h-[40px] mt-[5px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-[15px]"  disabled={loading} onClick={add_install} >
+                                                {loading ? (
+                                            <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                            </svg>
+                                        ) : 'Submit'}
+
+                                        </button>
+
+                                    </div>
 
                             </div>
                                 }

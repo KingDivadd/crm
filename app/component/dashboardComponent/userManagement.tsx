@@ -275,8 +275,8 @@ const UserManagement = () => {
                         <p className="text-[15px] font-normal w-[9%] px-[10px] text-white ">First Name</p>
                         <p className="text-[15px] font-normal w-[26.5%] px-[10px] text-white ">Email</p>
                         <p className="text-[15px] font-normal w-[10%] px-[10px] text-white ">Role</p>
-                        <p className="text-[15px] font-normal w-[12.5%] px-[10px] text-white ">Added By</p>
-                        <p className="text-[15px] font-normal w-[10.5%] px-[10px] text-white ">Added On</p>
+                        <p className="text-[15px] font-normal w-[13%] px-[10px] text-white ">Added By</p>
+                        <p className="text-[15px] font-normal w-[10%] px-[10px] text-white ">Added On</p>
                         <p className="text-[15px] font-normal w-[7.5%] px-[10px] text-white ">Action</p>
                         <p className="text-[15px] font-normal w-[9%] px-[10px] text-white "></p>
                     </span>
@@ -295,9 +295,9 @@ const UserManagement = () => {
                                         <p className="text-[15px] w-[26.5%] px-[10px] "> {email} </p>
                                         <p className="text-[15px] w-[10%] px-[10px] "> {user_role.replace(/_/g, ' ')} </p>
 
-                                        <p className="text-[15px] w-[12.5%] px-[10px] flex items-center gap-[10px] "> { added_by ? added_by.first_name : "-"} {added_by ? added_by.last_name : "-"} </p>
+                                        <p className="text-[15px] w-[13%] px-[10px] flex items-center gap-[10px] "> { added_by ? added_by.first_name : "-"} {added_by ? added_by.last_name : "-"} </p>
 
-                                        <p className="text-[15px] w-[10.5%] px-[10px] "> {readable_day(Number(created_at))} </p>
+                                        <p className="text-[15px] w-[10%] px-[10px] "> {readable_day(Number(created_at))} </p>
 
                                         <p className="text-[15px] w-[7.5%] px-[10px] flex flex-row items-center justify-start gap-2 text-slate-600 hover:text-amber-600" onClick={()=>{edit_user(data)}} ><MdEdit size={16} /> Edit</p>
                                         

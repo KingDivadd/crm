@@ -70,7 +70,6 @@ const AllPermitPage = () => {
 
     async function get_all_jobs(pg_number:number) {
 
-        console.log('started fetching');
         
         const response = await get_auth_request(`app/all-paginated-job-permits/${pg_number}`)
 
@@ -80,11 +79,9 @@ const AllPermitPage = () => {
             
             setFiltered_job_box(response.data)
 
-            console.log('master ', response.data);
             
 
         }else{
-        console.log(response);
         
         showAlert(response.response.data.err, "error")
         }
@@ -192,14 +189,12 @@ const AllPermitPage = () => {
 
     async function handle_new_filter(item: string) {
         if (job_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',job_box);
             
             // If no filter is provided, reset to the original list
             setFiltered_job_box(job_box);
         
         } 
         else if (item && job_box) {
-            console.log(item);
             
             const new_jobs = job_box.jobs.filter((data: any) => {
                 const disposition = data.disposition?.toLowerCase() || '';
@@ -284,15 +279,15 @@ const AllPermitPage = () => {
                                             <span className="recent-activity-table-list "  >
                                                 <p className="text-sm w-[7.5%] px-2 "> {job_ind} </p>
                                                 <p className="text-sm w-[10%] px-2 "> {project[0].project_ind} </p>
-                                                <p className="text-sm w-[15%] px-2 "> {general_permit_status} </p>
+                                                <p className="text-sm w-[15%] px-2 "> {general_permit_status.replace(/_/g, " ")} </p>
                                                 <p className="text-sm w-[12.5%] px-2 ">
                                                 { general_permit_approval_date != 0 ? readable_day(Number(general_permit_approval_date)) : '-'}
                                                 </p>
-                                                <p className="text-sm w-[15%] px-2 "> {engineering_permit_status} </p>
+                                                <p className="text-sm w-[15%] px-2 "> {engineering_permit_status.replace(/_/g, " ")} </p>
                                                 <p className="text-sm w-[12.5%] px-2 "> 
                                                 { engineering_permit_approval_date != 0 ? readable_day(Number(engineering_permit_approval_date)) : '-'}
                                                 </p>
-                                                <p className="text-sm w-[15%] px-2 "> {hoa_permit_status} </p>
+                                                <p className="text-sm w-[15%] px-2 "> {hoa_permit_status.replace(/_/g, " ")} </p>
                                                 <p className="text-sm w-[12.5%] px-2 ">
                                                 { hoa_permit_approval_date != 0 ? readable_day(Number(hoa_permit_approval_date)) : '-'}
                                                 </p>

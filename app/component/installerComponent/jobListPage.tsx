@@ -6,24 +6,25 @@ import {DropDownBlank, DropDownBlankTransparent} from '../dropDown';
 import Alert from '../alert';
 import { get_auth_request } from '@/app/api/admin_api';
 import JobListModal from './jobListModal';
+import { readable_day } from '../helper';
 
-interface Leads_Props {
+interface Projects_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
     filter?(arg0: (user: any) => any): unknown;
     map?(arg0: (data: any) => void): unknown;
-    total_number_of_leads_pages?: number; // Now optional and can be undefined
-    total_number_of_leads?: number; // Now optional and can be undefined
-    leads: any;
+    total_number_of_pages?: number; // Now optional and can be undefined
+    total_number_of_projects?: number; // Now optional and can be undefined
+    projects: any;
 }  
 
 const JobListPage = () => {
     const [modalFor, setModalFor] = useState('')
     const [showModal, setShowModal] = useState(false)
-    const [selectedLead, setSelectedLead] = useState(null)
+    const [selectedProject, setSelectedProject] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [page_number, setPage_number] = useState(1)
-    const [lead_box, setLead_box] = useState<Leads_Props | null>(null);
-    const [filtered_lead_box, setFiltered_lead_box] = useState<Leads_Props | null>(null);
+    const [project_box, setProject_box] = useState<Projects_Props | null>(null);
+    const [filtered_project_box, setFiltered_project_box] = useState<Projects_Props | null>(null);
     const [filters, setFilters] = useState({filter_input: '', disposition: ''})
     const [role, setRole] = useState('')
 
@@ -57,7 +58,7 @@ const JobListPage = () => {
         }else{
             setRole('installer')
         }
-        get_all_leads()
+        get_all_projects(page_number)
     }, [showModal])
 
     function showAlert(message: string, type: string){
@@ -67,43 +68,18 @@ const JobListPage = () => {
             }, 3000);
     }
 
-    async function get_all_leads() {
-
-        console.log('started fetching');
+    async function get_all_projects(pg_number:number) {
         
-        const response = await get_auth_request(`auth/all-leads/${page_number}`)
+        const response = await get_auth_request(`app/all-paginated-installable-projects/${pg_number}`)
 
         if (response.status == 200 || response.status == 201){
             
-            setLead_box(response.data)      
+            setProject_box(response.data)      
             
-            setFiltered_lead_box(response.data)
+            setFiltered_project_box(response.data)
 
             console.log('master ', response.data);
-            
 
-        }else{
-        console.log(response);
-        
-        showAlert(response.response.data.err, "error")
-        }
-    }
-
-    async function filter_leads(item:any) {
-
-        console.log('started fetching');
-        
-        const response = await get_auth_request(`/filter-leads/${item}/${page_number}`)
-
-        if (response.status == 200 || response.status == 201){
-            
-            setLead_box(response.data)      
-            
-            setFiltered_lead_box(response.data)
-
-            console.log(response.data);
-            
-            showAlert(response.data.msg, "success")
 
         }else{
         console.log(response);
@@ -114,7 +90,7 @@ const JobListPage = () => {
 
     async function app_users_action(item: any) {
         let new_page_number = page_number;
-        let max_page_number = lead_box?.total_number_of_leads_pages
+        let max_page_number = project_box?.total_number_of_pages
 
         if (item === 'prev') {
         if (page_number > 1) {
@@ -128,14 +104,13 @@ const JobListPage = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
-
         setPage_number(new_page_number);
+        get_all_projects(new_page_number)
     }
 
     const render_page_numbers = () => {
         const pages = [];
-        const max_page_number = lead_box?.total_number_of_leads_pages || 1;
+        const max_page_number = project_box?.total_number_of_pages || 1;
         const max_displayed_pages = 3;
 
         if (max_page_number <= max_displayed_pages) {
@@ -186,9 +161,9 @@ const JobListPage = () => {
         const value = e.target.value.toLowerCase();
         setFilters({ ...filters, filter_input: value });
     
-        if (lead_box && lead_box.leads) {
+        if (project_box && project_box.projects) {
             if (value.trim() !== '') {
-                const filtered_leads = lead_box.leads.filter((data: any) => {
+                const filtered_projects = project_box.projects.filter((data: any) => {
                     const customer_name = data.customer_name?.toLowerCase() || '';
                     const first_name = data.assigned_to?.first_name?.toLowerCase() || '';
                     const last_name = data.assigned_to?.last_name?.toLowerCase() || '';
@@ -205,25 +180,25 @@ const JobListPage = () => {
                 });
                 
     
-                setFiltered_lead_box({...filtered_lead_box, leads:filter_leads});
+                setFiltered_project_box({...filtered_project_box, projects:filtered_projects});
             } else {
-                setFiltered_lead_box(lead_box); // Reset to the original list
+                setFiltered_project_box(project_box); // Reset to the original list
             }
         }
     }
 
     async function handle_new_filter(item: string) {
-        if (lead_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',lead_box);
+        if (project_box && item.toLocaleLowerCase() == 'all') {
+            console.log('Disposition : all ',project_box);
             
             // If no filter is provided, reset to the original list
-            setFiltered_lead_box(lead_box);
+            setFiltered_project_box(project_box);
         
         } 
-        else if (item && lead_box) {
+        else if (item && project_box) {
             console.log(item);
             
-            const new_leads = lead_box.leads.filter((data: any) => {
+            const new_projects = project_box.projects.filter((data: any) => {
                 const disposition = data.disposition?.toLowerCase() || '';
                 const active_status = data.active_status ? 'active' : 'inactive';
     
@@ -233,30 +208,19 @@ const JobListPage = () => {
                 );
             });
     
-            setFiltered_lead_box({ ...lead_box, leads: new_leads });
+            setFiltered_project_box({ ...project_box, projects: new_projects });
         } else {
             // If no filter is provided, reset to the original list
-            setFiltered_lead_box(lead_box);
+            setFiltered_project_box(project_box);
         }
     }
     
-    function add_lead(){
+    function edit_project(item:any){
         setShowModal(true)
-        setSelectedLead(null)
-        setModalFor('add')
-    }
-
-    function edit_lead(lead:any){
-        setShowModal(true)
-        setSelectedLead(lead)
+        setSelectedProject(item)
         setModalFor('edit')
     }
 
-    function delete_lead(lead:any){
-        setShowModal(true)
-        setSelectedLead(lead)
-        setModalFor('delete')
-    }
 
     return (
         <div className="w-full h-full p-[10px] pb-[10px] ">
@@ -266,8 +230,8 @@ const JobListPage = () => {
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
-                        <p className="text-lg font-semibold text-black">All Jobs</p>
-                        <p className="text-sm text-black">{(lead_box && lead_box?.total_number_of_leads) || 0 }</p>
+                        <p className="text-lg font-semibold text-black">All projects</p>
+                        <p className="text-sm text-black">{(project_box && project_box?.total_number_of_projects) || 0 }</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
@@ -277,7 +241,7 @@ const JobListPage = () => {
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            {(role == 'installer' || role == 'admin') && <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>}
+
                         </span>
 
                         
@@ -287,67 +251,49 @@ const JobListPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    {(role == 'installer' || role == 'admin') ? 
+                    
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Job Id</p>
-                        <p className="text-sm font-normal w-[14.5%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[13%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Assigned to</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
-                        <p className="text-sm font-normal w-[10%] px-2 "></p>
-                    </span>:
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[10%] px-2 ">Job Id</p>
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Gate Code</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[17.5%] px-2 ">Assigned to</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
-                    </span>}
+                        <p className="text-[15px] font-normal w-[7.5%] px-2 ">Project Id</p>
+                        <p className="text-[15px] font-normal w-[14%] px-2 ">Client Name</p>
+                        <p className="text-[15px] font-normal w-[12%] px-2 ">Install Date</p>
+                        <p className="text-[15px] font-normal w-[12%] px-2 ">Footing Date</p>
+                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Set Post Date</p>
+                        <p className="text-[15px] font-normal w-[12%] px-2 ">Demo Date</p>
+                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Electrical Date</p>
+                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Inspection Date</p>
+                        <p className="text-[15px] font-normal px-2 w-[9.5%] ">Inspection</p>
+
+                    </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                         
-                        {filtered_lead_box !== null ?
+                        {filtered_project_box !== null ?
                         
                             <div className='h-full w-full flex flex-col justify-start '>
 
-                                {lead_box?.leads.length ?
+                                {project_box?.projects.length ?
                                 <>
-                                { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind, gate_code} = data
+                                { filtered_project_box?.projects.map((data:any, ind:number)=>{
+                                    const {project_ind,job, lead, install } = data
                                     return (
-                                        <div key={ind}>
-                                        {(role == 'installer' || role == 'admin') ? 
-                                        <span className="recent-activity-table-list " >
-                                            <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[14.5%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
-                                            <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-green-600 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
-                                        
-                                            <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
-                                        </span>:
-                                        <span className="recent-activity-table-list " >
-                                            <p className="text-sm w-[10%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[7.5%] px-2 "> {gate_code} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[17.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                        </span>}
+                                        <div key={ind} className='recent-activity-table-list group' onClick={()=> edit_project(data)}>
+                                            <p className="text-[15px] w-[7.5%] px-2 ">{project_ind} </p>
+                                            <p className="text-[15px] w-[14%] px-2 ">{job.lead.customer_first_name} {job.lead.customer_last_name} </p>
+                                            <p className="text-[15px] w-[12%] px-2 "> {install.install_date ? readable_day(Number(install.install_date)) : "N/A" } </p>
+                                            <p className="text-[15px] w-[12%] px-2 "> {install.footing_date ? readable_day(Number(install.footing_date)) : "N/A"} </p>
+                                            <p className="text-[15px] w-[12.5%] px-2 "> {install.set_post_date ? readable_day(Number(install.set_post_date)) : "N/A" } </p>
+                                            <p className="text-[15px] w-[12%] px-2 "> {install.demo_date ? readable_day(Number(install.demo_date)) : "N/A" } </p>
+                                            <p className="text-[15px] w-[12.5%] px-2 "> {install.electrical_date ? readable_day(Number(install.electrical_date)) : "N/A" } </p>
+                                            <p className="text-[15px] w-[12.5%] px-2 "> {install.inspection_date ? readable_day(Number(install.inspection_date)) : "N/A" } </p>
+                                            <p className="text-[15px]  px-2 w-[9.5%] "> {(install.inspection_status || install.inspection_status == 'n_a') ? install.inspection_status  : "N/A" } </p>
+                                            
                                         </div>
                                     )
                                 })}
                                 </>
                                 :
                                 <div className="w-full h-[100%] flex items-center justify-center">
-                                    <p className="text-normal"> No Leads yet </p>
+                                    <p className="text-normal"> No Project availale for Install yet </p>
                                 </div>}
 
                             </div>
@@ -355,7 +301,7 @@ const JobListPage = () => {
                         :
 
                             <div className="w-full h-full flex items-center justify-center">
-                                <p className="text-sm font-normal">Loading Data...</p>
+                                <p className="text-sm font-normal">Loading Installable Projects...</p>
                             </div>
                         
                         }
@@ -371,13 +317,15 @@ const JobListPage = () => {
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-sm">Showing 1-15 of {(lead_box && lead_box?.total_number_of_leads) || 0}</p>
+                            <p className="text-sm">Showing 1-15 of {(project_box && project_box?.total_number_of_projects) || 0}</p>
                         </span>
                     </span>
                 </div>
 
             </div>
-            {showModal && <JobListModal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedLead={selectedLead} setModalFor={setModalFor} setSelectedLead={setSelectedLead} /> }
+            {showModal 
+            && 
+            <JobListModal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedProject={selectedProject} setModalFor={setModalFor} setSelectedProject={setSelectedProject} /> }
         </div>
     )
 }

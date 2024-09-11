@@ -121,7 +121,6 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
             get_all_staff()
             const {customer_first_name, customer_last_name, customer_address, customer_city, customer_state, customer_zip, customer_phone, customer_email, lead_designer, appointment_date, disposition, gate_code, lead_ind, contract_document, desired_structure } = selectedLead
             
-            console.log('damn ', selectedLead.customer_address)
 
             setAuth({...auth,  customer_first_name, customer_last_name, phone_number: customer_phone, address: selectedLead.customer_address, email: customer_email, city: customer_city, state: customer_state, zip: customer_zip, assigned_name: `${lead_designer.last_name} ${lead_designer.first_name}`, assigned_to: lead_designer.user_id , appointment_date, disposition, gate_code, desired_structure: desired_structure || '', contract_document })
 
@@ -152,6 +151,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
     async function create_lead(e:any) {
         e.preventDefault()
         if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.city || !auth.state || !auth.assigned_to) {
+
             if (!auth.customer_first_name || !auth.customer_last_name){showAlert('Please enter client name', 'error')};
             
             if (!auth.phone_number) { showAlert("Please enter client's phone number", 'error') }
@@ -162,7 +162,6 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
             if (!auth.assigned_to) {showAlert("Please select a sales personnel", 'error')}
             
-            showAlert('Please fill required fields', 'error')
         }else if (auth.disposition == 'SOLD' && !auth.email){
             showAlert("Email is required when lead is sold", 'error')
         }
@@ -180,7 +179,6 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                 
                     showAlert(response.data.msg, "success")
 
-                    console.log('response : ', response.data)
                     
                     setShowModal(false)
                     
@@ -202,7 +200,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
     async function update_lead(e:any) {
         e.preventDefault()
 
-        console.log(' upload contraact file ', auth)
+        
         if (!auth.customer_first_name || !auth.customer_last_name || !auth.phone_number || !auth.city || !auth.state || !auth.zip || !auth.assigned_to || !auth.appointment_date) {
             if (!auth.customer_first_name || !auth.customer_last_name){showAlert('Please enter client name', 'error')};
             
@@ -216,8 +214,15 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
             if (!auth.appointment_date) {showAlert("Please select an appointment date", 'error')}
             
-        }else if( auth.disposition.toLowerCase() === 'sold' && (!auth.desired_structure || !auth.contract_document.length)){
-            setModalFor("upload_lead_file")
+        }else if ( auth.disposition.toLowerCase() === 'sold' && (!auth.desired_structure || !auth.contract_document.length || !auth.email) ){
+
+            
+            if (!auth.desired_structure) {showAlert("Please enter the desired structure", 'error'); setModalFor("upload_lead_file")}
+            
+            if (!auth.contract_document.length) {showAlert("Please select the contract file", 'error'); setModalFor("upload_lead_file")}
+            
+            if (!auth.email) {showAlert("Please enter a valid lead email", 'error'); setModalFor("edit")}
+            
         }else{
             try {
                 setLoading(true)
@@ -258,7 +263,6 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
             try {
                 setLoading(true)
 
-                console.log('box : ', box)
                 
                 const response = await patch_auth_request(`app/upload-lead-contract-document/${selectedLead.lead_id}`, box)
                 if (response.status == 200 || response.status == 201){
@@ -316,7 +320,6 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
     }
 
     const handleFileUpload = (fileUrl:string) => {
-        console.log('Received file URL from settings:', fileUrl);
         const box:any = auth.contract_document
         box.push(fileUrl)
         setAuth({...auth, contract_document: box})

@@ -88,3 +88,52 @@ export const DatePicker = ({ clickedDate, setClickedDate, title }: DateProps) =>
         </div>
     );
 };
+
+type CalenderDates = {
+    footing_date: string;
+    set_post_date: string;
+    demo_date: string;
+    install_date: string;
+    electrical_date: string;
+    inspection_date: string;
+}
+
+
+export interface InstallDateProps {
+    clickedDate: string;
+    title: keyof CalenderDates; // Ensuring it's keyof PermitDates
+    setClickedDate: (field: keyof CalenderDates, clickedDate: string) => void;
+}
+
+export const InstallDatePicker = ({ clickedDate, setClickedDate, title }: InstallDateProps) => {
+    const [date, setDate] = useState(new Date());
+
+    useEffect(() => {
+        // if (clickedDate !== '') {
+        // setDate(new Date(clickedDate)); // Set the date when clickedDate changes
+        // }
+    }, [clickedDate]);
+
+    
+
+    const onChange = (newDate: any) => {
+        setDate(newDate); // Update local state with the new date
+        const formattedDate = formatDate(newDate);
+        setClickedDate(title, formattedDate); // Pass the title (field name) and the formatted date
+    };
+
+    function formatDate(date: Date): string {
+        const options: Intl.DateTimeFormatOptions = { month: 'long', day: 'numeric', year: 'numeric' };
+        return date.toLocaleDateString('en-US', options).toUpperCase(); // Format the date
+    }
+
+    return (
+        <div className="h-full">
+        <Calendar
+            value={date}
+            onChange={onChange} // Handle date change
+            className="custom-calendar h-full"
+        />
+        </div>
+    );
+};

@@ -18,7 +18,7 @@ import { MdAssignmentTurnedIn, MdCheckCircleOutline, MdLiveHelp, MdNotifications
 import { RiLuggageCartFill } from "react-icons/ri";
 import { GiSuitcase } from 'react-icons/gi';
 import { FcApproval } from 'react-icons/fc';
-
+import { AiOutlineFileProtect } from "react-icons/ai";
 
 
 const PermitRoleSidebar = ({active, setActive}: SideBarNav) => {
@@ -55,17 +55,18 @@ const PermitRoleSidebar = ({active, setActive}: SideBarNav) => {
                         {active !== "sales" && <p className="text-[15.5px]">Home</p>}
                     </span>
                     <span className={active === "all-permit"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('all-permit')}}>
-                        <FcApproval size={21} className={"text-slate-800"} /> 
+                        <AiOutlineFileProtect size={21} className={"text-slate-800"} /> 
                         <p className="text-[15.5px]">All Permit</p>
                     </span>
                     {/* <span className={active === "taskManagement"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('taskManagement')}}>
                         <FaFileAlt size={21} /> 
                         <p className="text-[15.5px]">Task Management</p>
                     </span> */}
-                    {/* <span className={active === "inspection"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('inspection')}}>
+                    
+                    <span className={active === "inspection"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('inspection')}}>
                         <MdAssignmentTurnedIn size={21} /> 
                         <p className="text-[15.5px]"> Inspection Page</p>
-                    </span> */}
+                    </span>
                     
                     <span className={active === "notification"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('notification')}}>
                         <MdNotifications size={21} className='text-slate-800' />
