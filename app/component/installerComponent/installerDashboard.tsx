@@ -19,7 +19,7 @@ const InstallerDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
         const item = sessionStorage.getItem('sideNav')
-        if (item == null || item == "" || !['home', 'job-list', 'service-ticket', 'photo-upload', 'bill-sheet', 'report', 'notification', 'settings'] ) {
+        if (item == null ) {
             setActive('home')
         }else{
             setActive(item)
