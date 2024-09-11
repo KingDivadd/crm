@@ -19,7 +19,7 @@ const AdminDashboard = () => {
         const item = sessionStorage.getItem('side_nav')
         setActive( item || 'home')
         
-        if (item == null || item == "" || !['home', 'user-management', 'leads', 'job', 'project-status', 'notifications', 'taskManagement', 'system-settings'].includes(active)) {
+        if (item == null) {
             setActive('home')
             console.log(' nav ', item)
         }else{
