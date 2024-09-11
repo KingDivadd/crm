@@ -9,7 +9,6 @@ import MyDatePicker, { InstallDatePicker } from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
 import {get_todays_date, convert_to_unix, readable_day} from "../helper"
-import { auth } from 'googleapis/build/src/apis/abusiveexperiencereport';
 
 
 interface Lead_Management_Props {
@@ -87,7 +86,7 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
 
                 console.log('install data ', install)
 
-                const response = await post_auth_request(`app/add-project-install/${selectedProject.project_id}`, auth)
+                const response = await post_auth_request(`app/add-project-install/${selectedProject.project_id}`, install)
 
                 if (response.status == 200 || response.status == 201){
                                 
