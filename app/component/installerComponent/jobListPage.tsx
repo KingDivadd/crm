@@ -325,7 +325,7 @@ const JobListPage = () => {
             </div>
             {showModal 
             && 
-            <JobListModal showModal={showModal} setShowModal={setShowModal} setModalFor={setModalFor} modalFor={modalFor} selectedProject={selectedProject} setModalFor={setModalFor} setSelectedProject={setSelectedProject} /> }
+            <JobListModal showModal={showModal} setShowModal={setShowModal} setModalFor={setModalFor} modalFor={modalFor} selectedProject={selectedProject} setSelectedProject={setSelectedProject} /> }
         </div>
     )
 }
