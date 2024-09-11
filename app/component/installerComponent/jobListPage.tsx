@@ -218,7 +218,7 @@ const JobListPage = () => {
     function edit_project(item:any){
         setShowModal(true)
         setSelectedProject(item)
-        setModalFor('edit')
+        setModalFor('add')
     }
 
 
@@ -279,13 +279,13 @@ const JobListPage = () => {
                                         <div key={ind} className='recent-activity-table-list group' onClick={()=> edit_project(data)}>
                                             <p className="text-[15px] w-[7.5%] px-2 ">{project_ind} </p>
                                             <p className="text-[15px] w-[14%] px-2 ">{job.lead.customer_first_name} {job.lead.customer_last_name} </p>
-                                            <p className="text-[15px] w-[12%] px-2 "> {install.install_date ? readable_day(Number(install.install_date)) : "N/A" } </p>
-                                            <p className="text-[15px] w-[12%] px-2 "> {install.footing_date ? readable_day(Number(install.footing_date)) : "N/A"} </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {install.set_post_date ? readable_day(Number(install.set_post_date)) : "N/A" } </p>
-                                            <p className="text-[15px] w-[12%] px-2 "> {install.demo_date ? readable_day(Number(install.demo_date)) : "N/A" } </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {install.electrical_date ? readable_day(Number(install.electrical_date)) : "N/A" } </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {install.inspection_date ? readable_day(Number(install.inspection_date)) : "N/A" } </p>
-                                            <p className="text-[15px]  px-2 w-[9.5%] "> {(install.inspection_status || install.inspection_status == 'n_a') ? install.inspection_status  : "N/A" } </p>
+                                            <p className="text-[15px] w-[12%] px-2 "> {install[0].install_date ? readable_day(Number(install[0].install_date)) : "N/A" } </p>
+                                            <p className="text-[15px] w-[12%] px-2 "> {install[0].footing_date ? readable_day(Number(install[0].footing_date)) : "N/A"} </p>
+                                            <p className="text-[15px] w-[12.5%] px-2 "> {install[0].set_post_date ? readable_day(Number(install[0].set_post_date)) : "N/A" } </p>
+                                            <p className="text-[15px] w-[12%] px-2 "> {install[0].demo_date ? readable_day(Number(install[0].demo_date)) : "N/A" } </p>
+                                            <p className="text-[15px] w-[12.5%] px-2 "> {install[0].electrical_date ? readable_day(Number(install[0].electrical_date)) : "N/A" } </p>
+                                            <p className="text-[15px] w-[12.5%] px-2 "> {install[0].inspection_date ? readable_day(Number(install[0].inspection_date)) : "N/A" } </p>
+                                            <p className="text-[15px]  px-2 w-[9.5%] "> {(install[0].inspection_status || install.inspection_status == 'n_a') ? install[0].inspection_status  : "N/A" } </p>
                                             
                                         </div>
                                     )
@@ -325,7 +325,7 @@ const JobListPage = () => {
             </div>
             {showModal 
             && 
-            <JobListModal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedProject={selectedProject} setModalFor={setModalFor} setSelectedProject={setSelectedProject} /> }
+            <JobListModal showModal={showModal} setShowModal={setShowModal} setModalFor={setModalFor} modalFor={modalFor} selectedProject={selectedProject} setModalFor={setModalFor} setSelectedProject={setSelectedProject} /> }
         </div>
     )
 }
