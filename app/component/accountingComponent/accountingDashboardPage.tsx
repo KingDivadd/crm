@@ -38,7 +38,6 @@ const AccountingDashboardPage = () => {
                 console.log( 'sales data 1 ',response.data);
                 
             }else{
-                console.log(response);
                 
                 showAlert(response.response.data.err, "error")
             }
