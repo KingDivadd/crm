@@ -18,7 +18,7 @@ const CustomerDashboard = () => {
     useEffect(() => {
         const item = sessionStorage.getItem('side_nav')
         
-        if (item == null || item == "" || !['home', 'project-status', 'service-ticket', 'payment', 'notifications', 'warranty', 'system-settings'].includes(item)) {
+        if (item == null) {
             setActive('home')
         }else{
             setActive(item)

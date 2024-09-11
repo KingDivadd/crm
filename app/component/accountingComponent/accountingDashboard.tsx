@@ -14,7 +14,7 @@ const AccountingDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
         const item = sessionStorage.getItem('side_nav')
-        if (item == null || item == "" || !['home', 'invoice', 'payment',  'expenses', 'notification', 'settings' ].includes(item) ) {
+        if (item == null) {
             setActive('home')
         }else{
             setActive(item)

@@ -15,7 +15,7 @@ const SalesDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
         const item = sessionStorage.getItem('side_nav')
-        if (item == null || item == "" || !['home', 'leads', 'sales-pipeline', 'jobs','reports', 'notification', 'settings' ] ) {
+        if (item == null ) {
             setActive('dashboard')
         }else{
             setActive(item)
