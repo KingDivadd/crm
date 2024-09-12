@@ -78,9 +78,6 @@ const JobListPage = () => {
             
             setFiltered_project_box(response.data)
 
-            console.log('master ', response.data);
-
-
         }else{
         console.log(response);
         
@@ -214,11 +211,17 @@ const JobListPage = () => {
             setFiltered_project_box(project_box);
         }
     }
-    
-    function edit_project(item:any){
+
+    function add_install(item:any){
         setShowModal(true)
         setSelectedProject(item)
         setModalFor('add')
+    }
+    
+    function edit_install(item:any){
+        setShowModal(true)
+        setSelectedProject(item)
+        setModalFor('edit')
     }
 
 
@@ -254,14 +257,14 @@ const JobListPage = () => {
                     
                     <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-[15px] font-normal w-[7.5%] px-2 ">Project Id</p>
-                        <p className="text-[15px] font-normal w-[14%] px-2 ">Client Name</p>
                         <p className="text-[15px] font-normal w-[12%] px-2 ">Install Date</p>
                         <p className="text-[15px] font-normal w-[12%] px-2 ">Footing Date</p>
                         <p className="text-[15px] font-normal w-[12.5%] px-2 ">Set Post Date</p>
                         <p className="text-[15px] font-normal w-[12%] px-2 ">Demo Date</p>
                         <p className="text-[15px] font-normal w-[12.5%] px-2 ">Electrical Date</p>
                         <p className="text-[15px] font-normal w-[12.5%] px-2 ">Inspection Date</p>
-                        <p className="text-[15px] font-normal px-2 w-[9.5%] ">Inspection</p>
+                        <p className="text-[15px] font-normal px-2 w-[12%] ">Insp Status</p>
+                        <p className="text-[15px] font-normal w-[11.5%] px-2 ">Action</p>
 
                     </span>
 
@@ -274,18 +277,40 @@ const JobListPage = () => {
                                 {project_box?.projects.length ?
                                 <>
                                 { filtered_project_box?.projects.map((data:any, ind:number)=>{
+
                                     const {project_ind,job, lead, install } = data
+
                                     return (
-                                        <div key={ind} className='recent-activity-table-list group' onClick={()=> edit_project(data)}>
+                                        <div key={ind} className='recent-activity-table-list group' >
                                             <p className="text-[15px] w-[7.5%] px-2 ">{project_ind} </p>
-                                            <p className="text-[15px] w-[14%] px-2 ">{job.lead.customer_first_name} {job.lead.customer_last_name} </p>
-                                            <p className="text-[15px] w-[12%] px-2 "> {install[0].install_date ? readable_day(Number(install[0].install_date)) : "N/A" } </p>
-                                            <p className="text-[15px] w-[12%] px-2 "> {install[0].footing_date ? readable_day(Number(install[0].footing_date)) : "N/A"} </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {install[0].set_post_date ? readable_day(Number(install[0].set_post_date)) : "N/A" } </p>
-                                            <p className="text-[15px] w-[12%] px-2 "> {install[0].demo_date ? readable_day(Number(install[0].demo_date)) : "N/A" } </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {install[0].electrical_date ? readable_day(Number(install[0].electrical_date)) : "N/A" } </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {install[0].inspection_date ? readable_day(Number(install[0].inspection_date)) : "N/A" } </p>
-                                            <p className="text-[15px]  px-2 w-[9.5%] "> {(install[0].inspection_status || install.inspection_status == 'n_a') ? install[0].inspection_status  : "N/A" } </p>
+                                            
+                                            <p className="text-[15px] w-[12%] px-2 "> 
+                                                {(install.length && install[0].install_date != 0 ) ? readable_day(Number(install[0].install_date)) : "n/a" } </p>
+                                            <p className="text-[15px] w-[12%] px-2 "> 
+                                                {(install.length && install[0].footing_date != 0 ) ? readable_day(Number(install[0].footing_date)) : "n/a"} 
+                                            </p>
+                                            <p className="text-[15px] w-[12.5%] px-2 ">
+                                                {(install.length && install[0].set_post_date ) ? readable_day(Number(install[0].set_post_date)) : "n/a" }
+                                            </p>
+                                            <p className="text-[15px] w-[12%] px-2 ">
+                                                {(install.length && install[0].demo_date ) ? readable_day(Number(install[0].demo_date)) : "n/a" }
+                                            </p>
+                                            <p className="text-[15px] w-[12.5%] px-2 ">
+                                                {(install.length && install[0].electrical_date ) ? readable_day(Number(install[0].electrical_date)) : "n/a" }
+                                            </p>
+                                            <p className="text-[15px] w-[12.5%] px-2 ">
+                                                {(install.length && install[0].inspection_date) ? readable_day(Number(install[0].inspection_date)) : "n/a" }
+                                            </p>
+                                            <p className="text-[15px]  px-2 w-[12%] ">
+                                                {(install.length || install.inspection_status == 'n_a') ? install[0].inspection_status.replace(/_/g, '/')  : "n/a" }
+                                            </p>
+                                            <span className="w-[11.5%] flex px-2 justify-between">
+                                                {!install.length ? 
+                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>add_install(data)} > Add Install</p>
+                                                :
+                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2  hover:underline hover:text-amber-600 cursor-pointer" onClick={()=>{edit_install(data)}} > Edit Install</p>
+                                                }
+                                            </span>
                                             
                                         </div>
                                     )

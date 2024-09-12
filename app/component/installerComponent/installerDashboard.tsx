@@ -18,7 +18,7 @@ import ServiceTicketPage from '../customerComponent/serviceTicketPage'
 const InstallerDashboard = () => {
     const [active, setActive] = useState('')
     useEffect(() => {
-        const item = sessionStorage.getItem('sideNav')
+        const item = sessionStorage.getItem('side_nav')
         if (item == null ) {
             setActive('home')
         }else{

@@ -326,9 +326,9 @@ const SalesJobPage = () => {
 
                                             <span className="w-[17.5%] px-2 flex items-center justify-between gap-[2px]">
                                             
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:underline text-blue-600 cursor-pointer" onClick={()=>view_job(data)} > view</p>
+                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>view_job(data)} > view</p>
                                             
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2  hover:underline text-amber-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
+                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2  hover:underline hover:text-amber-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
                                             
                                                 <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Del</p>
                                             </span>
@@ -347,9 +347,9 @@ const SalesJobPage = () => {
 
                                             <span className="w-[17.5%] px-2 flex items-center justify-between gap-[2px]">
                                             
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:underline text-blue-600 cursor-pointer" onClick={()=>view_job(data)} > view</p>
+                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>view_job(data)} > view</p>
                                             
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2  hover:underline text-amber-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
+                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2  hover:underline hover:text-amber-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
                                             </span>
 
                                         </span>}

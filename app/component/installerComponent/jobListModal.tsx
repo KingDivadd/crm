@@ -25,9 +25,12 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
     const [install, setInstall] = useState({
-        footing_date: 0, footing_crew: '', footing_bill_sheet: '', demo_date: 0, demo_crew: '', demo_bill_sheet: '', 
-        set_post_date: 0, set_post_crew: '', set_post_bill_sheet: '', install_date: 0, install_crew: '', install_bill_sheet: '', 
-        electrical_date: 0, electrical_crew: '', electrical_bill_sheet: '', inspection_date: 0, inspection_status: 'n_a', project_sign_off: 'pending'
+        footing_date: 0, footing_crew: '', footing_bill_sheet: '', 
+        demo_date: 0, demo_crew: '', demo_bill_sheet: '', 
+        set_post_date: 0, set_post_crew: '', set_post_bill_sheet: '', 
+        install_date: 0, install_crew: '', install_bill_sheet: '', 
+        electrical_date: 0, electrical_crew: '', electrical_bill_sheet: '', 
+        inspection_date: 0, inspection_status: 'n_a', project_sign_off: 'pending'
     })
     
 
@@ -92,6 +95,44 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
                                 
                     showAlert(response.data.msg, "success")
 
+                    console.log( 'install respons ', response.data)
+                    
+                    setShowModal(false)
+                    
+                    setLoading(false)
+
+                    }else{       
+                                    
+                    showAlert(response.response.data.err, "error")
+                    
+                    setLoading(false)
+                }
+            } catch (err) {
+                
+                showAlert('Unable to create job, refresh page', 'error')
+                setLoading(false)
+            }
+        }
+    }
+
+    async function edit_install(e:any) {
+        e.preventDefault()
+        if (false) {
+            // nothing to check for
+            
+        }
+        else{
+            try {
+                setLoading(true)
+
+                console.log('install data ', install,'checking : ', )
+
+                const response = await post_auth_request(`app/edit-project-install/${selectedProject.install[0].install_id}`, install)
+
+                if (response.status == 200 || response.status == 201){
+                                
+                    showAlert(response.data.msg, "success")
+
                     console.log( 'install response ', response.data)
                     
                     setShowModal(false)
@@ -114,11 +155,32 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
 
 
     useEffect(() => {
-        const {install} = selectedProject
 
-        if(install.length){
-            setModalFor('add')
+        console.log('add response ', selectedProject)
+        if (modalFor == 'edit'){
+
+            const {
+                install, 
+            } = selectedProject
+
+            const {footing_date, footing_crew, footing_bill_sheet, demo_date, demo_crew, demo_bill_sheet, 
+                set_post_date, set_post_crew, set_post_bill_sheet, install_date, install_crew, install_bill_sheet, 
+                electrical_date, electrical_crew, electrical_bill_sheet, inspection_date, inspection_status, project_sign_off
+                } = selectedProject.install[0]
+
+            console.log(' install response :: ', footing_date, install[0])
+    
+            setTimeout(() => {
+                setInstall({ 
+                    footing_date, footing_crew, footing_bill_sheet, demo_date, demo_crew, demo_bill_sheet, 
+                    set_post_date, set_post_crew, set_post_bill_sheet, install_date, install_crew, install_bill_sheet, 
+                    electrical_date, electrical_crew, electrical_bill_sheet, inspection_date, inspection_status, project_sign_off
+                })
+                
+            }, 100);
+
         }
+
         
     }, [])
 
@@ -133,12 +195,7 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
     }
 
     const handleDateChange = (field: keyof InstallDates, newDate: string) => {
-        
-        // setClicked_permit_date((prevState) => ({
-        //     ...prevState,
-        //     [field]: newDate,  
-        // }));
-        
+
         setShowCalenders({...showCalenders, [field]: false })
 
         setInstall({...install, [field]: Number(convert_to_unix(newDate) * 1000 )})
@@ -367,7 +424,7 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
                                                     <div className="w-full flex flex-col items-end justify-end relative ">
                                                         <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, install_date: !showCalenders.install_date }) }}>
 
-                                                            { install.install_date != 0  ? readable_day(Number(install.install_date)) : "Select Date"}
+                                                            { install.install_date != 0  ? readable_day(Number(selectedProject.install[0].install_date)) : "Select Date"}
                                                             <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
                                                                 {showCalenders.install_date ? <FaCaretUp /> : <FaCaretDown />}
                                                             </span>
@@ -458,7 +515,11 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
                                 {modalFor == 'edit' &&
                                 <div className="w-[80vw] flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] py-[10px] ">
                                     <div className="w-full flex flex-row items-center justify-between border-b border-slate-200 pb-[10px] ">
-                                        <p className="text-md font-semibold  text-slate-800 ">Project Id <strong>{selectedProject.project_ind}</strong> </p>
+                                        <span className="flex items-center justify-start gap-[20px] ">
+
+                                            <p className="text-md font-semibold  text-slate-800 ">Project Id <strong>{selectedProject.project_ind}</strong> </p>
+                                            {selectedProject.install.length && <p className="text-md font-semibold  text-slate-800 ">Install Id <strong>{selectedProject.install[0].install_ind}</strong> </p>}
+                                        </span>
 
                                         
                                         <div className="span flex items-center justify-end gap-[20px] ">
@@ -501,7 +562,7 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
                                                     <div className="w-full flex flex-col items-end justify-end relative ">
                                                         <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, inspection_date: !showCalenders.inspection_date }) }}>
 
-                                                            { install.inspection_date != 0  ? readable_day(Number(install.inspection_date)) : "Select Date"}
+                                                            { selectedProject.install[0].inspection_date != 0  ? readable_day(Number(install.inspection_date)) : "Select Date"}
                                                             <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
                                                                 {showCalenders.inspection_date ? <FaCaretUp /> : <FaCaretDown />}
                                                             </span>
@@ -524,9 +585,9 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
 
                                         <div className="w-1/3 flex flex-col items-start justify-start gap-[20px] h-[63.5vh] overflow-y-auto ">
 
-                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] border-b border-gray-400 ">
+                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] pb-[20px] border-b border-gray-400 ">
 
-                                                <p className="text-[15px] w-[50%] font-medium ">Footing Information</p>
+                                                <p className="text-[15px] w-full font-medium ">Footing Information</p>
 
                                                 <span className="w-full flex flex-col items-start justify-start gap-[10px] z-[10] ">
 
@@ -562,9 +623,9 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
 
                                             </div>
 
-                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] border-b border-gray-400 ">
+                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] pb-[20px] border-b border-gray-400 ">
 
-                                                <p className="text-[15px] w-[50%] font-medium ">Set Post Information</p>
+                                                <p className="text-[15px] w-full font-medium ">Set Post Information</p>
 
                                                 <span className="w-full flex flex-col items-start justify-start gap-[10px] z-[10] ">
 
@@ -602,7 +663,7 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
 
                                             <div className="w-full flex flex-col items-start justify-start gap-[20px] ">
 
-                                                <p className="text-[15px] w-[50%] font-medium ">Demo Information</p>
+                                                <p className="text-[15px] w-full font-medium ">Demo Information</p>
 
                                                 <span className="w-full flex flex-col items-start justify-start gap-[10px] z-[10] ">
 
@@ -639,14 +700,13 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
 
                                             </div>
                                             
-
                                         </div>
 
                                         <div className="w-1/3 flex flex-col items-start justify-start gap-[20px] h-[63.5vh] overflow-y-auto ">
                                             
-                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] ">
+                                            <div className="w-full flex flex-col items-start justify-start gap-[20px] pb-[20px] border-b border-gray-400 ">
 
-                                                <p className="text-[15px] w-[50%] font-medium ">Install Information</p>
+                                                <p className="text-[15px]  font-medium ">Install Information</p>
 
                                                 <span className="w-full flex flex-col items-start justify-start gap-[10px] z-[10] ">
 
@@ -655,7 +715,7 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
                                                     <div className="w-full flex flex-col items-end justify-end relative ">
                                                         <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, install_date: !showCalenders.install_date }) }}>
 
-                                                            { install.install_date != 0  ? readable_day(Number(install.install_date)) : "Select Date"}
+                                                            { (install.install_date != 0)  ? readable_day(Number(install.install_date)) : "Select Date"}
                                                             <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
                                                                 {showCalenders.install_date ? <FaCaretUp /> : <FaCaretDown />}
                                                             </span>
@@ -684,7 +744,7 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
                                             
                                             <div className="w-full flex flex-col items-start justify-start gap-[20px] ">
 
-                                                <p className="text-[15px] w-[50%] font-medium ">Electrical Information</p>
+                                                <p className="text-[15px] font-medium ">Electrical Information</p>
 
                                                 <span className="w-full flex flex-col items-start justify-start gap-[10px] z-[10] ">
 
@@ -693,7 +753,7 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
                                                     <div className="w-full flex flex-col items-end justify-end relative ">
                                                         <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, electrical_date: !showCalenders.electrical_date }) }}>
 
-                                                            { install.electrical_date != 0  ? readable_day(Number(install.electrical_date)) : "Select Date"}
+                                                            { (install.electrical_date != 0)  ? readable_day(Number(install.electrical_date)) : "Select Date"}
                                                             <span className="h-full w-[15px]  flex items-center justify-center cursor-pointer">
                                                                 {showCalenders.electrical_date ? <FaCaretUp /> : <FaCaretDown />}
                                                             </span>
@@ -728,7 +788,7 @@ const JobListModal = ({ showModal, setShowModal, selectedProject, setSelectedPro
                                         <p className="text-white w-1/3">.</p>
                                         <p className="text-white w-1/3">.</p>
 
-                                        <button className=" w-1/3 h-[40px] mt-[5px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-[15px]"  disabled={loading}  >
+                                        <button className=" w-1/3 h-[40px] mt-[5px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-[15px]"  disabled={loading} onClick={edit_install} >
                                                 {loading ? (
                                             <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                 <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
