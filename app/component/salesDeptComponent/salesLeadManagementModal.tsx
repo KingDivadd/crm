@@ -345,13 +345,12 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                 {modalFor == 'delete' && 
                                 
                                 <div className="w-full flex flex-col items-start justify-start gap-[25px] ">
-                                    <span className="w-full flex flex-row items-start justify-between border-b border-slate-200 h-[40px]">
-                                        <p className="text-sm font-semibold  text-slate-900 ">{selectedLead.name} </p>
+                                    <span className="w-full flex items-center  border-b border-slate-200 h-[40px]">
+                                        <p className="text-sm font-semibold  text-slate-900 ">{selectedLead.lead_ind} </p>
                                     </span>
 
                                     <div className="w-full flex flex-col items-center justify-center gap-[34px]">
-                                        <p className="text-[15.5px] font-normal text-center text-slate-900 ">Are you sure you want to delete lead <strong>{selectedLead.customer_first_name}</strong>
-                                            <strong> {selectedLead.name}</strong> assigned to <strong>{selectedLead.assigned_to.last_name} {selectedLead.assigned_to.first_name} </strong> </p>
+                                        <p className="text-[15.5px] font-normal text-center text-slate-900 ">Are you sure you want to delete lead <strong>{selectedLead.customer_first_name} {selectedLead.customer_last_name}</strong> </p>
                                             
                                         <p className="text-[14.5px] text-slate-900 flex items-center justify-center gap-2 "> <CiWarning size={19} />   Please note action is not reaversible </p>
 

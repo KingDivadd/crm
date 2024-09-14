@@ -193,12 +193,12 @@
 }
 
 .user-list-cont {
-    height: calc(100vh - 200px)
+    height: calc(100vh - 215px)
 }
 
 .admin-side-bar-cont {
     @apply my-auto bg-white;
-    height: calc(100vh - 50px - 20px);
+    height: calc(100vh - 55px - 20px);
 }
 
 .email-notification-cont {

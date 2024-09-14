@@ -273,7 +273,7 @@ const PipelinePage = () => {
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     {(role == 'sales' || role == 'admin' || role == 'super_admin' ) ? 
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-[15px] font-normal w-[7.5%] px-2 ">Lead Id</p>
                         <p className="text-[15px] font-normal w-[7.5%] px-2 ">Job Id</p>
                         <p className="text-[15px] font-normal w-[10%] px-2 ">Job Number</p>
@@ -285,7 +285,7 @@ const PipelinePage = () => {
                         <p className="text-[15px] font-normal w-[10%] px-2 ">Contract Amt</p>
                         <p className="text-[15px] font-normal w-[4.5%] px-2 "></p>
                     </span>:
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-[15px] font-normal w-[7.5%] px-2 ">Lead Id</p>
                         <p className="text-[15px] font-normal w-[15%] px-2 ">Lead Name</p>
                         <p className="text-[15px] font-normal w-[15%] px-2 ">Address</p>
@@ -334,7 +334,7 @@ const PipelinePage = () => {
                                             <p className="text-[15px] w-[14%] px-2 "> {lead_adder.first_name} {lead_adder.last_name} </p>
                                             <p className="text-[15px] w-[10%] px-2 "> {job.length ? Number(job[0].contract_amount).toLocaleString() : "-"} </p>
                                             
-                                            <p className="text-[15px] w-[4.5%] px-2 flex flex-row items-center justify-start gap-2 text-blue-600 hover:underline cursor-pointer" onClick={()=> {view_pipeline(data)} } >view</p>
+                                            <p className="text-[15px] w-[4.5%] px-2 flex flex-row items-center justify-start gap-2 hover:text-blue-600 hover:underline cursor-pointer" onClick={()=> {view_pipeline(data)} } >view</p>
                                         </span>}
                                         </div>
                                     )
@@ -357,7 +357,7 @@ const PipelinePage = () => {
                     
                     </div>
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-[15px] cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">

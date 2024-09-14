@@ -12,7 +12,7 @@ import { RiBarChartFill } from "react-icons/ri";
 import {  get_auth_request } from '@/app/api/admin_api';
 import { Admin_dashboard_props } from '@/types';
 import ShortCutModal from './shortCutModal';
-import { timestamp_to_readable_value } from '../helper';
+import { readable_day, timestamp_to_readable_value } from '../helper';
 
 
 interface Admin_Dashboard_Props {
@@ -131,7 +131,7 @@ const AdminHome = () => {
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
                             <p className="text-md ">Revenue Generated</p>
-                            <p className="text-[15px] ">{dash_box?.total_revenue_generated || 0}</p>
+                            <p className="text-[15px] ">$ {Number(dash_box?.total_revenue_generated).toLocaleString() || 0}</p>
                             <p className="text-[15px] font-light ">Last 30 days</p>
                         </div>
                     </span>                  
@@ -142,7 +142,7 @@ const AdminHome = () => {
                     <p className="text-md ">Recent Lead</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                             <p className="text-[15px] font-normal w-[7.5%] px-2 ">Lead Id</p>
                             <p className="text-[15px] font-normal w-[15%] px-2 ">Customer Name</p>
                             <p className="text-[15px] font-normal w-[17.5%] px-2 ">Customer Address</p>
@@ -154,7 +154,7 @@ const AdminHome = () => {
                         </span>
                         
                         {dash_box != null ? 
-                        <div className="w-full h-[300px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto">
                             {dash_box?.recent_lead.length ? <>
                             {dash_box?.recent_lead.map((data:any, ind:any)=>{
 
@@ -166,10 +166,10 @@ const AdminHome = () => {
                                         <p className="text-[15px] w-[15%] px-2 ">{customer_first_name} {customer_last_name}</p>
                                         <p className="text-[15px] w-[17.5%] px-2 ">{customer_state}, {customer_city}</p>
                                         <p className="text-[15px] w-[15%] px-2 ">{customer_phone}</p>
-                                        <p className="text-[15px] w-[10%] px-2 ">{gate_code}</p>
+                                        <p className="text-[15px] w-[10%] px-2 ">{gate_code || 'NA'}</p>
                                         <p className="text-[15px] w-[15%] px-2 flex items-center justify-between ">{lead_designer.last_name} {lead_designer.first_name}</p>
                                         <p className="text-[15px] w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
-                                        <p className={disposition == 'sold' ? "text-[15px] w-[10%] px-2 text-blue-600 ":"text-[15px] w-[10%] px-2 text-red-600 "}>{disposition.replace(/_/g, ' ').toLowerCase()}</p>
+                                        <p className={disposition == 'sold' ? "text-[15px] w-[10%] px-2 text-lime-600 ":"text-[15px] w-[10%] px-2 text-red-600 "}>{disposition.replace(/_/g, ' ').toLowerCase()}</p>
                                     </span>
                                 )
                             })}
@@ -188,7 +188,7 @@ const AdminHome = () => {
                         }
                         
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-[15px] cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -209,34 +209,34 @@ const AdminHome = () => {
                     <p className="text-md ">Recent Job</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                            <p className="text-[15px] font-normal w-[10%] px-2 ">Project Id</p>
-                            <p className="text-[15px] font-normal w-[7.5%] px-2 ">Job Id</p>
-                            <p className="text-[15px] font-normal w-[7.5%] px-2 ">Lead Id</p>
-                            <p className="text-[15px] font-normal w-[15%] px-2 ">Customer Name</p>
-                            <p className="text-[15px] font-normal w-[15%] px-2 ">Contract Amt</p>
-                            <p className="text-[15px] font-normal w-[15%] px-2 ">Assigned to</p>
-                            <p className="text-[15px] font-normal w-[15%] px-2 ">Status</p>
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                            <p className="text-[15px] font-normal w-[10%] px-2 ">Job Id</p>
+                            <p className="text-[15px] font-normal w-[10%] px-2 ">Lead Id</p>
+                            <p className="text-[15px] font-normal w-[10%] px-2 ">Contract Amt</p>
+                            <p className="text-[15px] font-normal w-[12.5%] px-2 ">Contract Date</p>
+                            <p className="text-[15px] font-normal w-[15%] px-2 ">Added By</p>
+                            <p className="text-[15px] font-normal w-[15%] px-2 ">Designer</p>
+                            <p className="text-[15px] font-normal w-[12.5%] px-2 ">Created On</p>
+                            <p className="text-[15px] font-normal w-[15%] px-2 ">Last Updated</p>
 
-                            <p className="text-[15px] font-normal w-[15%] px-2 ">Last Upated</p>
                         </span>
                         
                         {dash_box != null ? 
-                        <div className="w-full h-[300px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto ">
                             {dash_box?.recent_job.length ? <>
                             {dash_box?.recent_job.map((data:any, ind:any)=>{
 
-                                const {project_ind, job, job_ind, lead, contract_amount, status, updated_at} = data   
+                                const { job_ind, lead, contract_amount, job_adder, contract_date, created_at, updated_at} = data   
                                 
                                 return (
                                     <span key={ind} className="recent-activity-table-list ">
-                                        <p className="text-[15px] w-[10%] px-2 ">{project_ind}</p>
-                                        <p className="text-[15px] w-[7.5%] px-2 ">{job_ind}</p>
-                                        <p className="text-[15px] w-[7.5%] px-2 ">{lead.lead_ind}</p>
-                                        <p className="text-[15px] w-[15%] px-2 ">{lead.customer_first_name} {lead.customer_last_name}</p>
-                                        <p className="text-[15px] w-[15%] px-2 ">{contract_amount.toLocaleString()}</p>
-                                        <p className="text-[15px] w-[15%] px-2 ">{""}</p>
-                                        <p className="text-[15px] w-[15%] px-2 flex items-center justify-between gap-[10px] ">{} </p>
+                                        <p className="text-[15px] w-[10%] px-2 ">{job_ind}</p>
+                                        <p className="text-[15px] w-[10%] px-2 ">{lead.lead_ind}</p>
+                                        <p className="text-[15px] w-[10%] px-2 ">{contract_amount.toLocaleString()}</p>
+                                        <p className="text-[15px] w-[12.5%] px-2 ">{readable_day(Number(contract_date))}</p>
+                                        <p className="text-[15px] w-[15%] px-2 ">{job_adder.first_name} {job_adder.last_name}</p>
+                                        <p className="text-[15px] w-[15%] px-2 ">{lead.lead_designer.first_name} {lead.lead_designer.last_name}</p>
+                                        <p className="text-[15px] w-[12.5%] px-2 ">{readable_day(Number(created_at))}</p>
                                         <p className="text-[15px] w-[15%] px-2 ">{timestamp_to_readable_value(Number(updated_at))}</p>
                                     </span>
                                 )
@@ -256,7 +256,7 @@ const AdminHome = () => {
                         }
                         
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-[15px] cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -277,7 +277,7 @@ const AdminHome = () => {
                     <p className="text-md ">Recent Invoice</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                             <p className="text-[15px] font-normal w-[10%] px-2 ">invoice Id</p>
                             <p className="text-[15px] font-normal w-[10%] px-2 ">Job Id</p>
                             <p className="text-[15px] font-normal w-[15%] px-2 ">Amount</p>
@@ -289,7 +289,7 @@ const AdminHome = () => {
                         </span>
                         
                         {dash_box != null ? 
-                        <div className="w-full h-[300px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto ">
                             {dash_box?.recent_invoice.length ? <>
                             {dash_box?.recent_invoice.map((data:any, ind:any)=>{
 
@@ -323,8 +323,7 @@ const AdminHome = () => {
                         </div>
                         }
                         
-
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-[15px] cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -345,7 +344,7 @@ const AdminHome = () => {
                     <p className="text-md ">Recent Payment</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                        <span className="w-full h-[44px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                             <p className="text-[15px] font-normal w-[10%] px-2 ">Payment Id</p>
                             <p className="text-[15px] font-normal w-[10%] px-2 ">Job Id</p>
                             <p className="text-[15px] font-normal w-[15%] px-2 ">Amount</p>
@@ -357,7 +356,7 @@ const AdminHome = () => {
                         </span>
                         
                         {dash_box != null ? 
-                        <div className="w-full h-[300px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto ">
                             {dash_box?.recent_payment.length ? <>
                             {dash_box?.recent_payment.map((data:any, ind:any)=>{
 
@@ -392,7 +391,7 @@ const AdminHome = () => {
                         }
                         
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-[15px] cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -402,7 +401,7 @@ const AdminHome = () => {
                                 <p className="text-[15px] cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-[15px]  ">Showing 1-15 of {dash_box?.recent_payment.length}</p>
+                                <p className="text-[15px]  ">Showing 1-15 of {dash_box?.recent_payment.length || 0}</p>
                             </span>
                         </span>
                     </div>

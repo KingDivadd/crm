@@ -267,7 +267,7 @@ const CustomerProjectPage = () => {
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[9%] px-2 ">Project Id</p>
                         <p className="text-sm font-normal w-[10%] px-2 ">Contract Amt</p>
                         <p className="text-sm font-normal w-[10%] px-2 ">Contract Date</p>
@@ -304,7 +304,7 @@ const CustomerProjectPage = () => {
                                             <p className="text-sm w-[12.5%] px-2 "> {structure_type.toUpperCase()} </p>
                                             <p className="text-sm w-[13.5%] px-2 "> {readable_day(Number(updated_at))} </p>
                                             
-                                            <p className="text-sm w-[7.5%] px-2 hover:underline text-blue-700"> view </p>
+                                            <p className="text-sm w-[7.5%] px-2 hover:underline hover:text-blue-700"> view </p>
                                         </span>
                                         
                                         </div>
@@ -328,7 +328,7 @@ const CustomerProjectPage = () => {
                     
                     </div>
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">

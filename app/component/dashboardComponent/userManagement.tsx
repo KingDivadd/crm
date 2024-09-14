@@ -268,8 +268,8 @@ const UserManagement = () => {
 
                 {/* user table */}
 
-                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[3px]">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-[15px] font-normal w-[7.5%] px-[10px] text-white ">User Id</p>
                         <p className="text-[15px] font-normal w-[9%] px-[10px] text-white ">Last Name</p>
                         <p className="text-[15px] font-normal w-[9%] px-[10px] text-white ">First Name</p>
@@ -315,7 +315,7 @@ const UserManagement = () => {
                         
                         }
                     </div>
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-[15px] cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">

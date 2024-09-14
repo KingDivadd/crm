@@ -136,7 +136,7 @@ const NotificationPage = () => {
         <div className="w-full p-[10px] pb-[10px]">
             <div className="w-full flex flex-row items-start justify-between gap-[10px] relative">
                 <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px] shadow-md ">
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
                         <p className="text-sm w-[15%] px-2  ">Date / Time</p>
                         <p className="text-sm w-[20.5%] px-2  ">Subject</p>
                         <p className="text-sm w-[34.5%] px-2  ">Details</p>
@@ -147,7 +147,7 @@ const NotificationPage = () => {
 
                     {notification_page ? 
                     
-                    <div className="w-full flex flex-col justify-start items-start overflow-y-auto " style={{height: 'calc(100vh - 150px)'}}>
+                    <div className="w-full flex flex-col justify-start items-start overflow-y-auto " style={{height: 'calc(100vh - 165px)'}}>
                         {
                             notification_page.notification.length ? 
                             <>
@@ -173,11 +173,11 @@ const NotificationPage = () => {
                         }
                     </div> 
                     :
-                    <div className="w-full flex flex-col justify-center items-center" style={{height: 'calc(100vh - 150px)'}}>
+                    <div className="w-full flex flex-col justify-center items-center" style={{height: 'calc(100vh - 160px)'}}>
                         <p className="text-sm font-normal">Loading Data...</p>
                     </div>}
 
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">

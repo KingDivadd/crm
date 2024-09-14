@@ -169,7 +169,7 @@ const NotificationModal = ({ showModal, setShowModal, selectedItem, setSelectedI
                                         </div>
 
                                         <div className="w-1/2 h-[65vh] flex flex-col items-start justify-start gap-[15px] rounded-[4px] p-[15px] pt-0">
-                                            <p className="text-[15px] font-medium w-full flex items-center px-[5px] text-start h-[35px] bg-gray-300 ">
+                                            <p className="text-[15px] font-medium w-full flex items-center px-[10px] text-start h-[35px] bg-blue-200 ">
                                                 {selectedItem.job && "New Job Information"}
                                                 {selectedItem.lead && "New Lead Information"}
                                             </p>
@@ -177,34 +177,34 @@ const NotificationModal = ({ showModal, setShowModal, selectedItem, setSelectedI
                                             
                                             <div className="w-full flex flex-col items-start justify-start gap-[15px] flex-1 overflow-y-auto ">
 
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Contract Amount</p>
                                                     <p className="text-sm w-[50%] font-medium ">$ {Number(selectedItem.job.contract_amount).toLocaleString()}</p>
                                                 </span>
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Contract Date</p>
                                                     <p className="text-sm w-[50%] font-medium ">{readable_day(Number(selectedItem.job.contract_date))}</p>
                                                 </span>
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Created On</p>
                                                     <p className="text-sm w-[50%] font-medium ">{timestamp_to_readable_value(Number(selectedItem.job.created_at))}</p>
                                                 </span>
 
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">General Permit Status</p>
                                                     {selectedItem.job.general_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedItem.job.general_permit_status.replace(/_/g, ' ')}</p>:
                                                     <p className="text-sm w-[50%] font-medium ">-</p>}
                                                 </span>
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">General Permit Submit Date</p>
                                                     <p className="text-sm w-[50%] font-medium ">{ selectedItem.job.general_permit_submit_date != 0 ? readable_day(Number(selectedItem.job.general_permit_submit_date)) : '-'}</p>
                                                 </span>
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">General Permit Approval Date</p>
                                                     <p className="text-sm w-[50%] font-medium ">{ selectedItem.job.general_permit_approval_date != 0 ? readable_day(Number(selectedItem.job.general_permit_approval_date)) : '-'}</p>
                                                 </span>
                                                 
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">General Permit Number</p>
                                                     <p className="text-sm w-[50%] font-medium ">{selectedItem.job.general_permit_number || '-'}</p>
                                                 </span>
@@ -225,20 +225,20 @@ const NotificationModal = ({ showModal, setShowModal, selectedItem, setSelectedI
                                                     </span>
                                                 </span>
                                                 
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Hoa Permit Status</p>
                                                     {selectedItem.job.hoa_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedItem.job.hoa_permit_status.replace(/_/g, ' ')}</p>:
                                                     <p className="text-sm w-[50%] font-medium ">-</p>}
                                                 </span>
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Hoa Permit Submit Date</p>
                                                     <p className="text-sm w-[50%] font-medium ">{ selectedItem.job.hoa_permit_submit_date != 0 ? readable_day(Number(selectedItem.job.hoa_permit_submit_date)) : '-'}</p>
                                                 </span>
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Hoa Approval Date</p>
                                                     <p className="text-sm w-[50%] font-medium ">{ selectedItem.job.hoa_permit_approval_date != 0 ? readable_day(Number(selectedItem.job.hoa_permit_approval_date)) : '-'}</p>
                                                 </span>
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Hoa Permit Number</p>
                                                     <p className="text-sm w-[50%] font-medium ">{selectedItem.job.hoa_permit_number || '-'}</p>
                                                 </span>
@@ -259,20 +259,20 @@ const NotificationModal = ({ showModal, setShowModal, selectedItem, setSelectedI
                                                     </span>
                                                 </span>
                                                 
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Engineering Permit Status</p>
                                                     {selectedItem.job.engineering_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedItem.job.engineering_permit_status.replace(/_/g, ' ')}</p>:
                                                     <p className="text-sm w-[50%] font-medium ">-</p>}
                                                 </span>
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Engineering Permit Submit Date</p>
                                                     <p className="text-sm w-[50%] font-medium ">{ selectedItem.job.engineering_permit_submit_date != 0 ? readable_day(Number(selectedItem.job.engineering_permit_submit_date)) : '-'}</p>
                                                 </span>
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Engineering Permit Approval Date</p>
                                                     <p className="text-sm w-[50%] font-medium ">{ selectedItem.job.engineering_permit_approval_date != 0 ? readable_day(Number(selectedItem.job.engineering_permit_approval_date)) : '-'}</p>
                                                 </span>
-                                                <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                     <p className="text-sm w-[50%] ">Engineering Permit Number</p>
                                                     <p className="text-sm w-[50%] font-medium ">{selectedItem.job.engineering_permit_number || '-'}</p>
                                                 </span>
@@ -302,42 +302,42 @@ const NotificationModal = ({ showModal, setShowModal, selectedItem, setSelectedI
                                                 selectedItem.lead && 
 
                                                 <div className="w-full flex flex-col items-start justify-start gap-[15px] flex-1 overflow-y-auto "> 
-                                                    <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                    <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                         <p className="text-sm w-[50%] ">Lead Id</p>
                                                         <p className="text-sm w-[50%] font-medium "> {selectedItem.lead.lead_ind}</p>
                                                     </span>
                                                     
-                                                    <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                    <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                         <p className="text-sm w-[50%] ">Updated On</p>
                                                         <p className="text-sm w-[50%] font-medium ">{timestamp_to_readable_value(Number(selectedItem.lead.updated_at))}</p>
                                                     </span>
 
-                                                    <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                    <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                         <p className="text-sm w-[50%] ">Customer Name</p>
                                                         <p className="text-sm w-[50%] font-medium ">{selectedItem.lead.customer_first_name} {selectedItem.lead.customer_last_name} </p>
                                                     </span>
 
-                                                    <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                    <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                         <p className="text-sm w-[50%] ">Customer Email</p>
-                                                        <p className="text-sm w-[50%] font-medium ">{selectedItem.lead.customer_email}</p>
+                                                        <p className="text-sm w-[50%] font-medium ">{selectedItem.lead.customer_email || "n/a"}</p>
                                                     </span>
 
-                                                    <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                    <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                         <p className="text-sm w-[50%] ">Customer Phone</p>
                                                         <p className="text-sm w-[50%] font-medium ">{selectedItem.lead.customer_phone} {selectedItem.lead.customer_last_name} </p>
                                                     </span>
 
-                                                    <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                    <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                         <p className="text-sm w-[50%] ">Disposition</p>
-                                                        <p className="text-sm w-[50%] font-medium ">{selectedItem.lead.disposition} {selectedItem.lead.customer_last_name} </p>
+                                                        <p className="text-sm w-[50%] font-medium ">{selectedItem.lead.disposition.replace(/_/g, " ")} {selectedItem.lead.customer_last_name} </p>
                                                     </span>
 
-                                                    <span className="w-full flex items-start justify-start gap-[10px]  ">
+                                                    <span className="w-full flex items-start justify-start gap-[10px] px-[10px]  ">
                                                         <p className="text-sm w-[50%] ">Gate Code</p>
                                                         <p className="text-sm w-[50%] font-medium ">{selectedItem.lead.gate_code} </p>
                                                     </span>
 
-                                                    <span className="w-full flex flex-col items-start justify-start gap-[10px]  ">
+                                                    <span className="w-full flex flex-col items-start justify-start gap-[10px] px-[10px] ">
                                                         <p className="text-sm text-start ">Contract Documents</p>
                                                         <span className="w-full flex flex-col items-start justify-start gap-[5px] ">
                                                             {

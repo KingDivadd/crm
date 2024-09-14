@@ -97,7 +97,7 @@ const DashboardNav = () => {
     // }, []);
 
     return (
-        <div className='w-full h-[50px] bg-blue-700 flex flex-row items-center justify-between pr-[10px]'>
+        <div className='w-full h-[55px] bg-blue-700 flex flex-row items-center justify-between pr-[10px]'>
             <span className="w-[70%] h-full flex  flex-row items-center justify-start gap-5 px-[10px]">
                 {user_info?.user && 
                 
@@ -119,7 +119,7 @@ const DashboardNav = () => {
 
                 <span className="w-full h-full flex items-center  nav-search-input relative ">
                     <input placeholder='Search for leads or jobs' type="text" name="" id="" className='pr-[50px] nav-input h-[35px] text-[15.5px] ' /> 
-                    <span className="w-[40px] h-[35px] flex items-center justify-center text-black absolute right-0 top-[7.5px] border-l border-gray-200 corsor-pointer">
+                    <span className="w-[40px] h-[35px] flex items-center justify-center text-black absolute right-0 top-[10px] border-l border-gray-200 corsor-pointer">
                         <CiSearch size={22} className='font-bold' />
                     </span>
                 </span>
@@ -136,14 +136,14 @@ const DashboardNav = () => {
                             <BsBell size={23} className='cursor-pointer' onClick={handleCalendarToggle} />
                         </span>
                         {isCalendarOpen && (
-                            <div ref={calendarRef} className="absolute max-h-[400px] w-[300px] bg-blue-700 top-[50px] right-0 flex flex-col items-start justify-start p-[10px] rounded-[3px] gap-[10px] z-20 overflow-y-auto">
+                            <div ref={calendarRef} className="absolute max-h-[400px] w-[350px] bg-white top-[40px] right-0 flex flex-col items-start justify-start p-[10px] rounded-[3px] gap-[10px] z-20 shadow-lg overflow-y-auto">
                                 
-                                <p className="text-sm text-white font-semibold  ">Events</p>
-                                <div className="w-full flex flex-col justify-start items-start ">
+                                <p className="text-[15.5px] text-black font-semibold  ">Events</p>
+                                <div className="w-full flex flex-col justify-start items-start gap-[5px] ">
                                     {user_info?.notification.map((data:any, ind:any)=>{
                                         const {message} = data
                                         return (
-                                            <span key={ind} className="rounded-[3px] flex items-center justify-start px-[5px] w-full text-white text-sm min-h-[30px] hover:bg-blue-500">{message}</span>
+                                            <span key={ind} className="rounded-[3px] flex items-center justify-start px-[5px] w-full text-black text-[15px] min-h-[30px] hover:bg-gray-300">{message}</span>
 
                                         )
                                     })}
