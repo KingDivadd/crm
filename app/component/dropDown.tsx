@@ -65,7 +65,7 @@ export const DropDownBlankTransparent = ({title, dropArray, handleDropMenu, hand
             </span>
 
             {dropMenus[title] && 
-            <span className="absolute flex flex-col justify-start items-center w-full h-auto top-[45px] left-0 rounded-[3px] z-2 border border-slate-400 shadow-xl bg-white">
+            <span className="absolute flex flex-col justify-start items-center w-full h-auto top-[45px] left-0 rounded-[3px] z-2  shadow-md bg-white">
                 {dropArray.map((data, ind)=>{
                     return (
                         <span onClick={()=> {handleSelectDropdown(data, title)} } key={ind} className="regular-drop-element">{data}</span>

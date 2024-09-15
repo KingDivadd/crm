@@ -246,11 +246,12 @@ const SalesLeadPage = () => {
                     {alert.message && <Alert message={alert.message} type={alert.type} />} 
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
-                    <span className="h-full flex flex-row items-center justify-start gap-4">
-                        <p className="text-lg font-semibold text-black">All Leads</p>
-                        <p className="text-[15.5px] text-black">{(lead_box && lead_box?.total_number_of_leads) || 0 }</p>
+                    <span className="h-full flex flex-row items-center justify-start gap-[15px]">
+                        <p className="text-md font-medium text-black">All Leads</p>
+                        <p className="text-md font-medium text-black">{(lead_box && lead_box?.total_number_of_leads) || 0 }</p>
                     </span>
-                    <span className="flex flex-row items-start justify-start gap-4">
+
+                    <span className="flex flex-row items-start justify-start gap-[20px]">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
                             <span className="w-[300px] h-[40px] ">
                                 <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 text-[15px] ' />

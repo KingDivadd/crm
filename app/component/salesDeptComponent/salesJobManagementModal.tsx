@@ -1212,14 +1212,15 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                 
                                 }
 
-                                {roll_next == "permit" && <span className="w-full flex items-center justify-end gap-[20px] h-[45px] ">
+                                {roll_next == "permit" && <span className="w-full flex items-center justify-end gap-[15px] h-[45px] ">
 
+                                    <p className="text-white w-1/3 ">.</p>
                                     <p className="text-white w-1/3 ">.</p>
 
                                     {role == "permit" ? <p className="text-white">.</p> : <button className="w-1/3 h-[40px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-[15px]"  onClick={()=> setRoll_next('first')}>Back</button>}
                                     
 
-                                    <button className=" w-1/3 h-[40px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-[15px] "  disabled={loading} onClick={update_job} >
+                                    <button className=" w-1/3 h-[40px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-[15px] "  disabled={loading} onClick={update_job} >
                                     {loading ? (
                                         <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                             <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

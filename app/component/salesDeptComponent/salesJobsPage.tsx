@@ -247,11 +247,11 @@ const SalesJobPage = () => {
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-2">
-                        <p className="text-md font-semibold text-black">All Jobs</p>
-                        <p className="text-[15px] text-black">{(job_box && job_box?.total_number_of_jobs) || 0 }</p>
+                        <p className="text-md font-medium ">All Jobs</p>
+                        <p className="text-md font-medium ">{(job_box && job_box?.total_number_of_jobs) || 0 }</p>
                     </span>
 
-                    <span className=" flex flex-row items-center justif-start gap-[10px] h-[40px] ">
+                    <span className=" flex flex-row items-center justif-start gap-[20px] h-[40px] ">
                         <span className="w-[300px] h-[40px] ">
                             <input type="text" name="filter-input" onChange={handleFilter} placeholder='search for job...' id="" className='normal-input bg-gray-100 text-[15px] ' />
                         </span>
@@ -270,15 +270,15 @@ const SalesJobPage = () => {
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[3px]">
                     {(role == 'sales' || role == 'admin' || role == 'super_admin') ? 
                     <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-[15px] font-normal w-[7.5%] px-2 ">Job Id</p>
-                        <p className="text-[15px] font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-[15px] font-normal w-[10%] px-2 ">Contract Amt</p>
+                        <p className="text-[15px] font-normal w-[7%] px-2 ">Job Id</p>
+                        <p className="text-[15px] font-normal w-[7%] px-2 ">Lead Id</p>
+                        <p className="text-[15px] font-normal w-[10%] px-2 ">Ctrt Amount</p>
                         <p className="text-[15px] font-normal w-[12.5%] px-2 ">Contract Date</p>
-                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Added By</p>
-                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Designer</p>
+                        <p className="text-[15px] font-normal w-[14%] px-2 ">Added By</p>
+                        <p className="text-[15px] font-normal w-[14.5%] px-2 ">Designer</p>
                         <p className="text-[15px] font-normal w-[10%] px-2 ">Created At</p>
                         <p className="text-[15px] font-normal w-[10%] px-2 ">Updated</p>
-                        <span className="w-[17.5%] px-2 flex items-center justify-start gap-[2px]">
+                        <span className="w-[15%] px-2 flex items-center justify-start gap-[2px]">
                             <p className="text-[15px] font-normal ">Action</p>
                         
                         </span>
@@ -287,13 +287,13 @@ const SalesJobPage = () => {
                     <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-[15px] font-normal w-[7.5%] px-2 ">Job Id</p>
                         <p className="text-[15px] font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-[15px] font-normal w-[10%] px-2 ">Contract Amt</p>
+                        <p className="text-[15px] font-normal w-[10%] px-2 ">Ctrt Amount</p>
                         <p className="text-[15px] font-normal w-[12.5%] px-2 ">Contract Date</p>
-                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Added By</p>
-                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Designer</p>
+                        <p className="text-[15px] font-normal w-[14%] px-2 ">Added By</p>
+                        <p className="text-[15px] font-normal w-[14.5%] px-2 ">Designer</p>
                         <p className="text-[15px] font-normal w-[10%] px-2 ">Created At</p>
                         <p className="text-[15px] font-normal w-[10%] px-2 ">Updated</p>
-                        <span className="w-[17.5%] px-2 flex items-center justify-start gap-[2px]">
+                        <span className="w-[15%] px-2 flex items-center justify-start gap-[2px]">
                             <p className="text-[15px] font-normal ">Action</p>
                         
                         </span>
@@ -315,16 +315,16 @@ const SalesJobPage = () => {
                                         <>
                                         {(role == 'sales' || role == 'admin' || role == 'super_admin') ? 
                                         <span key={ind} className="recent-activity-table-list group" >
-                                            <p className="text-[15px] w-[7.5%] px-2 ">{job_ind} </p>
-                                            <p className="text-[15px] w-[7.5%] px-2 ">{lead.lead_ind} </p>
+                                            <p className="text-[15px] w-[7%] px-2 ">{job_ind} </p>
+                                            <p className="text-[15px] w-[7%] px-2 ">{lead.lead_ind} </p>
                                             <p className="text-[15px] w-[10%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
                                             <p className="text-[15px] w-[12.5%] px-2 "> { readable_day(Number(contract_date)) } </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {job_adder.first_name} {job_adder.last_name} </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {lead.lead_designer.first_name} {lead.lead_designer.last_name} </p>
+                                            <p className="text-[15px] w-[14%] px-2 "> {job_adder.first_name} {job_adder.last_name} </p>
+                                            <p className="text-[15px] w-[14.5%] px-2 "> {lead.lead_designer.first_name} {lead.lead_designer.last_name} </p>
                                             <p className="text-[15px] w-[10%] px-2 "> {readable_day(Number(created_at))} </p>
                                             <p className="text-[15px] w-[10%] px-2 "> {readable_day(Number(updated_at))} </p>
 
-                                            <span className="w-[17.5%] px-2 flex items-center justify-between gap-[2px]">
+                                            <span className="w-[15%] px-2 flex items-center justify-between gap-[2px]">
                                             
                                                 <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>view_job(data)} > view</p>
                                             
@@ -336,16 +336,16 @@ const SalesJobPage = () => {
                                         </span>
                                         :
                                         <span key={ind} className="recent-activity-table-list group" >
-                                            <p className="text-[15px] w-[7.5%] px-2 ">{job_ind} </p>
-                                            <p className="text-[15px] w-[7.5%] px-2 ">{lead.lead_ind} </p>
+                                            <p className="text-[15px] w-[7%] px-2 ">{job_ind} </p>
+                                            <p className="text-[15px] w-[7%] px-2 ">{lead.lead_ind} </p>
                                             <p className="text-[15px] w-[10%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
                                             <p className="text-[15px] w-[12.5%] px-2 "> { readable_day(Number(contract_date)) } </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {job_adder.first_name} {job_adder.last_name} </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {lead.lead_designer.first_name} {lead.lead_designer.last_name} </p>
+                                            <p className="text-[15px] w-[14%] px-2 "> {job_adder.first_name} {job_adder.last_name} </p>
+                                            <p className="text-[15px] w-[14.5%] px-2 "> {lead.lead_designer.first_name} {lead.lead_designer.last_name} </p>
                                             <p className="text-[15px] w-[10%] px-2 "> {readable_day(Number(created_at))} </p>
                                             <p className="text-[15px] w-[10%] px-2 "> {readable_day(Number(updated_at))} </p>
 
-                                            <span className="w-[17.5%] px-2 flex items-center justify-between gap-[2px]">
+                                            <span className="w-[15%] px-2 flex items-center justify-between gap-[2px]">
                                             
                                                 <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>view_job(data)} > view</p>
                                             

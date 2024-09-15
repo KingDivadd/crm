@@ -97,12 +97,11 @@ const InstallerHomePage = () => {
                                     
                 </div>
 
-                   
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-md ">Recent Task</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px] shadow-md">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                             <p className="text-sm font-normal w-[7.5%] px-2 ">Task ID</p>
                             <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
                             <p className="text-sm font-normal w-[20%] px-2 ">Desription</p>
@@ -115,7 +114,7 @@ const InstallerHomePage = () => {
                         
                         {dash_components !== null ? 
                         
-                        <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto">
 
                             {dash_components?.recent_tasks.length ?
                             <>
@@ -136,19 +135,19 @@ const InstallerHomePage = () => {
                                 )
                             })}
                             </>:
-                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                            <div className="w-full h-[300px] flex flex-col justify-center items-center">
                                 <p className="text-sm ">No Task yet</p>
                             </div>
                             }
 
                         </div>
                         :
-                        <div className="w-full h-[250px] flex items-center justify-center">
+                        <div className="w-full h-[300px] flex items-center justify-center">
                             <p className="text-sm font-normal">Loading Data...</p>
                         </div>
                         }
                         
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -167,8 +166,8 @@ const InstallerHomePage = () => {
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-md ">Recent Project</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px] shadow-md">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                             <p className="text-sm font-normal w-[7.5%] px-2 ">Project Id</p>
                             <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
                             <p className="text-sm font-normal w-[20%] px-2 ">Desription</p>
@@ -181,7 +180,7 @@ const InstallerHomePage = () => {
                         
                         {dash_components !== null ? 
                         
-                        <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto">
 
                             {dash_components?.recent_tasks.length ?
                             <>
@@ -202,19 +201,19 @@ const InstallerHomePage = () => {
                                 )
                             })}
                             </>:
-                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                            <div className="w-full h-[300px] flex flex-col justify-center items-center">
                                 <p className="text-sm ">No Task yet</p>
                             </div>
                             }
 
                         </div>
                         :
-                        <div className="w-full h-[250px] flex items-center justify-center">
+                        <div className="w-full h-[300px] flex items-center justify-center">
                             <p className="text-sm font-normal">Loading Data...</p>
                         </div>
                         }
                         
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -233,8 +232,8 @@ const InstallerHomePage = () => {
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-md ">Recent Notification</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px] shadow-md">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
                             <p className="text-sm w-[16.5%] px-2  ">Date / Time</p>
                             <p className="text-sm w-[20%] px-2  ">Subject</p>
                             <p className="text-sm w-[32.5%] px-2  ">Details</p>
@@ -243,7 +242,7 @@ const InstallerHomePage = () => {
                         </span>
                         
                         
-                        {dash_components !== null ? <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
+                        {dash_components !== null ? <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto">
 
                             {dash_components?.recent_notifications.length ? 
                             <>
@@ -263,19 +262,18 @@ const InstallerHomePage = () => {
                             })}
                             </> 
                             :
-                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                            <div className="w-full h-[300px] flex flex-col justify-center items-center">
                                 <p className="text-sm ">No Notifications yet</p>
                             </div>
                             }
                         </div>
                         :
-                        <div className="w-full h-[250px] flex items-center justify-center">
+                        <div className="w-full h-[300px] flex items-center justify-center">
                             <p className="text-sm font-normal">Loading Data...</p>
                         </div>
                         }
-                       
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[405x] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -290,9 +288,6 @@ const InstallerHomePage = () => {
                         </span>
                     </div>
                 </div>
-                
-             
-                
 
             </div>
         </div>

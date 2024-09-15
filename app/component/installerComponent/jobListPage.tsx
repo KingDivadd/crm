@@ -8,23 +8,23 @@ import { get_auth_request } from '@/app/api/admin_api';
 import JobListModal from './jobListModal';
 import { readable_day } from '../helper';
 
-interface Projects_Props {
+interface installs_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
     filter?(arg0: (user: any) => any): unknown;
     map?(arg0: (data: any) => void): unknown;
     total_number_of_pages?: number; // Now optional and can be undefined
-    total_number_of_projects?: number; // Now optional and can be undefined
-    projects: any;
+    total_number_of_installs?: number; // Now optional and can be undefined
+    installs: any;
 }  
 
 const JobListPage = () => {
     const [modalFor, setModalFor] = useState('')
     const [showModal, setShowModal] = useState(false)
-    const [selectedProject, setSelectedProject] = useState(null)
+    const [selectedInstall, setSelectedInstall] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [page_number, setPage_number] = useState(1)
-    const [project_box, setProject_box] = useState<Projects_Props | null>(null);
-    const [filtered_project_box, setFiltered_project_box] = useState<Projects_Props | null>(null);
+    const [install_box, setinstall_box] = useState<installs_Props | null>(null);
+    const [filtered_install_box, setFiltered_install_box] = useState<installs_Props | null>(null);
     const [filters, setFilters] = useState({filter_input: '', disposition: ''})
     const [role, setRole] = useState('')
 
@@ -58,7 +58,7 @@ const JobListPage = () => {
         }else{
             setRole('installer')
         }
-        get_all_projects(page_number)
+        get_all_installs(page_number)
     }, [showModal])
 
     function showAlert(message: string, type: string){
@@ -68,15 +68,17 @@ const JobListPage = () => {
             }, 3000);
     }
 
-    async function get_all_projects(pg_number:number) {
+    async function get_all_installs(pg_number:number) {
         
-        const response = await get_auth_request(`app/all-paginated-installable-projects/${pg_number}`)
+        const response = await get_auth_request(`app/all-paginated-installs/${pg_number}`)
 
         if (response.status == 200 || response.status == 201){
             
-            setProject_box(response.data)      
+            setinstall_box(response.data)      
             
-            setFiltered_project_box(response.data)
+            setFiltered_install_box(response.data)
+
+            console.log('all installs ', response.data)
 
         }else{
         console.log(response);
@@ -87,7 +89,7 @@ const JobListPage = () => {
 
     async function app_users_action(item: any) {
         let new_page_number = page_number;
-        let max_page_number = project_box?.total_number_of_pages
+        let max_page_number = install_box?.total_number_of_pages
 
         if (item === 'prev') {
         if (page_number > 1) {
@@ -102,12 +104,12 @@ const JobListPage = () => {
         }
 
         setPage_number(new_page_number);
-        get_all_projects(new_page_number)
+        get_all_installs(new_page_number)
     }
 
     const render_page_numbers = () => {
         const pages = [];
-        const max_page_number = project_box?.total_number_of_pages || 1;
+        const max_page_number = install_box?.total_number_of_pages || 1;
         const max_displayed_pages = 3;
 
         if (max_page_number <= max_displayed_pages) {
@@ -158,44 +160,38 @@ const JobListPage = () => {
         const value = e.target.value.toLowerCase();
         setFilters({ ...filters, filter_input: value });
     
-        if (project_box && project_box.projects) {
+        if (install_box && install_box.installs) {
             if (value.trim() !== '') {
-                const filtered_projects = project_box.projects.filter((data: any) => {
-                    const customer_name = data.customer_name?.toLowerCase() || '';
-                    const first_name = data.assigned_to?.first_name?.toLowerCase() || '';
-                    const last_name = data.assigned_to?.last_name?.toLowerCase() || '';
-                    const other_names = data.assigned_to?.other_names?.toLowerCase() || '';
-                    const phone_number = data.phone_number || ''
+                const filtered_installs = install_box.installs.filter((data: any) => {
+                    const install_ind = data.install_ind?.toLowerCase() || '';
+                    const project_ind = data.project?.project_ind.toLowerCase() || '';
                     
                     return (
-                        first_name.includes(value) ||
-                        last_name.includes(value) ||
-                        other_names.includes(value) ||
-                        customer_name.includes(value) || 
-                        phone_number.includes(value)
+                        install_ind.includes(value) ||
+                        project_ind.includes(value) 
                     );
                 });
                 
     
-                setFiltered_project_box({...filtered_project_box, projects:filtered_projects});
+                setFiltered_install_box({...filtered_install_box, installs:filtered_installs});
             } else {
-                setFiltered_project_box(project_box); // Reset to the original list
+                setFiltered_install_box(install_box); // Reset to the original list
             }
         }
     }
 
     async function handle_new_filter(item: string) {
-        if (project_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',project_box);
+        if (install_box && item.toLocaleLowerCase() == 'all') {
+            console.log('Disposition : all ',install_box);
             
             // If no filter is provided, reset to the original list
-            setFiltered_project_box(project_box);
+            setFiltered_install_box(install_box);
         
         } 
-        else if (item && project_box) {
+        else if (item && install_box) {
             console.log(item);
             
-            const new_projects = project_box.projects.filter((data: any) => {
+            const new_installs = install_box.installs.filter((data: any) => {
                 const disposition = data.disposition?.toLowerCase() || '';
                 const active_status = data.active_status ? 'active' : 'inactive';
     
@@ -205,22 +201,22 @@ const JobListPage = () => {
                 );
             });
     
-            setFiltered_project_box({ ...project_box, projects: new_projects });
+            setFiltered_install_box({ ...install_box, installs: new_installs });
         } else {
             // If no filter is provided, reset to the original list
-            setFiltered_project_box(project_box);
+            setFiltered_install_box(install_box);
         }
     }
 
-    function add_install(item:any){
+    function add_install(){
         setShowModal(true)
-        setSelectedProject(item)
+        setSelectedInstall(null)
         setModalFor('add')
     }
     
     function edit_install(item:any){
         setShowModal(true)
-        setSelectedProject(item)
+        setSelectedInstall(item)
         setModalFor('edit')
     }
 
@@ -233,17 +229,18 @@ const JobListPage = () => {
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
-                        <p className="text-lg font-semibold text-black">All projects</p>
-                        <p className="text-sm text-black">{(project_box && project_box?.total_number_of_projects) || 0 }</p>
+                        <p className="text-md font-medium text-black">All Project Installs</p>
+                        <p className="text-md text-black">{(install_box && install_box.installs.length) || 0 }</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
                             <span className="w-[300px] h-[40px] ">
-                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 text-sm ' />
+                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='search by profile id and install id' id="" className='normal-input bg-gray-100 text-[15px] ' />
                             </span>
-                            <span className="h-[40px] min-w-[150px]">
-                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                            </span>
+
+                            <button className="px-5 h-[40px] bg-blue-600 hover:bg-blue-700 rounded-[3px] text-white " onClick={add_install} >
+                                Add Install
+                            </button>
 
                         </span>
 
@@ -255,62 +252,58 @@ const JobListPage = () => {
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-[15px] font-normal w-[7.5%] px-2 ">Project Id</p>
-                        <p className="text-[15px] font-normal w-[12%] px-2 ">Install Date</p>
-                        <p className="text-[15px] font-normal w-[12%] px-2 ">Footing Date</p>
+                        <p className="text-[15px] font-normal w-[7.5%] px-2 ">Install Id</p>
+                        <p className="text-[15px] font-normal w-[10%] px-2 ">Install Date</p>
+                        <p className="text-[15px] font-normal w-[10%] px-2 ">Footing Date</p>
                         <p className="text-[15px] font-normal w-[12.5%] px-2 ">Set Post Date</p>
-                        <p className="text-[15px] font-normal w-[12%] px-2 ">Demo Date</p>
+                        <p className="text-[15px] font-normal w-[10%] px-2 ">Demo Date</p>
                         <p className="text-[15px] font-normal w-[12.5%] px-2 ">Electrical Date</p>
-                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Inspection Date</p>
-                        <p className="text-[15px] font-normal px-2 w-[12%] ">Insp Status</p>
-                        <p className="text-[15px] font-normal w-[11.5%] px-2 ">Action</p>
-
+                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Last Updated</p>
+                        <p className="text-[15px] font-normal px-2 w-[10%] ">Created On</p>
+                        <p className="text-[15px] font-normal w-[7.5%] px-2 ">Action</p>
                     </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                         
-                        {filtered_project_box !== null ?
+                        {filtered_install_box !== null ?
                         
                             <div className='h-full w-full flex flex-col justify-start '>
 
-                                {project_box?.projects.length ?
+                                {install_box?.installs.length ?
                                 <>
-                                { filtered_project_box?.projects.map((data:any, ind:number)=>{
+                                { filtered_install_box?.installs.map((data:any, ind:number)=>{
 
-                                    const {project_ind,job, lead, install } = data
+                                    const {install_ind, project, install_date, footing_date, set_post_date, demo_date, electrical_date, updated_at, created_at  } = data
 
                                     return (
                                         <div key={ind} className='recent-activity-table-list group' >
-                                            <p className="text-[15px] w-[7.5%] px-2 ">{project_ind} </p>
+                                            <p className="text-[15px] w-[7.5%] px-2 ">{project.project_ind} </p>
+                                            <p className="text-[15px] w-[7.5%] px-2 ">{install_ind} </p>
                                             
-                                            <p className="text-[15px] w-[12%] px-2 "> 
-                                                {(install.length && install[0].install_date != 0 ) ? readable_day(Number(install[0].install_date)) : "n/a" } </p>
-                                            <p className="text-[15px] w-[12%] px-2 "> 
-                                                {(install.length && install[0].footing_date != 0 ) ? readable_day(Number(install[0].footing_date)) : "n/a"} 
+                                            <p className="text-[15px] w-[10%] px-2 "> 
+                                                {(install_date && install_date !== 0) ? readable_day(Number(install_date)) : "n/a" } </p>
+                                            <p className="text-[15px] w-[10%] px-2 "> 
+                                                {(footing_date && footing_date !== 0 ) ? readable_day(Number(footing_date)) : "n/a"} 
                                             </p>
                                             <p className="text-[15px] w-[12.5%] px-2 ">
-                                                {(install.length && install[0].set_post_date ) ? readable_day(Number(install[0].set_post_date)) : "n/a" }
+                                                {(set_post_date && set_post_date !== 0 ) ? readable_day(Number(set_post_date)) : "n/a" }
                                             </p>
-                                            <p className="text-[15px] w-[12%] px-2 ">
-                                                {(install.length && install[0].demo_date ) ? readable_day(Number(install[0].demo_date)) : "n/a" }
-                                            </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 ">
-                                                {(install.length && install[0].electrical_date ) ? readable_day(Number(install[0].electrical_date)) : "n/a" }
+                                            <p className="text-[15px] w-[10%] px-2 ">
+                                                {(demo_date && demo_date!== 0 ) ? readable_day(Number(demo_date)) : "n/a" }
                                             </p>
                                             <p className="text-[15px] w-[12.5%] px-2 ">
-                                                {(install.length && install[0].inspection_date) ? readable_day(Number(install[0].inspection_date)) : "n/a" }
+                                                {(electrical_date && electrical_date !== 0 ) ? readable_day(Number(electrical_date)) : "n/a" }
                                             </p>
-                                            <p className="text-[15px]  px-2 w-[12%] ">
-                                                {(install.length || install.inspection_status == 'n_a') ? install[0].inspection_status.replace(/_/g, '/')  : "n/a" }
+                                            <p className="text-[15px] w-[12.5%] px-2 ">
+                                                {readable_day(Number(created_at))}
                                             </p>
-                                            <span className="w-[11.5%] flex px-2 justify-between">
-                                                {!install.length ? 
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>add_install(data)} > Add Install</p>
-                                                :
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2  hover:underline hover:text-amber-600 cursor-pointer" onClick={()=>{edit_install(data)}} > Edit Install</p>
-                                                }
-                                            </span>
+                                            <p className="text-[15px]  px-2 w-[10%] ">
+                                                {readable_day(Number(updated_at))}
+                                            </p>
+
+                                            <p className="text-[15px] w-[7.5%] flex flex-row items-center justify-start gap-2  hover:underline hover:text-amber-600 cursor-pointer" onClick={()=>{edit_install(data)}} ><MdEdit size={16} /> edit</p>
                                             
                                         </div>
                                     )
@@ -318,7 +311,7 @@ const JobListPage = () => {
                                 </>
                                 :
                                 <div className="w-full h-[100%] flex items-center justify-center">
-                                    <p className="text-normal"> No Project availale for Install yet </p>
+                                    <p className="text-normal"> Install yet to be created </p>
                                 </div>}
 
                             </div>
@@ -326,14 +319,14 @@ const JobListPage = () => {
                         :
 
                             <div className="w-full h-full flex items-center justify-center">
-                                <p className="text-sm font-normal">Loading Installable Projects...</p>
+                                <p className="text-sm font-normal">Loading Project Installs...</p>
                             </div>
                         
                         }
                     
                     </div>
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -342,7 +335,7 @@ const JobListPage = () => {
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-sm">Showing 1-15 of {(project_box && project_box?.total_number_of_projects) || 0}</p>
+                            <p className="text-sm">Showing 1-15 of {(install_box && install_box?.total_number_of_installs) || 0}</p>
                         </span>
                     </span>
                 </div>
@@ -350,7 +343,7 @@ const JobListPage = () => {
             </div>
             {showModal 
             && 
-            <JobListModal showModal={showModal} setShowModal={setShowModal} setModalFor={setModalFor} modalFor={modalFor} selectedProject={selectedProject} setSelectedProject={setSelectedProject} /> }
+            <JobListModal showModal={showModal} setShowModal={setShowModal} setModalFor={setModalFor} modalFor={modalFor} selectedInstall={selectedInstall} setSelectedInstall={setSelectedInstall} /> }
         </div>
     )
 }

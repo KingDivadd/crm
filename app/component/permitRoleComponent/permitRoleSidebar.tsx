@@ -26,7 +26,7 @@ const PermitRoleSidebar = ({active, setActive}: SideBarNav) => {
     
 
     useEffect(() => {
-        const item = sessionStorage.getItem('salesSideNav')
+        const item = sessionStorage.getItem('side_nav')
         if (item == null || item == ""){
             setActive('home')
         }else {
@@ -36,13 +36,13 @@ const PermitRoleSidebar = ({active, setActive}: SideBarNav) => {
 
     function handleActive(item:any){
         setActive(item)
-        sessionStorage.setItem('salesSideNav', item)
+        sessionStorage.setItem('side_nav', item)
     }
 
     return (
         <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-gray-100 ">
             {/* sidebar nav */}
-            <div className="w-full flex flex-row items-center justify-start h-[50px] bg-blue-700 pl-[20px] ">
+            <div className="w-full flex flex-row items-center justify-start h-[55px] bg-blue-700 pl-[20px] ">
                 <span className="flex flex-row items-center justify-start">
                     <p className="text-xl font-semibold text-white">SBD</p>
                 </span>

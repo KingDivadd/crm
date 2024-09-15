@@ -227,8 +227,8 @@ const AllPermitPage = () => {
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
-                        <p className="text-lg font-semibold text-black">All Jobs & Projects</p>
-                        <p className="text-sm text-black">{(job_box && job_box?.total_number_of_jobs) || 0 }</p>
+                        <p className="text-md font-medium text-black">All Jobs & Projects</p>
+                        <p className="text-md text-black">{(job_box && job_box?.total_number_of_jobs) || 0 }</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
@@ -249,9 +249,9 @@ const AllPermitPage = () => {
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Job Id</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Project Id</p>
+                    <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Install Id</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Inspection Id</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Gen Permit Status</p>
                         <p className="text-sm font-normal w-[12.5%] px-2 ">Approval Date</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Eng Permit Status</p>
@@ -314,7 +314,7 @@ const AllPermitPage = () => {
                     
                     </div>
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">

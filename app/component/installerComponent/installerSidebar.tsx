@@ -33,7 +33,7 @@ const InstallerSideBar = ({active, setActive}: SideBarNav) => {
     return (
         <div className="w-full h-[100vh] flex flex-col items-start justify-start bg-gray-100 ">
             {/* sidebar nav */}
-            <div className="w-full flex flex-row items-center justify-start h-[50px] bg-blue-700 pl-[20px] ">
+            <div className="w-full flex flex-row items-center justify-start h-[55px] bg-blue-700 pl-[20px] ">
                 <span className="flex flex-row items-center justify-start">
                     <p className="text-xl font-semibold text-white">SBD</p>
                 </span>
@@ -47,9 +47,9 @@ const InstallerSideBar = ({active, setActive}: SideBarNav) => {
                         <p className="text-[15.5px]">Home</p>
                     </span>
 
-                    <span className={active === "job-list"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('job-list')}}>
+                    <span className={active === "install"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('install')}}>
                         <FaClipboardList size={21} /> 
-                        <p className="text-[15.5px]">Job List</p>
+                        <p className="text-[15.5px]">Project Installs</p>
                     </span>
 
                     <span className={active === "photo-upload"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('photo-upload')}}>

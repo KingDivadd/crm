@@ -9,23 +9,23 @@ import { userArray } from '@/constants';
 import { get_auth_request } from '@/app/api/admin_api';
 import InspectionModal from './inspectionPageModal';
 
-interface Leads_Props {
+interface inspections_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
     filter?(arg0: (user: any) => any): unknown;
     map?(arg0: (data: any) => void): unknown;
-    total_number_of_leads_pages?: number; // Now optional and can be undefined
-    total_number_of_leads?: number; // Now optional and can be undefined
-    leads: any;
+    total_number_of_pages?: number; // Now optional and can be undefined
+    total_number_of_inspections?: number; // Now optional and can be undefined
+    inspections: any;
 }  
 
 const InspectionPage = () => {
     const [modalFor, setModalFor] = useState('')
     const [showModal, setShowModal] = useState(false)
-    const [selectedLead, setSelectedLead] = useState(null)
+    const [selectedInspection, setSelectedInspection] = useState(null)
     const [alert, setAlert] = useState({type: '', message: ''})
     const [page_number, setPage_number] = useState(1)
-    const [lead_box, setLead_box] = useState<Leads_Props | null>(null);
-    const [filtered_lead_box, setFiltered_lead_box] = useState<Leads_Props | null>(null);
+    const [inspection_box, setInspection_box] = useState<inspections_Props | null>(null);
+    const [filtered_inspection_box, setFiltered_inspection_box] = useState<inspections_Props | null>(null);
     const [filters, setFilters] = useState({filter_input: '', disposition: ''})
     const [role, setRole] = useState('')
 
@@ -51,7 +51,6 @@ const InspectionPage = () => {
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
-
     useEffect(() => {
         const user_role = localStorage.getItem('user-role')
         if (user_role) {
@@ -59,7 +58,7 @@ const InspectionPage = () => {
         }else{
             setRole('permit')
         }
-        get_all_leads()
+        get_all_inspections(page_number)
     }, [showModal])
 
     function showAlert(message: string, type: string){
@@ -69,19 +68,19 @@ const InspectionPage = () => {
             }, 3000);
     }
 
-    async function get_all_leads() {
+    async function get_all_inspections(pg_number:number) {
 
         console.log('started fetching');
         
-        const response = await get_auth_request(`app/all-paginated-leads/${page_number}`)
+        const response = await get_auth_request(`app/all-paginated-inspection/${pg_number}`)
 
         if (response.status == 200 || response.status == 201){
             
-            setLead_box(response.data)      
+            setInspection_box(response.data)      
             
-            setFiltered_lead_box(response.data)
+            setFiltered_inspection_box(response.data)
 
-            console.log('master ', response.data);
+            console.log('inspection response ', response.data);
             
 
         }else{
@@ -91,17 +90,17 @@ const InspectionPage = () => {
         }
     }
 
-    async function filter_leads(item:any) {
+    async function filter_inspections(item:any) {
 
         console.log('started fetching');
         
-        const response = await get_auth_request(`/filter-leads/${item}/${page_number}`)
+        const response = await get_auth_request(`/filter-inspections/${item}/${page_number}`)
 
         if (response.status == 200 || response.status == 201){
             
-            setLead_box(response.data)      
+            setInspection_box(response.data)      
             
-            setFiltered_lead_box(response.data)
+            setFiltered_inspection_box(response.data)
 
             console.log(response.data);
             
@@ -116,7 +115,7 @@ const InspectionPage = () => {
 
     async function app_users_action(item: any) {
         let new_page_number = page_number;
-        let max_page_number = lead_box?.total_number_of_leads_pages
+        let max_page_number = inspection_box?.total_number_of_pages
 
         if (item === 'prev') {
         if (page_number > 1) {
@@ -130,14 +129,14 @@ const InspectionPage = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
-
         setPage_number(new_page_number);
+
+        get_all_inspections(new_page_number)
     }
 
     const render_page_numbers = () => {
         const pages = [];
-        const max_page_number = lead_box?.total_number_of_leads_pages || 1;
+        const max_page_number = inspection_box?.total_number_of_pages || 1;
         const max_displayed_pages = 3;
 
         if (max_page_number <= max_displayed_pages) {
@@ -188,9 +187,9 @@ const InspectionPage = () => {
         const value = e.target.value.toLowerCase();
         setFilters({ ...filters, filter_input: value });
     
-        if (lead_box && lead_box.leads) {
+        if (inspection_box && inspection_box.inspections) {
             if (value.trim() !== '') {
-                const filtered_leads = lead_box.leads.filter((data: any) => {
+                const filtered_inspections = inspection_box.inspections.filter((data: any) => {
                     const customer_name = data.customer_name?.toLowerCase() || '';
                     const first_name = data.assigned_to?.first_name?.toLowerCase() || '';
                     const last_name = data.assigned_to?.last_name?.toLowerCase() || '';
@@ -207,25 +206,25 @@ const InspectionPage = () => {
                 });
                 
     
-                setFiltered_lead_box({...filtered_lead_box, leads:filter_leads});
+                setFiltered_inspection_box({...filtered_inspection_box, inspections:filter_inspections});
             } else {
-                setFiltered_lead_box(lead_box); // Reset to the original list
+                setFiltered_inspection_box(inspection_box); // Reset to the original list
             }
         }
     }
 
     async function handle_new_filter(item: string) {
-        if (lead_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',lead_box);
+        if (inspection_box && item.toLocaleLowerCase() == 'all') {
+            console.log('Disposition : all ',inspection_box);
             
             // If no filter is provided, reset to the original list
-            setFiltered_lead_box(lead_box);
+            setFiltered_inspection_box(inspection_box);
         
         } 
-        else if (item && lead_box) {
+        else if (item && inspection_box) {
             console.log(item);
             
-            const new_leads = lead_box.leads.filter((data: any) => {
+            const new_inspections = inspection_box.inspections.filter((data: any) => {
                 const disposition = data.disposition?.toLowerCase() || '';
                 const active_status = data.active_status ? 'active' : 'inactive';
     
@@ -235,28 +234,28 @@ const InspectionPage = () => {
                 );
             });
     
-            setFiltered_lead_box({ ...lead_box, leads: new_leads });
+            setFiltered_inspection_box({ ...inspection_box, inspections: new_inspections });
         } else {
             // If no filter is provided, reset to the original list
-            setFiltered_lead_box(lead_box);
+            setFiltered_inspection_box(inspection_box);
         }
     }
     
-    function add_lead(){
+    function add_inspection(){
         setShowModal(true)
-        setSelectedLead(null)
+        setSelectedInspection(null)
         setModalFor('add')
     }
 
-    function edit_lead(lead:any){
+    function edit_inspection(inspection:any){
         setShowModal(true)
-        setSelectedLead(lead)
+        setSelectedInspection(inspection)
         setModalFor('edit')
     }
 
-    function delete_lead(lead:any){
+    function delete_inspection(inspection:any){
         setShowModal(true)
-        setSelectedLead(lead)
+        setSelectedInspection(inspection)
         setModalFor('delete')
     }
 
@@ -268,8 +267,8 @@ const InspectionPage = () => {
                 </span>
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
-                        <p className="text-lg font-medium text-black">All Inspection</p>
-                        <p className="text-sm text-black">{(lead_box && lead_box?.total_number_of_leads) || 0 }</p>
+                        <p className="text-md font-medium text-black">All Inspection</p>
+                        <p className="text-md text-black">{(inspection_box && inspection_box?.total_number_of_inspections) || 0 }</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
@@ -279,7 +278,7 @@ const InspectionPage = () => {
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            <button type="button" className="h-full px-5 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Inspection</button>
+                            <button type="button" className="h-full px-5 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_inspection}>Add Inspection</button>
                         </span>
 
                         
@@ -289,67 +288,45 @@ const InspectionPage = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    {(role == 'permit' || role == 'admin') ? 
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-sm font-normal w-[14.5%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[13%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Assigned to</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
+                    <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[10%] px-2 ">Inspection Id</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Install Id</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Inspector</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
+                        <p className="text-sm font-normal w-[17.5%] px-2 ">Last Inspection</p>
+                        <p className="text-sm font-normal w-[17.5%] px-2 ">Inspector Comments</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Final Status</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
-                        <p className="text-sm font-normal w-[10%] px-2 "></p>
-                    </span>:
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[10%] px-2 ">Lead Id</p>
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Gate Code</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
-                        <p className="text-sm font-normal w-[25%] px-2 ">Customer Address</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Phone Number</p>
-                        <p className="text-sm font-normal w-[17.5%] px-2 ">Assigned to</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Disposition</p>
-                    </span>}
+                    </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                         
-                        {filtered_lead_box !== null ?
+                        {filtered_inspection_box !== null ?
                         
                             <div className='h-full w-full flex flex-col justify-start '>
 
-                                {lead_box?.leads.length ?
+                                {inspection_box?.inspections.length ?
                                 <>
-                                { filtered_lead_box?.leads.map((data:any, ind:number)=>{
-                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, lead_ind, gate_code} = data
+                                { filtered_inspection_box?.inspections.map((data:any, ind:number)=>{
+                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, inspection_ind, gate_code} = data
                                     return (
-                                        <div key={ind}>
-                                        {(role == 'permit' || role == 'admin') ? 
-                                        <span className="recent-activity-table-list " >
-                                            <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
+                                        <span key={ind} className="recent-activity-table-list " >
+                                            <p className="text-sm w-[7.5%] px-2 "> {inspection_ind} </p>
                                             <p className="text-sm w-[14.5%] px-2 "> {customer_name} </p>
                                             <p className="text-sm w-[25%] px-2 "> {address} </p>
                                             <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {} </p>
                                             <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-green-600 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
+                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-green-600 cursor-pointer" onClick={()=>{edit_inspection(data)}} ><MdEdit size={16} /> Edit</p>
                                         
-                                            <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
-                                        </span>:
-                                        <span className="recent-activity-table-list " >
-                                            <p className="text-sm w-[10%] px-2 "> {lead_ind} </p>
-                                            <p className="text-sm w-[7.5%] px-2 "> {gate_code} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[17.5%] px-2 "> {assigned_to.last_name} {assigned_to.first_name} </p>
-                                            <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                        </span>}
-                                        </div>
+                                            <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_inspection(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                        </span>
                                     )
                                 })}
                                 </>
                                 :
                                 <div className="w-full h-[100%] flex items-center justify-center">
-                                    <p className="text-normal"> No Leads yet </p>
+                                    <p className="text-normal"> No inspections yet </p>
                                 </div>}
 
                             </div>
@@ -364,7 +341,7 @@ const InspectionPage = () => {
                     
                     </div>
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -373,13 +350,13 @@ const InspectionPage = () => {
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-sm">Showing 1-15 of {(lead_box && lead_box?.total_number_of_leads) || 0}</p>
+                            <p className="text-sm">Showing 1-15 of {(inspection_box && inspection_box?.total_number_of_inspections) || 0}</p>
                         </span>
                     </span>
                 </div>
 
             </div>
-            {showModal && <InspectionModal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedLead={selectedLead} setModalFor={setModalFor} setSelectedLead={setSelectedLead} /> }
+            {showModal && <InspectionModal showModal={showModal} setShowModal={setShowModal} modalFor={modalFor} selectedInspection={selectedInspection} setModalFor={setModalFor} setSelectedInspection={setSelectedInspection} /> }
         </div>
     )
 }

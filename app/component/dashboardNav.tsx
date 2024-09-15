@@ -143,7 +143,7 @@ const DashboardNav = () => {
                                     {user_info?.notification.map((data:any, ind:any)=>{
                                         const {message} = data
                                         return (
-                                            <span key={ind} className="rounded-[3px] flex items-center justify-start px-[5px] w-full text-black text-[15px] min-h-[30px] hover:bg-gray-300">{message}</span>
+                                            <span key={ind} className="rounded-[3px] flex items-center justify-start px-[5px] w-full text-black text-[15px] min-h-[30px] hover:bg-slate-200">{message}</span>
 
                                         )
                                     })}

@@ -36,7 +36,7 @@ const InstallerDashboard = () => {
                 <DashboardNav />
                 <div className="w-full bg-gray-100 overflow-y-auto cont-1">
                     {active === "home" && <InstallerHomePage /> }
-                    {active === "job-list" && <JobListPage /> }
+                    {active === "install" && <JobListPage /> }
                     {active === "service-ticket" && <ServiceTicketPage /> }
                     {active === "photo-upload" && <PhotoUpload /> }
                     {active === "bill-sheet" && <BillSheetPage /> }
