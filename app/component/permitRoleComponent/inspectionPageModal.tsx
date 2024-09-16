@@ -6,7 +6,7 @@ import { DropDownBlankTransparent } from '../dropDown'
 import MyDatePicker, { DatePicker, Installation_date_picker } from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
-import {get_todays_date, convert_to_unix, readable_day} from "../helper"
+import {get_todays_date, convert_to_unix, readable_day, timestamp_to_readable_value, default_install_img} from "../helper"
 import Image from "next/image"
 import { IoCheckmark } from 'react-icons/io5'
 
@@ -27,7 +27,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
     const [approve_loading, setApprove_loading] = useState(false)
     const [all_installs, setAll_installs] = useState< {installs?:any} | null>(null)
     const [filtered_installs, setFiltered_installs] = useState< {installs?:any} | null>(null)
-    const [selected_installs, setSelected_installs] = useState<{install_id?:string} | null>(null)
+    const [selected_installs, setSelected_installs] = useState<{install_id?:string; install?:any } | null>(null)
     
     const [inspection, setInspection] = useState({
         footing_inspection_status: '', footing_inspection_comments: '', footing_inspection_date: 0,
@@ -148,32 +148,34 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
         e.preventDefault()
         console.log('create inspection ', inspection)
 
-        // if (false ) {
-        //     showAlert('Please fill required fields', 'error')
-        // }else{
-        //     try {
-        //         setLoading(true)
+        if (!selected_installs?.install_id ) {
+            showAlert('Please select an install', 'error')
+        }else{
+            try {
+                setLoading(true)
                 
-        //         const response = await post_auth_request(`lead/create-lead`, { })
-        //         if (response.status == 200 || response.status == 201){
+                const response = await post_auth_request(`app/add-inspection/${selected_installs.install_id}`, inspection)
+                if (response.status == 200 || response.status == 201){
                                 
-        //             showAlert(response.data.msg, "success")
+                    showAlert(response.data.msg, "success")
                     
-        //             setShowModal(false)
+                    setShowModal(false)
                     
-        //             setLoading(false)
+                    setLoading(false)
 
-        //             }else{       
+                    console.log('', "success")
+
+                    }else{       
                                     
-        //             showAlert(response.response.data.err, "error")
+                    showAlert(response.response.data.err, "error")
                     
-        //             setLoading(false)
-        //         }
-        //     } catch (err) {
-        //         showAlert('Error occured ', 'error')
-        //         setLoading(false)
-        //     }
-        // }
+                    setLoading(false)
+                }
+            } catch (err) {
+                showAlert('Error occured ', 'error')
+                setLoading(false)
+            }
+        }
     }
 
     async function update_inspection(e:any) {
@@ -256,7 +258,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
     };
 
     function selected_proj(data:any) {
-        setSelected_installs({...selected_installs, install_id: data.install_id})
+        setSelected_installs({...selected_installs, install_id: data.install_id, install: data})
         console.log('data ',data)
     }
 
@@ -289,7 +291,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
                                         <div className="w-1/3 flex flex-col items-start justify-start gap-[25px] h-[65vh] overflow-y-auto ">
                                         
                                             <span className="w-full flex flex-col items-self justify-self gap-[15px] ">
-                                                <p className="text-[15px] text-slate-900 font-medium">Select Install</p>
+                                                <p className="text-[15px]">Select Install</p>
                                                 <span className="h-[40px] w-full ">
                                                     <input type="email" name='assigned_to' placeholder='Enter install id to filter' onChange={filter_install} className='normal-input text-[15px]' />
                                                 </span>
@@ -344,7 +346,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
                                         <div className="w-1/3 flex flex-col items-start justify-start gap-[25px] h-[65vh] overflow-y-auto ">
                                         
                                             <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[20] ">
-                                                <p className="text-sm text-slate-900">Installation to Inspect</p>
+                                                <p className="text-[15px]">Installation to Inspect</p>
                                                 <span className="h-[40px] w-full">
                                                     <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'install_type'} dropArray={['footing', 'set post', 'demo', 'install', 'electrical', 'final' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                                                 </span>
@@ -552,29 +554,175 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
                                         <div className="w-1/3 flex flex-col items-start justify-start  h-[65vh] overflow-y-auto ">
 
+                                            {!['footing', 'set_post', 'electrical', 'install', 'final', 'demo'].includes(dropElements.install_type.replace(/ /g, '_'))  &&
                                             <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
 
                                                 <span className="w-full flex items-center justify-start gap-[15px]">
                                                     <p className="text-[15px] ">Footing Date</p>
-                                                    <p className="text-[15px] font-medium ">{"2024-09-15"}</p>
+                                                    <p className="text-[15px] font-medium ">--</p>
                                                 </span>
                                             
                                                 <span className="w-full flex items-center justify-start gap-[15px]">
                                                     <p className="text-[15px] ">Footing Crew</p>
-                                                    <p className="text-[15px] font-medium ">{"Footing Crew A"}</p>
+                                                    <p className="text-[15px] font-medium ">{"--"}</p>
                                                 </span>
 
                                                 <div className="relative w-full h-[410px] rounded-[3px] overflow-hidden p-[7.5px] ">
                                                     <Image
-                                                        src={"https://res.cloudinary.com/iroegbu-cloud-1/image/upload/v1718748903/u6wmwqvxzfinumomdfro.jpg"}
+                                                        src={default_install_img }
                                                         alt="avatar"
                                                         layout="fill"
                                                         objectFit="cover"
                                                     />
                                                 </div>
 
-                                            </div>
-                                                                                    
+                                            </div>}
+
+                                            {dropElements.install_type == 'footing' &&
+                                            <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
+
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Footing Date</p>
+                                                    <p className="text-[15px] font-medium ">{(!selected_installs?.install || selected_installs?.install.footing_date !== 0 )? readable_day(Number(selected_installs?.install.footing_date)) : '--' }</p>
+                                                </span>
+                                            
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Footing Crew</p>
+                                                    <p className="text-[15px] font-medium ">{selected_installs?.install.footing_crew}</p>
+                                                </span>
+
+                                                <div className="relative w-full h-[410px] rounded-[3px] overflow-hidden p-[7.5px] ">
+                                                    <Image
+                                                        src={ selected_installs?.install.footing_bill_sheet || default_install_img }
+                                                        alt="avatar"
+                                                        layout="fill"
+                                                        objectFit="cover"
+                                                    />
+                                                </div>
+
+                                            </div>}
+
+                                            {dropElements.install_type == 'set_post' &&
+                                            <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
+
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Set Post Date</p>
+                                                    <p className="text-[15px] font-medium ">{(!selected_installs?.install || selected_installs?.install.set_post_date !== 0 )? readable_day(Number(selected_installs?.install.set_post_date)) : '--' }</p>
+                                                </span>
+                                            
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Set Post Crew</p>
+                                                    <p className="text-[15px] font-medium ">{selected_installs?.install.set_post_crew}</p>
+                                                </span>
+
+                                                <div className="relative w-full h-[410px] rounded-[3px] overflow-hidden p-[7.5px] ">
+                                                    <Image
+                                                        src={ selected_installs?.install.set_post_bill_sheet || default_install_img }
+                                                        alt="avatar"
+                                                        layout="fill"
+                                                        objectFit="cover"
+                                                    />
+                                                </div>
+
+                                            </div>}
+
+                                            {dropElements.install_type == 'demo' &&
+                                            <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
+
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Demo Date</p>
+                                                    <p className="text-[15px] font-medium ">{(!selected_installs?.install || selected_installs?.install.demo_date !== 0 )? readable_day(Number(selected_installs?.install.demo_date)) : '--' }</p>
+                                                </span>
+                                            
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Demo Crew</p>
+                                                    <p className="text-[15px] font-medium ">{selected_installs?.install.demo_crew}</p>
+                                                </span>
+
+                                                <div className="relative w-full h-[410px] rounded-[3px] overflow-hidden p-[7.5px] ">
+                                                    <Image
+                                                        src={ selected_installs?.install.demo_bill_sheet || default_install_img }
+                                                        alt="avatar"
+                                                        layout="fill"
+                                                        objectFit="cover"
+                                                    />
+                                                </div>
+
+                                            </div>}
+                                            
+                                            {dropElements.install_type == 'install' &&
+                                            <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
+
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Install Date</p>
+                                                    <p className="text-[15px] font-medium ">{(!selected_installs?.install || selected_installs?.install.install_date !== 0 )? readable_day(Number(selected_installs?.install.install_date)) : '--' }</p>
+                                                </span>
+                                            
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Install Crew</p>
+                                                    <p className="text-[15px] font-medium ">{selected_installs?.install.install_crew}</p>
+                                                </span>
+
+                                                <div className="relative w-full h-[410px] rounded-[3px] overflow-hidden p-[7.5px] ">
+                                                    <Image
+                                                        src={ selected_installs?.install.install_bill_sheet || default_install_img }
+                                                        alt="avatar"
+                                                        layout="fill"
+                                                        objectFit="cover"
+                                                    />
+                                                </div>
+
+                                            </div>}
+                                            
+                                            {dropElements.install_type == 'electrical' &&
+                                            <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
+
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Electrical Date</p>
+                                                    <p className="text-[15px] font-medium ">{(!selected_installs?.install || selected_installs?.install.electrical_date !== 0 )? readable_day(Number(selected_installs?.install.electrical_date)) : '--' }</p>
+                                                </span>
+                                            
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Electrical Crew</p>
+                                                    <p className="text-[15px] font-medium ">{selected_installs?.install.electrical_crew}</p>
+                                                </span>
+
+                                                <div className="relative w-full h-[410px] rounded-[3px] overflow-hidden p-[7.5px] ">
+                                                    <Image
+                                                        src={ selected_installs?.install.electrical_bill_sheet || default_install_img }
+                                                        alt="avatar"
+                                                        layout="fill"
+                                                        objectFit="cover"
+                                                    />
+                                                </div>
+
+                                            </div>}
+
+                                            
+                                            {/* {dropElements.install_type == 'final' &&
+                                            <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
+
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Final Date</p>
+                                                    <p className="text-[15px] font-medium ">{(!selected_installs?.install || selected_installs?.install.final_date !== 0 )? readable_day(Number(selected_installs?.install.final_date)) : '--' }</p>
+                                                </span>
+                                            
+                                                <span className="w-full flex items-center justify-start gap-[15px]">
+                                                    <p className="text-[15px] ">Final Crew</p>
+                                                    <p className="text-[15px] font-medium ">{selected_installs?.install.final_crew}</p>
+                                                </span>
+
+                                                <div className="relative w-full h-[410px] rounded-[3px] overflow-hidden p-[7.5px] ">
+                                                    <Image
+                                                        src={ selected_installs?.install.final_bill_sheet || default_install_img }
+                                                        alt="avatar"
+                                                        layout="fill"
+                                                        objectFit="cover"
+                                                    />
+                                                </div>
+
+                                            </div>} */}
+
                                         </div>
 
                                     </div>
