@@ -6,7 +6,8 @@ const nextConfig = {
             'images.pexels.com',
             'www.pexels.com',
             'amzirlodp-prd-s3.s3.amazonaws.com',
-            't3.ftcdn.net'
+            't3.ftcdn.net',
+            'upload.wikimedia.org'
         ],
     },
     webpack: (config, { isServer }) => {

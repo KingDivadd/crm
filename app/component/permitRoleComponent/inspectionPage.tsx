@@ -90,29 +90,6 @@ const InspectionPage = () => {
         }
     }
 
-    async function filter_inspections(item:any) {
-
-        console.log('started fetching');
-        
-        const response = await get_auth_request(`/filter-inspections/${item}/${page_number}`)
-
-        if (response.status == 200 || response.status == 201){
-            
-            setInspection_box(response.data)      
-            
-            setFiltered_inspection_box(response.data)
-
-            console.log(response.data);
-            
-            showAlert(response.data.msg, "success")
-
-        }else{
-        console.log(response);
-        
-        showAlert(response.response.data.err, "error")
-        }
-    }
-
     async function app_users_action(item: any) {
         let new_page_number = page_number;
         let max_page_number = inspection_box?.total_number_of_pages
@@ -206,7 +183,7 @@ const InspectionPage = () => {
                 });
                 
     
-                setFiltered_inspection_box({...filtered_inspection_box, inspections:filter_inspections});
+                setFiltered_inspection_box({...filtered_inspection_box, inspections:filtered_inspections});
             } else {
                 setFiltered_inspection_box(inspection_box); // Reset to the original list
             }
@@ -291,12 +268,13 @@ const InspectionPage = () => {
                     <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[10%] px-2 ">Inspection Id</p>
                         <p className="text-sm font-normal w-[10%] px-2 ">Install Id</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Inspector</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
-                        <p className="text-sm font-normal w-[17.5%] px-2 ">Last Inspection</p>
-                        <p className="text-sm font-normal w-[17.5%] px-2 ">Inspector Comments</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Footing Status</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Set Post Status</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Demo Status</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Install Status</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Electrical Status</p>
                         <p className="text-sm font-normal w-[12.5%] px-2 ">Final Status</p>
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
+                        <p className="text-sm font-normal w-[5%] px-2 ">Action</p>
                     </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -308,18 +286,19 @@ const InspectionPage = () => {
                                 {inspection_box?.inspections.length ?
                                 <>
                                 { filtered_inspection_box?.inspections.map((data:any, ind:number)=>{
-                                    const {customer_name, address, phone_number, email, user_role, assigned_to, disposition, inspection_ind, gate_code} = data
+                                    const {inspection_ind, install, inspector, footing_inspection_status, set_post_inspection_status, demo_inspection_status, install_inspection_status, electrical_inspection_status, final_inspection_status } = data
+                                    const {first_name, last_name} = inspector
                                     return (
                                         <span key={ind} className="recent-activity-table-list " >
-                                            <p className="text-sm w-[7.5%] px-2 "> {inspection_ind} </p>
-                                            <p className="text-sm w-[14.5%] px-2 "> {customer_name} </p>
-                                            <p className="text-sm w-[25%] px-2 "> {address} </p>
-                                            <p className="text-sm w-[13%] px-2 "> {phone_number} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {} </p>
-                                            <p className={disposition == "SOLD" ? "text-sm w-[10%] px-2 text-green-600": "text-red-600 text-sm w-[10%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-green-600 cursor-pointer" onClick={()=>{edit_inspection(data)}} ><MdEdit size={16} /> Edit</p>
-                                        
-                                            <p className="text-sm w-[10%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_inspection(data)} ><MdDeleteForever size={18} /> Delete</p>
+                                            <p className="text-sm w-[10%] px-2 "> {inspection_ind} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {install.install_ind} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {footing_inspection_status.replace(/_/g, '/')} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {set_post_inspection_status.replace(/_/g, '/')} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {demo_inspection_status.replace(/_/g, '/')} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {install_inspection_status.replace(/_/g, '/')} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {electrical_inspection_status.replace(/_/g, '/')} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {final_inspection_status.replace(/_/g, '/')} </p>
+                                            <p className="text-sm w-[5%] px-2 hover:text-amber-600 hover:underline flex items-center gap-[10px]" onClick={()=> edit_inspection(data)}> <MdEdit size={16} /> edit </p>
                                         </span>
                                     )
                                 })}

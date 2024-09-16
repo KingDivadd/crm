@@ -30,12 +30,12 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
     const [selected_installs, setSelected_installs] = useState<{install_id?:string; install?:any } | null>(null)
     
     const [inspection, setInspection] = useState({
-        footing_inspection_status: '', footing_inspection_comments: '', footing_inspection_date: 0,
-        set_post_inspection_status: '', set_post_inspection_comments: '', set_post_inspection_date: 0,
-        demo_inspection_status: '', demo_inspection_comments: '', demo_inspection_date: 0,
-        electrical_inspection_status: '', electrical_inspection_comments: '', electrical_inspection_date: 0,
-        install_inspection_status: '', install_inspection_comments: '', install_inspection_date: 0,
-        final_inspection_status: '', final_inspection_comments: '', final_inspection_date: 0,
+        footing_inspection_status: 'n_a', footing_inspection_comments: '', footing_inspection_date: 0,
+        set_post_inspection_status: 'n_a', set_post_inspection_comments: '', set_post_inspection_date: 0,
+        demo_inspection_status: 'n_a', demo_inspection_comments: '', demo_inspection_date: 0,
+        electrical_inspection_status: 'n_a', electrical_inspection_comments: '', electrical_inspection_date: 0,
+        install_inspection_status: 'n_a', install_inspection_comments: '', install_inspection_date: 0,
+        final_inspection_status: 'n_a', final_inspection_comments: '', final_inspection_date: 0,
     })
 
     const [showCalenders, setShowCalenders] = useState({
@@ -61,7 +61,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
         demo_inspection_status: 'Demo Inspection Status', 
         install_inspection_status: 'Install Inspection Status', 
         electrical_inspection_status: 'Electrical Inspection Status', 
-        final_inspection_status: 'Final Inspection Status', 
+        final_inspection_status: 'Final Inspection Status',
     })
 
     const handleDropMenu = (dropdown: any) => {
@@ -75,8 +75,10 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
     };
 
     const handleSelectDropdown = (dropdown: any, title:any)=>{
-        console.log(title, dropdown)
-        setInspection({...inspection, [title]: dropdown })
+        console.log(' title ', title, ' dropdown : ', dropdown, ' inspection ', inspection)
+        if (title !== 'install_type') {
+            setInspection({...inspection, [title]: dropdown.toLowerCase() })
+        }
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
@@ -115,7 +117,38 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
             get_all_installs()
         }else if (modalFor == 'edit'){
             get_all_installs()
-            const {inspection_type, pass, date, inspection_comments, } = selectedInspection
+            console.log('selected inspection ', selectedInspection)
+            const {
+                install,
+                footing_inspection_status, footing_inspection_comments, footing_inspection_date,
+                set_post_inspection_status, set_post_inspection_comments, set_post_inspection_date,
+                demo_inspection_status, demo_inspection_comments, demo_inspection_date,
+                electrical_inspection_status, electrical_inspection_comments, electrical_inspection_date,
+                install_inspection_status, install_inspection_comments, install_inspection_date,
+                final_inspection_status, final_inspection_comments, final_inspection_date,
+            } = selectedInspection
+
+            setSelected_installs({...selected_installs, install: install, install_id: install.install_id})
+
+            setInspection({...inspection, 
+                footing_inspection_status, footing_inspection_comments, footing_inspection_date: Number(footing_inspection_date),
+                set_post_inspection_status, set_post_inspection_comments, set_post_inspection_date: Number(set_post_inspection_date),
+                demo_inspection_status, demo_inspection_comments, demo_inspection_date: Number(demo_inspection_date),
+                electrical_inspection_status, electrical_inspection_comments, electrical_inspection_date: Number(electrical_inspection_date),
+                install_inspection_status, install_inspection_comments, install_inspection_date: Number(install_inspection_date),
+                final_inspection_status, final_inspection_comments, final_inspection_date: Number(final_inspection_date),
+            })
+
+            setDropElements({...dropElements, 
+                footing_inspection_status: footing_inspection_status == "n_a" ? "Footing Inspection Status" : footing_inspection_status,
+                set_post_inspection_status: set_post_inspection_status == "n_a" ? "Set Post Inspection Status" : set_post_inspection_status,
+                demo_inspection_status: demo_inspection_status  == "n_a" ? "Demo Inspection Status" : demo_inspection_status,
+                electrical_inspection_status: electrical_inspection_status  == "n_a" ? "Electrical Inspection Status" : electrical_inspection_status,
+                install_inspection_status: install_inspection_status  == "n_a" ? "Install Inspection Status" : install_inspection_status,
+                final_inspection_status: final_inspection_status  == "n_a" ? "Final Inspection Status" : final_inspection_status,
+
+            });
+            // setDropMenus({...dropMenus, [title]: false})
             
         }
     }, [])
@@ -132,7 +165,6 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
                 setFiltered_installs(response.data)
 
-                console.log(response.data)
                             
                 }else{       
                                 
@@ -146,7 +178,6 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
     async function create_inspection(e:any) {
         e.preventDefault()
-        console.log('create inspection ', inspection)
 
         if (!selected_installs?.install_id ) {
             showAlert('Please select an install', 'error')
@@ -159,11 +190,12 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
                                 
                     showAlert(response.data.msg, "success")
                     
-                    setShowModal(false)
+                    setTimeout(() => {
+                        setShowModal(false)
+                    }, 2000);
                     
                     setLoading(false)
 
-                    console.log('', "success")
 
                     }else{       
                                     
@@ -180,63 +212,37 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
     async function update_inspection(e:any) {
         e.preventDefault()
-        console.log('update inspection ', inspection)
+        console.log('update inspecton ', inspection)
 
-        // if (false) {
-        //     showAlert('Please fill required fields', 'error')
-        // }else{
-        //     try {
-        //         setLoading(true)
+        if (false) {
+            showAlert('Please fill required fields', 'error')
+        }else{
+            try {
+                setLoading(true)
                 
-        //         const response = await patch_auth_request(`lead/edit-lead/${selectedInspection.lead_id}`, 
-        //             { inspection_type: auth.inspection_type, pass: auth.pass , date: auth.date, inspection_comments: auth.inspection_comments, })
-        //         if (response.status == 200 || response.status == 201){
+                const response = await patch_auth_request(`app/edit-inspection/${selectedInspection.inspection_id}`, inspection)
+                if (response.status == 200 || response.status == 201){
                                 
-        //             showAlert(response.data.msg, "success")
+                    showAlert(response.data.msg, "success")
                     
-        //             setShowModal(false)
+                    setTimeout(() => {
+                        setShowModal(false)
+                    }, 2000);
                     
-        //             setLoading(false)
+                    setLoading(false)
 
-        //             }else{       
+                    }else{       
 
-        //             showAlert(response.response.data.err, "error")
+                    showAlert(response.response.data.err, "error")
                     
-        //             setLoading(false)
-        //         }
-        //     } catch (err) {
-        //         showAlert('Error occured ', 'error')
-        //         setLoading(false)
-        //     }
-        // }
-    }
+                    setLoading(false)
+                }
+            } catch (err) {
 
-    async function delete_lead(e:any) {
-        e.preventDefault()
-        try {
-            setLoading(true)
-            
-            const response = await delete_auth_request(`lead/delete-lead/${selectedInspection.lead_id}`)
-            if (response.status == 200 || response.status == 201){
-                            
-                showAlert(response.data.msg, "success")
-                
-                setShowModal(false)
-                
+                showAlert('Error occured ', 'error')
                 setLoading(false)
-
-                }else{       
-
-                showAlert(response.response.data.err, "error")
-
-                setLoading(false)
-
             }
-        } catch (err) {
-            showAlert('Error occured ', 'error')
-            setLoading(false)
         }
-    
     }
 
     type InspectionDates = {
@@ -259,7 +265,6 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
     function selected_proj(data:any) {
         setSelected_installs({...selected_installs, install_id: data.install_id, install: data})
-        console.log('data ',data)
     }
 
     return (
@@ -280,16 +285,18 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
                                 {/* below is to upload new permit */}
 
-                                {modalFor == 'add' && 
+                                {modalFor && 
                                 <div className="w-[75vw] flex flex-col items-start justify-start gap-[15px] rounded-[4px] px-[15px] py-[7.5px] ">
                                     <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 pb-[10px] ">
-                                        <p className="text-md font-semibold  text-slate-800 ">New Inspection </p>
+                                        {modalFor == 'add' && <p className="text-md font-semibold  text-slate-800 ">New Inspection </p>}
+                                        {modalFor == 'edit' && <p className="text-md font-semibold  text-slate-800 ">{selectedInspection.inspection_ind} </p>}
 
                                     </span>
                                     <div className="w-full flex items-center justify-between gap-[20px] ">
 
                                         <div className="w-1/3 flex flex-col items-start justify-start gap-[25px] h-[65vh] overflow-y-auto ">
                                         
+                                            {modalFor == 'add' && 
                                             <span className="w-full flex flex-col items-self justify-self gap-[15px] ">
                                                 <p className="text-[15px]">Select Install</p>
                                                 <span className="h-[40px] w-full ">
@@ -339,7 +346,34 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
                                                     </div>
                                                 }
 
-                                            </span>
+                                            </span>}
+
+                                            {modalFor == 'edit' && 
+                                            <div className="w-full flex flex-col items-start justify-start gap-[15px] ">
+                                                <p className="text-[15px]">Selected Install</p>
+
+                                                <div className="w-full h-[450px] flex items-start bg-slate-100 p-[10px] ">
+                                                    <span className="w-full h-[35px] flex items-center justify-between bg-slate-300 px-[10px] gap-[10px] rounded-[3px] " >
+
+                                                        <span className="h-[35px] flex items-center justify-start gap-[10px] w-full cursor-pointer font-medium" >
+
+                                                            <p className="text-start text-[15px] text-slate-900 " >{1}. </p>
+
+                                                            <p className=" text-start text-[15px] text-slate-900 " > {} </p>
+
+                                                            <p className="text-start text-[15px] text-slate-900 " >{selectedInspection.install.install_ind} </p>
+
+                                                        </span>
+
+                                                        
+                                                        <span className="w-[40px] h-full flex justify-end items-center"> <IoCheckmark size={18} /> </span>
+
+
+                                                    </span>
+                                                </div>
+                                                
+                                            </div>
+                                            }
 
                                         </div>
 
@@ -578,7 +612,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
                                             </div>}
 
-                                            {dropElements.install_type == 'footing' &&
+                                            {(dropElements.install_type == 'footing' && selected_installs?.install) &&
                                             <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
 
                                                 <span className="w-full flex items-center justify-start gap-[15px]">
@@ -602,7 +636,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
                                             </div>}
 
-                                            {dropElements.install_type == 'set_post' &&
+                                            {(dropElements.install_type.replace(/ /g, '_') == 'set_post' && selected_installs?.install) &&
                                             <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
 
                                                 <span className="w-full flex items-center justify-start gap-[15px]">
@@ -626,7 +660,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
                                             </div>}
 
-                                            {dropElements.install_type == 'demo' &&
+                                            {(dropElements.install_type == 'demo' && selected_installs?.install) &&
                                             <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
 
                                                 <span className="w-full flex items-center justify-start gap-[15px]">
@@ -650,7 +684,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
                                             </div>}
                                             
-                                            {dropElements.install_type == 'install' &&
+                                            {(dropElements.install_type == 'install' && selected_installs?.install) &&
                                             <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
 
                                                 <span className="w-full flex items-center justify-start gap-[15px]">
@@ -674,7 +708,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
                                             </div>}
                                             
-                                            {dropElements.install_type == 'electrical' &&
+                                            {(dropElements.install_type == 'electrical' && selected_installs?.install ) &&
                                             <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
 
                                                 <span className="w-full flex items-center justify-start gap-[15px]">
@@ -699,7 +733,7 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
                                             </div>}
 
                                             
-                                            {/* {dropElements.install_type == 'final' &&
+                                            {/* {(dropElements.install_type == 'final' && selected_installs?.install) &&
                                             <div className="flex flex-col items-start justify-between gap-[15px] w-full ">
 
                                                 <span className="w-full flex items-center justify-start gap-[15px]">
@@ -727,10 +761,11 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
 
                                     </div>
 
-                                    <div className="w-full flex items-center justify-end gap-[25px] pt-[10px] border-t border-gray-300 ">
-                                        <p className="text-white">.</p>
-                                        <p className="text-white">.</p>
-                                        <button className=" w-1/3 h-[45px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_inspection} >
+                                    <div className="w-full flex items-center justify-end gap-[20px] pt-[10px] border-t border-gray-300 ">
+                                        <p className="text-white w-1/3">.</p>
+                                        <p className="text-white w-1/3">.</p>
+
+                                        {modalFor == 'add' && <button className=" w-1/3 h-[45px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_inspection} >
                                             {loading ? (
                                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -738,13 +773,21 @@ const InspectionModal = ({ showModal, setShowModal, selectedInspection, setSelec
                                                 </svg>
                                             ) : 'submit'}
 
-                                        </button>
+                                        </button>}
+
+                                        {modalFor == 'edit' && <button className=" w-1/3 h-[45px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-sm "  disabled={loading} onClick={update_inspection} >
+                                            {loading ? (
+                                                <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                </svg>
+                                            ) : 'update'}
+
+                                        </button>}
                                     </div>
 
                                 </div>
                                 }
-
-                                
 
                             </div>
                         </div>
