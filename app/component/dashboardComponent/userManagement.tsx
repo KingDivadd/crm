@@ -246,7 +246,7 @@ const UserManagement = () => {
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-4">
                         <p className="text-md font-semibold text-black">All Users</p>
-                        <p className="text-[15px] text-black">{app_users?.total_number_of_users}</p>
+                        <p className="text-[15px] text-black">{filtered_users && filtered_users.users.length}</p>
                     </span>
                     <span className="flex flex-row items-start justify-start gap-4">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
@@ -324,7 +324,7 @@ const UserManagement = () => {
                             <p className="text-[15px] cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-[15px]">Showing 1-15 of {app_users?.total_number_of_users || 0}</p>
+                            <p className="text-[15px]">Showing 1-15 of {filtered_users && filtered_users.users.length || 0}</p>
                         </span>
                     </span>
                 </div>

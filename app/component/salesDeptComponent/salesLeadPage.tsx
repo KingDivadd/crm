@@ -79,8 +79,8 @@ const SalesLeadPage = () => {
             
             setLead_box(response.data)      
             
-            setFiltered_lead_box(response.data)            
-
+            setFiltered_lead_box(response.data)       
+            
         }else{        
         showAlert(response.response.data.err, "error")
         }
@@ -248,7 +248,7 @@ const SalesLeadPage = () => {
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-[15px]">
                         <p className="text-md font-medium text-black">All Leads</p>
-                        <p className="text-md font-medium text-black">{(lead_box && lead_box?.total_number_of_leads) || 0 }</p>
+                        <p className="text-md font-medium text-black">{(filtered_lead_box && filtered_lead_box?.leads.length) || 0 }</p>
                     </span>
 
                     <span className="flex flex-row items-start justify-start gap-[20px]">
@@ -274,8 +274,8 @@ const SalesLeadPage = () => {
                         <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
                         <p className="text-[15.5px] font-normal w-[15%] px-2 ">Lead Name</p>
                         <p className="text-[15.5px] font-normal w-[15%] px-2 ">Address</p>
-                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Phone </p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Designer</p>
+                        <p className="text-[15.5px] font-normal w-[11.5%] px-2 ">Phone </p>
+                        <p className="text-[15.5px] font-normal w-[13.5%] px-2 ">Designer</p>
                         <p className="text-[15.5px] font-normal w-[9%] px-2 ">Disposition</p>
                         <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Updated On</p>
                         <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Action</p>
@@ -310,8 +310,8 @@ const SalesLeadPage = () => {
                                             <p className="text-[15.5px] w-[7.5%] px-2 "> {lead_ind} </p>
                                             <p className="text-[15.5px] w-[15%] px-2 "> {customer_first_name} {customer_last_name} </p>
                                             <p className="text-[15.5px] w-[15%] px-2 "> {customer_state}, {customer_city} </p>
-                                            <p className="text-[15.5px] w-[10%] px-2 "> {customer_phone} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {lead_designer.last_name} {lead_designer.first_name} </p>
+                                            <p className="text-[15.5px] w-[11.5%] px-2 "> {customer_phone} </p>
+                                            <p className="text-[15.5px] w-[13.5%] px-2 "> {lead_designer.last_name} {lead_designer.first_name} </p>
                                             <p className={disposition == "sold" ? "text-[15.5px] w-[9%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
                                             <p className="text-[15.5px] w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
                                             <p className="text-[15.5px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
@@ -359,7 +359,7 @@ const SalesLeadPage = () => {
                             <p className="text-[15.5px] cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-[15.5px]">Showing 1-15 of {(lead_box && lead_box?.total_number_of_leads) || 0}</p>
+                            <p className="text-[15.5px]">Showing 1-15 of {(filtered_lead_box && filtered_lead_box.leads.length) || 0}</p>
                         </span>
                     </span>
                 </div>

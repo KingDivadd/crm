@@ -79,8 +79,6 @@ const SalesJobPage = () => {
             
             setFiltered_job_box(response.data)            
 
-            console.log('job respnse : ',response.data)
-
         }else{
             
             if (response.response){
