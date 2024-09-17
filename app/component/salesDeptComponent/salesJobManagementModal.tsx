@@ -542,6 +542,11 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                                     <input type="radio" name="attachment" value="freestanding" className="h-[17px] w-[17px] cursor-pointer" onChange={() => setAuth({...auth, attached: "freestanding" })} checked={auth.attached === "freestanding"} />
                                                     <p className="text-[15px]">FreeStanding</p>
                                                 </label>
+
+                                                <label className="flex items-center justify-end gap-[10px] ">
+                                                    <input type="radio" name="attachment" value="cantilever" className="h-[17px] w-[17px] cursor-pointer" onChange={() => setAuth({...auth, attached: "cantilever" })} checked={auth.attached === "freestanding"} />
+                                                    <p className="text-[15px]">Cantilever</p>
+                                                </label>
                                             </span>
 
 
@@ -941,6 +946,11 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                             <label className="flex items-center justify-end gap-[10px] ">
                                                 <input type="radio" name="attachment" value="freestanding" className="h-[17px] w-[17px] cursor-pointer" onChange={() => setAuth({...auth, attached: "freestanding" })} checked={auth.attached === "freestanding"} />
                                                 <p className="text-[15px]">FreeStanding</p>
+                                            </label>
+
+                                            <label className="flex items-center justify-end gap-[10px] ">
+                                                <input type="radio" name="attachment" value="cantilever" className="h-[17px] w-[17px] cursor-pointer" onChange={() => setAuth({...auth, attached: "cantilever" })} checked={auth.attached === "freestanding"} />
+                                                <p className="text-[15px]">Cantilever</p>
                                             </label>
                                         </span>
 

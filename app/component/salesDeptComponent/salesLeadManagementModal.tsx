@@ -380,7 +380,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                         <p className="text-md font-semibold  text-slate-800 ">Edit Lead: <strong>{selectedLead.lead_ind}</strong> </p>
                                         :
                                         <p className="text-md font-semibold  text-slate-800 ">New Lead </p>
-                                         
+                                        
                                     }
 
                                         <span className="flex items-center justify-end gap-[20px] ">
@@ -397,7 +397,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
 
                                     <form  action="" className="w-full flex items-start justify-between gap-[15px]">
                                         <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
-                                            <span className="w-full flex items-center justify-between gap-[10px] ">
+                                            <span className="w-full flex items-center justify-between gap-[15px] ">
 
                                                 <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                     <p className="text-[15px] text-slate-900 flex items-center gap-2">First name  </p>
@@ -421,7 +421,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 </span>
                                             </span>
 
-                                            <span className="w-full flex items-center justify-between gap-[10px] ">
+                                            <span className="w-full flex items-center justify-between gap-[15px] ">
 
                                                 <span className="w-[37.5%] flex flex-col items-self justify-self gap-[10px] ">
                                                     <p className="text-[15px] text-slate-900">City</p>
@@ -459,7 +459,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 </span>
                                             </span>
 
-                                            <div className="w-full flex items-center justify-between gap-[20px] ">
+                                            <div className="w-full flex items-center justify-between gap-[15px] ">
 
                                                 <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
                                                     <p className="text-[15px] text-slate-900">Gate Code</p>
@@ -550,7 +550,7 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
                                                 </div>
                                                 }
 
-                                                <span className="w-full flex items-center gap-[20px] ">
+                                                <span className="w-full flex items-center gap-[15px] ">
                                                     <button className="h-[40px] w-1/2 flex items-center justify-center rounded-[3px] text-white bg-blue-600 hover:bg-blue-700 text-[15px] " onClick={()=>{setModalFor('upload_lead_file')}}>
                                                         Upload Lead Files
                                                     </button>
