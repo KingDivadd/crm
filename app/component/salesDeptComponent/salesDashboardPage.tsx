@@ -100,7 +100,7 @@ const SalesDashboardPage = () => {
                     <p className="text-md ">Recent Lead</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                             <p className="text-[15px] font-normal w-[7.5%] px-2 ">Lead Id</p>
                             <p className="text-[15px] font-normal w-[15%] px-2 ">Customer Name</p>
                             <p className="text-[15px] font-normal w-[17.5%] px-2 ">Customer Address</p>
@@ -146,7 +146,7 @@ const SalesDashboardPage = () => {
                         }
                         
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-[15px] cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -166,7 +166,7 @@ const SalesDashboardPage = () => {
                     <p className="text-md ">Recent Notification</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
                             <p className="text-[15px] w-[16.5%] px-2  ">Date / Time</p>
                             <p className="text-[15px] w-[20%] px-2  ">Subject</p>
                             <p className="text-[15px] w-[32.5%] px-2  ">Details</p>
@@ -207,7 +207,7 @@ const SalesDashboardPage = () => {
                         }
                        
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-[15px] cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">

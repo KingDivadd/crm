@@ -110,25 +110,25 @@ const EngineeringDashboardPage = () => {
                                     
                 </div>
 
-                   
+
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-md ">Recent Task</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px] shadow-md">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                             <p className="text-sm font-normal w-[7.5%] px-2 ">Task ID</p>
                             <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
-                            <p className="text-sm font-normal w-[20%] px-2 ">Desription</p>
-                            <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
-                            <p className="text-sm font-normal w-[17.5%] px-2 ">Assigned To</p>
-                            <p className="text-sm font-normal w-[10%] px-2 ">Start Date</p>
-                            <p className="text-sm font-normal w-[10%] px-2 ">End Date</p>
-                            <p className="text-sm font-normal w-[15%] px-2 ">Completion Date</p>
+                            <p className="text-sm font-normal w-[12.5%] px-2 ">Customer Name</p>
+                            <p className="text-sm font-normal w-[17.5%] px-2 ">Permit Type(s)</p>
+                            <p className="text-sm font-normal w-[10%] px-2 ">Status</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Required Action</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Document Upload</p>
+                            <p className="text-sm font-normal w-[15%] px-2 ">Action</p>
                         </span>
                         
                         {dash_components !== null ? 
                         
-                        <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto">
 
                             {dash_components?.recent_tasks.length ?
                             <>
@@ -139,29 +139,34 @@ const EngineeringDashboardPage = () => {
                                     <span key={ind} className="recent-activity-table-list " >
                                         <p className="text-sm w-[7.5%] px-2 ">{task_ind} </p>
                                         <p className="text-sm w-[7.5%] px-2 ">{job.job_ind} </p>
-                                        <p className="text-sm w-[20%] px-2 "> {description} </p>
-                                        <p className="text-sm w-[12.5%] px-2 "> {status} </p>
-                                        <p className="text-sm w-[17.5%] px-2 "> {assigned_to} </p>
-                                        <p className="text-sm w-[10%] px-2 "> {start_date} </p>
-                                        <p className="text-sm w-[10%] px-2 "> {due_date} </p>
-                                        <p className="text-sm w-[15%] px-2 "> {completion_date} </p>
+                                        <p className="text-sm w-[12.5%] px-2 "> {'John doe'} </p>
+                                        <p className="text-sm w-[17.5%] px-2 "> {'Engineering, Hoa, General'} </p>
+                                        <p className="text-sm w-[10%] px-2 "> {'pending'} </p>
+                                        <p className="text-sm w-[15%] px-2 "> {'Prepare Drawings'} </p>
+                                        <p className="text-sm w-[15%] px-2 "> {'No File Uploaded'} </p>
+                                        <span className="w-[15%] flex px-2 items-center justify-between gap-[10px] ">
+                                            <p className="text-sm px-2 "> {'upload'} </p>
+                                            {/* <p className="text-sm px-2 "> {'View'} </p>
+                                            <p className="text-sm px-2 "> {'Update'} </p> */}
+
+                                        </span>
                                     </span>
                                 )
                             })}
                             </>:
-                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                            <div className="w-full h-[300px] flex flex-col justify-center items-center">
                                 <p className="text-sm ">No Task yet</p>
                             </div>
                             }
 
                         </div>
                         :
-                        <div className="w-full h-[250px] flex items-center justify-center">
+                        <div className="w-full h-[300px] flex items-center justify-center">
                             <p className="text-sm font-normal">Loading Data...</p>
                         </div>
                         }
                         
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -171,17 +176,19 @@ const EngineeringDashboardPage = () => {
                                 <p className="text-sm cursor-pointer ">Next</p>
                             </span>
                             <span className="flex flex-row items-center justify-end gap-3 h-full">
-                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_tasks.length}</p>
+                                <p className="text-sm  ">Showing 1-15 of {dash_components?.recent_tasks.length || 0}</p>
                             </span>
                         </span>
                     </div>
                 </div>
 
-                <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
+                        {/* Below is recent project */}
+
+                {/* <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-md ">Recent Project</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px] shadow-md">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                             <p className="text-sm font-normal w-[7.5%] px-2 ">Project Id</p>
                             <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
                             <p className="text-sm font-normal w-[20%] px-2 ">Desription</p>
@@ -194,7 +201,7 @@ const EngineeringDashboardPage = () => {
                         
                         {dash_components !== null ? 
                         
-                        <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto">
 
                             {dash_components?.recent_tasks.length ?
                             <>
@@ -215,19 +222,19 @@ const EngineeringDashboardPage = () => {
                                 )
                             })}
                             </>:
-                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                            <div className="w-full h-[300px] flex flex-col justify-center items-center">
                                 <p className="text-sm ">No Task yet</p>
                             </div>
                             }
 
                         </div>
                         :
-                        <div className="w-full h-[250px] flex items-center justify-center">
+                        <div className="w-full h-[300px] flex items-center justify-center">
                             <p className="text-sm font-normal">Loading Data...</p>
                         </div>
                         }
                         
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -241,13 +248,13 @@ const EngineeringDashboardPage = () => {
                             </span>
                         </span>
                     </div>
-                </div>
+                </div> */}
 
                 <div className="w-full flex flex-col items-start justify-start gap-[10px] ">
                     <p className="text-md ">Recent Notification</p>
 
-                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
+                    <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[3px] shadow-md">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start bg-blue-700 text-white rounded-t-[3.5px]  ">
                             <p className="text-sm w-[16.5%] px-2  ">Date / Time</p>
                             <p className="text-sm w-[20%] px-2  ">Subject</p>
                             <p className="text-sm w-[32.5%] px-2  ">Details</p>
@@ -256,7 +263,7 @@ const EngineeringDashboardPage = () => {
                         </span>
                         
                         
-                        {dash_components !== null ? <div className="w-full h-[250px] flex flex-col justify-start items-start overflow-y-auto">
+                        {dash_components !== null ? <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto">
 
                             {dash_components?.recent_notifications.length ? 
                             <>
@@ -276,19 +283,19 @@ const EngineeringDashboardPage = () => {
                             })}
                             </> 
                             :
-                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                            <div className="w-full h-[300px] flex flex-col justify-center items-center">
                                 <p className="text-sm ">No Notifications yet</p>
                             </div>
                             }
                         </div>
                         :
-                        <div className="w-full h-[250px] flex items-center justify-center">
+                        <div className="w-full h-[300px] flex items-center justify-center">
                             <p className="text-sm font-normal">Loading Data...</p>
                         </div>
                         }
                        
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-slate-300 px-[15px] rounded-b-[3px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">

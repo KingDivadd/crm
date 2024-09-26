@@ -22,43 +22,15 @@ interface Job_Management_Props {
 
 }
 
-interface FilteredJobsProps {
-    lead: any;
 
-}
-
-interface TeamProps {
-    jobs?: any;
-    admin_team?:any, engineering_team?:any, permit_team?:any, electrical_team?:any
-}
-
-interface AuthState {
-    job_id: string;
-    description: string;
-    start_date: string;
-    due_date: string;
-    completion_date: string;
-    note: string;
-    team: string;
-    task_assigned_to: string;
-    engineering_permit_submit_date: string;
-    engineering_permit_approval_date: string;
-    permit_number: string;
-    status: string;
-    attachment: string[];  // Explicitly specify that attachment is a string array
-  }
-  
 const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, modalFor}: Job_Management_Props) => {
     const [alert, setAlert] = useState({type: '', message: ''})
     const [loading, setLoading] = useState(false)
     const [loadingtwo, setLoadingtwo] = useState(false)
     const [show_job, setShow_job] = useState(false)
     
-    const [all_teams, setAll_teams] = useState<TeamProps | null>(null)
 
-    const [filtered_teams, setFiltered_teams] = useState<TeamProps | null>(null)
     const [selected_job, setSelected_job] = useState('')
-    const [auth, setAuth] = useState<AuthState>({job_id: '', description: '', status: '', start_date:'', due_date: '', completion_date: '', note: '', team: '', task_assigned_to: '',engineering_permit_submit_date: '', engineering_permit_approval_date: '', attachment: [], permit_number: '' })
 
 
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
@@ -80,7 +52,7 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
 
     const handleSelectDropdown = (dropdown: any, title:any)=>{
         
-        setAuth({...auth, [title]: dropdown.replace(/ /g, '').replace(/\//g,'').toLowerCase()})
+        // setAuth({...auth, [title]: dropdown.replace(/ /g, '').replace(/\//g,'').toLowerCase()})
         setDropElements({...dropElements, [title]: dropdown}); setDropMenus({...dropMenus, [title]: false})
     }
 
@@ -96,204 +68,18 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
         const name = e.target.name
         const value = e.target.value
 
-        setAuth({...auth, [name]: value})
     }
 
     function handleCloseModal() {
         setShowModal(false)
     }
 
-    function filter_user(e: React.ChangeEvent<HTMLInputElement>) {
-
-        const value = e.target.value
-            
-        const filtered_items = filtered_teams?.jobs.filter((data: { first_name: string, last_name: string }) =>
-            data.first_name.toLowerCase().includes(value.toLowerCase()) ||
-            data.last_name.toLowerCase().includes(value.toLowerCase())
-        );
-    
-        setFiltered_teams(value === '' ? filtered_teams?.jobs : filtered_items);
-    }
-    
-    useEffect(() => {
-        if (modalFor == 'add'){
-            get_all_jobs()
-            get_all_jobs()
-        }else if (modalFor == 'edit'){
-            get_all_jobs()
-            console.log('seleted job ',selectedTask)
-
-            const { job, job_id, description, task_assigned_to, status, start_date, due_date, completion_date, note, engineering_permit_submit_date, engineering_permit_approval_date, engineering_permit_documents, engineering_permit_number  }  = selectedTask
-
-            setAuth({...auth, job_id, description, note, status, task_assigned_to, start_date, completion_date, due_date, engineering_permit_submit_date: job.engineering_permit_submit_date, engineering_permit_approval_date: job.engineering_permit_approval_date, attachment: job.engineering_permit_documents, permit_number:job.engineering_permit_number })
-
-            console.log('auth ',auth);
-            
-
-            setSelected_job(job.job_ind)
-
-            // setSelected_job()
-        }
-    }, [])
-
-    const handlefilter = (e:any)=>{
-        const value = e.target.value
-
-
-    }
-
-
-    async function get_all_jobs() {
-        try {
-            const response = await get_auth_request(`user/jobs`)
-            if (response.status == 200 || response.status == 201){
-                
-                setAll_teams(response.data)
-
-                setFiltered_teams(response.data)           
-                
-                
-                }else{       
-                                
-                showAlert(response.response.data.err, "error")
-                
-            }
-        } catch (err) {
-            showAlert('Error occured ', 'error')
-        }
-    }
-
-    async function create_task(e:any) {
-        e.preventDefault()
-        console.log('auth', auth)
-        if (!auth.description || !auth.job_id) {
-            showAlert('Please fill required fields', 'error')
-        }else{
-            try {
-                setLoading(true)
-                
-                const response = await post_auth_request(`job/create-task`, {job_id: auth.job_id, description: auth.description, engineering_permit_submit_date: auth.engineering_permit_submit_date, due_date: auth.due_date, status: 'PENDING', task_assigned_to: auth.task_assigned_to, note: auth.note})
-                if (response.status == 200 || response.status == 201){
-                                
-                    showAlert(response.data.msg, "success")
-                    
-                    setShowModal(false)
-                    
-                    setLoading(false)
-
-                    }else{       
-                                    
-                    showAlert(response.response.data.err, "error")
-                    
-                    setLoading(false)
-                }
-            } catch (err) {
-                showAlert('Error occured ', 'error')
-                setLoading(false)
-            }
-        }
-    }
-
-    async function start_task(e:any) {
-        e.preventDefault()       
-            try {
-                setLoading(true)
-
-                const response = await patch_auth_request(`job/start-task/${selectedTask.task_id}`, {})
-                if (response.status == 200 || response.status == 201){
-                                
-                    showAlert(response.data.msg, "success")
-
-                    console.log('start task response ', response.data.task.status);
-
-
-                    setSelectedTask({...selectedTask, status: response.data.task.status})
-                    
-                                        
-                    setLoading(false)
-
-                    }else{       
-                                    
-                    showAlert(response.response.data.err, "error")
-                    
-                    setLoading(false)
-                }
-            } catch (err) {
-                showAlert('Error occured ', 'error')
-                setLoading(false)
-            }
-        
-    }
-
-    async function update_task(e:any) {
-        e.preventDefault()
-        console.log(auth);
-        
-        if (!auth.job_id ) {
-            showAlert('Please fill required fields', 'error')
-        }else{
-            try {
-                setLoadingtwo(true)
-                console.log('auth. ', auth)
-                const response = await patch_auth_request(`job/update-task-progress/${selectedTask.task_id}`, {
-                    job_id: auth.job_id, note: auth.note, engineering_permit_number:auth.permit_number, engineering_permit_submit_date: auth.engineering_permit_submit_date, engineering_permit_approval_date: auth.engineering_permit_approval_date, engineering_permit_documents: auth.attachment, 
-                 })
-                if (response.status == 200 || response.status == 201){
-                                
-                    showAlert(response.data.msg, "success")
-                    
-                    setShowModal(false)
-                    
-                    setLoadingtwo(false)
-
-                    }else{       
-
-                    showAlert(response.response.data.err, "error")
-                    
-                    setLoadingtwo(false)
-                }
-            } catch (err) {
-                showAlert('Error occured ', 'error')
-                setLoadingtwo(false)
-            }
-        }
-    }
-
-    async function delete_job(e:any) {
-        e.preventDefault()
-        try {
-            setLoading(true)
-            
-            const response = await delete_auth_request(`job/delete-job/${selectedTask.job_id}`)
-            if (response.status == 200 || response.status == 201){
-                            
-                showAlert(response.data.msg, "success")
-                
-                setShowModal(false)
-                
-                setLoading(false)
-
-                }else{       
-
-                showAlert(response.response.data.err, "error")
-
-                setLoading(false)
-
-            }
-        } catch (err) {
-            showAlert('Error occured ', 'error')
-            setLoading(false)
-        }
-    
-    }
-
     const handleFileUpload = (fileUrl:string) => {
-        console.log('Received file URL from FileUploader:', fileUrl);
-        const store = auth.attachment
-        store.push(fileUrl)
-        setAuth({...auth, attachment: store})
-       
+        // const box:any = auth.contract_document
+        // box.push(fileUrl)
+        // setAuth({...auth, contract_document: box})
     };
+
 
     return (
         <div className="fixed z-30 inset-0 overflow-y-auto" id="modal">
@@ -304,343 +90,42 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
                 <div className="fixed inset-0 transition-opacity" aria-hidden="true">
                     <div className="absolute inset-0 bg-gray-500 opacity-35"></div>
                 </div>
-                <div className={ modalFor == 'delete' ? "w-full h-screen pt-[150px] rounded-lg overflow-hidden shadow-xl transform transition-all": "w-full h-screen pt-[35px] rounded-lg overflow-hidden shadow-xl transform transition-all" } role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
+                <div className={"w-full h-screen flex items-center justify-center rounded-lg overflow-hidden shadow-xl transform transition-all"} role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
 
-                    <div className={"h-auto w-[70%] mx-auto shadow-xl flex items-start "}>
+                    <div className={"h-auto mx-auto shadow-xl flex items-start "}>
                         {/* the container for the input fields */}
                         <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
                             <div className="w-full min-h-[250px] flex flex-col justify-start items-center p-[10px] ">
 
-                                {/* below is to upload new permit */}
-                                {modalFor == 'delete' && 
-                                
-                                <div className="w-full flex flex-col items-start justify-start gap-[25px] ">
-                                    <span className="w-full flex flex-row items-start justify-between border-b border-slate-200 h-[40px]">
-                                        <p className="text-md font-semibold  text-blue-700 ">Delete Job</p>
+                                {modalFor == 'upload' && 
+                                <div className="w-[70vw] flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
 
-                                        
-                                    </span>
-
-                                    <div className="w-full flex flex-col items-center justify-center gap-[34px]">
-                                        <p className="text-md font-normal text-center  ">Are you sure you want to delete job  assigned to lead <strong className='text-blue-600'>{selectedTask.lead.customer_name} </strong> </p>
-                                            
-                                        <p className="text-xs text-red-500 flex items-center justify-center gap-2 "> <CiWarning size={20} />   Please note action is not reaversible </p>
-
-                                            <button className=" w-[150px] h-[45px] text-white bg-blue-600 rounded-[5px] hover:bg-red-500 flex items-center justify-center"  disabled={loading} onClick={delete_job} >
-                                                {loading ? (
-                                                    <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                    </svg>
-                                                ) : 'Delete'}
-
-                                            </button>
-
-                                    </div>
-
-                                    <span className="w-full flex items-center justify-center">
-                                    </span>
-
-                                </div>}
-
-                                {modalFor == 'add' && 
-                                <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
-                                    <div className="w-full flex  items-center justify-between border-b border-slate-200 h-[55px] z-[15] ">
-                                        <p className="text-md font-semibold  text-slate-800 ">New Task </p>
-
-                                        <div className=" flex flex-col items-self justify-self relative ">
-                                            <span className="flex items-center justify-end gap-[10px]">
-
-                                                {selected_job && <h4 className="text-sm flex items-center gap-[5px]">Selected Job: <p className="font-medium">{selected_job}</p> </h4>}
-
-                                                <button className="text-sm text-slate-900 rounded-[3px] px-5 border border-gray-400 flex items-center h-[40px]" onClick={()=> {setShow_job(!show_job)}} >Select Job {show_job ?<FaCaretUp size={18} className='text-slate-600 mt-[2px]' /> : <FaCaretDown size={18} className='text-slate-600 mb-[3px]' />} </button>
-                                            </span>
-
-                                            {show_job && 
-                                            <div className="w-[450px] absolute top-[45px] right-[0] z-2 shadow-md bg-white">
-
-                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
-                                                    <p className="text-sm w-[20%] px-2 ">Job Id</p>
-                                                    <p className="text-sm w-[30%] px-2 ">Contract Amt</p>
-                                                    <p className="text-sm w-[45%] px-2 ">Customer Name</p>
-                                                    <p className="text-sm w-[5%] px-2 "></p>
-                                                </span>
-                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
-                                                    {filtered_teams?.jobs.reverse().map((data:any, ind:number)=>{
-
-                                                        const {job_id, job_ind, contract_amount, lead} = data
-                                                        const {customer_name} = lead
-                                                        return(
-                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, job_id: job_id }); setSelected_job(job_ind); setShow_job(!show_job) } }>
-                                                                <p className="text-sm w-[20%] px-2 ">{job_ind}</p>
-                                                                <p className="text-sm w-[30%] px-2 ">${Number(contract_amount).toLocaleString()}</p>
-                                                                <p className="text-sm font-medium w-[45%] px-2 ">{customer_name}</p>
-                                                                <span className="w-[5%] ">{auth.job_id == job_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
-                                                            </span>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>}
-
-                                        </div>
-
+                                    <div className="w-full h-[45px] flex items-center justify-between border-b border-slate-300">
+                                        <p className="text-[16.5px] font-medium ">Upload Document</p>
                                     </div>
 
                                     <form  action="" className="w-full h-full flex items-start justify-between gap-[15px]">
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[10px] h-full ">
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
-                                                <p className="text-sm text-slate-900">Select Team</p>
-
-                                                <span className="h-[40px] min-w-[150px] z-5">
-                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'team'} dropArray={['Engineering', 'Electrical', 'General Permit', 'Admin / Hoa' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                                </span>
-                                            </span>
-
-                                            {auth.team.toLowerCase() == 'electrical' && <div className="w-full ">
-                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
-                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
-                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
-                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
-                                                    <p className="text-sm w-[10%] px-2 "></p>
-                                                </span>
-                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
-                                                    {filtered_teams?.electrical_team.reverse().map((data:any, ind:number)=>{
-                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
-                                                        return(
-                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
-                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
-                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
-                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
-                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
-                                                            </span>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>}
-
-                                            {auth.team.toLowerCase() == 'engineering' && <div className="w-full ">
-                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
-                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
-                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
-                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
-                                                    <p className="text-sm w-[10%] px-2 "></p>
-                                                </span>
-                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
-                                                    {filtered_teams?.engineering_team.reverse().map((data:any, ind:number)=>{
-                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
-                                                        return(
-                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
-                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
-                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
-                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
-                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
-                                                            </span>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>}
-
-                                            {auth.team.toLowerCase() == 'generalpermit' && <div className="w-full ">
-                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
-                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
-                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
-                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
-                                                    <p className="text-sm w-[10%] px-2 "></p>
-                                                </span>
-                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
-                                                    {filtered_teams?.permit_team.reverse().map((data:any, ind:number)=>{
-                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
-                                                        return(
-                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
-                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
-                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
-                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
-                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
-                                                            </span>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>}
-
-                                            {auth.team.toLowerCase() == "adminhoa" && <div className="w-full ">
-                                                <span className="w-full flex items-center justify-start h-[35px] bg-blue-600 text-white rounded-t-[5px] ">
-                                                    <p className="text-sm w-[20%] px-2 ">User Id</p>
-                                                    <p className="text-sm w-[45%] px-2 ">Staff Name</p>
-                                                    <p className="text-sm w-[25%] px-2 ">Role</p>
-                                                    <p className="text-sm w-[10%] px-2 "></p>
-                                                </span>
-                                                <div className="h-[285px] w-full flex flex-col items-start.justify-start rounded-b-[5px]  overflow-y-auto">
-                                                    {filtered_teams?.admin_team.reverse().map((data:any, ind:number)=>{
-                                                        const {user_ind, last_name, first_name, user_role, user_id} = data
-                                                        return(
-                                                            <span key={ind} className="h-[35px] flex items-center justify-start text-sm hover:bg-blue-100 cursor-pointer " onClick={()=> {setAuth({...auth, task_assigned_to: user_id })} }>
-                                                                <p className="text-sm w-[20%] px-2 ">{user_ind}</p>
-                                                                <p className="text-sm w-[45%] px-2 flex items-center gap-[5px]">{last_name} {first_name}</p>
-                                                                <p className="text-sm w-[25%] px-2 ">{user_role}</p>
-                                                                <span className="w-[10%] flex justify-end items-center ">{auth.task_assigned_to == user_id && <IoCheckmark size={19} className='text-blue-700' />} </span>
-                                                            </span>
-                                                        )
-                                                    })}
-                                                </div>
-                                            </div>}
-                                                    
-                                       
-                                            
-                                        </div>
 
                                         <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Task Description</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='description' value={auth.description} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
-
-                                            
-                                            {/* <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
-                                                <p className="text-sm text-slate-900">Status</p>
-
-                                                <span className="h-[40px] min-w-[150px] z-5">
-                                                    <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['PENDING', 'IN PROGRESS', 'COMPLETED' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
-                                                </span>
-                                            </span> */}
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Start Date</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='engineering_permit_submit_date' value={auth.engineering_permit_submit_date} placeholder='yyyy-mm-dd' onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Due Date</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='due_date' value={auth.due_date} placeholder='yyyy-mm-dd' onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Note</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='note' value={auth.note} placeholder={'Enter note'} onChange={handle_change} className='normal-input text-sm' />
-                                                </span>
-                                            </span>
-
-                                            <button className="w-full h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={create_task} >
-                                                {loading ? (
-                                                    <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                    </svg>
-                                                ) : 'Create Task'}
-
-                                            </button>
-                                            
-                                        </div>
-
-                                    </form>
-
-                                </div>
-                                }
-
-                                {modalFor == 'edit' && 
-                                <div className="w-full flex flex-col items-start justify-start gap-[25px] rounded-[4px] p-[15px] pt-0 ">
-                                    <span className="w-full flex flex-row items-center justify-between border-b border-slate-200 h-[55px] z-[15] ">
-                                        <p className="text-md font-semibold  text-slate-800 ">Task: <strong>{selectedTask.task_ind}</strong> </p>
-
-                                        <button className="min-w-[150px] h-[40px] text-white bg-blue-600 rounded-[5px] hover:bg-blue-700 flex items-center justify-center text-sm "  disabled={loading} onClick={start_task} >
-                                                {loading ? (
-                                                    <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                        <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                        <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                    </svg>
-                                                ) : 'Start Task'}
-
-                                        </button>
-                                    </span>
-
-                                    <form  action="" className="w-full h-full flex items-start justify-between gap-[15px]">
                                         
-
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
-                                            <span className="w-full flex flex-col items-start justify-between gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Task Description</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='description' disabled value={auth.description} onChange={handle_change} className='normal-input text-sm bg-white' />
-                                                </span>
+                                            <span className="w-full flex items-center justify-start">
+                                                <p className="text-[15px] w-[35%] ">Task Id:</p>
+                                                <p className="text-[15.5px] w-[65%] font-medium ">TS0001 </p>
                                             </span>
-
-                                            
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] z-[10] ">
-                                                <p className="text-sm text-slate-900">Task Status</p>
-
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='status' disabled value={selectedTask.status.replace(/_/g,' ') || auth.status.replace(/_/g, ' ')} onChange={handle_change} className='normal-input text-sm bg-white' />
-                                                </span>
+                                        
+                                            <span className="w-full flex items-center justify-start">
+                                                <p className="text-[15px] w-[35%] ">Job Id:</p>
+                                                <p className="text-[15.5px] w-[65%] font-medium ">JB0001 </p>
                                             </span>
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Start Date</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='engineering_permit_submit_date' value={auth.start_date} disabled placeholder='yyyy-mm-dd' onChange={handle_change} className='normal-input text-sm bg-white' />
-                                                </span>
-                                            </span>
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Due Date</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='due_date' value={auth.due_date} disabled placeholder='yyyy-mm-dd' onChange={handle_change} className='normal-input text-sm bg-white' />
-                                                </span>
-                                            </span>
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Note</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='note' value={auth.note} placeholder={'Enter note'} onChange={handle_change} className='normal-input text-sm bg-white' />
-                                                </span>
-                                            </span>
-
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Permit Number</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='permit_number' value={auth.permit_number} placeholder={'Enter permit note'} onChange={handle_change} className='normal-input text-sm bg-white' />
-                                                </span>
-                                            </span>
-
-                                            
-                                            
+                                        
                                         </div>
 
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[20px] ">
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Submit Date</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='engineering_permit_submit_date' value={auth.engineering_permit_submit_date} placeholder='yyyy-mm-dd' onChange={handle_change} className='normal-input text-sm bg-white' />
-                                                </span>
-                                            </span>
+                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[25px] ">
 
-                                            <span className="w-full flex flex-col items-self justify-self gap-[10px] ">
-                                                <p className="text-sm text-slate-900">Approval Date</p>
-                                                <span className="h-[40px] w-full ">
-                                                    <input type="text" name='engineering_permit_approval_date' value={auth.engineering_permit_approval_date} placeholder='yyyy-mm-dd' onChange={handle_change} className='normal-input text-sm bg-white' />
-                                                </span>
-                                            </span>
+                                            <div className="w-full min-h-[400px] flex items-start justify-start ">
+                                                <FileUploader id='engineering_document' title='Engineering Document' url='' onFileUpload={handleFileUpload}   />
+                                            </div>
 
-                                            <span className="h-[279px] w-full">
-
-                                                <FileUploader id='task_file_upload' title='Select Document' url='' onFileUpload={handleFileUpload}   />
-                                            </span>
-
-                                            <button className="w-full h-[40px] text-white bg-amber-700 rounded-[5px] hover:bg-amber-600 flex items-center justify-center text-sm "  disabled={loadingtwo} onClick={update_task} >
-                                                    {loadingtwo ? (
-                                                        <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                        </svg>
-                                                    ) : 'Update Task'}
-
-                                            </button>
                                         </div>
 
                                     </form>

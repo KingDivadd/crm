@@ -13,7 +13,7 @@ interface Tasks_Props {
     forEach?(arg0: (data: any, ind: number) => void): unknown;
     filter?(arg0: (user: any) => any): unknown;
     map?(arg0: (data: any) => void): unknown;
-    total_number_of_tasks_pages?: number; // Now optional and can be undefined
+    total_number_of_pages?: number; // Now optional and can be undefined
     total_number_of_tasks?: number; // Now optional and can be undefined
     tasks: any;
 }  
@@ -52,7 +52,7 @@ const TaskManagement = () => {
 
 
     useEffect(() => {
-        get_all_tasks()
+        get_all_tasks(page_number)
     }, [showModal])
 
     function showAlert(message: string, type: string){
@@ -62,11 +62,11 @@ const TaskManagement = () => {
             }, 3000);
     }
 
-    async function get_all_tasks() {
+    async function get_all_tasks(pg_number: number) {
 
         console.log('started fetching');
         
-        const response = await get_auth_request(`auth/all-tasks/${page_number}`)
+        const response = await get_auth_request(`app/all-paginated-task/${pg_number}`)
 
         if (response.status == 200 || response.status == 201){
             
@@ -111,7 +111,7 @@ const TaskManagement = () => {
 
     async function app_users_action(item: any) {
         let new_page_number = page_number;
-        let max_page_number = task_box?.total_number_of_tasks_pages
+        let max_page_number = task_box?.total_number_of_pages
 
         if (item === 'prev') {
         if (page_number > 1) {
@@ -125,14 +125,14 @@ const TaskManagement = () => {
         new_page_number = item;
         }
 
-        console.log('new page number ', new_page_number);
-
         setPage_number(new_page_number);
+
+        get_all_tasks(new_page_number)
     }
 
     const render_page_numbers = () => {
         const pages: JSX.Element[] = []; // Explicitly type the array as JSX.Element[]
-        const max_page_number = task_box?.total_number_of_tasks_pages || 1;
+        const max_page_number = task_box?.total_number_of_pages || 1;
         const max_displayed_pages = 3;
     
         if (max_page_number <= max_displayed_pages) {
@@ -187,23 +187,22 @@ const TaskManagement = () => {
         if (task_box && task_box.tasks) {
             if (value.trim() !== '') {
                 const new_tasks = task_box.tasks.filter((data: any) => {
-                    const task_id = data.task_ind?.toLowerCase() || '';
-                    const job_id = data.job.job_ind?.toLowerCase() || '';
-                    const description = data.description.toLowerCase() || '';
-                    const start_date = data.start_date || '';
-
+                    const task_ind = data.toLowerCase().task_ind || '';
+                    const job_ind = data.job.toLowerCase().job_ind || '';
+                    const required_action = data.toLowerCase().required_action || ''
                     
                     return (
-                        task_id.includes(value) || 
-                        job_id.includes(value) || 
-                        description.includes(value) ||
-                        start_date.includes(value)
-                    )
+                        
+                        task_ind.includes(value) ||
+                        job_ind.includes(value) || 
+                        required_action.includes(value) 
+
+                    );
                 });
                     
                 setFiltered_task_box({...filtered_task_box, tasks: new_tasks});
             } else {
-                setFiltered_task_box(task_box); // Reset to the original list
+                setFiltered_task_box(task_box); 
             }
         }
     }
@@ -234,11 +233,10 @@ const TaskManagement = () => {
         }
     }
 
-    function add_task(){
-        console.log('add task')
+    function upload_drawing(task:any){
         setShowModal(true)
-        setSelectedTask(null)
-        setModalFor('add')
+        setSelectedTask(task)
+        setModalFor('upload')
     }
 
     function edit_task(task:any){
@@ -262,7 +260,7 @@ const TaskManagement = () => {
                 <span className="w-full flex flex-row items-center justify-between">
                     <span className="h-full flex flex-row items-center justify-start gap-2">
                         <p className="text-md font-semibold text-black">All Tasks</p>
-                        <p className="text-sm text-black">{(task_box && task_box?.total_number_of_tasks) || 0 }</p>
+                        <p className="text-sm text-black">{(filtered_task_box?.tasks && filtered_task_box.tasks.length) || 0 }</p>
                     </span>
 
                     <span className=" flex flex-row items-center justif-start gap-[10px] h-[40px] ">
@@ -271,7 +269,7 @@ const TaskManagement = () => {
                         </span>
                         
                         <span className="h-[40px] min-w-[175px]">
-                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['PENDING', 'IN PROGRESS', 'COMPLETED', 'All' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                            <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'status'} dropArray={['Pending', 'In Progress', 'Completed', 'All' ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                         </span>
 
                     </span>
@@ -282,16 +280,15 @@ const TaskManagement = () => {
 
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
-                    <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Task ID</p>
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
-                        <p className="text-sm font-normal w-[20%] px-2 ">Desription</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Status</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Eng. Status</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Start Date</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">End Date</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Completion Date</p>
-                        <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
+                        <p className="text-sm font-normal w-[17.5%] px-2 ">Permit Type(s)</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Status</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Required Action</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Document Upload</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Action</p>
                     </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -303,19 +300,37 @@ const TaskManagement = () => {
                                 {task_box?.tasks.length ?
                                 <>
                                 { filtered_task_box?.tasks.map((data:any, ind:number)=>{
-                                    const {task_ind, job, description, task_assigned_to, created_by, start_date, due_date, completion_date, status, note } = data
+                                    const {task_ind, job, description, assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
+
+                                    const {engineering_permit_status, hoa_permit_status, general_permit_status, lead} = job
+
+                                    const {customer_last_name, customer_first_name} = lead
+
+                                    const getPermitTypes = () => {
+                                        const types = [];
+                                    
+                                        if (engineering_permit_status === 'required') types.push('Engineering');
+                                        if (hoa_permit_status === 'required') types.push('Hoa');
+                                        if (general_permit_status === 'required') types.push('General');
+                                    
+                                        return types.length > 0 ? types.join(', ') : 'None'; // Join types with commas, or show 'None' if no type is required.
+                                    };
+
                                     return (
-                                        <span key={ind} className="recent-activity-table-list " onClick={()=> edit_task(data)} >
+                                        <span key={ind} className="recent-activity-table-list " >
                                             <p className="text-sm w-[7.5%] px-2 ">{task_ind} </p>
                                             <p className="text-sm w-[7.5%] px-2 ">{job.job_ind} </p>
-                                            <p className="text-sm w-[20%] px-2 "> {description} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {status.replace(/_/g,' ')} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {job.engineering_permit_status.replace(/_/g,' ')} </p>
-                                            <p className="text-sm w-[10%] px-2 "> {start_date} </p>
-                                            <p className="text-sm w-[10%] px-2 "> {due_date} </p>
-                                            <p className="text-sm w-[12.5%] px-2 "> {completion_date || 'nil'} </p>
-                                            <p className="text-sm w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-lime-600 cursor-pointer"  ><MdEdit size={16} /> Edit</p>
-
+                                            <p className="text-sm w-[15%] px-2 "> {customer_first_name} {customer_last_name} </p>
+                                            <p className="text-sm w-[17.5%] px-2 "> {getPermitTypes()} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {'pending'} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {'Prepare Drawings'} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {'No File Uploaded'} </p>
+                                            <span className="w-[12.5%] flex px-2 items-center justify-between gap-[10px] ">
+                                                <p className="text-sm cursor-pointer hover:text-blue-600 hover:underline " onClick={()=> upload_drawing(data)} > {'upload'} </p>
+                                                {/* <p className="text-sm "> {'View'} </p>
+                                                <p className="text-sm "> {'Update'} </p> */}
+    
+                                            </span>
                                         </span>
                                     )
                                 })}
@@ -337,7 +352,7 @@ const TaskManagement = () => {
                     
                     </div>
                     
-                    <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
+                    <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -346,7 +361,7 @@ const TaskManagement = () => {
                             <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-sm">Showing 1-15 of {(task_box && task_box?.total_number_of_tasks) || 0}</p>
+                            <p className="text-sm">Showing 1-15 of {(filtered_task_box?.tasks && filtered_task_box.tasks.length) || 0 }</p>
                         </span>
                     </span>
                 </div>

@@ -17,7 +17,7 @@ import { readable_day, timestamp_to_readable_value } from '../helper';
 
 interface Admin_Dashboard_Props {
     recent_invoice?:any, recent_job?:any, recent_lead?:any, recent_payment?:any,
-    total_installations?:number, total_job?:number, total_lead?:number, total_revenue_generated?:number,
+    total_installations?:number, total_job?:number, total_lead?:number, total_revenue_generated?: 0 | number,
 }
 
 const AdminHome = () => {
@@ -29,6 +29,7 @@ const AdminHome = () => {
 
 
     useEffect(() => {
+        console.log('dash box ',dash_box)
 
         get_admin_dashboard()
 
