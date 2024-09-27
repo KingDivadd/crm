@@ -169,7 +169,7 @@ const NotificationModal = ({ showModal, setShowModal, selectedItem, setSelectedI
                                         </div>
 
                                         <div className="w-1/2 h-[65vh] flex flex-col items-start justify-start gap-[15px] rounded-[4px] p-[15px] pt-0">
-                                            <p className="text-[15px] font-medium w-full flex items-center px-[10px] text-start h-[35px] bg-blue-200 ">
+                                            <p className="text-[15px] font-medium w-full flex items-center px-[10px] text-start h-[45px] bg-slate-200 ">
                                                 {selectedItem.job && "New Job Information"}
                                                 {selectedItem.lead && "New Lead Information"}
                                             </p>

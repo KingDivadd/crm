@@ -526,7 +526,7 @@ const UserManagementModal = ({ showModal, setShowModal, selectedUser, setSelecte
                                         </div>
 
                                         <div className="w-full flex items-center justify-end">
-                                            <button className=" min-w-[150px] px-5 h-[40px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center text-[15.5px]" onClick={update_user} disabled={loading}>
+                                            <button className=" min-w-[150px] px-5 h-[40px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center text-[15.5px]" onClick={update_user} disabled={loading}>
                                                 {loading ? (
                                                 <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

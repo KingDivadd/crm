@@ -156,13 +156,15 @@ const NotificationPage = () => {
                                 const {created_at, subject, message, read, read_by, user, source, notification_source } = data
                                 
                                 return (
-                                    <span key={ind} className="recent-activity-table-list " onClick={()=> show_item(data)} >
+                                    <span key={ind} className="recent-activity-table-list " >
                                         <p className="text-sm w-[15%] px-2 ">{timestamp_to_readable_value(Number(created_at))}</p>
                                         <p className="text-sm w-[20.5%] px-2 ">{subject}</p>
                                         <p className="text-sm w-[34.5%] px-2 ">{message}</p>
                                         <p className="text-sm w-[15%] px-2 ">{notification_source.first_name} {notification_source.last_name} </p>
                                         <p className={(read && read_by.includes(auth_id)) ? "text-sm w-[7.5%] text-green-600 px-2 ":"text-sm w-[7.5%] px-2 text-red-600 "}>{(read && read_by.includes(auth_id)) ? "read": "unread"}</p>
-                                        <p className="text-sm w-[7.5%] px-2 text-blue-600 hover:underline  "> view </p>
+                                        <span className="w-[7.5%] px-2  ">
+                                            <button className="rounded-[3px] px-[20px] py-1 text-white bg-lime-600 text-[14px] cursor-pointer hover:bg-lime-700 flex items-center justify-center gap-1 " onClick={()=>{show_item(data)}} >view</button>
+                                        </span>
                                     </span>
                                 )
                             })}

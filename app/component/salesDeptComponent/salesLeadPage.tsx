@@ -115,7 +115,7 @@ const SalesLeadPage = () => {
             pages.push(
             <p
                 key={i}
-                className={`text-[15.5px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
                 page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
@@ -140,7 +140,7 @@ const SalesLeadPage = () => {
             pages.push(
             <p
                 key={i}
-                className={`text-[15.5px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
                 page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
@@ -254,12 +254,12 @@ const SalesLeadPage = () => {
                     <span className="flex flex-row items-start justify-start gap-[20px]">
                         <span className=" flex flex-row items-center justif-start gap-5 h-[40px] ">
                             <span className="w-[300px] h-[40px] ">
-                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 text-[15px] ' />
+                                <input type="text" name="filter-input" onChange={handleFilter} placeholder='Search by name or phone number' id="" className='normal-input bg-gray-100 text-sm ' />
                             </span>
                             <span className="h-[40px] min-w-[150px]">
                                 <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'disposition'} dropArray={['All', 'Sold', 'Not Sold', ]} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
-                            {(role == 'sales' || role == 'admin' || role == "super_admin") && <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-[15.5px]" onClick={add_lead}>Add Lead</button>}
+                            {(role == 'sales' || role == 'admin' || role == "super_admin") && <button type="button" className="h-full px-4 flex items-center text-white bg-blue-700 hover:bg-blue-700 rounded-[4px] text-sm" onClick={add_lead}>Add Lead</button>}
                         </span>
 
                         
@@ -271,26 +271,25 @@ const SalesLeadPage = () => {
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     {(role == 'sales' || role == 'admin' || role == 'super_admin' ) ? 
                     <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Lead Name</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Address</p>
-                        <p className="text-[15.5px] font-normal w-[11.5%] px-2 ">Phone </p>
-                        <p className="text-[15.5px] font-normal w-[13.5%] px-2 ">Designer</p>
-                        <p className="text-[15.5px] font-normal w-[9%] px-2 ">Disposition</p>
-                        <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Updated On</p>
-                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Action</p>
-                        <p className="text-[15.5px] font-normal w-[9%] px-2 "></p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
+                        <p className="text-sm font-normal w-[16.5%] px-2 ">Lead Name</p>
+                        <p className="text-sm font-normal w-[16.5%] px-2 ">Address</p>
+                        <p className="text-sm font-normal w-[11.5%] px-2 ">Phone </p>
+                        <p className="text-sm font-normal w-[13.5%] px-2 ">Designer</p>
+                        <p className="text-sm font-normal w-[9%] px-2 ">Disposition</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Updated On</p>
+                        <p className="text-sm font-normal w-[13.5%] px-2 ">Action</p>
                     </span>:
                     <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-[15.5px] font-normal w-[7.5%] px-2 ">Lead Id</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Lead Name</p>
-                        <p className="text-[15.5px] font-normal w-[15%] px-2 ">Address</p>
-                        <p className="text-[15.5px] font-normal w-[10%] px-2 ">Phone </p>
-                        <p className="text-[15.5px] font-normal w-[10.5%] px-2 ">Uploads</p>
-                        <p className="text-[15.5px] font-normal w-[9%] px-2 ">Disposition</p>
-                        <p className="text-[15.5px] font-normal w-[12.5%] px-2 ">Updated On</p>
-                        <p className="text-[15.5px] font-normal w-[11.5%] px-2 ">Added By</p>
-                        <p className="text-[15.5px] font-normal w-[9%] px-2 ">Action</p>
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Lead Id</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Lead Name</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Address</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Phone </p>
+                        <p className="text-sm font-normal w-[10.5%] px-2 ">Uploads</p>
+                        <p className="text-sm font-normal w-[9%] px-2 ">Disposition</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Updated On</p>
+                        <p className="text-sm font-normal w-[11.5%] px-2 ">Added By</p>
+                        <p className="text-sm font-normal w-[9%] px-2 ">Action</p>
                     </span>}
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -307,27 +306,38 @@ const SalesLeadPage = () => {
                                         <div key={ind}>
                                         {(role == 'sales' || role == 'admin' || role == 'super_admin' ) ? 
                                         <span className="recent-activity-table-list " >
-                                            <p className="text-[15.5px] w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_first_name} {customer_last_name} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_state}, {customer_city} </p>
-                                            <p className="text-[15.5px] w-[11.5%] px-2 "> {customer_phone} </p>
-                                            <p className="text-[15.5px] w-[13.5%] px-2 "> {lead_designer.last_name} {lead_designer.first_name} </p>
-                                            <p className={disposition == "sold" ? "text-[15.5px] w-[9%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-[15.5px] w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
-                                            <p className="text-[15.5px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{edit_lead(data)}} ><MdEdit size={16} /> Edit</p>
-                                        
-                                            <p className="text-[15.5px] w-[9%] px-2 flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_lead(data)} ><MdDeleteForever size={18} /> Delete</p>
-                                        </span>:
+                                            <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
+                                            <p className="text-sm w-[16.5%] px-2 "> {customer_first_name} {customer_last_name} </p>
+                                            <p className="text-sm w-[16.5%] px-2 "> {customer_state}, {customer_city} </p>
+                                            <p className="text-sm w-[11.5%] px-2 "> {customer_phone} </p>
+                                            <p className="text-sm w-[13.5%] px-2 "> {lead_designer.last_name} {lead_designer.first_name} </p>
+                                            <p className={disposition == "sold" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
+
+                                            <span className="w-[13.5%] flex items-center justify-between px-[10px] gap-[10px] ">
+
+                                                <button className="rounded-[3px]  px-[15px] py-1 text-white bg-amber-500 text-[14px] cursor-pointer hover:bg-amber-600 flex items-center gap-1 " onClick={()=>{edit_lead(data)}} >edit</button>
+
+                                                <button className="rounded-[3px]  px-[15px] py-1 text-white bg-red-500 text-[14px] cursor-pointer hover:bg-red-600 flex items-center gap-1 " onClick={()=>{delete_lead(data)}} >delete</button>
+                                                
+                                            </span>
+                                        </span>
+                                        :
                                         <span className="recent-activity-table-list " >
-                                            <p className="text-[15.5px] w-[7.5%] px-2 "> {lead_ind} </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_first_name} {customer_last_name}  </p>
-                                            <p className="text-[15.5px] w-[15%] px-2 "> {customer_state}, {customer_city} </p>
-                                            <p className="text-[15.5px] w-[10%] px-2 "> {customer_phone} </p>
-                                            <p className={contract_document.length ? "text-[15.5px] w-[10.5%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[10.5%] px-2 "}> {contract_document.length ? "true": "false"} </p>
-                                            <p className={disposition == "sold" ? "text-[15.5px] w-[9%] px-2 text-green-600": "text-red-600 text-[15.5px] w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
-                                            <p className="text-[15.5px] w-[12.5%] px-2 ">{readable_day(Number(updated_at))} </p>
-                                            <p className="text-[15.5px] w-[11.5%] px-2 "> {lead_adder.last_name} {lead_adder.first_name} </p>
-                                            <p className="text-[15.5px] w-[7.5%] px-2 flex flex-row items-center justify-start gap-2  hover:text-amber-500 cursor-pointer" onClick={()=>{upload_lead_doc(data)}} ><MdEdit size={16} /> Edit</p>
+                                            <p className="text-sm w-[7.5%] px-2 "> {lead_ind} </p>
+                                            <p className="text-sm w-[15%] px-2 "> {customer_first_name} {customer_last_name}  </p>
+                                            <p className="text-sm w-[16.5%] px-2 "> {customer_state}, {customer_city} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {customer_phone} </p>
+                                            <p className={contract_document.length ? "text-sm w-[10.5%] px-2 text-green-600": "text-red-600 text-sm w-[10.5%] px-2 "}> {contract_document.length ? "true": "false"} </p>
+                                            <p className={disposition == "sold" ? "text-sm w-[9%] px-2 text-green-600": "text-red-600 text-sm w-[9%] px-2 "}> {disposition.replace(/_/g, " ")} </p>
+                                            <p className="text-sm w-[12.5%] px-2 ">{readable_day(Number(updated_at))} </p>
+                                            <p className="text-sm w-[11.5%] px-2 "> {lead_adder.last_name} {lead_adder.first_name} </p>
+                                            <span className="w-[15%] flex items-center justify-end px-[10px] gap-[10px] ">
+
+                                                <button className="rounded-[3px]  px-[20px] py-1 text-white bg-amber-500 text-[14px] cursor-pointer hover:bg-amber-600 flex items-center gap-1 " onClick={()=>{edit_lead(data)}} >edit</button>
+
+                                                
+                                            </span>
                                         </span>}
                                         </div>
                                     )
@@ -343,7 +353,7 @@ const SalesLeadPage = () => {
                         :
 
                             <div className="w-full h-full flex items-center justify-center">
-                                <p className="text-[15.5px] font-normal">Loading Data...</p>
+                                <p className="text-sm font-normal">Loading Data...</p>
                             </div>
                         
                         }
@@ -352,14 +362,14 @@ const SalesLeadPage = () => {
                     
                     <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
-                            <p className="text-[15.5px] cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">
                             {render_page_numbers()}
                             </span>
-                            <p className="text-[15.5px] cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-[15.5px]">Showing 1-15 of {(filtered_lead_box && filtered_lead_box.leads.length) || 0}</p>
+                            <p className="text-sm">Showing 1-15 of {(filtered_lead_box && filtered_lead_box.leads.length) || 0}</p>
                         </span>
                     </span>
                 </div>

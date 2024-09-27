@@ -267,19 +267,18 @@ const CustomerProjectPage = () => {
                 
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[5px]">
                     
-                    <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
-                        <p className="text-sm font-normal w-[9%] px-2 ">Project Id</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Contract Amt</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Contract Date</p>
-                        <p className="text-sm font-normal w-[9%] px-2 ">Cover Color</p>
-                        <p className="text-sm font-normal w-[8.5%] px-2 ">Cover Size</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">End Cap Style</p>
+                    {<span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <p className="text-sm font-normal w-[10%] px-2 ">Project Id</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Cover Color</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Cover Size</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">End Cap Style</p>
                         <p className="text-sm font-normal w-[10%] px-2 ">Trim Color</p>
                         <p className="text-sm font-normal w-[12.5%] px-2 ">Structure Type</p>
-                        <p className="text-sm font-normal w-[13.5%] px-2 ">Last Updated</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Last Updated</p>
+                        <p className="text-sm font-normal w-[15%] px-2 ">Document Upload</p>
 
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Action</p>
-                    </span>
+                    </span>}
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
                         
                         {filtered_project_box !== null ?
@@ -289,22 +288,25 @@ const CustomerProjectPage = () => {
                                 {project_box?.projects.length ?
                                 <>
                                 { filtered_project_box?.projects.map((data:any, ind:number)=>{
-                                    const {project_ind, job, cover_color, cover_size, end_cap_style, trim_color, attached, structure_type, updated_at,  } = data
+                                    const {project_ind, job, cover_color, cover_size, end_cap_style, trim_color, attached, structure_type, updated_at, engineering_drawing_upload  } = data
                                     return (
                                         <div key={ind}>
                                         
-                                        <span className="recent-activity-table-list " onClick={()=> view_project(data)} >
-                                            <p className="text-sm w-[9%] px-2 "> {project_ind} </p>
-                                            <p className="text-sm w-[10%] px-2 ">$ {Number(job.contract_amount).toLocaleString()} </p>
-                                            <p className="text-sm w-[10%] px-2 "> {readable_day(Number(job.contract_date))} </p>
-                                            <p className="text-sm w-[9%] px-2 "> {cover_color} </p>
-                                            <p className="text-sm w-[8.5%] px-2 "> {cover_size} </p>
-                                            <p className="text-sm w-[10%] px-2 "> {end_cap_style} </p>
-                                            <p className="text-sm w-[10%] px-2 "> {trim_color} </p>
+                                        <span className="recent-activity-table-list " >
+                                            <p className="text-sm w-[10%] px-2 "> {project_ind} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {cover_color || '--'} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {cover_size || '--'} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {end_cap_style || '--'} </p>
+                                            <p className="text-sm w-[10%] px-2 "> {trim_color || '--'} </p>
                                             <p className="text-sm w-[12.5%] px-2 "> {structure_type.toUpperCase()} </p>
-                                            <p className="text-sm w-[13.5%] px-2 "> {readable_day(Number(updated_at))} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
+                                            <p className={engineering_drawing_upload.length ? "text-sm w-[15%] px-2 text-lime-600 " : "text-sm w-[15%] px-2 text-amber-600"}> 
+                                                {engineering_drawing_upload.length ? 'File Uploaded' : 'No File Uploaded'} 
+                                            </p>
                                             
-                                            <p className="text-sm w-[7.5%] px-2 hover:underline hover:text-blue-700"> view </p>
+                                            <span className="w-[7.5%] px-2  ">
+                                                <button className="rounded-[3px] px-[20px] py-1 text-white bg-lime-600 text-[14px] cursor-pointer hover:bg-lime-700 flex items-center justify-center gap-1 " onClick={()=>{view_project(data)}} >view</button>
+                                            </span>
                                         </span>
                                         
                                         </div>

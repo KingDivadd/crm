@@ -89,7 +89,7 @@ const CustomerHomePage = () => {
                     
                     <span className=" flex flex-col gap-3 items-start justify-start h-[120px] rounded-[3px]  w-1/4  bg-white shadow-md z-[5]">
                         <div className="h-full flex flex-col justify-start items-start gap-[10px] pt-[10px]  px-[20px]  ">
-                            <p className="text-md ">PRoject In Progress</p>
+                            <p className="text-md ">Project In Progress</p>
                             <p className="text-sm ">{dash_components?.project_in_progress?.toLocaleString() || 0}</p>
                             <p className="text-sm font-light ">Last 30 days</p>
                         </div>
@@ -111,7 +111,7 @@ const CustomerHomePage = () => {
                     <p className="text-md font-medium ">Current Projects</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
                             <p className="text-sm font-normal w-[15%] px-2 ">Project Id</p>
                             <p className="text-sm font-normal w-[10%] px-2 ">Job Id</p>
                             <p className="text-sm font-normal w-[15%] px-2 ">Contract Amt</p>
@@ -155,7 +155,7 @@ const CustomerHomePage = () => {
                         }
                         
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">
@@ -175,7 +175,7 @@ const CustomerHomePage = () => {
                     <p className="text-md ">Recent Notification</p>
 
                     <div className="w-full min-h-[150px] flex flex-col bg-white rounded-[5px] shadow-md">
-                        <span className="w-full h-[40px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[5px] bg-blue-700 text-white">
                             <p className="text-sm font-normal w-[15%] px-2 "> Id</p>
                             <p className="text-sm font-normal w-[22.5%] px-2 ">Subject</p>
                             <p className="text-sm font-normal w-[35%] px-2 ">Message</p>
@@ -214,7 +214,7 @@ const CustomerHomePage = () => {
                         }
                         
 
-                        <span className="w-full h-[40px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
+                        <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[5px] border-t border-slate-300 px-[15px] rounded-b-[5px] ">
                             <span className="flex flex-row items-center justify-start gap-3 h-full">
                                 <p className="text-sm cursor-pointer ">Prev</p>
                                 <span className="w-auto h-full flex flex-row items-center justify-start">

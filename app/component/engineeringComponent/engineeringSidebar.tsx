@@ -50,7 +50,7 @@ const EngineeringSideBar = ({active, setActive}: SideBarNav) => {
                     </span>
                     <span className={active === "project-status"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('project-status')}}>
                         <MdWork size={22} /> 
-                        <p className="text-[16px]">All Projects</p>
+                        <p className="text-[15.5px]">All Projects</p>
                     </span>
                     <span className={active === "service-ticket"? "active-sidebar-navigation": "sidebar-navigation"} onClick={()=>{handleActive('service-ticket')}}>
                         <IoTicket  size={21} />

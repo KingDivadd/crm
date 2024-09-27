@@ -119,7 +119,7 @@ const SalesJobPage = () => {
             pages.push(
             <p
                 key={i}
-                className={`text-[15px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
                 page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
@@ -144,7 +144,7 @@ const SalesJobPage = () => {
             pages.push(
             <p
                 key={i}
-                className={`text-[15px] font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
+                className={`text-sm font-light h-[27px] w-[30px] rounded-[3px] flex items-center justify-center cursor-pointer ${
                 page_number === i ? 'bg-blue-700 text-white' : ''
                 }`}
                 onClick={() => app_users_action(i)}
@@ -253,11 +253,11 @@ const SalesJobPage = () => {
 
                     <span className=" flex flex-row items-center justif-start gap-[20px] h-[40px] ">
                         <span className="w-[300px] h-[40px] ">
-                            <input type="text" name="filter-input" onChange={handleFilter} placeholder='search for job...' id="" className='normal-input bg-gray-100 text-[15px] ' />
+                            <input type="text" name="filter-input" onChange={handleFilter} placeholder='search for job...' id="" className='normal-input bg-gray-100 text-sm ' />
                         </span>
                         
                         {(role == 'sales' || role == 'admin' || role == 'super_admin' ) && 
-                        <button className="h-full px-5 text-[15px] bg-blue-700 hover:bg-blue-600 rounded-[3px] text-white" onClick={add_job}>Create Job</button>
+                        <button className="h-full px-5 text-sm bg-blue-700 hover:bg-blue-600 rounded-[3px] text-white" onClick={add_job}>Create Job</button>
                         }
 
                     </span>
@@ -270,29 +270,28 @@ const SalesJobPage = () => {
                 <div className="w-full min-h-[150px] flex flex-col bg-white shadow-lg rounded-[3px]">
                     {(role == 'sales' || role == 'admin' || role == 'super_admin') ? 
                     <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-[15px] font-normal w-[10%] px-2 ">Job Id</p>
-                        <p className="text-[15px] font-normal w-[10%] px-2 ">Job Number</p>
-                        <p className="text-[15px] font-normal w-[10%] px-2 ">Ctrt Amount</p>
-                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Contract Date</p>
-                        <p className="text-[15px] font-normal w-[14%] px-2 ">Added By</p>
-                        <p className="text-[15px] font-normal w-[14.5%] px-2 ">Designer</p>
-                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Last Updated</p>
-                        <span className="w-[16.5%] px-2 flex items-center justify-start gap-[2px]">
-                            <p className="text-[15px] font-normal ">Action</p>
-                        
+                        <p className="text-sm font-normal w-[7.5%] px-2 ">Job Id</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Job Number</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Contract Amount</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Contract Date</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Added By</p>
+                        <p className="text-sm font-normal w-[13.5%] px-2 ">Designer</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Last Updated</p>
+                        <span className="w-[19%] px-2 flex items-center justify-start gap-[2px]">
+                            <p className="text-sm font-normal ">Action</p>
                         </span>
 
                     </span>:
                     <span className="w-full h-[45px] flex flex-row items-center justify-start rounded-t-[3px] bg-blue-700 text-white">
-                        <p className="text-[15px] font-normal w-[10%] px-2 ">Job Id</p>
-                        <p className="text-[15px] font-normal w-[10%] px-2 ">Job Number</p>
-                        <p className="text-[15px] font-normal w-[10%] px-2 ">Ctrt Amount</p>
-                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Contract Date</p>
-                        <p className="text-[15px] font-normal w-[14%] px-2 ">Added By</p>
-                        <p className="text-[15px] font-normal w-[14.5%] px-2 ">Designer</p>
-                        <p className="text-[15px] font-normal w-[12.5%] px-2 ">Last Updated</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Job Id</p>
+                        <p className="text-sm font-normal w-[10%] px-2 ">Job Number</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Contract Amount</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Contract Date</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Added By</p>
+                        <p className="text-sm font-normal w-[13.5%] px-2 ">Designer</p>
+                        <p className="text-sm font-normal w-[12.5%] px-2 ">Last Updated</p>
                         <span className="w-[16.5%] px-2 flex items-center justify-start gap-[2px]">
-                            <p className="text-[15px] font-normal ">Action</p>
+                            <p className="text-sm font-normal ">Action</p>
                         </span>
                     </span>}
 
@@ -312,39 +311,41 @@ const SalesJobPage = () => {
                                         <>
                                         {(role == 'sales' || role == 'admin' || role == 'super_admin') ? 
                                         <span key={ind} className="recent-activity-table-list group" >
-                                            <p className="text-[15px] w-[10%] px-2 ">{job_ind} </p>
-                                            <p className="text-[15px] w-[10%] px-2 ">{job_number || '--'} </p>
-                                            <p className="text-[15px] w-[10%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> { readable_day(Number(contract_date)) } </p>
-                                            <p className="text-[15px] w-[14%] px-2 "> {job_adder.first_name} {job_adder.last_name} </p>
-                                            <p className="text-[15px] w-[14.5%] px-2 "> {lead.lead_designer.first_name} {lead.lead_designer.last_name} </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
+                                            <p className="text-sm w-[7.5%] px-2 ">{job_ind} </p>
+                                            <p className="text-sm w-[10%] px-2 ">{job_number || '--'} </p>
+                                            <p className="text-sm w-[12.5%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> { readable_day(Number(contract_date)) } </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {job_adder.first_name} {job_adder.last_name} </p>
+                                            <p className="text-sm w-[13.5%] px-2 "> {lead.lead_designer.first_name} {lead.lead_designer.last_name} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
 
-                                            <span className="w-[16.5%] px-2 flex items-center justify-between gap-[2px]">
-                                            
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>view_job(data)} > view</p>
-                                            
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2  hover:underline hover:text-amber-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
-                                            
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:text-red-400 cursor-pointer" onClick={()=>delete_job(data)} ><MdDeleteForever size={18} /> Del</p>
+                                            <span className="w-[19%] flex items-center justify-between px-[10px] gap-[10px] ">
+
+                                                <button className="rounded-[3px]  px-[10px] py-1 text-white bg-lime-600 text-[14px] cursor-pointer hover:bg-lime-700 flex items-center gap-1 " onClick={()=>{view_job(data)}} >view</button>
+
+                                                <button className="rounded-[3px]  px-[10px] py-1 text-white bg-amber-500 text-[14px] cursor-pointer hover:bg-amber-600 flex items-center gap-1 " onClick={()=>{edit_job(data)}} > update</button>
+
+                                                <button className="rounded-[3px]  px-[10px] py-1 text-white bg-red-500 text-[14px] cursor-pointer hover:bg-red-600 flex items-center gap-1 " onClick={()=>{delete_job(data)}} >delete</button>
+                                                
                                             </span>
 
                                         </span>
                                         :
                                         <span key={ind + 1} className="recent-activity-table-list group" >
-                                            <p className="text-[15px] w-[10%] px-2 ">{job_ind} </p>
-                                            <p className="text-[15px] w-[10%] px-2 ">{job_number} </p>
-                                            <p className="text-[15px] w-[10%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> { readable_day(Number(contract_date)) } </p>
-                                            <p className="text-[15px] w-[14%] px-2 "> {job_adder.first_name} {job_adder.last_name} </p>
-                                            <p className="text-[15px] w-[14.5%] px-2 "> {lead.lead_designer.first_name} {lead.lead_designer.last_name} </p>
-                                            <p className="text-[15px] w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
+                                            <p className="text-sm w-[10%] px-2 ">{job_ind} </p>
+                                            <p className="text-sm w-[10%] px-2 ">{job_number} </p>
+                                            <p className="text-sm w-[12.5%] px-2 ">$ {Number(contract_amount).toLocaleString()} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> { readable_day(Number(contract_date)) } </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {job_adder.first_name} {job_adder.last_name} </p>
+                                            <p className="text-sm w-[13.5%] px-2 "> {lead.lead_designer.first_name} {lead.lead_designer.last_name} </p>
+                                            <p className="text-sm w-[12.5%] px-2 "> {readable_day(Number(updated_at))} </p>
 
-                                            <span className="w-[16.5%] px-2 flex items-center justify-between gap-[2px]">
-                                            
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2 hover:underline hover:text-blue-600 cursor-pointer" onClick={()=>view_job(data)} > view</p>
-                                            
-                                                <p className="text-[15px] flex flex-row items-center justify-start gap-2  hover:underline hover:text-amber-600 cursor-pointer" onClick={()=>{edit_job(data)}} ><MdEdit size={16} /> Edit</p>
+                                            <span className="w-[16.5%] flex items-center justify-between px-[10px] ">
+
+                                                <button className="rounded-[3px]  px-[10px] py-1 text-white bg-lime-600 text-[14px] cursor-pointer hover:bg-lime-700 flex items-center gap-1 " onClick={()=>{view_job(data)}} >view</button>
+
+                                                <button className="rounded-[3px]  px-[10px] py-1 text-white bg-amber-500 text-[14px] cursor-pointer hover:bg-amber-600 flex items-center gap-1 " onClick={()=>{edit_job(data)}} > edit</button>
+                                                
                                             </span>
 
                                         </span>}
@@ -362,7 +363,7 @@ const SalesJobPage = () => {
                         :
 
                             <div className="w-full h-full flex items-center justify-center">
-                                <p className="text-[15px] font-normal">Loading Data...</p>
+                                <p className="text-sm font-normal">Loading Data...</p>
                             </div>
                         
                         }
@@ -371,14 +372,14 @@ const SalesJobPage = () => {
                     
                     <span className="w-full h-[45px] flex flex-row items-center justify-between bg-white rounded-b-[3px] border-t border-gray-300 px-[15px] ">
                         <span className="flex flex-row items-center justify-start gap-3 h-full">
-                            <p className="text-[15px] cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('prev')}>Prev</p>
                             <span className="w-auto h-full flex flex-row items-center justify-start">
                             {render_page_numbers()}
                             </span>
-                            <p className="text-[15px] cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
+                            <p className="text-sm cursor-pointer" onClick={() => app_users_action('next')}>Next</p>
                         </span>
                         <span className="flex flex-row items-center justify-end gap-3 h-full">
-                            <p className="text-[15px]">Showing 1-15 of {(job_box && job_box?.total_number_of_jobs) || 0}</p>
+                            <p className="text-sm">Showing 1-15 of {(job_box && job_box?.total_number_of_jobs) || 0}</p>
                         </span>
                     </span>
                 </div>
