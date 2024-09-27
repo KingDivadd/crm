@@ -184,7 +184,7 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
 
                                     <form  action="" className="w-full h-full flex items-start justify-between gap-[25px]">
 
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[17.5px] ">
+                                        <div className="w-1/2 h-[62.5vh] flex flex-col items-start justify-start gap-[17.5px] overflow-y-auto ">
                                         
                                             <span className="w-full flex items-center justify-start">
                                                 <p className="text-[15px] w-[35%] ">Task Id</p>
@@ -239,44 +239,40 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
                                         
                                         </div>
 
-                                        <div className="w-1/2 flex flex-col items-start justify-start gap-[25px] ">
+                                        <div className="w-1/2 h-[62.5vh] flex flex-col items-between justify-between gap-[25px] overflow-y-auto ">
 
-                                            <div className="w-full min-h-[350px] flex items-start justify-start ">
+                                            <div className="w-full  flex items-start justify-start ">
                                                 <FileViewer id='engineering_document' title='Engineering Document' url={selectedTask.job.project[0].engineering_drawing_upload[0] || 'https://www.nicepng.com/png/detail/350-3500673_default-upload-upload-image-png.png'} onFileUpload={handleFileUpload}   />
                                             </div>
-                                            
+
+
+                                            {modalFor == 'upload' ? 
+                                        
+                                                <button className="w-full h-[45px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center"  disabled={loading} onClick={upload_engineering_document} >
+                                                    {loading ? (
+                                                        <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                        </svg>
+                                                    ) : 'Upload'}
+
+                                                </button>
+                                                :
+                                                <button className="w-full h-[45px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center"  disabled={loading} onClick={update_task} >
+                                                    {loading ? (
+                                                        <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+                                                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
+                                                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                                                        </svg>
+                                                    ) : 'Update'}
+
+                                                </button>    
+                                            }
 
                                         </div>
 
                                     </form>
 
-                                    <span className="w-full flex items-center justify-between gap-[25px] " >
-                                        <p className="text-white w-1/2">.</p>
-
-                                        {modalFor == 'upload' ? 
-                                        
-                                        <button className="w-1/2 h-[45px] text-white bg-blue-600 rounded-[3px] hover:bg-blue-700 flex items-center justify-center"  disabled={loading} onClick={upload_engineering_document} >
-                                            {loading ? (
-                                                <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                </svg>
-                                            ) : 'Upload'}
-
-                                        </button>
-                                        :
-                                        <button className="w-1/2 h-[45px] text-white bg-amber-600 rounded-[3px] hover:bg-amber-700 flex items-center justify-center"  disabled={loading} onClick={update_task} >
-                                            {loading ? (
-                                                <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                                                    <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
-                                                    <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
-                                                </svg>
-                                            ) : 'Update'}
-
-                                        </button>    
-                                    }
-
-                                    </span>
 
                                 </div>
                                 }

@@ -63,8 +63,6 @@ const TaskManagement = () => {
     }
 
     async function get_all_tasks(pg_number: number) {
-
-        console.log('started fetching');
         
         const response = await get_auth_request(`app/all-paginated-task/${pg_number}`)
 
@@ -73,13 +71,9 @@ const TaskManagement = () => {
             settask_box(response.data)      
             
             setFiltered_task_box(response.data)
-
-            console.log('here : ', response.data);
             
 
-        }else{
-            console.log(response);
-            
+        }else{            
             if (response.response){
                 showAlert(response.response.data.err, "error")
             }
@@ -87,8 +81,6 @@ const TaskManagement = () => {
     }
 
     async function filter_tasks(item:any) {
-
-        console.log('started fetching');
         
         const response = await get_auth_request(`/filter-tasks/${item}/${page_number}`)
 
@@ -97,14 +89,10 @@ const TaskManagement = () => {
             settask_box(response.data)      
             
             setFiltered_task_box(response.data)
-
-            console.log(response.data);
             
             showAlert(response.data.msg, "success")
 
-        }else{
-        console.log(response);
-        
+        }else{        
         showAlert(response.response.data.err, "error")
         }
     }
@@ -208,9 +196,7 @@ const TaskManagement = () => {
     }
 
     async function handle_new_filter(item: string) {
-        if (task_box && item.toLocaleLowerCase() == 'all') {
-            console.log('Disposition : all ',task_box);
-            
+        if (task_box && item.toLocaleLowerCase() == 'all') {            
             // If no filter is provided, reset to the original list
             setFiltered_task_box(task_box);
         
