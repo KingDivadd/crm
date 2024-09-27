@@ -24,18 +24,9 @@ const EngineeringSideBar = ({active, setActive}: SideBarNav) => {
     const router = useRouter()
     
 
-    useEffect(() => {
-        const item = sessionStorage.getItem('salesSideNav')
-        if (item == null || item == ""){
-            setActive('home')
-        }else {
-            setActive(item)
-        }
-    }, [])
-
     function handleActive(item:any){
         setActive(item)
-        sessionStorage.setItem('salesSideNav', item)
+        sessionStorage.setItem('sideNav', item)
     }
 
     return (

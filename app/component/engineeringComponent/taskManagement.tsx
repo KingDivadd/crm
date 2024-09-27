@@ -245,10 +245,10 @@ const TaskManagement = () => {
         setModalFor('edit')
     }
 
-    function delete_task(task:any){
+    function view_task(task:any){
         setShowModal(true)
         setSelectedTask(task)
-        setModalFor('delete')
+        setModalFor('view')
     }
 
     return (
@@ -285,10 +285,10 @@ const TaskManagement = () => {
                         <p className="text-sm font-normal w-[7.5%] px-2 ">Job ID</p>
                         <p className="text-sm font-normal w-[15%] px-2 ">Customer Name</p>
                         <p className="text-sm font-normal w-[17.5%] px-2 ">Permit Type(s)</p>
-                        <p className="text-sm font-normal w-[10%] px-2 ">Status</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Required Action</p>
-                        <p className="text-sm font-normal w-[15%] px-2 ">Document Upload</p>
-                        <p className="text-sm font-normal w-[12.5%] px-2 ">Action</p>
+                        <p className="text-sm font-normal w-[8%] px-2 ">Status</p>
+                        <p className="text-sm font-normal w-[17.5%] px-2 ">Required Action</p>
+                        <p className="text-sm font-normal w-[15%] pl-[20px] pr-2 ">Document Upload</p>
+                        <p className="text-sm font-normal w-[12%] px-2  ">Action</p>
                     </span>
 
                     <div className="w-full flex flex-col justify-start items-start user-list-cont overflow-y-auto ">
@@ -300,9 +300,11 @@ const TaskManagement = () => {
                                 {task_box?.tasks.length ?
                                 <>
                                 { filtered_task_box?.tasks.map((data:any, ind:number)=>{
-                                    const {task_ind, job, description, assigned_to, created_by, start_date, due_date, completion_date, status,  } = data
+                                    const {task_ind, job, required_action, assigned_to, created_by, start_date, due_date, completion_date, status, } = data
 
-                                    const {engineering_permit_status, hoa_permit_status, general_permit_status, lead} = job
+                                    const {engineering_permit_status, hoa_permit_status, general_permit_status, lead, project} = job
+
+                                    const {engineering_drawing_upload} = job.project[0]
 
                                     const {customer_last_name, customer_first_name} = lead
 
@@ -322,15 +324,36 @@ const TaskManagement = () => {
                                             <p className="text-sm w-[7.5%] px-2 ">{job.job_ind} </p>
                                             <p className="text-sm w-[15%] px-2 "> {customer_first_name} {customer_last_name} </p>
                                             <p className="text-sm w-[17.5%] px-2 "> {getPermitTypes()} </p>
-                                            <p className="text-sm w-[10%] px-2 "> {'pending'} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {'Prepare Drawings'} </p>
-                                            <p className="text-sm w-[15%] px-2 "> {'No File Uploaded'} </p>
-                                            <span className="w-[12.5%] flex px-2 items-center justify-between gap-[10px] ">
-                                                <p className="text-sm cursor-pointer hover:text-blue-600 hover:underline " onClick={()=> upload_drawing(data)} > {'upload'} </p>
-                                                {/* <p className="text-sm "> {'View'} </p>
-                                                <p className="text-sm "> {'Update'} </p> */}
+                                            <p className="text-sm w-[8%] px-2 "> {'in progress'} </p>
+                                            <p className="text-sm w-[17.5%] px-2 whitespace-nowrap overflow-x-auto "> {required_action} </p>
+                                            <p className={engineering_drawing_upload.length ? "text-sm w-[15%] pl-[20px] pr-2 text-lime-600 " : "text-sm w-[15%] pl-[20px] pr-2 text-amber-600"}> 
+                                                {engineering_drawing_upload.length ? 'File Uploaded' : 'No File Uploaded'} 
+                                            </p>
+
+                                            {engineering_drawing_upload.length === 0 ? 
+                                            
+                                            <span className="w-[12%] flex px-2 items-center justify-end gap-[10px] ">
+
+                                                <button className="rounded-[3px] px-3 py-1 text-white bg-blue-500 text-[14px] cursor-pointer hover:bg-blue-600 " onClick={()=> upload_drawing(data)} > 
+                                                    {'upload'} 
+
+                                                </button>
     
                                             </span>
+                                            :
+                                            <span className="w-[12%] flex px-2 items-center justify-end gap-[15px] ">
+
+                                                <button className="rounded-[3px] px-3 py-1 text-white bg-lime-500 text-[14px] cursor-pointer hover:bg-lime-600 " onClick={()=> view_task(data)} > 
+                                                    {'view'} 
+                                                </button>
+                                                
+                                                <button className="rounded-[3px] px-3 py-1 text-white bg-amber-500 text-[14px] cursor-pointer hover:bg-amber-600 " onClick={()=> edit_task(data)} > 
+                                                    {'update'}
+                                                </button>
+    
+                                            </span>
+                                            
+                                            }
                                         </span>
                                     )
                                 })}
