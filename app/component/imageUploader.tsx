@@ -463,9 +463,9 @@ export const FileUploader = ({ id, title, url, onFileUpload, type }: FileUploade
                         width="100%"
                         height="365px"
                     />
-                    <a href={filePreview} target="_blank" rel="noopener noreferrer" className="flex items-center justify-start gap-[10px] w-full hover:text-blue-600 cursor-pointer hover:underline text-[15px] ">
+                    {/* <a href={filePreview} target="_blank" rel="noopener noreferrer" className="flex items-center justify-start gap-[10px] w-full hover:text-blue-600 cursor-pointer hover:underline text-[15px] ">
                         <RiFileDownloadFill size={19} /> Download File
-                    </a>
+                    </a> */}
                 </span>
             )
             )}

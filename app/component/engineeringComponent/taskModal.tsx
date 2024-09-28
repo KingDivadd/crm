@@ -184,7 +184,7 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
 
                                     <form  action="" className="w-full h-full flex items-start justify-between gap-[25px]">
 
-                                        <div className="w-1/2 h-[62.5vh] flex flex-col items-start justify-between gap-[17.5px] overflow-y-auto ">
+                                        <div className="w-1/2 h-[68vh] flex flex-col items-start justify-between gap-[20px] overflow-y-auto ">
                                         
                                             <span className="w-full flex items-center justify-start">
                                                 <p className="text-[15px] w-[35%] ">Task Id</p>
@@ -239,12 +239,11 @@ const TaskModal = ({ showModal, setShowModal, selectedTask, setSelectedTask, mod
                                         
                                         </div>
 
-                                        <div className="w-1/2 h-[62.5vh] flex flex-col items-between justify-between gap-[25px] overflow-y-auto ">
+                                        <div className="w-1/2 h-[68vh] flex flex-col items-between justify-between gap-[15px] overflow-y-auto ">
 
-                                            <div className="w-full  flex items-start justify-start ">
-                                                <FileViewer id='engineering_document' title='Engineering Document' url={selectedTask.job.project[0].engineering_drawing_upload[0] || 'https://www.nicepng.com/png/detail/350-3500673_default-upload-upload-image-png.png'} onFileUpload={handleFileUpload}   />
+                                            <div className="w-full flex items-start justify-start ">
+                                                <FileUploader id='engineering_document' title='Engineering Document' url={selectedTask.job.project[0].engineering_drawing_upload[0] || 'https://www.nicepng.com/png/detail/350-3500673_default-upload-upload-image-png.png'} onFileUpload={handleFileUpload}   />
                                             </div>
-
 
                                             {modalFor == 'upload' ? 
                                         

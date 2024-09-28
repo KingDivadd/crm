@@ -122,7 +122,7 @@ const CustomerHomePage = () => {
                         </span>
                         
                         {dash_components != null ? 
-                        <div className="w-full h-[375px] flex flex-col justify-start items-start">
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start">
                             {dash_components?.running_project.length ? <>
                             {dash_components?.running_project.map((data:any, ind:any)=>{
 
@@ -142,14 +142,14 @@ const CustomerHomePage = () => {
                             })}
                             </>
                             :
-                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                            <div className="w-full h-[300px] flex flex-col justify-center items-center">
                                 <p className="text-sm ">No Lead yet</p>
                             </div>
                             }
 
                         </div>
                         :
-                        <div className="w-full h-[250px] flex items-center justify-center">
+                        <div className="w-full h-[300px] flex items-center justify-center">
                             <p className="text-sm font-normal">Loading Data...</p>
                         </div>
                         }
@@ -184,7 +184,7 @@ const CustomerHomePage = () => {
                         </span>
                         
                         {dash_components != null ? 
-                        <div className="w-full h-[375px] flex flex-col justify-start items-start overflow-y-auto ">
+                        <div className="w-full h-[300px] flex flex-col justify-start items-start overflow-y-auto ">
                             {dash_components?.notifications.length ? <>
                             {dash_components?.notifications.map((data:any, ind:any)=>{
 
@@ -201,14 +201,14 @@ const CustomerHomePage = () => {
                             })}
                             </>
                             :
-                            <div className="w-full h-[250px] flex flex-col justify-center items-center">
+                            <div className="w-full h-[300px] flex flex-col justify-center items-center">
                                 <p className="text-sm ">No Lead yet</p>
                             </div>
                             }
 
                         </div>
                         :
-                        <div className="w-full h-[250px] flex items-center justify-center">
+                        <div className="w-full h-[300px] flex items-center justify-center">
                             <p className="text-sm font-normal">Loading Data...</p>
                         </div>
                         }

@@ -9,6 +9,7 @@ import MyDatePicker from '../datePicker'
 import { CiWarning } from 'react-icons/ci'
 import { delete_auth_request, get_auth_request, patch_auth_request, post_auth_request } from "../../api/admin_api";
 import {get_todays_date, convert_to_unix, readable_day} from "../helper"
+import Link from 'next/link';
 
 
 interface Project_Management_Props {
@@ -481,6 +482,14 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
 
                                         <div className="w-1/2 h-[75vh] flex flex-col item-start justify-start gap-[15px] overflow-y-auto">
 
+                                            <span className="w-full flex flex-col items-start justify-start gap-[10px]  ">
+                                                <p className="text-sm w-[50%] ">Engineering Drawing Upload</p>
+                                                
+
+                                                {selectedProject.engineering_drawing_upload.length ? <Link rel="stylesheet"  target="_blank" className="text-sm w-[50%] font-medium text-blue-600 cursor-pointer" href={selectedProject.engineering_drawing_upload[0]} >{selectedProject.engineering_drawing_upload[0]}</Link>:
+                                                <p className="text-sm w-[50%] font-medium ">Nil</p>}
+                                            </span>
+
                                             <span className="w-full flex items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm w-[50%] ">General Permit Status</p>
                                                 {selectedProject.job.general_permit_status ? <p className="text-sm w-[50%] font-medium ">{selectedProject.job.general_permit_status.replace(/_/g, ' ')}</p>:
@@ -505,7 +514,7 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                                                     {
                                                         selectedProject.job.general_permit_document.map((data:string, ind:number)=>{
                                                             return(
-                                                                <p key={ind} className="text-sm text-blue-600 font-medium">{data}</p>
+                                                                <Link rel="stylesheet"  target="_blank"className="text-sm text-blue-600 font-medium" href={data}>{data}</Link>
                                                             )
                                                         })
                                                     }
@@ -525,17 +534,14 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                                                 <p className="text-sm w-[50%] ">Hoa Approval Date</p>
                                                 <p className="text-sm w-[50%] font-medium ">{ selectedProject.job.hoa_permit_approval_date != 0 ? readable_day(Number(selectedProject.job.hoa_permit_approval_date)) : '-'}</p>
                                             </span>
-                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[50%] ">Hoa Permit Number</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.hoa_permit_number || '-'}</p>
-                                            </span>
+
                                             <span className="w-full flex flex-col items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm text-start ">Hoa Permit Documents</p>
                                                 <span className="w-full flex flex-col items-start justify-start gap-[5px] ">
                                                     {
                                                         selectedProject.job.hoa_permit_document.map((data:string, ind:number)=>{
                                                             return(
-                                                                <p key={ind} className="text-sm text-blue-600 font-medium">{data}</p>
+                                                                <Link rel="stylesheet"  target="_blank"className="text-sm text-blue-600 font-medium" href={data}>{data}</Link>
                                                             )
                                                         })
                                                     }
@@ -555,17 +561,14 @@ const Project_Management_Modal = ({ showModal, setShowModal, selectedProject, se
                                                 <p className="text-sm w-[50%] ">Engineering Permit Approval Date</p>
                                                 <p className="text-sm w-[50%] font-medium ">{ selectedProject.job.engineering_permit_approval_date != 0 ? readable_day(Number(selectedProject.job.engineering_permit_approval_date)) : '-'}</p>
                                             </span>
-                                            <span className="w-full flex items-start justify-start gap-[10px]  ">
-                                                <p className="text-sm w-[50%] ">Engineering Permit Number</p>
-                                                <p className="text-sm w-[50%] font-medium ">{selectedProject.job.engineering_permit_number || '-'}</p>
-                                            </span>
+
                                             <span className="w-full flex flex-col items-start justify-start gap-[10px]  ">
                                                 <p className="text-sm text-start ">Engineering Permit Documents</p>
                                                 <span className="w-full flex flex-col items-start justify-start gap-[5px] ">
                                                     {
                                                         selectedProject.job.engineering_permit_document.map((data:string, ind:number)=>{
                                                             return(
-                                                                <p key={ind} className="text-sm text-blue-600 font-medium">{data}</p>
+                                                                <Link rel="stylesheet"  target="_blank"className="text-sm text-blue-600 font-medium" href={data}>{data}</Link>
                                                             )
                                                         })
                                                     }
