@@ -219,9 +219,9 @@ const Lead_Management_Modal = ({ showModal, setShowModal, selectedLead, setSelec
         }else if ( auth.disposition.toLowerCase() === 'sold' && (!auth.desired_structure || !auth.contract_document.length || !auth.email) ){
 
             
-            if (!auth.desired_structure) {showAlert("Please enter the desired structure", 'error'); setModalFor("upload_lead_file")}
+            // if (!auth.desired_structure) {showAlert("Please enter the desired structure", 'error'); setModalFor("upload_lead_file")}
             
-            if (!auth.contract_document.length) {showAlert("Please select the contract file", 'error'); setModalFor("upload_lead_file")}
+            // if (!auth.contract_document.length) {showAlert("Please select the contract file", 'error'); setModalFor("upload_lead_file")}
             
             if (!auth.email) {showAlert("Please enter a valid lead email", 'error'); setModalFor("edit")}
             

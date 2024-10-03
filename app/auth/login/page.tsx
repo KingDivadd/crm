@@ -99,7 +99,7 @@ const Login = () => {
                     showAlert(response.data.msg, "success")
                     setAuth({email: '', password: ''})
                     setLoading(false)
-                    if (!response.data.user.company_id){
+                    if (!response.data.user.company_id && response.data.user.user_role == 'admin'){
                         localStorage.setItem('signup_stage', 'add-company')
                         router.push('/auth/signup')
                     }else{

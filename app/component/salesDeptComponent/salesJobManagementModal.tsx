@@ -441,7 +441,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                             {show_all_lead && 
                                             <div className="absolute top-[45px] right-0  w-[350px]">
                                                 <span className="h-[40px] w-full ">
-                                                        <input type="hoa_permit_status" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-[15px]' />
+                                                        <input type="hoa_permit_status" name='assigned_to' placeholder='Enter name to filter' onChange={filter_user} className='normal-input text-[15px]' />
                                                 </span>
 
                                                 {filtered_leads 
@@ -458,13 +458,12 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                                                         <span className="h-[35px] flex items-center justify-start gap-[10px] w-full cursor-pointer "  >
 
-                                                                            <p className="text-start text-[15px] w-[30%] " >{lead_ind} </p>
+                                                                            <p className="text-start text-[15px] w-[25%] font-semibold " >{lead_ind} </p>
 
-                                                                            <p className=" text-start text-[15px] font-semibold w-[35%] " > {customer_first_name} </p>
+                                                                            <p className=" text-start text-[15px]  w-[65%] overflow-x-auto whitespace-nowrap " > {customer_first_name} </p>
 
-                                                                            <p className=" text-start text-[15px] font-semibold w-[35%] " > {customer_last_name} </p>
                                                                             
-                                                                            <span className="w-[40px] h-full flex justify-end items-center"> {auth.lead_id == lead_id && <IoCheckmark size={18} />} </span>
+                                                                            <span className="w-[10%] h-full flex justify-end items-center"> {auth.lead_id == lead_id && <IoCheckmark size={18} />} </span>
 
                                                                         </span>
                                                                             
@@ -516,8 +515,8 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                             <span className="w-full flex flex-col items-start justify-start gap-[10px] ">
 
-                                                <h4 className="text-[15px] ">Contract Date</h4>
-                                                <div className="w-full flex flex-col items-end justify-end relative z-[5] ">
+                                                <h4 className="text-[15px] ">Contract Datee</h4>
+                                                <div className="w-full flex flex-col items-end justify-end relative z-[30] ">
                                                     <button className="rounded-[3px] h-[40px] w-full bg-transparent border border-gray-400 flex flex-row items-center justify-between px-[10px] text-[15px]" onClick={(e:any) => {e.preventDefault(); setShowCalenders({...showCalenders, contract_date: !showCalenders.contract_date }) }}>
 
                                                         { auth.contract_date ? readable_day(Number(auth.contract_date)) : "Select Contract Date"}
@@ -653,7 +652,7 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
                                             {show_all_lead && 
                                             <div className="absolute top-[45px] right-0  w-[350px]">
                                                 <span className="h-[40px] w-full ">
-                                                        <input type="hoa_permit_status" name='assigned_to' placeholder='Enter  name to filter' onChange={filter_user} className='normal-input text-[15px]' />
+                                                        <input type="hoa_permit_status" name='assigned_to' placeholder='Enter name to filter' onChange={filter_user} className='normal-input text-[15px]' />
                                                 </span>
 
                                                 <div className="w-full h-[315px] flex flex-col items-start justify-start overflow-y-auto p-[10px] bg-white shadow-md rounded-[5px] ">
@@ -666,13 +665,12 @@ const Job_Management_Modal = ({ showModal, setShowModal, selectedJob, setSelecte
 
                                                                     <span className="h-[35px] flex items-center justify-start gap-[10px] w-full cursor-pointer "  >
 
-                                                                        <p className="text-start text-[15px] w-[30%] " >{lead_ind} </p>
+                                                                        <p className="text-start text-[15px] w-[25%] font-semibold " >{lead_ind} </p>
 
-                                                                        <p className=" text-start text-[15px] font-semibold w-[35%] " > {customer_first_name} </p>
+                                                                        <p className=" text-start text-[15px]  w-[65%] overflow-x-auto whitespace-nowrap " > {customer_first_name} </p>
 
-                                                                        <p className=" text-start text-[15px] font-semibold w-[35%] " > {customer_last_name} </p>
                                                                         
-                                                                        <span className="w-[40px] h-full flex justify-end items-center"> {auth.lead_id == lead_id && <IoCheckmark size={18} />} </span>
+                                                                        <span className="w-[10%] h-full flex justify-end items-center"> {auth.lead_id == lead_id && <IoCheckmark size={18} />} </span>
 
                                                                     </span>
                                                                         
