@@ -25,11 +25,12 @@ interface User_Project_Props {
 
 const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedItem, setModalFor, modalFor  }:ServiceTicketProps) => {
     const [new_ticket, setNew_ticket] = useState({description: '', image_url: '', project_id: '' })
-    const [project, setProject] = useState({issue: ''})
+    const [filter, setFilter] = useState('')
     const [updateBtn, setUpdateBtn] = useState(false)
     const [loading, setLoading] = useState(false)
     const [alert, setAlert] = useState({message: '', type: ''})
     const [user_project, setUser_project] = useState<User_Project_Props | null>(null)
+    const [filtered_project, setFiltered_project] = useState<User_Project_Props | null>(null)
     const [dropMenus, setDropMenus] = useState<{ [key: string]: boolean }>({
         project:false,
     });
@@ -56,6 +57,20 @@ const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedI
         setNew_ticket({...new_ticket, [name]:value})
     }
 
+    function filter_project(e: React.ChangeEvent<HTMLInputElement>) {
+
+        const value = e.target.value
+        setFilter(value)
+            
+        const filtered_items = user_project?.projects.filter((data: { project_ind: string }) =>
+            data.project_ind.toLowerCase().includes(value.toLowerCase()) 
+        );
+
+        setFiltered_project({...filtered_project, projects: filtered_items})
+        
+    }
+
+
     function showAlert(message: string, type: string){
         setAlert({message: message, type: type})
             setTimeout(() => {
@@ -65,10 +80,10 @@ const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedI
 
     useEffect(() => {
         if (modalFor !== 'add') {
-         const {description, image_url, project_id} = selectedItem
-         setNew_ticket({...new_ticket, description, image_url, project_id})
-         console.log('selected item ', selectedItem);
-         
+            const {description, image_url, project_id} = selectedItem
+            setNew_ticket({...new_ticket, description, image_url, project_id})
+            console.log('selected item ', selectedItem);
+            
         }
         get_user_projects()
     }, [])
@@ -76,19 +91,17 @@ const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedI
 
     async function get_user_projects() {
 
-        
-        const response = await get_auth_request(`auth/user-projects`)
+        const response = await get_auth_request(`app/customer-project`)
         
         if (response.status == 200 || response.status == 201){
             
             setUser_project(response.data)
-
-            console.log('fetched data', response.data);
+            setFiltered_project(response.data)
 
         }else{
-        console.log(response);
         
-        showAlert(response.response.data.err, "error")
+            showAlert(response.response.data.err, "error")
+
         }
     }
 
@@ -102,7 +115,7 @@ const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedI
 
             try {
     
-                const response = await post_auth_request(`auth/create-ticket`, new_ticket)
+                const response = await post_auth_request(`app/create-ticket`, new_ticket)
                 
                 if (response.status == 200 || response.status == 201){
                     
@@ -182,27 +195,30 @@ const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedI
                 <div className="w-full h-screen pt-[60px] rounded-lg overflow-hidden shadow-xl transform transition-all" role="dialog" aria-modal="true" aria-labelledby="modal-title" aria-describedby="modal-description" onClick={handleCloseModal}>
                     <div className="h-auto w-[65%] mx-auto shadow-xl flex items-start ">
                         {/* the container for the input fields */}
-                        <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[5px]  rounded-[5px]  ">
-                            {modalFor == "add" && <div className="w-full min-h-[300px] flex flex-col justify-start items-center p-[20px] pt-[5px] gap-[20px] ">
+                        <div onClick={(e) => e.stopPropagation()} className="w-full flex flex-col items-start justify-start gap-5 bg-white  rounded-b-[3px]  rounded-[3px]  ">
+                            {modalFor == "add" && <div className="w-full min-h-[300px] flex flex-col justify-start items-center p-[20px] pt-[3px] gap-[20px] ">
                                 <span className="h-[50px] w-full flex items-center border-b border-gray-300">
                                     <p className="text-lg font-semibold">New Service Ticket</p>
                                 </span>
                                 
-                                <div className="w-full flex items-start justify-between gap-[10px] ">
+                                <div className="w-full flex items-start justify-between gap-[15px] ">
                                     <div className="w-1/2 flex flex-col items-start justify-start gap-[15px] ">
                                         <span className="w-full flex flex-col items-start justify-start gap-[10px] ">
                                             <h4 className="text-md font-light">Issue Description</h4>
-                                            <input type="text" name='description' className='normal-input' value={new_ticket.description} onChange={handleChange} />
+                                            <textarea name='description' rows={3} className='resize-none rounded-[3px] p-[10px] outline-none focus:border-blue-500 focus:border-2 border border-gray-400 w-full h-[100px] text-sm ' value={new_ticket.description} onChange={handleChange} ></textarea>
                                         </span>
 
                                         <div className="w-full flex flex-col items-start gap-[10px]">
-                                            <input type="text" name='filter' className='normal-input' placeholder='Search for project by project id' value={project.issue} onChange={handleChange} />
-                                            <div className="w-full h-[275px] bg-gray-100 rounded-[3px] overflow-y-auto p-[5px]">
+                                            <input type="text" name='filter' className='normal-input text-sm' placeholder='Search for project by project id' value={filter} onChange={filter_project} />
+
+                                            <div className="w-full h-[351px] bg-gray-100 rounded-[3px] overflow-y-auto p-[3px]">
                                                 <div className="">
-                                                    {user_project?.projects.map((data:any, ind:number)=>{
+                                                    {filtered_project?.projects.map((data:any, ind:number)=>{
                                                         const {project_ind, project_id } = data
                                                         return(
-                                                            <span key={ind} className="w-full h-[40px] text-sm font-medium flex items-center justify-between px-[10px] rounded-[2.5px] hover:bg-slate-200 cursor-pointer" onClick={()=>{setNew_ticket({...new_ticket, project_id: project_id})} }>{ind + 1}. {project_ind} {new_ticket.project_id === project_id && <IoCheckmarkOutline size={19} />} </span>
+                                                            <span key={ind} className="w-full h-[40px] text-sm font-medium flex items-center justify-between px-[10px] rounded-[2.5px] hover:bg-slate-200 cursor-pointer" onClick={()=>{setNew_ticket({...new_ticket, project_id: project_id})} }>
+                                                                {ind + 1}. {project_ind} {new_ticket.project_id === project_id && <IoCheckmarkOutline size={19} />} 
+                                                            </span>
                                                         )
                                                     })}
                                                 </div>
@@ -218,7 +234,7 @@ const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedI
                                         </span>
 
                                         <span className="w-full flex items-center justify-end">
-                                            <button className=" w-[150px] h-[40px] text-white bg-blue-700 rounded-[5px] hover:bg-blue-600 flex items-center justify-center" onClick={create_ticket} disabled={loading}>
+                                            <button className=" w-full h-[45px] text-white bg-blue-700 rounded-[3px] hover:bg-blue-600 flex items-center justify-center" onClick={create_ticket} disabled={loading}>
                                                 {loading ? (
                                                     <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>
@@ -239,26 +255,29 @@ const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedI
                             
                             && 
                             
-                            <div className="w-full min-h-[300px] flex flex-col justify-start items-center p-[20px] pt-[5px] gap-[20px] ">
+                            <div className="w-full min-h-[300px] flex flex-col justify-start items-center p-[20px] pt-[3px] gap-[20px] ">
                                 <span className="h-[50px] w-full flex items-center border-b border-gray-300">
                                     <p className="text-lg font-semibold">Edit Ticket: <strong>{selectedItem.service_ticket_ind}</strong></p>
                                 </span>
                                 
                                 <div className="w-full flex items-start justify-between gap-[10px] ">
-                                    <div className="w-1/2 flex flex-col items-start justify-start gap-[15px] ">
+                                <div className="w-1/2 flex flex-col items-start justify-start gap-[15px] ">
                                         <span className="w-full flex flex-col items-start justify-start gap-[10px] ">
                                             <h4 className="text-md font-light">Issue Description</h4>
-                                            <input type="text" name='description' className='normal-input' value={new_ticket.description} onChange={handleChange} />
+                                            <textarea name='description' rows={3} className='resize-none rounded-[3px] p-[10px] outline-none focus:border-blue-500 focus:border-2 border border-gray-400 w-full h-[100px] text-sm ' value={new_ticket.description} onChange={handleChange} ></textarea>
                                         </span>
 
                                         <div className="w-full flex flex-col items-start gap-[10px]">
-                                            <input type="text" name='filter' className='normal-input' placeholder='Search for project by project id' value={project.issue} onChange={handleChange} />
-                                            <div className="w-full h-[275px] bg-gray-100 rounded-[3px] overflow-y-auto p-[5px]">
+                                            <input type="text" name='filter' className='normal-input text-sm' placeholder='Search for project by project id' value={filter} onChange={filter_project} />
+
+                                            <div className="w-full h-[351px] bg-gray-100 rounded-[3px] overflow-y-auto p-[3px]">
                                                 <div className="">
-                                                    {user_project?.projects.map((data:any, ind:number)=>{
+                                                    {filtered_project?.projects.map((data:any, ind:number)=>{
                                                         const {project_ind, project_id } = data
                                                         return(
-                                                            <span key={ind} className="w-full h-[40px] text-sm font-medium flex items-center justify-between px-[10px] rounded-[2.5px] hover:bg-slate-200 cursor-pointer" onClick={()=>{setNew_ticket({...new_ticket, project_id: project_id})} }>{ind + 1}. {project_ind} {new_ticket.project_id === project_id && <IoCheckmarkOutline size={19} />} </span>
+                                                            <span key={ind} className="w-full h-[40px] text-sm font-medium flex items-center justify-between px-[10px] rounded-[2.5px] hover:bg-slate-200 cursor-pointer" onClick={()=>{setNew_ticket({...new_ticket, project_id: project_id})} }>
+                                                                {ind + 1}. {project_ind} {new_ticket.project_id === project_id && <IoCheckmarkOutline size={19} />} 
+                                                            </span>
                                                         )
                                                     })}
                                                 </div>
@@ -274,7 +293,7 @@ const ServiceTicketModal = ({showModal, setShowModal, selectedItem, setSelectedI
                                         </span>
 
                                         <span className="w-full flex items-center justify-end">
-                                            <button className=" w-[150px] h-[40px] text-white bg-amber-700 rounded-[5px] hover:bg-amber-600 flex items-center justify-center" onClick={update_ticket} disabled={loading}>
+                                            <button className=" w-full h-[45px] text-white bg-amber-700 rounded-[3px] hover:bg-amber-600 flex items-center justify-center" onClick={update_ticket} disabled={loading}>
                                                 {loading ? (
                                                     <svg className="w-[25px] h-[25px] animate-spin text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
                                                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="3"></circle>

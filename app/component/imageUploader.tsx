@@ -67,7 +67,7 @@ export const ImageUploaderTwo = ({ id, title, url, image }: ImageUploaderProps) 
                 </button>
             </span>
             {imagePreview && (
-                <span className="relative w-full h-[325px] rounded-[5px] overflow-hidden">
+                <span className="relative w-full h-[400px] rounded-[5px] overflow-hidden">
                     <Image 
                         src={imagePreview} 
                         alt="Logo" 

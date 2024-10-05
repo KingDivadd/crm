@@ -129,8 +129,6 @@ const UserManagement = () => {
                 setApp_users(response.data)      
                 
                 setFiltered_users(response.data)
-
-                console.log('response ', response.data)
                     
                 showAlert(response.data.msg, "success")
             }else{
@@ -257,7 +255,7 @@ const UserManagement = () => {
                                 <input type="text" name="filter-input" onChange={handleFilter} placeholder='search by user id, name, email, role' id="" className='normal-input bg-gray-100 text-sm ' />
                             </span>
                             <span className="h-[40px] min-w-[150px]">
-                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Installer', 'Engineering', 'Permit', 'Electrical', 'Designer', 'Accounting', 'All']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
+                                <DropDownBlankTransparent handleSelectDropdown={handleSelectDropdown} title={'user_role'} dropArray={['Admin', 'Sales', 'Installer', 'Engineering', 'Permit', 'Electrical', 'Designer', 'Accounting', 'Customer', 'All']} dropElements={dropElements} dropMenus={dropMenus} handleDropMenu={handleDropMenu} setDropElements={setDropElements} setDropMenus={setDropMenus}  /> 
                             </span>
                         </span>
 
